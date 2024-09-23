@@ -1,3 +1,5 @@
-This is a check readme xyz
+# FeastFinder
 
-This is shrey branch commit
+## Our goal
+
+With the growing number of food delivery apps and platforms, users are often overwhelmed by the need to switch between multiple apps to compare prices, availability, and delivery options for their preferred meals. This process is not only time-consuming but also leads to missed opportunities to save money and access the best delivery service. Our project seeks to solve this issue by developing a food aggregator app that allows users to select dishes from a variety of restaurants, add them to their cart, and instantly compare prices, delivery fees, and availability across different food delivery apps. Many of these apps exist such as Doordash and Uber Eats, but none will tell you about cheaper deals you can get from other apps. By providing a one-stop solution, Feast Finder streamlines the food ordering process, helping users save time and money while ensuring they make informed decisions on where to order from. Furthermore, if delivery services are unavailable, users can be redirected to the restaurant’s website, offering them a seamless experience to complete their order.
