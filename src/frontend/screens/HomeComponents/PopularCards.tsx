@@ -1,8 +1,15 @@
-import { ColorValue, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
+import { 
+    SafeAreaView,
+    ScrollView, 
+    StyleSheet,
+    Text,
+    TouchableOpacity, 
+} from 'react-native'
+
 // navigation
-import { RootStackParamList } from "../../App";
+import { RootStackParamList } from "../../App.tsx";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -11,32 +18,62 @@ export default function PopularCards() {
         {
             rid: 1,
             name: 'rest1-red',
-            color: '#Ef5354'
+            color: '#ff5555'
         },
         {
             rid: 2,
             name: 'rest2-green',
-            color: '#50DBB4'
+            color: '#55ff55'
         },
         {
             rid: 3,
             name: 'rest3-blue',
-            color: '#5da3fa'
+            color: '#5555ff'
         },
         {
             rid: 4,
             name: 'rest4-yellow',
-            color: '#ffff00'
+            color: '#ffff55'
         },
         {
             rid: 5,
             name: 'rest5-orange',
-            color: '#ff8800'
+            color: '#ff8844'
         },
         {
             rid: 6,
             name: 'rest6-purple',
-            color: '#aa00ff'
+            color: '#aa44ff'
+        },
+        {
+            rid: 7,
+            name: 'rest7-pink',
+            color: '#ff44ff'
+        },
+        {
+            rid: 8,
+            name: 'rest8-teal',
+            color: '#50DBbb'
+        },
+        {
+            rid: 9,
+            name: 'rest9-light blue',
+            color: '#99ccff'
+        },
+        {
+            rid: 10,
+            name: 'rest10-grey',
+            color: '#aaaaaa'
+        },
+        {
+            rid: 11,
+            name: 'rest11-brown',
+            color: '#775500'
+        },
+        {
+            rid: 12,
+            name: 'rest12-d green',
+            color: '#4f7f4f'
         },
     ];
 

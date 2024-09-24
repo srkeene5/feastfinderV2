@@ -1,4 +1,3 @@
-import { View, Text } from 'react-native'
 import React from 'react'
 
 //Navigation
@@ -6,12 +5,13 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 //screens
-import Home from './screens/HomeComponents/Home'
-import AccountPage from './screens/SettingsPages/AccountComponents/Account'
-import RestPage from './screens/RestPageComponents/RestPage'
-import SettingsNav from './screens/SettingsPages/SettingsNavComponents/SettingsNav'
-import SuggPage from './screens/SettingsPages/SupportPages/SuggPage'
-import RepBPage from './screens/SettingsPages/SupportPages/RepBugPage'
+import Home from './screens/HomeComponents/Home.tsx'
+import AccountPage from './screens/SettingsPages/AccountComponents/Account.tsx'
+import RestPage from './screens/RestPageComponents/RestPage.tsx'
+import SettingsNav from './screens/SettingsPages/SettingsNavComponents/SettingsNav.tsx'
+import SuggPage from './screens/SettingsPages/SupportPages/SuggPage.tsx'
+import RepBPage from './screens/SettingsPages/SupportPages/RepBugPage.tsx'
+
 
 export type RootStackParamList = {
   Home: undefined;
