@@ -11,7 +11,8 @@ import RestPage from './screens/RestPageComponents/RestPage.tsx'
 import SettingsNav from './screens/SettingsPages/SettingsNavComponents/SettingsNav.tsx'
 import SuggPage from './screens/SettingsPages/SupportPages/SuggPage.tsx'
 import RepBPage from './screens/SettingsPages/SupportPages/RepBugPage.tsx'
-
+import Example from './screens/Brian_Test_Components/Example.tsx'
+import Login from './screens/Brian_Test_Components/Login.tsx'
 
 export type RootStackParamList = {
   Home: undefined;
@@ -26,6 +27,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function App(): JSX.Element {
   return (
+    <div> <Login /> 
     <NavigationContainer>
       <Stack.Navigator 
       initialRouteName='Home'
@@ -58,7 +60,7 @@ function App(): JSX.Element {
         name='AccountPage'
         component={AccountPage}
         options={{
-          title: "Acount Page"
+          title: "Account Page"
         }}
         />
         <Stack.Screen 
@@ -78,6 +80,7 @@ function App(): JSX.Element {
         
       </Stack.Navigator>
     </NavigationContainer>
+    </div>
   )
 }
 
