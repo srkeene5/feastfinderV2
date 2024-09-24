@@ -1,8 +1,16 @@
-import { Image, StyleSheet, TouchableOpacity, TextInput, View } from 'react-native'
 import React from 'react'
 
+import { 
+    Image, 
+    StyleSheet, 
+    TouchableOpacity, 
+    TextInput, 
+    View 
+} from 'react-native'
+
+
 // navigation
-import { RootStackParamList } from "../../App";
+import { RootStackParamList } from "../../App.tsx";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
