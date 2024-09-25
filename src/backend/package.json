@@ -1,5 +1,5 @@
 {
-  "name": "FeastFinder",
+  "name": "feastfinder",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
