@@ -1,8 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js'; // Ensure this path is correct
-import { auth } from '../middleware/auth.js'; // Updated import statement
+import User from '../models/User.js'; 
+import { auth } from '../middleware/auth.js'; 
 
 const router = express.Router();
 
@@ -83,5 +83,38 @@ router.get('/protected', auth, async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
       }
     });
+
+router.put('/address', auth, async (req, res) => {
+  const { street, city, state, postalCode, country } = req.body;
+    
+  if (!street || !city || !state || !postalCode || !country) {
+    return res.status(400).json({ msg: 'Please provide all address fields' });
+  }
+    
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      {
+        address: {
+          street,
+          city,
+          state,
+          postalCode,
+          country
+        }
+      },
+      { new: true } // Return the updated document
+    ).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    
+    res.json(user);
+  } catch (err) {
+    console.error('Error updating address:', err.message);
+    res.status(500).send('Server error');
+  }
+});
 
 export default router;

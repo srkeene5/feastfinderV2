@@ -9,7 +9,6 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "feastfinder": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-native-safe-area-context": "^4.11.0",
@@ -19,7 +18,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
+    "start-frontend": "react-scripts start",
+    "start-backend": "npm run start --prefix ./src/backend",
+    "install:all": "npm install && cd src/backend && npm install",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -46,6 +48,8 @@
     "autoprefixer": "^10.4.20",
     "babel-plugin-react-native-web": "^0.19.12",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.13"
+    "tailwindcss": "^3.4.13",
+    "concurrently": "^9.0.1"
+    
   }
 }

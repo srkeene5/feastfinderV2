@@ -1,7 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.js'; // Import routes here
+import User from './models/User.js';  
+import authRoutes from './routes/auth.js'; 
 
 dotenv.config();
 
@@ -9,16 +10,44 @@ const app = express();
 
 app.use(express.json());
 
+console.log(process.env.MONGO_URI); 
+
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.log(err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('MongoDB connected');
+    populateUsers(); 
+  })
+  .catch((err) => console.error('MongoDB connection error:', err));
+
+
+// Function to populate database with test users
+const populateUsers = async () => {
+  try {
+    // Check if any users already exist to avoid duplication
+    const userCount = await User.countDocuments();
+    if (userCount > 0) {
+      console.log('Users already exist in the database.');
+      return;
+    }
+
+    // Array of test users
+    const testUsers = [
+      { username: 'user1', email: 'user1_test@example.com', password: 'password1' },
+      { username: 'user2', email: 'user2_test@example.com', password: 'password2' },
+      { username: 'user3', email: 'user3_test@example.com', password: 'password3' }
+    ];
+
+    // Insert test users into the database
+    await User.insertMany(testUsers);
+    console.log('Test users have been added to the database.');
+  } catch (err) {
+    console.error('Error populating users:', err);
+  }
+};
 
 // Routes
-app.use('/api/auth', authRoutes); // Use routes here
+app.use('/api/auth', authRoutes); 
 
 app.get('/', (req, res) => {
   res.send('API is running...');
