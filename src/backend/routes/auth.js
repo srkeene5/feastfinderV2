@@ -84,4 +84,39 @@ router.get('/protected', auth, async (req, res) => {
       }
     });
 
+router.put('/address', auth, async (req, res) => {
+  const { street, city, state, postalCode, country } = req.body;
+    
+  // Validate input (optional but recommended)
+  if (!street || !city || !state || !postalCode || !country) {
+    return res.status(400).json({ msg: 'Please provide all address fields' });
+  }
+    
+  try {
+    // Find the user by ID and update the address
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      {
+        address: {
+          street,
+          city,
+          state,
+          postalCode,
+          country
+        }
+      },
+      { new: true } // Return the updated document
+    ).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    
+    res.json(user);
+  } catch (err) {
+    console.error('Error updating address:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 export default router;
