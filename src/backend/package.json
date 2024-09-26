@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha test/*.test.js"
+    "test": "cross-env NODE_ENV=test mocha test/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
