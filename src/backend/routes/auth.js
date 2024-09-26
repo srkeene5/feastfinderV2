@@ -1,8 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js'; // Ensure this path is correct
-import { auth } from '../middleware/auth.js'; // Updated import statement
+import User from '../models/User.js'; 
+import { auth } from '../middleware/auth.js'; 
 
 const router = express.Router();
 
@@ -87,13 +87,11 @@ router.get('/protected', auth, async (req, res) => {
 router.put('/address', auth, async (req, res) => {
   const { street, city, state, postalCode, country } = req.body;
     
-  // Validate input (optional but recommended)
   if (!street || !city || !state || !postalCode || !country) {
     return res.status(400).json({ msg: 'Please provide all address fields' });
   }
     
   try {
-    // Find the user by ID and update the address
     const user = await User.findByIdAndUpdate(
       req.user,
       {

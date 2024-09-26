@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import User from './models/User.js';  // Import User model
-import authRoutes from './routes/auth.js'; // Import routes here
+import User from './models/User.js';  
+import authRoutes from './routes/auth.js'; 
 
 dotenv.config();
 
@@ -10,15 +10,13 @@ const app = express();
 
 app.use(express.json());
 
-//debug the environment variables
-
-console.log(process.env.MONGO_URI); // This should log connection string
+console.log(process.env.MONGO_URI); 
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
-    populateUsers(); // Populate users after DB connection is established
+    populateUsers(); 
   })
   .catch((err) => console.error('MongoDB connection error:', err));
 
@@ -49,7 +47,7 @@ const populateUsers = async () => {
 };
 
 // Routes
-app.use('/api/auth', authRoutes); // Use routes here
+app.use('/api/auth', authRoutes); 
 
 app.get('/', (req, res) => {
   res.send('API is running...');

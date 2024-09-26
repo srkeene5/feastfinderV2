@@ -1,5 +1,3 @@
-// auth.test.js
-
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -54,7 +52,7 @@ describe('Auth Routes', function () {
 
   
   afterEach(async function () {
-    // Optional: Clean up the test user after each test
+    // comment this method out to keep users created from test
     if (testUser && testUser.email) {
       await User.findOneAndDelete({ email: testUser.email });
     }
