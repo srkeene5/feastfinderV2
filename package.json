@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-tailwind/react": "^1.4.2",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -13,6 +14,7 @@
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
     "react-native-web": "^0.19.12",
+    "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -44,8 +46,10 @@
     ]
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.20",
     "babel-plugin-react-native-web": "^0.19.12",
-    "concurrently": "^9.0.1"
-    
+    "concurrently": "^9.0.1",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
   }
 }
