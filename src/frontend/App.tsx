@@ -10,8 +10,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 //screens
 import Main from './screens/HomeComponents/Main.tsx'
-import Example from './screens/Brian_Test_Components/Example.tsx'
-import Login from './screens/Brian_Test_Components/Login.tsx'
+import Example from './screens/UserComponents/Example.tsx'
+import Login from './screens/UserComponents/Login.tsx'
 
 export type RootStackParamList = {
   Home: undefined;
