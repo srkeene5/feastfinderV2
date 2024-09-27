@@ -9,9 +9,7 @@ import {
 } from 'react-native'
 
 // navigation
-import { RootStackParamList } from "../../App.tsx";
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function PopularCards() {
     const restaurants = [
@@ -77,18 +75,22 @@ export default function PopularCards() {
         },
     ];
 
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+    const navigate = useNavigate();
+    const location = useLocation();
 
+    function handlePop(rid: number, name: string, color: string){
+        //TODO: ajax searchValue to backend
+        //TODO: Recieve Search Result
+        navigate('/Search', {state: {search: name, restaurants: restaurants}})
+    }
 
     const restItem = (item: { rid: number; name: string; color: string; }) => {
         return (
             <TouchableOpacity
             key={item.rid}
             style={[styles.card, {backgroundColor: item.color}]}
-            onPress={() => navigation.navigate(
-                "RestPage", 
-                {rid: item.rid, rName: item.name, color: item.color}
-            )}
+            //navigate('/settingsNavigation', {state: {uid: 86}})
+            onPress={() => {handlePop(item.rid, item.name, item.color)}}
             >
                 <Text>
                     {item.name}
