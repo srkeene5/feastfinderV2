@@ -28,7 +28,7 @@ function App(): JSX.Element {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Main />}/>
+        <Route path="/" element={<Login />}/>
         <Route path="/account/login" element={<Login />} />
         <Route path="/account/signup" element={<Example />}/>
       </Routes>
