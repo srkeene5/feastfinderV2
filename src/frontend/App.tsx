@@ -1,16 +1,15 @@
 import React from 'react'
+import {View, SafeAreaView} from 'react-native'
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 //Navigation
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
+
+
 //screens
-import Home from './screens/HomeComponents/Home.tsx'
-import AccountPage from './screens/SettingsPages/AccountComponents/Account.tsx'
-import RestPage from './screens/RestPageComponents/RestPage.tsx'
-import SettingsNav from './screens/SettingsPages/SettingsNavComponents/SettingsNav.tsx'
-import SuggPage from './screens/SettingsPages/SupportPages/SuggPage.tsx'
-import RepBPage from './screens/SettingsPages/SupportPages/RepBugPage.tsx'
+import Main from './screens/HomeComponents/Main.tsx'
 import Example from './screens/Brian_Test_Components/Example.tsx'
 import Login from './screens/Brian_Test_Components/Login.tsx'
 
@@ -27,61 +26,15 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function App(): JSX.Element {
   return (
-    <div> <Login /> 
-    <NavigationContainer>
-      <Stack.Navigator 
-      initialRouteName='Home'
-      screenOptions={{
-        headerShown: false
-      }}
-      >
-        <Stack.Screen 
-        name='Home'
-        component={Home}
-        options={{
-          title: "Main Page"
-        }}
-        />
-        <Stack.Screen 
-        name='RestPage'
-        component={RestPage}
-        options={{
-          title: "Restaurant Page"
-        }}
-        />
-        <Stack.Screen 
-        name='SettingsNav'
-        component={SettingsNav}
-        options={{
-          title: "Navigation Page"
-        }}
-        />
-        <Stack.Screen 
-        name='AccountPage'
-        component={AccountPage}
-        options={{
-          title: "Account Page"
-        }}
-        />
-        <Stack.Screen 
-        name='SuggPage'
-        component={SuggPage}
-        options={{
-          title: "Suggestions Page"
-        }}
-        />
-        <Stack.Screen 
-        name='RepBPage'
-        component={RepBPage}
-        options={{
-          title: "Report Bugs Page"
-        }}
-        /> 
-        
-      </Stack.Navigator>
-    </NavigationContainer>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />}/>
+        <Route path="/account/login" element={<Login />} />
+        <Route path="/account/signup" element={<Example />}/>
+      </Routes>
+    </Router>
+    
+  );
 }
 
 export default App;
