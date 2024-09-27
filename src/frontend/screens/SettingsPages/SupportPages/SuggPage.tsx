@@ -1,18 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import React from 'react'
 
 // Components
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 
-// navigation
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../../App.tsx";
-import { SafeAreaView } from 'react-native-safe-area-context';
+//navigation
+import { useLocation } from 'react-router-dom';
 
-type SuggProps = NativeStackScreenProps<RootStackParamList, 'SuggPage'>
-
-export default function SuggPage({route}: SuggProps) {
-  const {uid} = route.params
+export default function SuggPage() {
+  const location = useLocation();
+  const {uid} = location.state;
 
   return (
     <SafeAreaView>

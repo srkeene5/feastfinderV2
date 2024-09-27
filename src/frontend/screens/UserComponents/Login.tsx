@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 //import Router from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 function Login() {
 
     //const { user, login, logout, updateCurrentUserInfo } = useAuth();

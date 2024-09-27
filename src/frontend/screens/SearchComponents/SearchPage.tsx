@@ -6,16 +6,16 @@ import {
 } from "react-native";
 
 // Components
-import PopularCards from "./PopularCards.tsx";
+import SearchCards from "./SearchCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
 
-export default function Home() {
+export default function SearchPage() {
 
   return(
     <SafeAreaView>
       <ScrollView>
         <CoreBanner />
-        <PopularCards />
+        <SearchCards />
       </ScrollView>
     </SafeAreaView>
   )
