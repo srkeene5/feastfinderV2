@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js'; 
 import { auth } from '../middleware/auth.js'; 
+import BlacklistedToken from '../models/BlacklistedToken.js';
 
 const router = express.Router();
 
@@ -114,6 +115,26 @@ router.put('/address', auth, async (req, res) => {
   } catch (err) {
     console.error('Error updating address:', err.message);
     res.status(500).send('Server error');
+  }
+});
+
+// Logout route
+router.post('/logout', auth, async (req, res) => {
+  try {
+    const authHeader = req.header('Authorization');
+    const token = authHeader.split(' ')[1];
+
+    // Decode the token to get expiration time
+    const decoded = jwt.decode(token);
+    const expiresAt = new Date(decoded.exp * 1000); // Convert to milliseconds
+
+    // Add the token to the blacklist
+    const blacklistedToken = new BlacklistedToken({ token, expiresAt });
+    await blacklistedToken.save();
+
+    res.status(200).json({ msg: 'Successfully logged out' });
+  } catch (error) {
+    res.status(500).json({ msg: 'Server error', error });
   }
 });
 
