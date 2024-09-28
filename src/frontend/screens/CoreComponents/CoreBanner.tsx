@@ -80,15 +80,32 @@ export default function CoreBanner() {
         }
     }
 
-    const keyHandler = (event) => {
+
+    // Send search query to the backend and log the full restaurant objects
+    const keyHandler = async (event) => {
         if (event.key === 'Enter' && searchValue !== '') {
+            console.log("Searching for: " + searchValue);
+
+            try {
+                // Send the request to your backend API
+                const response = await fetch('http://localhost:5001/api/searchRestaurant?name=' + searchValue);
+                
+                // Check if the response is OK and parse JSON
+                if (response.ok) {
+                    const restaurants = await response.json();
+                    // Log the entire restaurant object(s)
+                    console.log('Restaurants Found:', restaurants);
+                } else {
+                    console.log('No restaurants found');
+                }
+            } catch (error) {
+                console.error('Error fetching restaurant:', error);
+            }
+
+            // Clear the search input
             setSearchTerm('');
-            console.log("Searching: " + searchValue);
-            //TODO: ajax searchValue to backend
-            //TODO: Recieve Search Result
-            navigate('/Search', {state: {search: searchValue, restaurants: restaurants}})
         }
-    }
+    };
 
     const inputHandler = (event) => {
         setSearchTerm(event.target.value);

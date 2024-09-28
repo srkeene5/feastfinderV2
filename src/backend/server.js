@@ -4,12 +4,16 @@ import dotenv from 'dotenv';
 import User from './models/User.js';  
 import restaurantData from './restaurantData.js'; 
 import Restaurant from './models/Restaurant.js';
-
+import cors from 'cors';
 import authRoutes from './routes/auth.js'; 
+import restaurantAuthRoutes from './routes/restaurantAuth.js'; // Import your restaurant routes
+
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors());  // Enable CORS for all routes
 
 app.use(express.json());
 
@@ -71,6 +75,8 @@ const populateRestaurants = async () => {
 // Routes
 app.use('/api/auth', authRoutes); 
 
+// Use the restaurant routes
+app.use('/api', restaurantAuthRoutes);
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
