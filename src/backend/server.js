@@ -2,6 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import User from './models/User.js';  
+import restaurantData from './restaurantData.js'; 
+import Restaurant from './models/Restaurant.js';
+
 import authRoutes from './routes/auth.js'; 
 
 dotenv.config();
@@ -16,7 +19,8 @@ console.log(process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
-    populateUsers(); 
+    populateUsers();
+    populateRestaurants(); // Call the function to populate restaurants 
   })
   .catch((err) => console.error('MongoDB connection error:', err));
 
@@ -43,6 +47,24 @@ const populateUsers = async () => {
     console.log('Test users have been added to the database.');
   } catch (err) {
     console.error('Error populating users:', err);
+  }
+};
+
+// Function to populate the database with restaurant data
+const populateRestaurants = async () => {
+  try {
+    // Check if any restaurants already exist to avoid duplication
+    const restaurantCount = await Restaurant.countDocuments();
+    if (restaurantCount > 0) {
+      console.log('Restaurants already exist in the database.');
+      return;
+    }
+
+    // Insert restaurant data into the database
+    await Restaurant.insertMany(restaurantData);
+    console.log('Restaurant data has been added to the database.');
+  } catch (err) {
+    console.error('Error populating restaurants:', err);
   }
 };
 
