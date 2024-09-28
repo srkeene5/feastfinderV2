@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import BlacklistedToken from '../models/BlacklistedToken.js';
 
-export function auth(req, res, next) {
+export async function auth(req, res, next) {
   const authHeader = req.header('Authorization');
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -10,6 +11,13 @@ export function auth(req, res, next) {
   const token = authHeader.split(' ')[1];
 
   try {
+    // Check if the token is blacklisted
+    const blacklisted = await BlacklistedToken.findOne({ token });
+
+    if (blacklisted) {
+      return res.status(401).json({ msg: 'Token is not valid' });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded.id;
     next();
