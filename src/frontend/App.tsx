@@ -11,6 +11,7 @@ import SuggPage from "./screens/SettingsPages/SupportPages/SuggPage.tsx";
 import RepBugPage from "./screens/SettingsPages/SupportPages/RepBugPage.tsx";
 import AccountPage from "./screens/SettingsPages/AccountComponents/Account.tsx";
 import SearchPage from './screens/SearchComponents/SearchPage.tsx';
+import SignUp from './screens/UserComponents/SignUp.tsx'
 
 function App(): JSX.Element {
   return (
@@ -18,7 +19,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/account/login" element={<Login />} />
-        <Route path="/account/signup" element={<Example />}/>
+        <Route path="/account/signup" element={<SignUp />}/>
         <Route path="/Home" element={<Home />}/>
         <Route path="/Restaurant" element={<RestPage />}/>
         <Route path="/SettingsNavigation" element={<SettingsNav />}/>
