@@ -1,4 +1,9 @@
-import React from 'react'
+//import React from 'react'
+import React, { useEffect, useState } from 'react';
+// navigation
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';  // To fetch data from the backend
+
 
 import { 
     SafeAreaView,
@@ -8,9 +13,8 @@ import {
     TouchableOpacity, 
 } from 'react-native'
 
-// navigation
-import { useLocation, useNavigate } from 'react-router-dom';
 
+/*
 export default function PopularCards() {
     const restaurants = [
         {
@@ -119,6 +123,64 @@ export default function PopularCards() {
         </SafeAreaView>
     )
 }
+*/
+
+// Define the type for your restaurant objects
+interface Restaurant {
+    restaurantID: string;
+    restaurantName: string;
+    color?: string;  // Color is optional
+}
+
+export default function PopularCards({ restaurants = [] }: { restaurants: Restaurant[] }) {
+    const [fetchedRestaurants, setFetchedRestaurants] = useState<Restaurant[]>([]);  // Use Restaurant type for state
+
+    const navigate = useNavigate();
+
+    // Fetch the restaurant data from the backend when the component is mounted
+    useEffect(() => {
+        if (restaurants.length === 0) {
+            axios.get('http://localhost:5001/api/popularRestaurants')  // Ensure your backend route is correct
+                .then(response => {
+                    setFetchedRestaurants(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching popular restaurants:', error);
+                });
+        } else {
+            setFetchedRestaurants(restaurants);  // Use passed restaurants if available (like from search results)
+        }
+    }, [restaurants]);
+
+    // Function to handle when a restaurant card is clicked
+    function handlePop(restaurantID: string) {
+        navigate(`/restaurant/${restaurantID}`);  // Navigate to the restaurant details page
+    }
+
+    // Render each restaurant item as a card
+    const restItem = (item: Restaurant) => {
+        return (
+            <TouchableOpacity
+                key={item.restaurantID}
+                style={[styles.card, { backgroundColor: item.color || '#ddd' }]}  // Use the color if available or default
+                onPress={() => { handlePop(item.restaurantID) }}  // Navigate to restaurant details
+            >
+                <Text>{item.restaurantName}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    // Render the popular cards
+    return (
+        <SafeAreaView>
+            <Text style={styles.headingText}>Popular:</Text>
+            <ScrollView style={styles.container} horizontal={true}>
+                {fetchedRestaurants.map((item) => restItem(item))}
+            </ScrollView>
+        </SafeAreaView>
+    );
+}
+
 
 const styles = StyleSheet.create({
     headingText: {

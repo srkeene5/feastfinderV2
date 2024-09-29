@@ -23,4 +23,21 @@ router.get('/searchRestaurant', async (req, res) => {
     }
 });
 
+// In restaurantAuth.js or a similar route file
+router.get('/popularRestaurants', async (req, res) => {
+    try {
+        const restaurants = await Restaurant.find();  // Query your database for popular restaurants
+        res.json(restaurants);
+    } catch (error) {
+        console.error('Error fetching restaurants:', error.message);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
+router.get('/restaurants/:id', async (req, res) => {
+    const restaurant = await Restaurant.findOne({ restaurantID: req.params.id });
+    res.json(restaurant);
+});
+
 export default router;

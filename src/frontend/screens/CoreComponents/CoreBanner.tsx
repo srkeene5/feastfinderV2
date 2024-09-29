@@ -2,6 +2,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+/*
 export default function CoreBanner() {
     const restaurants = [
         {
@@ -66,7 +67,7 @@ export default function CoreBanner() {
         },
     ];
     
-    const [searchValue, setSearchTerm] = React.useState('')
+    const [searchValue, setSearchValue] = React.useState('')
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -103,12 +104,12 @@ export default function CoreBanner() {
             }
 
             // Clear the search input
-            setSearchTerm('');
+            setSearchValue('');
         }
     };
 
     const inputHandler = (event) => {
-        setSearchTerm(event.target.value);
+        setSearchValue(event.target.value);
     }
 
     return (
@@ -169,3 +170,107 @@ const styles = StyleSheet.create({
         width: 120,
     }
 })
+*/
+
+export default function CoreBanner({ setSearchResults }) {
+    const [searchValue, setSearchValue] = React.useState('');
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Handles navigation when clicking on the logo
+    function navigationHandler() {
+        if (location.pathname === '/Home' || location.pathname === '/') {
+            navigate('/SettingsNavigation', { state: { uid: 86 } });
+        } else {
+            navigate(-1);  // Go back to the previous page
+        }
+    }
+
+    // Send search query to the backend and pass the restaurant objects to App.tsx
+    const keyHandler = async (event) => {
+        if (event.key === 'Enter' && searchValue !== '') {
+            console.log("Searching for: " + searchValue);
+
+            try {
+                // Send the request to your backend API
+                const response = await fetch(`http://localhost:5001/api/searchRestaurant?name=${searchValue}`);
+                
+                // Check if the response is OK and parse JSON
+                if (response.ok) {
+                    const restaurants = await response.json();
+                    console.log('Restaurants Found:', restaurants);
+                    // Pass the search results up to the parent component
+                    setSearchResults(restaurants);
+                } else {
+                    console.log('No restaurants found');
+                    setSearchResults([]);  // Clear results if no restaurants found
+                }
+            } catch (error) {
+                console.error('Error fetching restaurant:', error);
+            }
+
+            // Clear the search input
+            setSearchValue('');
+        }
+    };
+
+    // Handle input changes
+    const inputHandler = (event) => {
+        setSearchValue(event.target.value);
+    };
+
+    return (
+        <View style={styles.bannerContainer}>
+            {/* Logo with navigation handler */}
+            <TouchableOpacity style={styles.cardImageHolder} onPress={navigationHandler}>
+                <Image 
+                    source={require('../images/FeastFinder-solid-circle.png')}
+                    style={styles.cardImage} 
+                />
+            </TouchableOpacity>
+
+            {/* Search input */}
+            <input
+                type="text"
+                style={styles.search}
+                onChange={inputHandler}
+                value={searchValue}
+                placeholder="Search..."
+                onKeyDown={keyHandler}  // Trigger search on 'Enter' press
+            />
+        </View>
+    );
+}
+
+// Updated styles
+const styles = StyleSheet.create({
+    bannerContainer: {
+        flexDirection: 'row',  // Places logo and search input in a row
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',  // Ensure it spans the full width
+        padding: 10,
+        backgroundColor: '#555555',
+    },
+    cardImageHolder: {
+        // Logo container
+        height: 90,
+        width: 120,
+        marginRight: 20,  // Space between logo and search bar
+    },
+    cardImage: {
+        height: '100%',
+        width: '100%',
+    },
+    search: {
+        flexGrow: 1,  // Makes the search input take up the remaining space
+        height: 60,
+        paddingLeft: 20,  // Correct way to add left padding
+        paddingRight: 20,  // Correct way to add right padding
+        borderWidth: 1,
+        borderColor: '#ccc',  // Border color
+        borderRadius: 10,
+        fontSize: 18,  // Text size
+    },
+});
