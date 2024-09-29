@@ -99,8 +99,8 @@ export default function SearchCards() {
                 style={styles.card}
                 >
                     <Image 
-                        source={require('../images/—Pngtree—store icon_4835876.png')}
-                        style={styles.cardImage}
+                    source={require('../images/—Pngtree—store icon_4835876.png')}
+                    style={styles.cardImage}
                     />
                     <View
                     style={styles.cardContent}
@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
         height: 300,
         paddingBottom: 1,
         paddingRight: 1,
+        padding:1,
         borderRadius: 11,
         margin: 8,
         elevation: 5,

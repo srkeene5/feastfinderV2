@@ -17,37 +17,61 @@ export default function RepBPage() {
 
   const [reportTextValue, setRepValue] = React.useState('')
   const [emailValue, setEmail] = React.useState('')
-  const [severity, setSeverity] = React.useState('Minor')
-  const [bugType, setBugType] = React.useState('Usability')
+  const [severity, setSeverity] = React.useState('select')
+  const [bugType, setBugType] = React.useState('select')
   const [noTextPop, setNoTextPop] = React.useState(false)
   const [sentPop, setSentPop] = React.useState(false)
   const [invalidEmail, setInvalidEmail] = React.useState(false)
   const [emailFailure, setEmailFailure] = React.useState(false)
+  const [noSeverity, setNoSeverity] = React.useState(false)
+  const [noType, setNoType] = React.useState(false)
 
-  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+\.(com|net|org|gov)$");
+  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov)$");
+
+  const resetAll = () => {
+    setRepValue('');
+    setEmail('');
+    setSeverity('select');
+    setBugType('select');
+    setNoTextPop(false);
+    setSentPop(false);
+    setInvalidEmail(false);
+    setEmailFailure(false);
+    setNoSeverity(false);
+    setNoType(false);
+  }
 
   const subButtonPress = async () => {
     if (reportTextValue !== '') {
-      if (emailValue !== '') {
-        if (!validEmail.test(emailValue)) {
-          console.log('invalidEmail: ' + emailValue);
-          setInvalidEmail(true);
-          return;
+      if (severity !== 'select') {
+        if (bugType !== 'select') {
+          if (emailValue !== '') {
+            if (!validEmail.test(emailValue)) {
+              console.log('invalidEmail: ' + emailValue);
+              setInvalidEmail(true);
+              return;
+            }
+          }
+          try{
+            let subject = severity + bugType + " Bug Report: " + uid
+            let body = severity + bugType + " Bug Report: " + reportTextValue
+            console.log(uid + "\n" + subject + "\n" + body);
+            sendEmail(body, subject, uid);
+            console.log('Success!', 'Thank you for your feedback!');
+            setSentPop(true);
+            resetAll();
+          } catch (err) {
+            console.log(err);
+            console.log('Oops!', 'Something went wrong..');
+            setEmailFailure(true);
+          }
+        }
+        else {
+          setNoType(true);
         }
       }
-      try{
-        let subject = severity + bugType + " Bug Report: " + uid
-        let body = severity + bugType + " Bug Report: " + reportTextValue
-        console.log(uid + "\n" + subject + "\n" + body);
-        sendEmail(body, subject, uid);
-        console.log('Success!', 'Thank you for your feedback!');
-        setSentPop(true);
-        //setRepValue('');
-        //setEmail('');
-      } catch (err) {
-        console.log(err);
-        console.log('Oops!', 'Something went wrong..');
-        setEmailFailure(true);
+      else {
+        setNoSeverity(true);
       }
     }
     else {
@@ -99,6 +123,7 @@ export default function RepBPage() {
               onChange={(event)=>{setSeverity(event.target.value)}}
               style={styles.dropdownForm}
               >
+                <option value="select">Select Severity...</option>
                 <option value="Minor">Minor</option>
                 <option value="Moderate">Moderate</option>
                 <option value="Major">Major</option>
@@ -116,6 +141,7 @@ export default function RepBPage() {
               onChange={(event)=>{setBugType(event.target.value)}}
               style={styles.dropdownForm}
               >
+                <option value="select">Select Type...</option>
                 <option value="Usability">Usability</option>
                 <option value="Vulnerability">Vulnerability</option>
                 <option value="Financial">Financial Security</option>
@@ -251,7 +277,9 @@ export default function RepBPage() {
           >
             {"Report failed to send.\n"
             +"Check internet connection.\n"
-            +"Otherwise, it may be a server issue.\n"
+            +"Otherwise, it may be a server issue.\n\n"
+            +"You can reach us at:\n"
+            +"   FeastFinderDev@gmail.com\n\n"
             +"We appologize for the inconvenience"}
           </Text>
         </View>
@@ -260,6 +288,77 @@ export default function RepBPage() {
         >
           <TouchableOpacity
           onPress={()=>{setEmailFailure(false)}}
+          style={styles.popupButton}
+          >
+            <Text
+            style={styles.buttonText}
+            >
+              Close
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Popup>
+
+      <Popup 
+      open={noSeverity} 
+      onClose={()=>setNoSeverity(false)}
+      contentStyle={styles.popup}
+      >
+        <View>
+          <Text
+          style={styles.errorText}
+          >
+            Error: 
+          </Text>
+        </View>
+        <View>
+          <Text
+          style={styles.popupText}
+          >
+            Select Report Severity.
+          </Text>
+        </View>
+        <View
+        style={styles.buttonContainer}
+        >
+          <TouchableOpacity
+          onPress={()=>{setNoSeverity(false)}}
+          style={styles.popupButton}
+          >
+            <Text
+            style={styles.buttonText}
+            >
+              Close
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Popup>
+
+      <Popup 
+      open={noType
+      } 
+      onClose={()=>setNoType(false)}
+      contentStyle={styles.popup}
+      >
+        <View>
+          <Text
+          style={styles.errorText}
+          >
+            Error: 
+          </Text>
+        </View>
+        <View>
+          <Text
+          style={styles.popupText}
+          >
+            Select Report Type.
+          </Text>
+        </View>
+        <View
+        style={styles.buttonContainer}
+        >
+          <TouchableOpacity
+          onPress={()=>{setNoType(false)}}
           style={styles.popupButton}
           >
             <Text

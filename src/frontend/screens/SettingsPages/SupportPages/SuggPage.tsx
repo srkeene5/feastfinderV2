@@ -213,7 +213,9 @@ export default function SuggPage() {
           >
             {"Suggestion failed to send.\n"
             +"Check internet connection.\n"
-            +"Otherwise, it may be a server issue.\n"
+            +"Otherwise, it may be a server issue.\n\n"
+            +"You can reach us at:\n"
+            +"   FeastFinderDev@gmail.com\n\n"
             +"We appologize for the inconvenience"}
           </Text>
         </View>
