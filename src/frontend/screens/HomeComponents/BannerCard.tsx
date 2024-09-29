@@ -13,9 +13,15 @@ import {
 import { RootStackParamList } from "../../App.tsx";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function BannerCard() {
+    const navigate = useNavigate();
+
+    const goToSignup = (id, name) => {
+        navigate('/account/signup', { state: { userId: 123, name: 'user' } });  // Replaces navigation.navigate("Profile")
+    };
     const [text, onChangeText] = React.useState('')
 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
@@ -27,10 +33,7 @@ export default function BannerCard() {
             >
                 <TouchableOpacity 
                 style={styles.button}
-                onPress={() => navigation.navigate(
-                    "SettingsNav", 
-                    {uid: 86}
-                )}
+                onPress={() => {goToSignup('123', 'user')}}
                 >
                     <Image 
                     source={require('../images/FeastFinder-solid-circle.png')}

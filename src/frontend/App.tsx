@@ -12,6 +12,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Main from './screens/HomeComponents/Main.tsx'
 import Example from './screens/UserComponents/Example.tsx'
 import Login from './screens/UserComponents/Login.tsx'
+import SignUp from './screens/UserComponents/SignUp.tsx'
 
 export type RootStackParamList = {
   Home: undefined;
@@ -28,7 +29,7 @@ function App(): JSX.Element {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />}/>
+        <Route path="/" element={<SignUp />}/>
         <Route path="/account/login" element={<Login />} />
         <Route path="/account/signup" element={<Example />}/>
       </Routes>
