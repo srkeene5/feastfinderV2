@@ -1,18 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import React from 'react'
 
 // Components
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 
 // navigation
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../App.tsx";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocation } from 'react-router-dom';
 
-type RestProps = NativeStackScreenProps<RootStackParamList, 'RestPage'>
-
-export default function RestPage({route}: RestProps) {
-    const {rid, rName, color} = route.params
+export default function RestPage() {
+  const location = useLocation();
+  const {rid, rName, color, service} = location.state;
 
   return (
     <SafeAreaView>
@@ -20,6 +17,11 @@ export default function RestPage({route}: RestProps) {
       <View
       style={[styles.account, {backgroundColor: color}]}
       >
+        <Text
+        style={styles.headingText}
+        >
+          Service: {service}
+        </Text>
         <Text
         style={styles.headingText}
         >
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   account: {
-    alignItems: 'center',
-    height: 75,
+    //alignItems: 'center',
+    height: 110,
   }
 })

@@ -10,7 +10,7 @@ import {
 
 
 // navigation
-import { RootStackParamList } from "../../App.tsx";
+import { RootStackParamList } from "./Main.tsx";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigate } from 'react-router-dom';

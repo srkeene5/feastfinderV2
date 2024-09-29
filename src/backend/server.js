@@ -2,11 +2,18 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import User from './models/User.js';  
+import restaurantData from './restaurantData.js'; 
+import Restaurant from './models/Restaurant.js';
+import cors from 'cors';
 import authRoutes from './routes/auth.js'; 
+import restaurantAuthRoutes from './routes/restaurantAuth.js'; // Import your restaurant routes
+
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors());  // Enable CORS for all routes
 
 app.use(express.json());
 
@@ -16,7 +23,8 @@ console.log(process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
-    populateUsers(); 
+    populateUsers();
+    populateRestaurants(); // Call the function to populate restaurants 
   })
   .catch((err) => console.error('MongoDB connection error:', err));
 
@@ -46,9 +54,29 @@ const populateUsers = async () => {
   }
 };
 
+// Function to populate the database with restaurant data
+const populateRestaurants = async () => {
+  try {
+    // Check if any restaurants already exist to avoid duplication
+    const restaurantCount = await Restaurant.countDocuments();
+    if (restaurantCount > 0) {
+      console.log('Restaurants already exist in the database.');
+      return;
+    }
+
+    // Insert restaurant data into the database
+    await Restaurant.insertMany(restaurantData);
+    console.log('Restaurant data has been added to the database.');
+  } catch (err) {
+    console.error('Error populating restaurants:', err);
+  }
+};
+
 // Routes
 app.use('/api/auth', authRoutes); 
 
+// Use the restaurant routes
+app.use('/api', restaurantAuthRoutes);
 app.get('/', (req, res) => {
   res.send('API is running...');
 });

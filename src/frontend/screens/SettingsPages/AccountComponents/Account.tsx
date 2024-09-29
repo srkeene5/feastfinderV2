@@ -1,18 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import React from 'react'
 
 // Components
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 
 // navigation
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../../App.tsx";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocation } from 'react-router-dom';
 
-type AccountProps = NativeStackScreenProps<RootStackParamList, 'AccountPage'>
 
-export default function AccountPage({route}: AccountProps) {
-  const {uid} = route.params
+export default function AccountPage() {
+  const location = useLocation();
+  const {uid} = location.state;
 
   return (
     <SafeAreaView>

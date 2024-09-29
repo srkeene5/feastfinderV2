@@ -1,37 +1,31 @@
 import React from 'react'
-import {View, SafeAreaView} from 'react-native'
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-//Navigation
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
-
-
 //screens
-import Main from './screens/HomeComponents/Main.tsx'
 import Example from './screens/UserComponents/Example.tsx'
 import Login from './screens/UserComponents/Login.tsx'
-import SignUp from './screens/UserComponents/SignUp.tsx'
-
-export type RootStackParamList = {
-  Home: undefined;
-  RestPage: {rid: number, rName: string, color: string}
-  SettingsNav: {uid: number}
-  AccountPage: {uid: number}
-  SuggPage: {uid: number}
-  RepBPage: {uid: number}
-}
-
-const Stack = createNativeStackNavigator<RootStackParamList>()
+import RestPage from './screens/RestPageComponents/RestPage.tsx';
+import SettingsNav from './screens/SettingsPages/SettingsNavComponents/SettingsNav.tsx';
+import Home from './screens/HomeComponents/Home.tsx';
+import SuggPage from "./screens/SettingsPages/SupportPages/SuggPage.tsx";
+import RepBugPage from "./screens/SettingsPages/SupportPages/RepBugPage.tsx";
+import AccountPage from "./screens/SettingsPages/AccountComponents/Account.tsx";
+import SearchPage from './screens/SearchComponents/SearchPage.tsx';
 
 function App(): JSX.Element {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<SignUp />}/>
+        <Route path="/" element={<Home />}/>
         <Route path="/account/login" element={<Login />} />
         <Route path="/account/signup" element={<Example />}/>
+        <Route path="/Home" element={<Home />}/>
+        <Route path="/Restaurant" element={<RestPage />}/>
+        <Route path="/SettingsNavigation" element={<SettingsNav />}/>
+        <Route path="/AccountPage" element={<AccountPage />}/>
+        <Route path="/SuggestionPage" element={<SuggPage />}/>
+        <Route path="/ReportBugPage" element={<RepBugPage />}/>
+        <Route path="/Search" element={<SearchPage />}/>
       </Routes>
     </Router>
     
