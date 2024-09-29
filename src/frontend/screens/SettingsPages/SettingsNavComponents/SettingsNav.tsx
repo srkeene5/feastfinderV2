@@ -3,69 +3,55 @@ import React from 'react'
 
 // Components
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-// navigation
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../../App.tsx";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-type SettingsProps = NativeStackScreenProps<RootStackParamList, 'SettingsNav'>
-
-export default function SettingsNav({route}: SettingsProps) {
-  const {uid} = route.params
-
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+export default function SettingsNav() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const {uid} = location.state;
 
   return (
-    <SafeAreaView>
-      <View>
-        <CoreBanner/>
-        <Text
-        style={styles.headingText}
-        >
-          NavigationPage: {uid}
-        </Text>
-      </View>
-      <View>
-        <TouchableOpacity
-        style={styles.card}
-        onPress={() => navigation.navigate(
-        "AccountPage", 
-        {uid: uid}
-        )}
-        >
-          <Text>
-            Account
+    <SafeAreaProvider>
+      <SafeAreaView>
+        <View>
+          <CoreBanner/>
+          <Text
+          style={styles.headingText}
+          >
+            NavigationPage: {uid}
           </Text>
-        </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+          style={styles.card}
+          onPress={() => {navigate('/AccountPage', {state: {uid: 86}})}}
+          >
+            <Text>
+              Account
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-        style={styles.card}
-        onPress={() => navigation.navigate(
-        "RepBPage", 
-        {uid: uid}
-        )}
-        >
-          <Text>
-            Report Bugs
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-        style={styles.card}
-        onPress={() => navigation.navigate(
-        "SuggPage", 
-        {uid: uid}
-        )}
-        >
-          <Text>
-            Suggestions
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+          <TouchableOpacity
+          style={styles.card}
+          onPress={() => {navigate('/ReportBugPage', {state: {uid: 86}})}}
+          >
+            <Text>
+              Report Bugs
+            </Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+          style={styles.card}
+          onPress={() => {navigate('/SuggestionPage', {state: {uid: 86}})}}
+          >
+            <Text>
+              Suggestions
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 
