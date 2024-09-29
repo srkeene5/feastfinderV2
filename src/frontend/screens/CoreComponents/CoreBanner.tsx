@@ -76,7 +76,7 @@ export default function CoreBanner() {
             navigate('/SettingsNavigation', {state: {uid: 86}});
         }
         else {
-            navigate(-1);
+            navigate(-1); 
         }
     }
 
