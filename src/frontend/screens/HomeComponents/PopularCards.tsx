@@ -16,7 +16,7 @@ import {
 
 /*
 export default function PopularCards() {
-    const restaurants = [
+    const testingRestaurants = [
         {
             rid: 1,
             name: 'rest1-red',
@@ -80,12 +80,28 @@ export default function PopularCards() {
     ];
 
     const navigate = useNavigate();
-    const location = useLocation();
+    //const location = useLocation();
 
-    function handlePop(rid: number, name: string, color: string){
-        //TODO: ajax searchValue to backend
-        //TODO: Recieve Search Result
-        navigate('/Search', {state: {search: name, restaurants: restaurants}})
+    const handlePop = async (rid: number, name: string, color: string) => {
+        console.log("Searching for: " + name);
+        try {
+            // Send the request to your backend API
+            const response = await fetch('http://localhost:5001/api/searchRestaurant?name=' + name);
+                
+            // Check if the response is OK and parse JSON
+            if (response.ok) {
+                const restaurants = await response.json();
+                // Log the entire restaurant object(s)
+                console.log('Restaurants Found:', restaurants);
+                navigate('/Search', {state: {search: name, restaurants: restaurants, errorText: ''}})
+            } else {
+                console.log('No restaurants found');
+                navigate('/Search', {state: {search: name, restaurants: undefined, errorText: 'No restaurants found'}})
+            }
+        } catch (error) {
+            console.error('Error fetching restaurant:', error);
+            navigate('/Search', {state: {search: name, restaurants: undefined, errorText: 'Error fetching restaurant:'}})
+        }
     }
 
     const restItem = (item: { rid: number; name: string; color: string; }) => {
@@ -93,7 +109,6 @@ export default function PopularCards() {
             <TouchableOpacity
             key={item.rid}
             style={[styles.card, {backgroundColor: item.color}]}
-            //navigate('/settingsNavigation', {state: {uid: 86}})
             onPress={() => {handlePop(item.rid, item.name, item.color)}}
             >
                 <Text>
@@ -116,7 +131,7 @@ export default function PopularCards() {
             style={styles.container}
             horizontal={true}
             >
-                {restaurants.map((item) => {
+                {testingRestaurants.map((item) => {
                     return restItem(item);
                 })}
             </ScrollView>
