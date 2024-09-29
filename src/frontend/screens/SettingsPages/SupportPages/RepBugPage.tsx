@@ -26,7 +26,7 @@ export default function RepBPage() {
   const [noSeverity, setNoSeverity] = React.useState(false)
   const [noType, setNoType] = React.useState(false)
 
-  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov)$");
+  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov|edu)$");
 
   const resetAll = () => {
     setRepValue('');
