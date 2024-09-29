@@ -22,7 +22,7 @@ export default function SuggPage() {
   const [invalidEmail, setInvalidEmail] = React.useState(false)
   const [emailFailure, setEmailFailure] = React.useState(false)
 
-  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov)$");
+  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov|edu)$");
 
   const subButtonPress = async () => {
     if (suggTextValue !== '') {
