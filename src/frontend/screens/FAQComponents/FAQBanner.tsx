@@ -1,42 +1,43 @@
 import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
-import { Link } from "react-router-dom";
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useNavigate } from 'react-router-dom';
 
-const Banner = () => {
-  return (
-    <View style={styles.bannerContainer}>
-      <Link to="/settings" style={styles.button}> {/* This links to the SettingsNav */}
-        <Image
-          source={require('../images/FeastFinder-solid-circle.png')} // Ensure the image path is correct
-          style={styles.logo}
-        />
-      </Link>
-      <Text style={styles.title}>FeastFinder</Text>
-    </View>
-  );
-};
+export default function BannerCard() {
+    const navigate = useNavigate();
+
+    return (
+        <View style={styles.container}>
+            <TouchableOpacity 
+                style={styles.logoContainer}
+                onPress={() => navigate('/SettingsNavigation', { state: { uid: 86 } })}
+            >
+                <Image 
+                    source={require('../images/FeastFinder-solid-circle.png')}
+                    style={styles.cardImage}
+                />
+            </TouchableOpacity>
+        </View>
+    );
+}
 
 const styles = StyleSheet.create({
-  bannerContainer: {
-    width: '100%',
-    backgroundColor: '#555555', // Dark background for the banner
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-  },
-  button: {
-    flex: 1,
-  },
-  logo: {
-    width: 100, // Adjust size as needed
-    height: 75, // Adjust size as needed
-    marginRight: 15,
-  },
-  title: {
-    fontSize: 24,
-    color: '#fff', // White text for contrast
-    fontWeight: 'bold',
-  },
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        // Aligns the entire banner at the top
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        backgroundColor: '#555555',
+    },
+    logoContainer: {
+        flex: 1, // Ensure the logo container can grow
+    },
+    cardImage: {
+        height: 90,
+        width: 120,
+        margin: 5,
+    },
 });
-
-export default Banner;

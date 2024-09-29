@@ -11,6 +11,7 @@ import SuggPage from "./screens/SettingsPages/SupportPages/SuggPage.tsx";
 import RepBugPage from "./screens/SettingsPages/SupportPages/RepBugPage.tsx";
 import AccountPage from "./screens/SettingsPages/AccountComponents/Account.tsx";
 import SearchPage from './screens/SearchComponents/SearchPage.tsx';
+import FAQPage from './screens/FAQComponents/FAQPage.tsx'
 
 function App(): JSX.Element {
   return (
@@ -26,6 +27,7 @@ function App(): JSX.Element {
         <Route path="/SuggestionPage" element={<SuggPage />}/>
         <Route path="/ReportBugPage" element={<RepBugPage />}/>
         <Route path="/Search" element={<SearchPage />}/>
+        <Route path="/FAQPage" element={<FAQPage />}/>
       </Routes>
     </Router>
     

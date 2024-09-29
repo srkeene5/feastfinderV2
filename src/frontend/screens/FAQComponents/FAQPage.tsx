@@ -1,5 +1,5 @@
 import React from 'react';
-import Banner from './FAQBanner.tsx';  // Import the Banner component
+import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 
 function FAQ() {
   const faqList = [
@@ -27,8 +27,8 @@ function FAQ() {
 
   return (
     <div className="min-h-full flex flex-col bg-white">
-      {/* Include the Banner component */}
-      <Banner />
+      {/* Include the CoreBanner component */}
+      <CoreBanner />
 
       <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-2xl">
