@@ -13,12 +13,13 @@ import AccountPage from "./screens/SettingsPages/AccountComponents/Account.tsx";
 import SearchPage from './screens/SearchComponents/SearchPage.tsx';
 import FAQPage from './screens/FAQComponents/FAQPage.tsx';
 import Signup from './screens/UserComponents/SignUp.tsx';
+import ProfileManagement from './screens/ProfileManagementComponents/ProfileMgmtPage.tsx';
 
 function App(): JSX.Element {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />}/>
+        <Route path="/" element={<ProfileManagement />}/>
         <Route path="/account/login" element={<Login />} />
         <Route path="/account/signup" element={<Signup />}/>
         <Route path="/Home" element={<Home />}/>
