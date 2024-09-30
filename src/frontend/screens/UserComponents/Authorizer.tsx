@@ -13,6 +13,7 @@ export const AuthContextProvider = ({
     const [user, setUser] = useState<any>(null) //use this to verify logged in
     const [userInfo, setUserInfo] = useState<any>({}) //use this for additional info
     const [loading, setLoading] = useState(true) //use this to ensure this useEffect runs first
+    
     // console.log(userInfo)
 
 
@@ -24,8 +25,27 @@ export const AuthContextProvider = ({
       }
       
       setLoading(false) //to prevent redirection too early
+      console.log("in Authorizer loading false")
       //set loading will rerender all components it AuthContext wraps
-    }, [])
+    }, []);
+
+    useEffect(() => {
+      const handleStorageChange = () => {
+        console.log("Handling storage change")
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          setUser(null);
+        }
+      };
+  
+      window.addEventListener('storage', handleStorageChange);
+  
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+      };
+    }, []);
 
     const setUserToken = (userToken: string, email : string) => {
       const user = {
@@ -34,7 +54,6 @@ export const AuthContextProvider = ({
       }
       setUser(user)
       localStorage.setItem('user', JSON.stringify(user))
-      console.log("in set userToken", localStorage.getItem('user'))
     }
 
     const logout = async () => {
@@ -71,7 +90,7 @@ export const AuthContextProvider = ({
         
     }
     return (
-        <AuthContext.Provider value={{ user, setUserToken, logout, userInfo}}>
+        <AuthContext.Provider value={{ user, setUserToken, logout, userInfo, loading}}>
           {loading ? null : children}
         </AuthContext.Provider>
       )
