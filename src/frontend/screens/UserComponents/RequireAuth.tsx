@@ -1,16 +1,17 @@
 // useRequireAuth.ts
 import { useEffect } from 'react';
 import { useAuth } from './Authorizer.tsx'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const useRequireAuth = () => {
 
   const { user, loading } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading) {
-      if (!user) {
+      if (!user && location.pathname !== '/account/signup') { //don't redirect signup
         navigate('/account/login'); // Redirect to login if user is not logged in
       }
     }

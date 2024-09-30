@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 // Components
 import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
+import BottomBar from "../CoreComponents/BottomBar.tsx";
 
 export default function Home() {
 
@@ -32,7 +33,9 @@ export default function Home() {
       <ScrollView>
         <CoreBanner />
         <PopularCards />
+        
       </ScrollView>
+      <BottomBar />
     </SafeAreaView>
   )
 }

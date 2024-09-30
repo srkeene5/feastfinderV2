@@ -38,9 +38,37 @@ export const AuthContextProvider = ({
     }
 
     const logout = async () => {
-        setUser(null)
-        setUserInfo(null)
-        //call logout api?
+      const token = user.token
+      try {
+        const res = await fetch('http://localhost:5001/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : token
+          },
+          body: JSON.stringify({
+            'Token' : token
+          })
+        });
+  
+        if (res.ok) {
+          const data = await res.json();
+          console.log('User logged out:', data);
+          // Store token or redirect user
+        } else {
+          const errorData = await res.json();
+          console.error('Error during logout:', errorData);
+          
+        }
+      } catch (error) {
+          console.error('Network error:', error);
+      }
+      setUser(null)
+      setUserInfo(null)
+      localStorage.removeItem('user');
+      //call logout api?
+
+        
     }
     return (
         <AuthContext.Provider value={{ user, setUserToken, logout, userInfo}}>
