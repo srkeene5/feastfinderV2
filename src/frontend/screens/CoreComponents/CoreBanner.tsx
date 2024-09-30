@@ -3,8 +3,9 @@ import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function CoreBanner() {
-    
+
     const [searchValue, setSearchTerm] = React.useState('')
+    const [deliveryService, setDeliveryService] = React.useState('') // New state for delivery service
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -14,43 +15,42 @@ export default function CoreBanner() {
             navigate('/SettingsNavigation', {state: {uid: 86}});
         }
         else {
-            navigate(-1);
+            navigate('/Home');
         }
     }
 
-
-    // Send search query to the backend and log the full restaurant objects
+    // Send search query and delivery service to the backend
     const keyHandler = async (event) => {
         if (event.key === 'Enter' && searchValue !== '') {
-            console.log("Searching for: " + searchValue);
+            console.log("Searching for: " + searchValue + " with service: " + deliveryService);
 
             try {
-                // Send the request to your backend API
-                const response = await fetch('http://localhost:5001/api/searchRestaurant?name=' + searchValue);
+                // Send the request to your backend API with the selected delivery service
+                const response = await fetch(`http://localhost:5001/api/searchRestaurant?name=${searchValue}&service=${deliveryService}`);
                 
-                // Check if the response is OK and parse JSON
                 if (response.ok) {
                     const restaurants = await response.json();
-                    // Log the entire restaurant object(s)
                     console.log('Restaurants Found:', restaurants);
-                    navigate('/Search', {state: {search: searchValue, restaurants: restaurants, errorText: ''}})
+                    navigate('/Search', {state: {search: searchValue, restaurants: restaurants, deliveryService}});
                 } else {
                     console.log('No restaurants found');
-                    navigate('/Search', {state: {search: searchValue, restaurants: undefined, errorText: 'No restaurants found'}})
-
+                    navigate('/Search', {state: {search: searchValue, restaurants: undefined, deliveryService, errorText: 'No restaurants found'}})
                 }
             } catch (error) {
                 console.error('Error fetching restaurant:', error);
-                navigate('/Search', {state: {search: searchValue, restaurants: undefined, errorText: 'Error fetching restaurant:'}})
+                navigate('/Search', {state: {search: searchValue, restaurants: undefined, deliveryService, errorText: 'Error fetching restaurant:'}})
             }
 
-            // Clear the search input
             setSearchTerm('');
         }
     };
 
     const inputHandler = (event) => {
         setSearchTerm(event.target.value);
+    }
+
+    const deliveryServiceHandler = (event) => {
+        setDeliveryService(event.target.value);
     }
 
     return (
@@ -71,10 +71,21 @@ export default function CoreBanner() {
                 type='text'
                 style={styles.search}
                 onChange={inputHandler}
-                value = {searchValue}
+                value={searchValue}
                 placeholder='Search...'
                 onKeyDown={keyHandler}
                 />
+                {/* New dropdown for selecting delivery service */}
+                <select
+                style={styles.dropdown}
+                onChange={deliveryServiceHandler}
+                value={deliveryService}
+                >
+                    <option value=''>All Services</option>
+                    <option value='UberEats'>UberEats</option>
+                    <option value='Grubhub'>Grubhub</option>
+                    <option value='DoorDash'>DoorDash</option>
+                </select>
             </View>
         </View>
     )
@@ -95,22 +106,28 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
     },
+    dropdown: {
+        height: 60,
+        margin: 20,
+        marginLeft: 10,
+        borderWidth: 1,
+        borderRadius: 20,
+        padding: 10,
+        backgroundColor: '#ffffff'
+    },
     card: {
-        //banner covers top
         width: '100%',
         backgroundColor: '#555555',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     cardImageHolder: {
-        //ratio MUST be 3:4
         height: 90,
         width: 120,
         margin: 5,
-        borderRadius: 45,   
-        //backgroundColor: 'white'
+        borderRadius: 45,
     },
     cardImage: {
-        //ratio MUST be 3:4
         height: 90,
         width: 120,
     }
