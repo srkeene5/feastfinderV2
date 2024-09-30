@@ -7,7 +7,8 @@ import Restaurant from './models/Restaurant.js';
 import cors from 'cors';
 import authRoutes from './routes/auth.js'; 
 import restaurantAuthRoutes from './routes/restaurantAuth.js'; // Import your restaurant routes
-
+import addressRoutes from './routes/address.js';
+import preferencesRoutes from './routes/preferences.js'; // Import preferences routes
 
 dotenv.config();
 
@@ -74,7 +75,8 @@ const populateRestaurants = async () => {
 
 // Routes
 app.use('/api/auth', authRoutes); 
-
+app.use('/api/address', addressRoutes);
+app.use('/api/preferences', preferencesRoutes); // Preferences-related routes
 // Use the restaurant routes
 app.use('/api', restaurantAuthRoutes);
 app.get('/', (req, res) => {

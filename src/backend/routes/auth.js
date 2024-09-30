@@ -85,6 +85,8 @@ router.get('/protected', auth, async (req, res) => {
       }
     });
 
+
+/*
 router.put('/address', auth, async (req, res) => {
   const { street, city, state, postalCode, country } = req.body;
     
@@ -117,6 +119,7 @@ router.put('/address', auth, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+*/
 
 // Logout route
 router.post('/logout', auth, async (req, res) => {
