@@ -33,7 +33,7 @@ function APIButton(service: string, available: boolean, item, navigate) {
             style={styles.buttonDeactive}
             >
                 <Text
-                style={styles.buttonText}
+                style={styles.buttonTextDeactive}
                 >
                     {service}
                 </Text>
@@ -91,40 +91,50 @@ export default function SearchCards() {
         }
     ) => {
         return (
-            <View
-            key={item.restaurantID}
-            style={styles.card}
+            <SafeAreaView 
+            style={styles.containerNew}
             >
-                <Image 
+                <View
+                key={item.restaurantID}
+                style={styles.card}
+                >
+                    <Image 
                     source={require('../images/—Pngtree—store icon_4835876.png')}
                     style={styles.cardImage}
-                />
-                <View
-                style={styles.cardContent}
-                >
+                    />
                     <View
-                    style={styles.cardText}
+                    style={styles.cardContent}
                     >
-                        <Text
-                        style={styles.cardTitle}
+                        <View
+                        style={styles.cardText}
                         >
-                            {item.restaurantName}
-                        </Text>
-                        <Text
-                        style={styles.cardDist}
+                            <Text
+                            style={styles.restaurantName}
+                            >
+                                {item.restaurantName}
+                            </Text>
+                            <Text
+                            style={styles.cardDetails}
+                            >
+                                Distance: {item.distance} Miles
+                            </Text>
+                            <Text 
+                            style={styles.cardDetails}
+                            >
+                                Address: {item.restaurantAddress}
+                            </Text>
+                        </View>
+                        <View
+                        style={styles.buttonContent}
                         >
-                            Distance: {item.distance}
-                        </Text>
-                    </View>
-                    <View
-                    style={styles.buttonContent}
-                    >
-                        {APIButton("DoorDash", item.doordashAvailable, item, navigate)}
-                        {APIButton("GrubHub", item.grubhubAvailable, item, navigate)}
-                        {APIButton("UberEats", item.uberEatsAvailable, item, navigate)}
+                            {APIButton("DoorDash", item.doordashAvailable, item, navigate)}
+                            {APIButton("GrubHub", item.grubhubAvailable, item, navigate)}
+                            {APIButton("UberEats", item.uberEatsAvailable, item, navigate)}
+                        </View>
                     </View>
                 </View>
-            </View>
+            </SafeAreaView>
+            
         )
     }
 
@@ -156,9 +166,13 @@ const styles = StyleSheet.create({
     card: {
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        width: 600,
-        height: 200,
-        borderRadius: 15,
+        minWidth: 500,
+        width: '70%',
+        height: 300,
+        paddingBottom: 1,
+        paddingRight: 1,
+        padding:1,
+        borderRadius: 11,
         margin: 8,
         elevation: 5,
         shadowOffset: {
@@ -168,38 +182,40 @@ const styles = StyleSheet.create({
         shadowColor: '#333',
         shadowOpacity: .5,
         shadowRadius: 2,
-        backgroundColor: '#000000',
+        backgroundColor: '#888',
         flexDirection: 'row',
+        
     },
     cardImage: {
-        height: 190,
-        width: 190,
+        aspectRatio: 1/1.2,
+        height: '100%',
         borderBottomLeftRadius: 10,
         borderTopLeftRadius: 10,
-        marginTop: 5,
-        marginLeft:5,
     },
     cardContent: {
-        height: 190,
-        width: 400,
+        flex: 1,
+        height: '100%',
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
-        padding: 5,
-        marginTop: 5,
-        backgroundColor: 'white',
+        padding: 10,
+        backgroundColor: '#ff5555'
     },
     cardText: {
-        height: '50%',
+        height: '45%',
     },
-    cardTitle: {
-        fontSize: 20,
+    restaurantName: {
+        fontSize: 28,
         fontWeight: 'bold',
+        color: '#fff',
+        marginBottom: 10,
     },
-    cardDist: {
-        fontSize: 15,
+    cardDetails: {
+        fontSize: 18,
+        color: '#fff',
+        marginBottom: 6,
     },
     buttons: {
-        backgroundColor: '#ff0000',
+        backgroundColor: '#e74c3c',
         width: 100,
         height: 40,
         borderRadius: 20,
@@ -217,13 +233,21 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    buttonTextDeactive: {
+        color: '#444',
+        fontSize: 16,
         fontWeight: 'bold',
     },
     buttonContent: {
-        height: '50%',
+        height: '55%',
         alignItems: 'flex-end',
         justifyContent: 'space-evenly',
         flexDirection: 'row',
+        flexWrap: 'wrap',
     },
     errorPage: {
         width: '100%',
@@ -237,4 +261,10 @@ const styles = StyleSheet.create({
         margin: 10,
         color: 'red',
     },
+    //New
+    containerNew: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    }, 
 })
