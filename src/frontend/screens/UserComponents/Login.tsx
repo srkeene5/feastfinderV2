@@ -1,9 +1,26 @@
 import React, { useState } from "react";
+import { useAuth } from "./Authorizer.tsx";
+import { useNavigate } from 'react-router-dom';
+import CoreBanner from "../CoreComponents/CoreBanner.tsx";
+
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Internal Issue");
+  const {user, setUserToken, logout} = useAuth();
+
+  const navigate = useNavigate();
+
+  const goToFeed = () => {
+      navigate('/');  // Replaces navigation.navigate("Profile")
+  };
+
+  const example = async(e) => {
+    e.preventDefault();
+    setUserToken("emailToken", "email")
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,20 +41,27 @@ function Login() {
       if (res.ok) {
         const data = await res.json();
         console.log('User logged in:', data);
+        setUserToken(data.token, email);
+        console.log(user);
+        goToFeed()
         // Store token or redirect user
       } else {
         const errorData = await res.json();
         console.error('Error during login:', errorData);
         setIsError(true);  // Set error state on failure
+        setErrorMsg(errorData.msg);
       }
     } catch (error) {
       console.error('Network error:', error);
       setIsError(true);  // Handle network error
+      setErrorMsg("Network error")
     }
   };
 
   return (
+    
     <div>
+      <CoreBanner />
       <div className="flex min-h-full flex-col bg-white justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           {/* Replace with logo */}
@@ -105,7 +129,7 @@ function Login() {
 
               {isError && (
                 <div className="flex items-center">
-                  <p className="text-red-500">Error during login. Try again.</p>
+                  <p className="text-red-500">Error during login: {errorMsg}. Try again.</p>
                 </div>
               )}
 
