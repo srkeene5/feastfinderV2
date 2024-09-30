@@ -46,34 +46,39 @@ export default function SearchCards() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const {search, restaurants, errorText} = location.state;
+    const {search, restaurants = [], deliveryService, errorText} = location.state;
 
-    const restItems = () => {
-        if (restaurants !== undefined && restaurants.length !== 0) {
-            return(
-                <ScrollView
-                style={styles.container}
-                >
-                    {restaurants.map((item) => {
-                        return restItem(item);
-                    })}
-                </ScrollView>
-            )
-        } 
-        else {
-            return (
-                <View
-                style={styles.errorPage}
-                >
-                    <Text
-                    style={styles.errorMessage}
-                    >
-                        {errorText}
-                    </Text>
-                </View>
-            )
-        }
+    //api platform selection logic
+        // Check the availability of the restaurant based on the delivery service selected by the user
+        const filterBySelectedService = (restaurant) => {
+            if (deliveryService === 'UberEats') return restaurant.uberEatsAvailable;
+            if (deliveryService === 'Grubhub') return restaurant.grubhubAvailable;
+            if (deliveryService === 'DoorDash') return restaurant.doordashAvailable;
+            return true; // If no specific service is selected, return all restaurants
+        };
+    
+  // Filter restaurants based on the selected delivery service availability
+  const filteredRestaurants = restaurants.filter(filterBySelectedService);
+
+
+  const restItems = () => {
+    if (filteredRestaurants.length > 0) {
+        return (
+            <ScrollView style={styles.container}>
+                {filteredRestaurants.map((item) => restItem(item))}
+            </ScrollView>
+        );
+    } else {
+        return (
+            <View style={styles.errorPage}>
+                <Text style={styles.errorMessage}>
+                    {errorText || `No restaurants found for ${deliveryService || 'all services'}.`}
+                </Text>
+            </View>
+        );
     }
+};
+
 
     const restItem = (
         item: { 

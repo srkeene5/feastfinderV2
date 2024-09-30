@@ -31,14 +31,14 @@ export default function CoreBanner() {
                 if (response.ok) {
                     const restaurants = await response.json();
                     console.log('Restaurants Found:', restaurants);
-                    navigate('/Search', {state: {search: searchValue, restaurants: restaurants, errorText: ''}})
+                    navigate('/Search', {state: {search: searchValue, restaurants: restaurants, deliveryService}});
                 } else {
                     console.log('No restaurants found');
-                    navigate('/Search', {state: {search: searchValue, restaurants: undefined, errorText: 'No restaurants found'}})
+                    navigate('/Search', {state: {search: searchValue, restaurants: undefined, deliveryService, errorText: 'No restaurants found'}})
                 }
             } catch (error) {
                 console.error('Error fetching restaurant:', error);
-                navigate('/Search', {state: {search: searchValue, restaurants: undefined, errorText: 'Error fetching restaurant:'}})
+                navigate('/Search', {state: {search: searchValue, restaurants: undefined, deliveryService, errorText: 'Error fetching restaurant:'}})
             }
 
             setSearchTerm('');
