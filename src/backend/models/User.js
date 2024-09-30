@@ -1,5 +1,13 @@
 import mongoose from 'mongoose';
 
+const AddressSchema = new mongoose.Schema({
+  street: { type: String },
+  city: { type: String },
+  state: { type: String },
+  postalCode: { type: String },
+  country: { type: String }
+});
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -14,12 +22,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  address: {
-    street: { type: String },
-    city: { type: String },
-    state: { type: String },
-    postalCode: { type: String },
-    country: { type: String }
+  addresses: [AddressSchema],
+  dietaryPreferences: {
+    type: [String], 
+    default: []     
   }
 });
 
