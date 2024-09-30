@@ -84,7 +84,7 @@ router.get('/protected', auth, async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
       }
     });
-
+/*
 router.put('/address', auth, async (req, res) => {
   const { street, city, state, postalCode, country } = req.body;
     
@@ -117,6 +117,7 @@ router.put('/address', auth, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+*/
 
 // Logout route
 router.post('/logout', auth, async (req, res) => {
@@ -138,4 +139,254 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
+/*
+router.delete('/address', auth, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      { $unset: { address: "" } }, // remove the 'address' field
+      { new: true } // return the updated document
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ msg: 'Address deleted successfully', user });
+  } catch (err) {
+    console.error('Error deleting address:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+router.get('/address', auth, async (req, res) => {
+  try {
+    // find the user by their ID and select only the 'address' field
+    const user = await User.findById(req.user).select('address');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    if (!user.address) {
+      return res.status(404).json({ msg: 'Address not found' });
+    }
+
+    res.json({ address: user.address });
+  } catch (err) {
+    console.error('Error fetching address:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+*/
+
+// puts user's uber's login and hashed password in database
+router.put('/uberlogin', auth, async (req, res) => {
+  const { uber_email, uber_password } = req.body;
+
+  if (!uber_email || !uber_password) {
+    return res.status(400).json({ msg: 'Please enter your UberEats email and password' });
+  }
+
+  try {
+    const uber_password_Hash = await bcrypt.hash(uber_password, 10);
+
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      {
+        uber_email,
+        uber_password_Hash,
+      },
+      { new: true } 
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ msg: 'Login successful', user });
+  } catch (err) {
+    console.error('Error logging in:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// returns "uber_stored": true if user's uber login credentials is in database
+// returns "uber_stored": false if user's uber login credentials is not in the database
+router.get('/uberlogin/status', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user).select('uber_email uber_password_Hash');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    const uber_stored = !!(user.uber_email && user.uber_password_Hash);
+
+    res.json({ uber_stored });
+  } catch (err) {
+    console.error('Error checking uber login status:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// removes user's uber login credentials from the database
+router.delete('/uberlogin', auth, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      { $unset: { uber_email: "", uber_password_Hash: "" } },
+      { new: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ msg: 'UberEats login deleted successfully', user });
+  } catch (err) {
+    console.error('Error deleting UberEats login:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// puts user's doordash login and hashed password in database
+router.put('/doordashlogin', auth, async (req, res) => {
+  const { doordash_email, doordash_password } = req.body;
+
+  if (!doordash_email || !doordash_password) {
+    return res.status(400).json({ msg: 'Please enter your DoorDash email and password' });
+  }
+
+  try {
+    const doordash_password_Hash = await bcrypt.hash(doordash_password, 10);
+
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      {
+        doordash_email,
+        doordash_password_Hash,
+      },
+      { new: true } 
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ msg: 'Login successful', user });
+  } catch (err) {
+    console.error('Error logging in:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// returns "doordash_stored": true if user's doordash login credentials is in database
+// returns "doordash_stored": false if user's doordash login credentials is not in the database
+router.get('/doordashlogin/status', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user).select('doordash_email doordash_password_Hash');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    const doordash_stored = !!(user.doordash_email && user.doordash_password_Hash);
+
+    res.json({ doordash_stored });
+  } catch (err) {
+    console.error('Error checking doordash login status:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// removes user's Doordash login credentials from the database
+router.delete('/doordashlogin', auth, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      { $unset: { doordash_email: "", doordash_password_Hash: "" } },
+      { new: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ msg: 'DoorDash login deleted successfully', user });
+  } catch (err) {
+    console.error('Error deleting DoorDash login:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// puts user's grubhub login and hashed password in database
+router.put('/grubhublogin', auth, async (req, res) => {
+  const { grubhub_email, grubhub_password } = req.body;
+
+  if (!grubhub_email || !grubhub_password) {
+    return res.status(400).json({ msg: 'Please enter your GrubHub email and password' });
+  }
+
+  try {
+    const grubhub_password_Hash = await bcrypt.hash(grubhub_password, 10);
+
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      {
+        grubhub_email,
+        grubhub_password_Hash,
+      },
+      { new: true } 
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ msg: 'Login successful', user });
+  } catch (err) {
+    console.error('Error logging in:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// returns "grubhub_stored": true if user's grubhub login credentials is in database
+// returns "grubhub_stored": false if user's grubhub login credentials is not in the database
+router.get('/grubhublogin/status', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user).select('grubhub_email grubhub_password_Hash');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    const grubhub_stored = !!(user.grubhub_email && user.grubhub_password_Hash);
+
+    res.json({ grubhub_stored });
+  } catch (err) {
+    console.error('Error checking grubhub login status:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// removes user's GrubHub login credentials from the database
+router.delete('/grubhublogin', auth, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      { $unset: { grubhub_email: "", grubhub_password_Hash: "" } },
+      { new: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ msg: 'GrubHub login deleted successfully', user });
+  } catch (err) {
+    console.error('Error deleting GrubHub login:', err.message);
+    res.status(500).send('Server error');
+  }
+});
 export default router;

@@ -20,7 +20,25 @@ const UserSchema = new mongoose.Schema({
     state: { type: String },
     postalCode: { type: String },
     country: { type: String }
-  }
+  },
+  uber_email: {
+    type: String,
+  },
+  uber_password_Hash: {
+    type: String,
+  },
+  doordash_email: {
+    type: String,
+  },
+  doordash_password_Hash: {
+    type: String,
+  },
+  grubhub_email: {
+    type: String,
+  },
+  grubhub_password_Hash: {
+    type: String,
+  },
 });
 
 const User = mongoose.model('User', UserSchema);
