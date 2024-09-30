@@ -22,7 +22,7 @@ export default function SuggPage() {
   const [invalidEmail, setInvalidEmail] = React.useState(false)
   const [emailFailure, setEmailFailure] = React.useState(false)
 
-  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+\.(com|net|org|gov)$");
+  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov|edu)$");
 
   const subButtonPress = async () => {
     if (suggTextValue !== '') {
@@ -213,7 +213,9 @@ export default function SuggPage() {
           >
             {"Suggestion failed to send.\n"
             +"Check internet connection.\n"
-            +"Otherwise, it may be a server issue.\n"
+            +"Otherwise, it may be a server issue.\n\n"
+            +"You can reach us at:\n"
+            +"   FeastFinderDev@gmail.com\n\n"
             +"We appologize for the inconvenience"}
           </Text>
         </View>

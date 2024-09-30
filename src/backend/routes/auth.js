@@ -84,6 +84,7 @@ router.get('/protected', auth, async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
       }
     });
+
 /*
 router.put('/address', auth, async (req, res) => {
   const { street, city, state, postalCode, country } = req.body;

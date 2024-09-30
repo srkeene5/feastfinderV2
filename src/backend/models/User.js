@@ -1,5 +1,14 @@
 import mongoose from 'mongoose';
 
+const AddressSchema = new mongoose.Schema({
+  street: { type: String },
+  city: { type: String },
+  state: { type: String },
+  postalCode: { type: String },
+  country: { type: String },
+  lastUsed: { type: Date, default: null }
+});
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -14,6 +23,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+
+  /*
   address: {
     street: { type: String },
     city: { type: String },
@@ -21,6 +32,7 @@ const UserSchema = new mongoose.Schema({
     postalCode: { type: String },
     country: { type: String }
   },
+  */
   uber_email: {
     type: String,
   },
@@ -39,6 +51,11 @@ const UserSchema = new mongoose.Schema({
   grubhub_password_Hash: {
     type: String,
   },
+  addresses: [AddressSchema],
+  dietaryPreferences: {
+    type: [String], 
+    default: []     
+  }
 });
 
 const User = mongoose.model('User', UserSchema);
