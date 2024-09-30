@@ -3,68 +3,6 @@ import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function CoreBanner() {
-    const restaurants = [
-        {
-            rid: 1,
-            name: 'rest1-red',
-            color: '#ff5555'
-        },
-        {
-            rid: 2,
-            name: 'rest2-green',
-            color: '#55ff55'
-        },
-        {
-            rid: 3,
-            name: 'rest3-blue',
-            color: '#5555ff'
-        },
-        {
-            rid: 4,
-            name: 'rest4-yellow',
-            color: '#ffff55'
-        },
-        {
-            rid: 5,
-            name: 'rest5-orange',
-            color: '#ff8844'
-        },
-        {
-            rid: 6,
-            name: 'rest6-purple',
-            color: '#aa44ff'
-        },
-        {
-            rid: 7,
-            name: 'rest7-pink',
-            color: '#ff44ff'
-        },
-        {
-            rid: 8,
-            name: 'rest8-teal',
-            color: '#50DBbb'
-        },
-        {
-            rid: 9,
-            name: 'rest9-light blue',
-            color: '#99ccff'
-        },
-        {
-            rid: 10,
-            name: 'rest10-grey',
-            color: '#aaaaaa'
-        },
-        {
-            rid: 11,
-            name: 'rest11-brown',
-            color: '#775500'
-        },
-        {
-            rid: 12,
-            name: 'rest12-d green',
-            color: '#4f7f4f'
-        },
-    ];
     
     const [searchValue, setSearchTerm] = React.useState('')
 
@@ -95,11 +33,15 @@ export default function CoreBanner() {
                     const restaurants = await response.json();
                     // Log the entire restaurant object(s)
                     console.log('Restaurants Found:', restaurants);
+                    navigate('/Search', {state: {search: searchValue, restaurants: restaurants, errorText: ''}})
                 } else {
                     console.log('No restaurants found');
+                    navigate('/Search', {state: {search: searchValue, restaurants: undefined, errorText: 'No restaurants found'}})
+
                 }
             } catch (error) {
                 console.error('Error fetching restaurant:', error);
+                navigate('/Search', {state: {search: searchValue, restaurants: undefined, errorText: 'Error fetching restaurant:'}})
             }
 
             // Clear the search input
@@ -149,7 +91,9 @@ const styles = StyleSheet.create({
         margin: 20,
         marginRight: 25,
         borderWidth: 1,
-        flexGrow: 1
+        flexGrow: 1,
+        borderRadius: 20,
+        padding: 10,
     },
     card: {
         //banner covers top
@@ -161,7 +105,9 @@ const styles = StyleSheet.create({
         //ratio MUST be 3:4
         height: 90,
         width: 120,
-        margin: 5
+        margin: 5,
+        borderRadius: 45,   
+        //backgroundColor: 'white'
     },
     cardImage: {
         //ratio MUST be 3:4
