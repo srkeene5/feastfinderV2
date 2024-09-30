@@ -1,13 +1,18 @@
 //This component just interacts with the Home component. Is replacing what was in App.tsx
 
 import React from 'react'
+import {useEffect} from 'react'
 import {View, SafeAreaView} from 'react-native'
+
+//Authentication
+
+import { useAuth } from '../UserComponents/Authorizer.tsx';
+
 
 //Navigation
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
-
+import { useNavigate } from 'react-router-dom';
 
 //screens
 import Home from './Home.tsx'
@@ -30,6 +35,18 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function Main(): JSX.Element {
+
+  const {user} = useAuth()
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Run on component load to check if user is logged in
+    console.log("in here!")
+
+    if (!user) {
+      navigate('/account/login'); // Redirect to login if no user is found
+    }
+  }, [user, navigate]); // Run this effect when user or navigate changes
   return (
     
     <NavigationContainer>
