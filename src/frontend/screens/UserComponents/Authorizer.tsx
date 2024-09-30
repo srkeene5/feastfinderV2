@@ -58,16 +58,16 @@ export const AuthContextProvider = ({
 
     const logout = async () => {
       const token = user.token
+      const authToken = "Bearer " + token
+      //console.log("AuthToken: ", authToken)
       try {
         const res = await fetch('http://localhost:5001/api/auth/logout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization' : token
+            'Authorization' : authToken
           },
-          body: JSON.stringify({
-            'Token' : token
-          })
+          
         });
   
         if (res.ok) {
