@@ -302,6 +302,32 @@ const restaurantData = [
         uberEatsAvailable: true,
         doordashAvailable: false,
         grubhubAvailable: true
+    },
+    {
+        restaurantID: "54gh78b",
+        restaurantName: "The Pasta House",
+        restaurantAddress: "122 Maple Street, 30456",
+        distance: 0.9,
+        menu: ["Spaghetti Bolognese", "Fettuccine Alfredo", "Lasagna", "Penne Arrabbiata", "Garlic Bread", "Caesar Salad", "Minestrone Soup", "Tiramisu", "Cannoli", "Espresso"],
+        ubereatsMenuPrice: [13.50, 12.25, 14.00, 11.75, 3.50, 6.95, 5.50, 7.25, 5.95, 3.25],
+        doordashMenuPrice: [13.75, 12.50, 14.25, 11.95, 3.25, 7.10, 5.65, 7.50, 6.05, 3.35],
+        grubhubMenuPrice: [13.30, 12.15, 13.85, 11.60, 3.40, 6.80, 5.40, 7.15, 5.80, 3.20],
+        uberEatsAvailable: true,
+        doordashAvailable: true,
+        grubhubAvailable: false
+    },
+    {
+        restaurantID: "39kl91q",
+        restaurantName: "Taco Fiesta",
+        restaurantAddress: "50 Fiesta Plaza, 40123",
+        distance: 1.5,
+        menu: ["Taco", "Burrito", "Quesadilla", "Nachos", "Guacamole", "Churros", "Fajitas", "Tortilla Soup", "Mexican Rice", "Horchata"],
+        ubereatsMenuPrice: [3.95, 8.25, 7.75, 6.50, 4.95, 3.25, 11.50, 5.95, 3.50, 2.75],
+        doordashMenuPrice: [4.10, 8.50, 8.00, 6.75, 5.10, 3.45, 11.75, 6.10, 3.65, 2.85],
+        grubhubMenuPrice: [3.85, 8.15, 7.50, 6.40, 4.85, 3.30, 11.40, 5.85, 3.45, 2.70],
+        uberEatsAvailable: true,
+        doordashAvailable: true,
+        grubhubAvailable: true
     }
 ];
 
