@@ -9,13 +9,13 @@ import { useLocation } from 'react-router-dom';
 
 export default function RestPage() {
   const location = useLocation();
-  const {rid, rName, color, service} = location.state;
+  const {restaurant, service} = location.state;
 
   return (
     <SafeAreaView>
       <CoreBanner />
       <View
-      style={[styles.account, {backgroundColor: color}]}
+      style={[styles.account]}
       >
         <Text
         style={styles.headingText}
@@ -25,12 +25,12 @@ export default function RestPage() {
         <Text
         style={styles.headingText}
         >
-          Restaurant Name: {rName}
+          Restaurant Name: {restaurant.restaurantName}
         </Text>
         <Text
         style={styles.headingText}
         >
-          Restaurant ID: {rid}
+          Restaurant ID: {restaurant.restaurantID}
         </Text>
       </View>
     </SafeAreaView>
