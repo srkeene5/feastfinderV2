@@ -1,4 +1,5 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect } from 'react'
 
 import { 
     SafeAreaView,
@@ -11,74 +12,38 @@ import {
 // navigation
 import { useNavigate } from 'react-router-dom';
 
+// Define the type for your restaurant objects
+interface Restaurant {
+    restaurantID: string,
+    restaurantName: string,
+    restaurantAddress: string,
+    distance: Number,
+    menu: string[],
+    ubereatsMenuPrice: Number[],
+    doordashMenuPrice: Number[],
+    grubhubMenuPrice: Number[],
+    uberEatsAvailable: boolean,
+    doordashAvailable: boolean,
+    grubhubAvailable: boolean
+}
+
 export default function PopularCards() {
-    const testingRestaurants = [
-        {
-            rid: 1,
-            name: 'rest1-red',
-            color: '#ff5555'
-        },
-        {
-            rid: 2,
-            name: 'rest2-green',
-            color: '#55ff55'
-        },
-        {
-            rid: 3,
-            name: 'rest3-blue',
-            color: '#5555ff'
-        },
-        {
-            rid: 4,
-            name: 'rest4-yellow',
-            color: '#ffff55'
-        },
-        {
-            rid: 5,
-            name: 'rest5-orange',
-            color: '#ff8844'
-        },
-        {
-            rid: 6,
-            name: 'rest6-purple',
-            color: '#aa44ff'
-        },
-        {
-            rid: 7,
-            name: 'rest7-pink',
-            color: '#ff44ff'
-        },
-        {
-            rid: 8,
-            name: 'rest8-teal',
-            color: '#50DBbb'
-        },
-        {
-            rid: 9,
-            name: 'rest9-light blue',
-            color: '#99ccff'
-        },
-        {
-            rid: 10,
-            name: 'rest10-grey',
-            color: '#aaaaaa'
-        },
-        {
-            rid: 11,
-            name: 'rest11-brown',
-            color: '#775500'
-        },
-        {
-            rid: 12,
-            name: 'rest12-d green',
-            color: '#4f7f4f'
-        },
-    ];
+    const [fetchedRestaurants, setFetchedRestaurants] = React.useState<Restaurant[]>([]);
 
     const navigate = useNavigate();
-    //const location = useLocation();
+    
+    // Fetch the restaurant data from the backend when the component is mounted
+    useEffect(() => {
+        axios.get('http://localhost:5001/api/popularRestaurants')  // Ensure your backend route is correct
+                .then(response => {
+                    setFetchedRestaurants(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching popular restaurants:', error);
+                });
+    }, []);
 
-    const handlePop = async (rid: number, name: string, color: string) => {
+    const handlePop = async (name: string) => {
         console.log("Searching for: " + name);
         try {
             // Send the request to your backend API
@@ -100,20 +65,26 @@ export default function PopularCards() {
         }
     }
 
-    const restItem = (item: { rid: number; name: string; color: string; }) => {
+    const restItem = (item: string) => {
         return (
             <TouchableOpacity
-            key={item.rid}
-            style={[styles.card, {backgroundColor: item.color}]}
-            onPress={() => {handlePop(item.rid, item.name, item.color)}}
+            style={styles.card}
+            onPress={() => {handlePop(item)}}
             >
                 <Text>
-                    {item.name}
+                    {item}
                 </Text>
             </TouchableOpacity>
         )
     }
 
+    const restItems = (restaurants: Restaurant[]) => {
+        var restName = new Set();
+        restaurants.forEach(restaurant => {
+            restName.add(restaurant.restaurantName)
+        });
+        return Array.from(restName).map((item: string) => restItem(item))
+    }
 
     //-----Popular Cards Exported-----
     return (
@@ -127,9 +98,7 @@ export default function PopularCards() {
             style={styles.container}
             horizontal={true}
             >
-                {testingRestaurants.map((item) => {
-                    return restItem(item);
-                })}
+                {restItems(fetchedRestaurants)}
             </ScrollView>
         </SafeAreaView>
     )
@@ -149,7 +118,9 @@ const styles = StyleSheet.create({
     card: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 100,
+        width: 'auto',
+        padding: 10,
+        minWidth: 100,
         height: 100,
         borderRadius: 10,
         margin: 8,
@@ -161,5 +132,6 @@ const styles = StyleSheet.create({
         shadowColor: '#333',
         shadowOpacity: .5,
         shadowRadius: 2,
+        backgroundColor: '#dddddd',
     },
 })

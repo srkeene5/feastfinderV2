@@ -7,7 +7,8 @@ import Restaurant from './models/Restaurant.js';
 import cors from 'cors';
 import authRoutes from './routes/auth.js'; 
 import restaurantAuthRoutes from './routes/restaurantAuth.js'; // Import your restaurant routes
-
+import addressRoutes from './routes/address.js';
+import preferencesRoutes from './routes/preferences.js'; // Import preferences routes
 
 dotenv.config();
 
@@ -57,16 +58,21 @@ const populateUsers = async () => {
 // Function to populate the database with restaurant data
 const populateRestaurants = async () => {
   try {
-    // Check if any restaurants already exist to avoid duplication
-    const restaurantCount = await Restaurant.countDocuments();
-    if (restaurantCount > 0) {
-      console.log('Restaurants already exist in the database.');
-      return;
-    }
+    const existingRestaurants = await Restaurant.find({});
+    
+    // Only insert restaurants that don't already exist in the database
+    const newRestaurants = restaurantData.filter(
+      newRestaurant => !existingRestaurants.some(
+        existingRestaurant => existingRestaurant.restaurantID === newRestaurant.restaurantID
+      )
+    );
 
-    // Insert restaurant data into the database
-    await Restaurant.insertMany(restaurantData);
-    console.log('Restaurant data has been added to the database.');
+    if (newRestaurants.length > 0) {
+      await Restaurant.insertMany(newRestaurants);
+      console.log('New restaurant data has been added to the database.');
+    } else {
+      console.log('No new restaurants to add.');
+    }
   } catch (err) {
     console.error('Error populating restaurants:', err);
   }
@@ -74,7 +80,8 @@ const populateRestaurants = async () => {
 
 // Routes
 app.use('/api/auth', authRoutes); 
-
+app.use('/api/address', addressRoutes);
+app.use('/api/preferences', preferencesRoutes); // Preferences-related routes
 // Use the restaurant routes
 app.use('/api', restaurantAuthRoutes);
 app.get('/', (req, res) => {
