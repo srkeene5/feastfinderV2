@@ -89,8 +89,36 @@ export const AuthContextProvider = ({
 
         
     }
+
+    const validateToken = async () => {
+      console.log("in validateToken()")
+      try {
+        const response = await fetch('http://localhost:5001/api/auth/protected', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Error:', errorData.msg || 'Server error');
+            return false;
+        }
+
+          // Parse the response JSON
+          const userData = await response.json();
+          console.log('User data:', userData);
+          if (userData.msg && userData.msg == "Token is not valid") return false;
+          return true; //this isn't very safe check lol
+      } catch (error) {
+          console.error('Fetch error:', error);
+          return false;
+      }
+    }
     return (
-        <AuthContext.Provider value={{ user, setUserToken, logout, userInfo, loading}}>
+        <AuthContext.Provider value={{ user, setUserToken, logout, userInfo, loading, validateToken}}>
           {loading ? null : children}
         </AuthContext.Provider>
       )
