@@ -17,41 +17,72 @@ export default function RepBPage() {
 
   const [reportTextValue, setRepValue] = React.useState('')
   const [emailValue, setEmail] = React.useState('')
-  const [severity, setSeverity] = React.useState('Minor')
-  const [bugType, setBugType] = React.useState('Usability')
-  const [noTextPop, setNoTextPop] = React.useState(false)
+  const [severity, setSeverity] = React.useState('select')
+  const [bugType, setBugType] = React.useState('select')
+  const [errPop, setErrPop] = React.useState(false)
+  const [errText, setErrText] = React.useState('Error Undefined')
   const [sentPop, setSentPop] = React.useState(false)
-  const [invalidEmail, setInvalidEmail] = React.useState(false)
-  const [emailFailure, setEmailFailure] = React.useState(false)
 
-  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+\.(com|net|org|gov)$");
+  const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov|edu)$");
+
+  const resetAll = () => {
+    setRepValue('');
+    setEmail('');
+    setSeverity('select');
+    setBugType('select');
+    setErrPop(false);
+    setErrText('Error Undefined');
+    setSentPop(false);
+  }
 
   const subButtonPress = async () => {
     if (reportTextValue !== '') {
-      if (emailValue !== '') {
-        if (!validEmail.test(emailValue)) {
-          console.log('invalidEmail: ' + emailValue);
-          setInvalidEmail(true);
-          return;
+      if (severity !== 'select') {
+        if (bugType !== 'select') {
+          if (emailValue !== '') {
+            if (!validEmail.test(emailValue)) {
+              console.log('invalidEmail: ' + emailValue);
+              setErrText("Invalid Email Address.\nDouble check that you entered it correctly.");
+              setErrPop(true);
+              return;
+            }
+          }
+          try{
+            let subject = severity + bugType + " Bug Report: " + uid
+            let body = severity + bugType + " Bug Report: " + reportTextValue
+            console.log(uid + "\n" + subject + "\n" + body);
+            sendEmail(body, subject, uid);
+            console.log('Success!', 'Thank you for your feedback!');
+            setSentPop(true);
+            resetAll();
+          } catch (err) {
+            console.log(err);
+            console.log('Oops!', 'Something went wrong..');
+            setErrText(
+              "Report failed to send.\n"
+              +"Check internet connection.\n"
+              +"Otherwise, it may be a server issue.\n\n"
+              +"You can reach us at:\n"
+              +"   FeastFinderDev@gmail.com\n\n"
+              +"We appologize for the inconvenience"
+            );
+            setErrPop(true);
+          }
+        }
+        else {
+          setErrText("Select Report Type.")
+          setErrPop(true);
         }
       }
-      try{
-        let subject = severity + bugType + " Bug Report: " + uid
-        let body = severity + bugType + " Bug Report: " + reportTextValue
-        console.log(uid + "\n" + subject + "\n" + body);
-        sendEmail(body, subject, uid);
-        console.log('Success!', 'Thank you for your feedback!');
-        setSentPop(true);
-        //setRepValue('');
-        //setEmail('');
-      } catch (err) {
-        console.log(err);
-        console.log('Oops!', 'Something went wrong..');
-        setEmailFailure(true);
+      else {
+        setErrText("Select Report Severity.");
+        setErrPop(true);
       }
     }
     else {
-      setNoTextPop(true);
+      setErrText('Bug report must contain text.');
+      setErrPop(true);
+
     }
   }
 
@@ -99,6 +130,7 @@ export default function RepBPage() {
               onChange={(event)=>{setSeverity(event.target.value)}}
               style={styles.dropdownForm}
               >
+                <option value="select">Select Severity...</option>
                 <option value="Minor">Minor</option>
                 <option value="Moderate">Moderate</option>
                 <option value="Major">Major</option>
@@ -116,6 +148,7 @@ export default function RepBPage() {
               onChange={(event)=>{setBugType(event.target.value)}}
               style={styles.dropdownForm}
               >
+                <option value="select">Select Type...</option>
                 <option value="Usability">Usability</option>
                 <option value="Vulnerability">Vulnerability</option>
                 <option value="Financial">Financial Security</option>
@@ -138,9 +171,6 @@ export default function RepBPage() {
               Include your email so the dev team can effectively identify and resovle the issue.
             </Text>
             <input
-            autoComplete='on'
-            autoCorrect='on'
-            autoCapitalize='on'
             style={styles.repEmailInput}
             onChange={(event)=>{setEmail(event.target.value)}}
             value = {emailValue}
@@ -163,44 +193,10 @@ export default function RepBPage() {
           </View>
         </View>
       </View>
-      <Popup 
-      open={noTextPop} 
-      onClose={()=>setNoTextPop(false)}
-      contentStyle={styles.popup}
-      >
-        <View>
-          <Text
-          style={styles.errorText}
-          >
-            Error: 
-          </Text>
-        </View>
-        <View>
-          <Text
-          style={styles.popupText}
-          >
-            Bug report must contain text.
-          </Text>
-        </View>
-        <View
-        style={styles.buttonContainer}
-        >
-          <TouchableOpacity
-          onPress={()=>{setNoTextPop(false)}}
-          style={styles.popupButton}
-          >
-            <Text
-            style={styles.buttonText}
-            >
-              Close
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </Popup>
 
       <Popup 
-      open={invalidEmail} 
-      onClose={()=>setInvalidEmail(false)}
+      open={errPop} 
+      onClose={()=>{setErrPop(false); setErrText('Error Undefined')}}
       contentStyle={styles.popup}
       >
         <View>
@@ -214,52 +210,14 @@ export default function RepBPage() {
           <Text
           style={styles.popupText}
           >
-            {"Invalid Email Address.\nDouble check that you entered it correctly."}
+            {errText}
           </Text>
         </View>
         <View
         style={styles.buttonContainer}
         >
           <TouchableOpacity
-          onPress={()=>{setInvalidEmail(false)}}
-          style={styles.popupButton}
-          >
-            <Text
-            style={styles.buttonText}
-            >
-              Close
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </Popup>
-
-      <Popup 
-      open={emailFailure} 
-      onClose={()=>setEmailFailure(false)}
-      contentStyle={styles.popup}
-      >
-        <View>
-          <Text
-          style={styles.errorText}
-          >
-            Error: 
-          </Text>
-        </View>
-        <View>
-          <Text
-          style={styles.popupText}
-          >
-            {"Report failed to send.\n"
-            +"Check internet connection.\n"
-            +"Otherwise, it may be a server issue.\n"
-            +"We appologize for the inconvenience"}
-          </Text>
-        </View>
-        <View
-        style={styles.buttonContainer}
-        >
-          <TouchableOpacity
-          onPress={()=>{setEmailFailure(false)}}
+          onPress={()=>{setErrPop(false); setErrText('Error Undefined')}}
           style={styles.popupButton}
           >
             <Text
