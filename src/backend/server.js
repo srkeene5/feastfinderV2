@@ -10,6 +10,8 @@ import restaurantAuthRoutes from './routes/restaurantAuth.js'; // Import your re
 import addressRoutes from './routes/address.js';
 import preferencesRoutes from './routes/preferences.js'; // Import preferences routes
 import chatRoutes from './routes/chat.js';
+import diningHallsRoutes from './routes/dininghalls.js';
+import locationRoutes from './routes/location.js';
 
 dotenv.config();
 
@@ -84,6 +86,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/address', addressRoutes);
 app.use('/api/preferences', preferencesRoutes); // Preferences-related routes
 app.use('/api/chat', chatRoutes);
+app.use('/api/dining-halls', diningHallsRoutes);
+app.use('/api/location', locationRoutes);
 // Use the restaurant routes
 app.use('/api', restaurantAuthRoutes);
 app.get('/', (req, res) => {
