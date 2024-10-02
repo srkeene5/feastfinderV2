@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Pressable } from 'react-native'
 import React from 'react'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
@@ -17,38 +17,53 @@ export default function SuggPage() {
 
   const [suggTextValue, setSuggValue] = React.useState('')
   const [emailValue, setEmail] = React.useState('')
-  const [noTextPop, setNoTextPop] = React.useState(false)
+  const [errPop, setErrPop] = React.useState(false)
+  const [errText, setErrText] = React.useState('Error Undefined')
   const [sentPop, setSentPop] = React.useState(false)
-  const [invalidEmail, setInvalidEmail] = React.useState(false)
-  const [emailFailure, setEmailFailure] = React.useState(false)
 
   const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov|edu)$");
+
+  const resetAll = () => {
+    setSuggValue('');
+    setEmail('');
+    setErrPop(false);
+    setErrText('Error Undefined');
+    setSentPop(false);
+  }
 
   const subButtonPress = async () => {
     if (suggTextValue !== '') {
       if (emailValue !== '') {
         if (!validEmail.test(emailValue)) {
           console.log('invalidEmail: ' + emailValue);
-          setInvalidEmail(true);
+          setErrText("Invalid Email Address.\nDouble check that you entered it correctly.");
+          setErrPop(true);
           return;
         }
       }
       try{
         let subject = "Suggestion: " + uid
         let body = "Suggestion: " + suggTextValue
-        sendEmail(body, subject, uid)
+        sendEmail(body, subject)
         console.log('Success!', 'Thank you for your feedback!');
         setSentPop(true);
-        //setSuggValue('');
-        //setEmail('');
       } catch (err) {
         console.log(err);
         console.log('Oops!', 'Something went wrong..');
-        setEmailFailure(true);
+        setErrText(
+          "Suggestion failed to send.\n"
+          +"Check internet connection.\n"
+          +"Otherwise, it may be a server issue.\n\n"
+          +"You can reach us at:\n"
+          +"\tFeastFinderDev@gmail.com\n\n"
+          +"We appologize for the inconvenience"
+        );
+        setErrPop(true);
       }
     }
     else {
-      setNoTextPop(true);
+      setErrText('Suggestion must contain text.');
+      setErrPop(true);
     }
   }
 
@@ -100,9 +115,6 @@ export default function SuggPage() {
               Include your email so the dev team can more effectively implement your idea.
             </Text>
             <input
-            autoComplete='on'
-            autoCorrect='on'
-            autoCapitalize='on'
             style={styles.suggEmailInput}
             onChange={(event)=>{setEmail(event.target.value)}}
             value = {emailValue}
@@ -112,57 +124,23 @@ export default function SuggPage() {
           <View
           style={styles.buttonContainer}
           >
-            <TouchableOpacity
+            <Pressable
             style={styles.submitButton}
+            onPress={()=>{subButtonPress()}}
             >
               <Text
               style={styles.buttonText}
-              onPress={()=>{subButtonPress()}}
               >
                 Submit
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>
-      <Popup 
-      open={noTextPop} 
-      onClose={()=>setNoTextPop(false)}
-      contentStyle={styles.popup}
-      >
-        <View>
-          <Text
-          style={styles.errorText}
-          >
-            Error: 
-          </Text>
-        </View>
-        <View>
-          <Text
-          style={styles.popupText}
-          >
-            Suggestion must contain text.
-          </Text>
-        </View>
-        <View
-        style={styles.buttonContainer}
-        >
-          <TouchableOpacity
-          onPress={()=>{setNoTextPop(false)}}
-          style={styles.popupButton}
-          >
-            <Text
-            style={styles.buttonText}
-            >
-              Close
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </Popup>
 
       <Popup 
-      open={invalidEmail} 
-      onClose={()=>setInvalidEmail(false)}
+      open={errPop} 
+      onClose={()=>{setErrPop(false); setErrText('Error Undefined')}}
       contentStyle={styles.popup}
       >
         <View>
@@ -176,14 +154,14 @@ export default function SuggPage() {
           <Text
           style={styles.popupText}
           >
-            {"Invalid Email Address.\nDouble check that you entered it correctly."}
+            {errText}
           </Text>
         </View>
         <View
         style={styles.buttonContainer}
         >
-          <TouchableOpacity
-          onPress={()=>{setInvalidEmail(false)}}
+          <Pressable
+          onPress={()=>{setErrPop(false); setErrText('Error Undefined')}}
           style={styles.popupButton}
           >
             <Text
@@ -191,47 +169,7 @@ export default function SuggPage() {
             >
               Close
             </Text>
-          </TouchableOpacity>
-        </View>
-      </Popup>
-
-      <Popup 
-      open={emailFailure} 
-      onClose={()=>setEmailFailure(false)}
-      contentStyle={styles.popup}
-      >
-        <View>
-          <Text
-          style={styles.errorText}
-          >
-            Error: 
-          </Text>
-        </View>
-        <View>
-          <Text
-          style={styles.popupText}
-          >
-            {"Suggestion failed to send.\n"
-            +"Check internet connection.\n"
-            +"Otherwise, it may be a server issue.\n\n"
-            +"You can reach us at:\n"
-            +"   FeastFinderDev@gmail.com\n\n"
-            +"We appologize for the inconvenience"}
-          </Text>
-        </View>
-        <View
-        style={styles.buttonContainer}
-        >
-          <TouchableOpacity
-          onPress={()=>{setEmailFailure(false)}}
-          style={styles.popupButton}
-          >
-            <Text
-            style={styles.buttonText}
-            >
-              Close
-            </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Popup>
 
@@ -257,8 +195,8 @@ export default function SuggPage() {
         <View
         style={styles.buttonContainer}
         >
-          <TouchableOpacity
-          onPress={()=>{setSentPop(false); navigate('/Home');}}
+          <Pressable
+          onPress={()=>{resetAll(); navigate('/Home');}}
           style={styles.popupButton}
           >
             <Text
@@ -266,7 +204,7 @@ export default function SuggPage() {
             >
               Close
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Popup>
     </SafeAreaView>

@@ -78,5 +78,20 @@ router.delete('/:preference', auth, async (req, res) => {
     }
   });
   
+  router.get('/', auth, async (req, res) => {
+    try {
+      const user = await User.findById(req.user);
+  
+      if (!user) {
+        return res.status(404).json({ msg: 'User not found' });
+      }
+  
+      // Return the user's dietary preferences
+      res.json({ dietaryPreferences: user.dietaryPreferences });
+    } catch (err) {
+      console.error('Error retrieving preferences:', err.message);
+      res.status(500).send('Server error');
+    }
+  });
   export default router;
   
