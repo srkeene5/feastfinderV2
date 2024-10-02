@@ -144,7 +144,7 @@ export default function AccountLinkedAPIs() {
                     <Text
                     style={[styles.serviceText, styles.text]}
                     >
-                        {"GrubHub: "} 
+                        {service + ": "} 
                     </Text>
                     <View>
                         <Text
