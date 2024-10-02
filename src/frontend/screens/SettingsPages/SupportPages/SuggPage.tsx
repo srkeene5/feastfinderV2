@@ -126,10 +126,10 @@ export default function SuggPage() {
           >
             <Pressable
             style={styles.submitButton}
+            onPress={()=>{subButtonPress()}}
             >
               <Text
               style={styles.buttonText}
-              onPress={()=>{subButtonPress()}}
               >
                 Submit
               </Text>

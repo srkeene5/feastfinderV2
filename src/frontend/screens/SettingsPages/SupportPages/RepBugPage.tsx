@@ -184,10 +184,10 @@ export default function RepBPage() {
           >
             <Pressable
             style={styles.submitButton}
+            onPress={()=>{subButtonPress()}}
             >
               <Text
               style={styles.buttonText}
-              onPress={()=>{subButtonPress()}}
               >
                 Submit
               </Text>
