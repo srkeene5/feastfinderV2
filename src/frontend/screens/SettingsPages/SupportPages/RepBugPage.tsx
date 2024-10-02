@@ -37,6 +37,7 @@ export default function RepBPage() {
 
   const subButtonPress = async () => {
     if (reportTextValue !== '') {
+      var reportTextEmail = reportTextValue;
       if (severity !== 'select') {
         if (bugType !== 'select') {
           if (emailValue !== '') {
@@ -45,16 +46,17 @@ export default function RepBPage() {
               setErrText("Invalid Email Address.\nDouble check that you entered it correctly.");
               setErrPop(true);
               return;
+            } else {
+              reportTextEmail += "\n\nUser Response Email included: " + emailValue
             }
           }
           try{
-            let subject = severity + bugType + " Bug Report: " + uid
-            let body = severity + bugType + " Bug Report: " + reportTextValue
+            let subject = severity +" "+ bugType + " Bug Report from User:" + uid
+            let body = severity +" "+ bugType + " Bug Report: " + reportTextEmail;
             console.log(uid + "\n" + subject + "\n" + body);
-            sendEmail(body, subject, uid);
+            sendEmail(body, subject)
             console.log('Success!', 'Thank you for your feedback!');
             setSentPop(true);
-            resetAll();
           } catch (err) {
             console.log(err);
             console.log('Oops!', 'Something went wrong..');
@@ -252,7 +254,7 @@ export default function RepBPage() {
         style={styles.buttonContainer}
         >
           <TouchableOpacity
-          onPress={()=>{setSentPop(false); navigate('/Home');}}
+          onPress={()=>{resetAll(); navigate('/Home');}}
           style={styles.popupButton}
           >
             <Text

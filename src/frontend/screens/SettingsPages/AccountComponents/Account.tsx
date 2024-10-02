@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, CheckBox } from 'react-native';
 import React from 'react';
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
+import AccountLinkedAPIs from './AccountLinkedAPIs.tsx';
 
 export default function Account() {
   const [currentAddress, setCurrentAddress] = React.useState('123 Main St, Springfield'); // Example current address
@@ -98,6 +99,9 @@ export default function Account() {
             </View>
           </View>
         </View>
+
+        {/* Link Accounts */}
+        <AccountLinkedAPIs/>
 
         {/* Save Button */}
         <View style={styles.buttonContainer}>

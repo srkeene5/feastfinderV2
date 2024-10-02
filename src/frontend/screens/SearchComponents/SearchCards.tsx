@@ -24,13 +24,13 @@ export default function SearchCards() {
     const {search, restaurants = [], deliveryService, errorText} = location.state;
 
     const [userValue, setuserValue] = React.useState('');
-    const [passValue, setPassValue] = React.useState('')
+    const [passValue, setPassValue] = React.useState('');
     const [errPop, setErrPop] = React.useState(false)
     const [errText, setErrText] = React.useState('Error Undefined')
     const [loginPop, setLoginPop] = React.useState(false)
     const [buttonService, setButtonService] = React.useState('Error Undefined')
     const [holdItem, setHoldItem] = React.useState(null);
-    const {user, setUserToken, logout} = useAuth();
+    const { user } = useAuth();
 
     //api platform selection logic
         // Check the availability of the restaurant based on the delivery service selected by the user
@@ -61,8 +61,6 @@ export default function SearchCards() {
         }
 
         try {
-            const token = user.token
-
             var response
             var fetchAddr = 'http://localhost:5001/api/auth/'
             switch (buttonService) {
