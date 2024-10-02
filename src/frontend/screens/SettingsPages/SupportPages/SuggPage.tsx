@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Pressable } from 'react-native'
 import React from 'react'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
@@ -124,7 +124,7 @@ export default function SuggPage() {
           <View
           style={styles.buttonContainer}
           >
-            <TouchableOpacity
+            <Pressable
             style={styles.submitButton}
             >
               <Text
@@ -133,7 +133,7 @@ export default function SuggPage() {
               >
                 Submit
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -160,7 +160,7 @@ export default function SuggPage() {
         <View
         style={styles.buttonContainer}
         >
-          <TouchableOpacity
+          <Pressable
           onPress={()=>{setErrPop(false); setErrText('Error Undefined')}}
           style={styles.popupButton}
           >
@@ -169,7 +169,7 @@ export default function SuggPage() {
             >
               Close
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Popup>
 
@@ -195,7 +195,7 @@ export default function SuggPage() {
         <View
         style={styles.buttonContainer}
         >
-          <TouchableOpacity
+          <Pressable
           onPress={()=>{resetAll(); navigate('/Home');}}
           style={styles.popupButton}
           >
@@ -204,7 +204,7 @@ export default function SuggPage() {
             >
               Close
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Popup>
     </SafeAreaView>
