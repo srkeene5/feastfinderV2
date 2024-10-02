@@ -5,19 +5,28 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const useRequireAuth = () => {
 
-  const { user, loading } = useAuth();
+  const { user, loading, validateToken } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("in useRequireAuth", loading, user)
+    const fetchValidation = async () => {
+      //console.log('here')
+      const check = await validateToken();
+      //console.log('!check', !check)
+      if (!check) {
+        navigate('/account/login')
+      }
+    }
+    //console.log("in useRequireAuth", loading, user)
     if (!loading) {
-      if (!user && location.pathname !== '/account/signup') { //don't redirect signup
-        navigate('/account/login'); // Redirect to login if user is not logged in
+      if ((location.pathname !== '/account/signup') && (!user ) ) { //don't redirect signup
+        navigate('/account/login'); // Redirect to login if user is not logged in or token expired
       }
       else {
-        //Do a check on the current user's token with API. if it fails, also navigate to login
+        fetchValidation()
       }
+      
     }
   }, [user, loading, navigate]); // Dependencies
 };
