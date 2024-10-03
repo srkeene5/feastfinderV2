@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, Chec
 import React, { useEffect } from 'react';
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
+import AccountLinkedAPIs from './AccountLinkedAPIs.tsx';
 
 export default function Account() {
   const { user } = useAuth();
@@ -208,6 +209,9 @@ export default function Account() {
             </View>
           </View>
         </View>
+
+        {/* Link Accounts */}
+        <AccountLinkedAPIs/>
 
         {/* Save Button */}
         <View style={styles.buttonContainer}>

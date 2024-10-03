@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Pressable } from 'react-native'
 import React from 'react'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
@@ -23,6 +23,14 @@ export default function SuggPage() {
 
   const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov|edu)$");
 
+  const resetAll = () => {
+    setSuggValue('');
+    setEmail('');
+    setErrPop(false);
+    setErrText('Error Undefined');
+    setSentPop(false);
+  }
+
   const subButtonPress = async () => {
     if (suggTextValue !== '') {
       if (emailValue !== '') {
@@ -36,11 +44,9 @@ export default function SuggPage() {
       try{
         let subject = "Suggestion: " + uid
         let body = "Suggestion: " + suggTextValue
-        sendEmail(body, subject, uid)
+        sendEmail(body, subject)
         console.log('Success!', 'Thank you for your feedback!');
         setSentPop(true);
-        //setSuggValue('');
-        //setEmail('');
       } catch (err) {
         console.log(err);
         console.log('Oops!', 'Something went wrong..');
@@ -118,16 +124,16 @@ export default function SuggPage() {
           <View
           style={styles.buttonContainer}
           >
-            <TouchableOpacity
+            <Pressable
             style={styles.submitButton}
+            onPress={()=>{subButtonPress()}}
             >
               <Text
               style={styles.buttonText}
-              onPress={()=>{subButtonPress()}}
               >
                 Submit
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -154,7 +160,7 @@ export default function SuggPage() {
         <View
         style={styles.buttonContainer}
         >
-          <TouchableOpacity
+          <Pressable
           onPress={()=>{setErrPop(false); setErrText('Error Undefined')}}
           style={styles.popupButton}
           >
@@ -163,7 +169,7 @@ export default function SuggPage() {
             >
               Close
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Popup>
 
@@ -189,8 +195,8 @@ export default function SuggPage() {
         <View
         style={styles.buttonContainer}
         >
-          <TouchableOpacity
-          onPress={()=>{setSentPop(false); navigate('/Home');}}
+          <Pressable
+          onPress={()=>{resetAll(); navigate('/Home');}}
           style={styles.popupButton}
           >
             <Text
@@ -198,7 +204,7 @@ export default function SuggPage() {
             >
               Close
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Popup>
     </SafeAreaView>

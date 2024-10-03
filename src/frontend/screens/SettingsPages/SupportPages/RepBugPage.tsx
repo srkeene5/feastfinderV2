@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Pressable } from 'react-native'
 import React from 'react'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
@@ -37,6 +37,7 @@ export default function RepBPage() {
 
   const subButtonPress = async () => {
     if (reportTextValue !== '') {
+      var reportTextEmail = reportTextValue;
       if (severity !== 'select') {
         if (bugType !== 'select') {
           if (emailValue !== '') {
@@ -45,16 +46,17 @@ export default function RepBPage() {
               setErrText("Invalid Email Address.\nDouble check that you entered it correctly.");
               setErrPop(true);
               return;
+            } else {
+              reportTextEmail += "\n\nUser Response Email included: " + emailValue
             }
           }
           try{
-            let subject = severity + bugType + " Bug Report: " + uid
-            let body = severity + bugType + " Bug Report: " + reportTextValue
+            let subject = severity +" "+ bugType + " Bug Report from User:" + uid
+            let body = severity +" "+ bugType + " Bug Report: " + reportTextEmail;
             console.log(uid + "\n" + subject + "\n" + body);
-            sendEmail(body, subject, uid);
+            sendEmail(body, subject)
             console.log('Success!', 'Thank you for your feedback!');
             setSentPop(true);
-            resetAll();
           } catch (err) {
             console.log(err);
             console.log('Oops!', 'Something went wrong..');
@@ -180,16 +182,16 @@ export default function RepBPage() {
           <View
           style={styles.buttonContainer}
           >
-            <TouchableOpacity
+            <Pressable
             style={styles.submitButton}
+            onPress={()=>{subButtonPress()}}
             >
               <Text
               style={styles.buttonText}
-              onPress={()=>{subButtonPress()}}
               >
                 Submit
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -216,7 +218,7 @@ export default function RepBPage() {
         <View
         style={styles.buttonContainer}
         >
-          <TouchableOpacity
+          <Pressable
           onPress={()=>{setErrPop(false); setErrText('Error Undefined')}}
           style={styles.popupButton}
           >
@@ -225,7 +227,7 @@ export default function RepBPage() {
             >
               Close
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Popup>
 
@@ -251,8 +253,8 @@ export default function RepBPage() {
         <View
         style={styles.buttonContainer}
         >
-          <TouchableOpacity
-          onPress={()=>{setSentPop(false); navigate('/Home');}}
+          <Pressable
+          onPress={()=>{resetAll(); navigate('/Home');}}
           style={styles.popupButton}
           >
             <Text
@@ -260,7 +262,7 @@ export default function RepBPage() {
             >
               Close
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Popup>
     </SafeAreaView>

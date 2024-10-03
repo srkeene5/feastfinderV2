@@ -1,23 +1,19 @@
-import Mailer from 'react-native-mail';
-import { Alert } from 'react-native';
+import emailjs from 'emailjs-com'
 
-export function sendEmail(body: string, subject: string, userID: number) {
-    
-    Mailer.mail({
+export const sendEmail = (body: string, subject: string): boolean => {
+    var templateParams = {
         subject: subject,
-        recipients: ["feastfinderdev@gmail.com"], // replace with your email
-        body: `${body}\n\n Account Id: #${userID}`,
-        isHTML: false,
-    },
-    (error, event) => {
-        Alert.alert(
-            error,
-            event,
-            [
-                {text: 'Ok', onPress: () => console.log('OK: Email Error Response')},
-                {text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response')}
-            ],
-            { cancelable: true }
-        )
-    });
+        body: body
+    }
+    emailjs.send('service_oonflrq','template_nnlmodk',templateParams,'Ho_oAclYyi4QtI1o3')
+        .then((result) => {
+            //success
+            console.log("Success\nResult: " + result);
+            return true;
+        }, (error) => {
+            //error
+            console.log("Error: " + error);
+            return false;
+        });
+    return false;
 }
