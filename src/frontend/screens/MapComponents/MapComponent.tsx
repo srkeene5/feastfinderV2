@@ -7,13 +7,38 @@ import 'leaflet-defaulticon-compatibility';
 import userMarkerIcon from './user-marker.png'; // Replace with the actual path to your custom icon
 import diningHallMarkerIcon from './dining-hall-marker.png'; // Replace with the actual path to your custom icon
 
-// Purdue Dining Halls Coordinates
+// Purdue Dining Halls Coordinates with Google Maps links
 const diningHalls = [
-  { name: 'Earhart Dining Court', lat: 40.4260, lng: -86.9256 },
-  { name: 'Ford Dining Court', lat: 40.4310, lng: -86.9200 },
-  { name: 'Hillenbrand Dining Court', lat: 40.4241, lng: -86.9216 },
-  { name: 'Wiley Dining Court', lat: 40.4245, lng: -86.9265 },
-  { name: 'Windsor Dining Court', lat: 40.4274, lng: -86.9171 },
+  {
+    name: 'Earhart Dining Court',
+    lat: 40.4260,
+    lng: -86.9256,
+    mapUrl: 'https://www.google.com/maps/place/Earhart+Dining+Court/@40.428521,-86.9233984,17z/data=!4m6!3m5!1s0x8812fddb980c7891:0xbe31985e92758c5a!8m2!3d40.4256067!4d-86.9251082!16s%2Fg%2F12vr2tmsl?entry=ttu&g_ep=EgoyMDI0MTAwMS4wIKXMDSoASAFQAw%3D%3D',
+  },
+  {
+    name: 'Ford Dining Court',
+    lat: 40.4310,
+    lng: -86.9200,
+    mapUrl: 'https://www.google.com/maps/place/Ford+Dining+Court/@40.4321089,-86.9221323,17z/data=!3m1!4b1!4m6!3m5!1s0x8812fd4b26db4177:0x2f3f9ae6b45d3924!8m2!3d40.4321089!4d-86.9195574!16s%2Fg%2F11cm0v2m66?entry=ttu&g_ep=EgoyMDI0MTAwMS4wIKXMDSoASAFQAw%3D%3D',
+  },
+  {
+    name: 'Hillenbrand Dining Court',
+    lat: 40.4241,
+    lng: -86.9216,
+    mapUrl: 'https://www.google.com/maps/place/Hillenbrand+Hall/@40.4268796,-86.9290093,17z/data=!3m1!4b1!4m6!3m5!1s0x8812e2cbef4e9ea1:0x17e067f172517513!8m2!3d40.4268796!4d-86.9264344!16s%2Fg%2F11g7np5zwf?entry=ttu&g_ep=EgoyMDI0MTAwMS4wIKXMDSoASAFQAw%3D%3D',
+  },
+  {
+    name: 'Wiley Dining Court',
+    lat: 40.4245,
+    lng: -86.9265,
+    mapUrl: 'https://www.google.com/maps/place/Wiley+Dining+Court/@40.428521,-86.9233984,17z/data=!3m1!4b1!4m6!3m5!1s0x8812e2b15807a209:0x561f5eb85d8c5a66!8m2!3d40.428521!4d-86.9208235!16s%2Fg%2F1hc7sgkq7?entry=ttu&g_ep=EgoyMDI0MTAwMS4wIKXMDSoASAFQAw%3D%3D',
+  },
+  {
+    name: 'Windsor Dining Court',
+    lat: 40.4274,
+    lng: -86.9171,
+    mapUrl: 'https://www.google.com/maps/place/Windsor+Dining+Court/@40.4270434,-86.923636,17z/data=!3m1!4b1!4m6!3m5!1s0x8812e2b5c166c8cb:0xc6b89b5c96b567c4!8m2!3d40.4270434!4d-86.9210611!16s%2Fg%2F11c6v55pmb?entry=ttu&g_ep=EgoyMDI0MTAwMS4wIKXMDSoASAFQAw%3D%3D',
+  },
 ];
 
 // Custom icon for the user's location
@@ -103,13 +128,17 @@ const MapComponent = () => {
             <Popup>You are here</Popup>
           </Marker>
 
-          {/* Dining Hall markers with custom icon and distance calculation */}
+          {/* Dining Hall markers with custom icon, distance, and Google Maps link */}
           {diningHalls.map((hall) => (
             <Marker key={hall.name} position={[hall.lat, hall.lng]} icon={diningHallIcon}>
               <Popup>
-                {hall.name}
+                <strong>{hall.name}</strong>
                 <br />
                 Distance: {haversineDistance(userLocation.lat, userLocation.lng, hall.lat, hall.lng)} km
+                <br />
+                <a href={hall.mapUrl} target="_blank" rel="noopener noreferrer">
+                  Open in Google Maps
+                </a>
               </Popup>
             </Marker>
           ))}
