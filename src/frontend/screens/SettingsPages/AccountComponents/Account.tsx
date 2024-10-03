@@ -40,11 +40,11 @@ export default function Account() {
         });
         const preferencesData = await preferencesResponse.json();
         setDietaryPreferences({
-          vegetarian: preferencesData.includes('vegetarian'),
-          vegan: preferencesData.includes('vegan'),
-          glutenFree: preferencesData.includes('glutenFree'),
-          dairyFree: preferencesData.includes('dairyFree'),
-          nutFree: preferencesData.includes('nutFree'),
+          vegetarian: preferencesData.dietaryPreferences.includes('vegetarian'),
+          vegan: preferencesData.dietaryPreferences.includes('vegan'),
+          glutenFree: preferencesData.dietaryPreferences.includes('glutenFree'),
+          dairyFree: preferencesData.dietaryPreferences.includes('dairyFree'),
+          nutFree: preferencesData.dietaryPreferences.includes('nutFree'),
         });
       } catch (error) {
         console.error('Error fetching profile data:', error);
@@ -52,7 +52,7 @@ export default function Account() {
     };
 
     fetchProfileData();
-  }, []);
+  }, [user.token]);
 
   // Address format validation
   const isValidAddressFormat = (address) => {
@@ -62,13 +62,11 @@ export default function Account() {
 
   // Handle address save
   const handleSaveAddress = async () => {
-    // Check if the new address format is valid
     if (!isValidAddressFormat(newAddress)) {
       setErrorMessage('Please enter a valid address format: street, city, state, postal code, country.');
-      return; // Stop further execution if invalid
+      return;
     }
 
-    // Clear the error message if the address is valid
     setErrorMessage('');
 
     try {
@@ -92,7 +90,7 @@ export default function Account() {
         setCurrentAddress(newAddress); // Update the displayed current address only after successful submission
         setNewAddress(''); // Clear new address input
       } else {
-        setErrorMessage('Failed to update the address.'); // Set error message
+        setErrorMessage('Failed to update the address.');
       }
     } catch (error) {
       console.error('Error updating address:', error);
@@ -117,9 +115,9 @@ export default function Account() {
       });
 
       if (response.ok) {
-        Alert.alert('Success', 'Dietary preferences updated successfully.');
+        //alert('Dietary preferences updated successfully.');
       } else {
-        setErrorMessage('Failed to update dietary preferences.'); // Set error message
+        setErrorMessage('Failed to update dietary preferences.');
       }
     } catch (error) {
       console.error('Error updating dietary preferences:', error);
@@ -286,19 +284,21 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   buttonContainer: {
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   saveButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#007BFF',
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 10,
+    alignItems: 'center',
     flex: 1,
-    marginHorizontal: 5,
+    marginRight: 10,
   },
   buttonText: {
     color: '#ffffff',
-    textAlign: 'center',
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });
