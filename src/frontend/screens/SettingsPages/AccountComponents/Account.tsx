@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, CheckBox } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
+import { useAuth } from '../../UserComponents/Authorizer.tsx';
 
 export default function Account() {
-  const [currentAddress, setCurrentAddress] = React.useState('123 Main St, Springfield'); // Example current address
+  const { user } = useAuth();
+  const [currentAddress, setCurrentAddress] = React.useState(''); // This will be fetched from the backend
   const [newAddress, setNewAddress] = React.useState('');
-
-  // Dietary preferences as checkboxes
   const [dietaryPreferences, setDietaryPreferences] = React.useState({
     vegetarian: false,
     vegan: false,
@@ -14,7 +14,119 @@ export default function Account() {
     dairyFree: false,
     nutFree: false,
   });
+  const [errorMessage, setErrorMessage] = React.useState('');
 
+  // Fetch the current address and dietary preferences from backend on component load
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const addressResponse = await fetch('http://localhost:5001/api/address/recent', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + user.token, // Add auth token
+          },
+        });
+        const addressData = await addressResponse.json();
+        setCurrentAddress(`${addressData.street}, ${addressData.city}, ${addressData.state}, ${addressData.postalCode}, ${addressData.country}`);
+
+        const preferencesResponse = await fetch('http://localhost:5001/api/preferences', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + user.token,
+          },
+        });
+        const preferencesData = await preferencesResponse.json();
+        setDietaryPreferences({
+          vegetarian: preferencesData.includes('vegetarian'),
+          vegan: preferencesData.includes('vegan'),
+          glutenFree: preferencesData.includes('glutenFree'),
+          dairyFree: preferencesData.includes('dairyFree'),
+          nutFree: preferencesData.includes('nutFree'),
+        });
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  // Address format validation
+  const isValidAddressFormat = (address) => {
+    const addressParts = address.split(',').map(part => part.trim());
+    return addressParts.length === 5; // Ensure there are exactly 5 parts
+  };
+
+  // Handle address save
+  const handleSaveAddress = async () => {
+    // Check if the new address format is valid
+    if (!isValidAddressFormat(newAddress)) {
+      setErrorMessage('Please enter a valid address format: street, city, state, postal code, country.');
+      return; // Stop further execution if invalid
+    }
+
+    // Clear the error message if the address is valid
+    setErrorMessage('');
+
+    try {
+      const address = newAddress.split(','); // Split address into components
+      const response = await fetch('http://localhost:5001/api/address', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + user.token,
+        },
+        body: JSON.stringify({
+          street: address[0],
+          city: address[1],
+          state: address[2],
+          postalCode: address[3],
+          country: address[4],
+        }),
+      });
+
+      if (response.ok) {
+        setCurrentAddress(newAddress); // Update the displayed current address only after successful submission
+        setNewAddress(''); // Clear new address input
+      } else {
+        setErrorMessage('Failed to update the address.'); // Set error message
+      }
+    } catch (error) {
+      console.error('Error updating address:', error);
+      setErrorMessage('An error occurred while updating the address.');
+    }
+  };
+
+  // Handle dietary preferences save
+  const handleSavePreferences = async () => {
+    const selectedPreferences = Object.keys(dietaryPreferences).filter(key => dietaryPreferences[key]);
+
+    try {
+      const response = await fetch('http://localhost:5001/api/preferences/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + user.token,
+        },
+        body: JSON.stringify({
+          preferences: selectedPreferences,
+        }),
+      });
+
+      if (response.ok) {
+        Alert.alert('Success', 'Dietary preferences updated successfully.');
+      } else {
+        setErrorMessage('Failed to update dietary preferences.'); // Set error message
+      }
+    } catch (error) {
+      console.error('Error updating dietary preferences:', error);
+      setErrorMessage('An error occurred while updating dietary preferences.');
+    }
+  };
+
+  // Handle checkbox change for dietary preferences
   const handleCheckboxChange = (preference) => {
     setDietaryPreferences((prevPreferences) => ({
       ...prevPreferences,
@@ -22,24 +134,22 @@ export default function Account() {
     }));
   };
 
-  const handleSave = () => {
-    console.log('New Address:', newAddress);
-    console.log('Dietary Preferences:', dietaryPreferences);
-    // Logic to save the updated information
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* CoreBanner component */}
       <CoreBanner style={styles.banner} />
 
       <View style={styles.profileForm}>
         <Text style={styles.headingText}>Account Management</Text>
 
+        {/* Error Message Display */}
+        {errorMessage ? (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        ) : null}
+
         {/* Current Address Display */}
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Current Address:</Text>
-          <Text style={styles.currentAddressText}>{currentAddress}</Text>
+          <Text style={styles.currentAddressText}>{currentAddress || 'Loading...'}</Text>
         </View>
 
         {/* New Address Input Field */}
@@ -49,7 +159,7 @@ export default function Account() {
             style={styles.input}
             placeholder="Enter your new address"
             value={newAddress}
-            onChangeText={setNewAddress}
+            onChangeText={(text) => setNewAddress(text)} // Only update newAddress state
           />
         </View>
 
@@ -101,8 +211,11 @@ export default function Account() {
 
         {/* Save Button */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.buttonText}>Save Changes</Text>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSaveAddress}>
+            <Text style={styles.buttonText}>Save Address</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSavePreferences}>
+            <Text style={styles.buttonText}>Save Preferences</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -131,51 +244,57 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
+  errorMessage: {
+    color: 'red',
+    fontSize: 16,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
   inputContainer: {
     marginBottom: 20,
   },
   label: {
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   currentAddressText: {
     fontSize: 16,
-    color: '#555',
-    marginBottom: 10,
+    fontStyle: 'italic',
   },
   input: {
-    height: 40,
-    borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 10,
+    borderColor: '#cccccc',
+    borderRadius: 5,
     padding: 10,
+    fontSize: 16,
   },
   checkboxContainer: {
-    flexDirection: 'column',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 10,
   },
   checkboxItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginRight: 20,
   },
   checkboxLabel: {
-    marginLeft: 10,
-    fontSize: 16,
+    marginLeft: 5,
   },
   buttonContainer: {
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   saveButton: {
-    backgroundColor: '#dd3333',
-    width: 150,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#007bff',
+    padding: 15,
+    borderRadius: 5,
+    flex: 1,
+    marginHorizontal: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: '#ffffff',
+    textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 18,
   },
 });
