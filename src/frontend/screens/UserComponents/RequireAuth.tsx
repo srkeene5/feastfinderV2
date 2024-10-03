@@ -20,13 +20,15 @@ const useRequireAuth = () => {
     }
     //console.log("in useRequireAuth", loading, user)
     if (!loading) {
-      if ((location.pathname !== '/account/signup') && (!user ) ) { //don't redirect signup
-        navigate('/account/login'); // Redirect to login if user is not logged in or token expired
+      if (location.pathname !== '/account/signup') { //don't redirect signup
+        if (!user) {
+          navigate('/account/login');
+        }
+        else {
+          fetchValidation();// Redirect to login if user is not logged in or token expired
+        }
+         
       }
-      else {
-        fetchValidation()
-      }
-      
     }
   }, [user, loading, navigate]); // Dependencies
 };
