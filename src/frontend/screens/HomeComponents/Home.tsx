@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
 import BottomBar from "../CoreComponents/BottomBar.tsx";
+import ChatPopup from "../CoreComponents/Chat.tsx";
 
 export default function Home() {
 
@@ -36,6 +37,7 @@ export default function Home() {
         
       </ScrollView>
       <BottomBar />
+      <ChatPopup />
     </SafeAreaView>
   )
 }
