@@ -21,6 +21,7 @@ import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
 import BottomBar from "../CoreComponents/BottomBar.tsx";
 import ChatPopup from "../CoreComponents/Chat.tsx";
+import MapComponent from "../MapComponents/MapComponent.tsx";
 
 export default function Home() {
 
@@ -38,6 +39,7 @@ export default function Home() {
       </ScrollView>
       <BottomBar />
       <ChatPopup />
+      <MapComponent />
     </SafeAreaView>
   )
 }
