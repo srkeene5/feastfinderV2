@@ -91,7 +91,7 @@ const ChatPopup = () => {
         setResponse(replyData);
         setNextStep(replyData.nextStep || null);  // If there’s a next step, track it
       } else {
-        setResponse({ text: 'Sorry, I didn’t understand that. Can you please try again?' });
+        setResponse({ text: "Sorry, I couldn't understand you. Please try: 'help with an order', 'help with my account', or 'talk to human support'" });
       }
     }
 
