@@ -28,6 +28,7 @@ export const buttonStyles = StyleSheet.create({
   buttonText: {
     fontWeight: 'bold',
     color: 'white',
+    fontSize: 16,
   },
   popupButton: {
     backgroundColor: ffColors.ffGreyL, 
@@ -65,6 +66,7 @@ export const popStyles = StyleSheet.create({
   },
   titleText: {
     margin: 10,
+    marginRight: 140,
     fontSize: 20,
     fontWeight: 'bold',
   },

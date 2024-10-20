@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import Popup from 'reactjs-popup';
 import CoreButton from './CoreButton.tsx';
-import { ffColors, popStyles } from './CoreStyles.tsx';
+import { popStyles } from './CoreStyles.tsx';
 
 interface Props {
     children?: React.ReactNode;

@@ -1,6 +1,7 @@
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { ffColors } from './CoreStyles.tsx'
 
 export default function CoreBanner() {
 
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-        backgroundColor: '#555555',
+        backgroundColor: ffColors.ffRedD,
         flexDirection: 'row',
         alignItems: 'center'
     },
