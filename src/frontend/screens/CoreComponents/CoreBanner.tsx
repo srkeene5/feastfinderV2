@@ -92,11 +92,6 @@ export default function CoreBanner() {
 }
 
 const styles = StyleSheet.create({
-    headingText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        paddingHorizontal: 8
-    },
     search:{
         height: 60,
         margin: 20,

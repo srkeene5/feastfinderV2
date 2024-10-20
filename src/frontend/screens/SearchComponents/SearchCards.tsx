@@ -12,6 +12,8 @@ import {
 
 import { useAuth } from '../UserComponents/Authorizer.tsx';
 
+import { coreStyles } from '../CoreComponents/CoreStyles.tsx';
+
 import Popup from 'reactjs-popup'
 
 // navigation
@@ -316,7 +318,7 @@ export default function SearchCards() {
     return (
         <SafeAreaView>
             <Text 
-            style={styles.headingText}
+            style={coreStyles.headingText}
             >
                 Results for:   {search}
             </Text>
@@ -420,12 +422,6 @@ export default function SearchCards() {
 }
 
 const styles = StyleSheet.create({
-    headingText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        paddingHorizontal: 8,
-        margin: 10,
-    },
     container: {
         width: '100%',
         marginEnd: 10,

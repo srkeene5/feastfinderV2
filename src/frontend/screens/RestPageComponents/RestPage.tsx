@@ -3,6 +3,8 @@ import React from 'react'
 
 // Components
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
+import { coreStyles } from '../CoreComponents/CoreStyles.tsx';
+
 
 // navigation
 import { useLocation } from 'react-router-dom';
@@ -48,17 +50,17 @@ export default function RestPage() {
       style={[styles.account]}
       >
         <Text
-        style={styles.headingText}
+        style={coreStyles.headingText}
         >
           Service: {service}
         </Text>
         <Text
-        style={styles.headingText}
+        style={coreStyles.headingText}
         >
           Restaurant Name: {restaurant.restaurantName}
         </Text>
         <Text
-        style={styles.headingText}
+        style={coreStyles.headingText}
         >
           Restaurant ID: {restaurant.restaurantID}
         </Text>
@@ -77,11 +79,6 @@ export default function RestPage() {
 }
 
 const styles = StyleSheet.create({
-  headingText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingHorizontal: 8,
-  },
   account: {
     //alignItems: 'center',
     height: 110,

@@ -9,6 +9,9 @@ import {
     TouchableOpacity, 
 } from 'react-native'
 
+
+import { coreStyles } from '../CoreComponents/CoreStyles.tsx';
+
 // navigation
 import { useNavigate } from 'react-router-dom';
 
@@ -65,7 +68,7 @@ export default function PopularCards() {
         }
     }
 
-    const restItem = (item: string) => {
+    const restItem = (item) => {
         return (
             <TouchableOpacity
             style={styles.card}
@@ -83,14 +86,14 @@ export default function PopularCards() {
         restaurants.forEach(restaurant => {
             restName.add(restaurant.restaurantName)
         });
-        return Array.from(restName).map((item: string) => restItem(item))
+        return Array.from(restName).map((item, index) => restItem(item))
     }
 
     //-----Popular Cards Exported-----
     return (
         <SafeAreaView>
             <Text 
-            style={styles.headingText}
+            style={coreStyles.headingText}
             >
                 Popular:
             </Text>
@@ -105,11 +108,6 @@ export default function PopularCards() {
 }
 
 const styles = StyleSheet.create({
-    headingText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        paddingHorizontal: 8
-    },
     container: {
         width: '100%',
         marginEnd: 10,

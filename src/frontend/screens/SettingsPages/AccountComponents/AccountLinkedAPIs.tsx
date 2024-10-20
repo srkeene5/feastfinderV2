@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
-import Popup from 'reactjs-popup'
+import { ffColors } from '../../CoreComponents/CoreStyles.tsx';
+import CoreButton from '../../CoreComponents/CoreButton.tsx';
+import CorePopup from '../../CoreComponents/CorePopup.tsx';
 
 export default function AccountLinkedAPIs() {
     
@@ -102,16 +104,11 @@ export default function AccountLinkedAPIs() {
                 <View
                 style={styles.linkedContainer}
                 >
-                    <Pressable
-                    onPress={()=>{setButtonService(service); setLogoutPop(true)}}
-                    style={[styles.buttonUnlink, styles.button]}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Unlink Account
-                        </Text>
-                    </Pressable>
+                    <CoreButton
+                    pressFunc={()=>{setButtonService(service); setLogoutPop(true)}}
+                    bText={"Unlink Account"}
+                    buttonColor={ffColors.ffGreyL}
+                    />
                     <Text
                     style={[styles.serviceText, styles.text]}
                     >
@@ -131,16 +128,11 @@ export default function AccountLinkedAPIs() {
                 <View
                 style={styles.linkedContainer}
                 >
-                    <Pressable
-                    onPress={()=>{setButtonService(service); setLoginPop(true)}}
-                    style={[styles.buttonLink, styles.button]}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Link Account
-                        </Text>
-                    </Pressable>
+                    <CoreButton
+                    pressFunc={()=>{setButtonService(service); setLoginPop(true)}}
+                    bText={"Link Account"}
+                    buttonColor={ffColors.ffGreenL}
+                    />
                     <Text
                     style={[styles.serviceText, styles.text]}
                     >
@@ -159,6 +151,7 @@ export default function AccountLinkedAPIs() {
     }
 
     const popLoginHandler = async () => {
+        console.log("Login Handler");
         if (!userValue) {
             setErrText("Username Blank");
             setErrPop(true);
@@ -288,18 +281,25 @@ export default function AccountLinkedAPIs() {
                 {getLinked("UberEats")}
             </View>
 
-            <Popup 
-            open={loginPop} 
-            onClose={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass();}}
-            contentStyle={styles.popup}
+            <CorePopup 
+            popTitle={'Enter ' + buttonService + ' Login to Link Account:'}
+            popText={""}
+            closeFunc={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass();}}
+            pop={loginPop}
+            titleColor={ffColors.ffGreenL}
+            buttons={[
+                {
+                    bText: 'Submit',
+                    bColor: ffColors.ffGreenL,
+                    bFunc: ()=>{popLoginHandler()}
+                },
+                {
+                    bText: 'Close',
+                    bColor: ffColors.ffRedL,
+                    bFunc: ()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass()}
+                }
+            ]}
             >
-                <View>
-                    <Text
-                    style={styles.promptText}
-                    >
-                        Enter {buttonService} Login to Link Account: 
-                    </Text>
-                </View>
                 <View
                 style={styles.loginContainer}
                 >
@@ -321,108 +321,42 @@ export default function AccountLinkedAPIs() {
                     placeholder='Password...'
                     />
                 </View>
-                <View
-                style={styles.buttonContainer}
-                >
-                    <Pressable
-                    onPress={()=>{popLoginHandler()}}
-                    style={styles.popupSubmitButton}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Submit
-                        </Text>
-                    </Pressable>
-                    <Pressable
-                    onPress={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass()}}
-                    style={styles.popupButton}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Close
-                        </Text>
-                    </Pressable>
-                </View>
-            </Popup>
+            </CorePopup>
 
-            <Popup 
-            open={logoutPop} 
-            onClose={()=>{setLogoutPop(false); setButtonService('Error Undefined')}}
-            contentStyle={styles.popup}
-            >
-                <View>
-                    <Text
-                    style={styles.errorText}
-                    >
-                        Confirm unlink {buttonService} Account:
-                    </Text>
-                </View>
-                <View
-                style={styles.loginContainer}
-                >
-                </View>
-                <View
-                style={styles.buttonContainer}
-                >
-                    <Pressable
-                    onPress={()=>{popLogoutHandler()}}
-                    style={styles.popupSubmitButton}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Confirm
-                        </Text>
-                    </Pressable>
-                    <Pressable
-                    onPress={()=>{setLogoutPop(false); setButtonService('Error Undefined')}}
-                    style={styles.popupButton}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Cancel
-                        </Text>
-                    </Pressable>
-                </View>
-            </Popup>
+            <CorePopup 
+            popTitle={'Confirm unlink '+buttonService+' Account:'}
+            popText={""}
+            closeFunc={()=>{setLogoutPop(false); setButtonService('Error Undefined')}}
+            pop={logoutPop}
+            titleColor={ffColors.ffRedL}
+            buttons={[
+                {
+                    bText: 'Confirm',
+                    bColor: ffColors.ffGreenL,
+                    bFunc: ()=>{popLogoutHandler()}
+                },
+                {
+                    bText: 'Cancel',
+                    bColor: ffColors.ffRedL,
+                    bFunc: ()=>{setLogoutPop(false); setButtonService('Error Undefined')}
+                }
+            ]}
+            />
 
-            <Popup 
-            open={errPop} 
-            onClose={()=>{setErrPop(false); setErrText('Error Undefined')}}
-            contentStyle={styles.popup}
-            >
-                <View>
-                    <Text
-                    style={styles.errorText}
-                    >
-                        Error: 
-                    </Text>
-                </View>
-                <View>
-                    <Text
-                    style={styles.popupText}
-                    >
-                        {errText}
-                    </Text>
-                </View>
-                <View
-                style={styles.buttonContainer}
-                >
-                    <Pressable
-                    onPress={()=>{setErrPop(false); setErrText('Error Undefined')}}
-                    style={styles.popupButton}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Close
-                        </Text>
-                    </Pressable>
-                </View>
-            </Popup>
+            <CorePopup 
+            popTitle={'Error:'}
+            popText={errText}
+            closeFunc={()=>{setErrPop(false); setErrText('Error Undefined')}}
+            pop={errPop}
+            titleColor={ffColors.ffRedL}
+            buttons={[
+                {
+                    bText: 'Close',
+                    bColor: ffColors.ffRedL,
+                    bFunc: ()=>{setErrPop(false); setErrText('Error Undefined')}
+                }
+            ]}
+            />
         </View>
     )
 }
@@ -430,10 +364,10 @@ export default function AccountLinkedAPIs() {
 const styles = StyleSheet.create({
     //Linked Account Styles
     textLinked: {
-        color: 'green',
+        color: ffColors.ffGreenL,
     },
     textUnlinked: {
-        color: 'red',
+        color: ffColors.ffRedL,
     },
     buttonText: {
         fontWeight: 'bold',
@@ -453,7 +387,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#bbbbbb',
     },
     buttonLink: {
-        backgroundColor: '#449366',
+        backgroundColor: ffColors.ffGreenL,
     },
     button: {
         width: 130,
@@ -469,7 +403,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        //backgroundColor: 'red'
     },
     popupText: {
         marginBottom: 10,
@@ -486,10 +419,10 @@ const styles = StyleSheet.create({
         margin: 10,
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#ff3333'
+        color: ffColors.ffRedL
     },
     popupButton: {
-        backgroundColor: '#dd3333',
+        backgroundColor: ffColors.ffRedL,
         width: 100,
         height: 40,
         borderRadius: 20,
@@ -520,6 +453,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     loginContainer: {
-        margin: 20
+        margin: 20,
+        marginTop:0,
     },
 })
