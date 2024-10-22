@@ -7,15 +7,15 @@ import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { sendEmail } from './Email.tsx';
 
 //navigation
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CorePopup from '../../CoreComponents/CorePopup.tsx';
 import { coreStyles, ffColors } from '../../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../../CoreComponents/CoreButton.tsx';
+import { useAuth } from '../../UserComponents/Authorizer.tsx';
 
 export default function SuggPage() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const {uid} = location.state;
+  const {user} = useAuth();
 
   const [suggTextValue, setSuggValue] = React.useState('')
   const [emailValue, setEmail] = React.useState('')
@@ -44,8 +44,9 @@ export default function SuggPage() {
         }
       }
       try{
-        let subject = "Suggestion: " + uid
+        let subject = "Suggestion from User: " + user.email
         let body = "Suggestion: " + suggTextValue
+        console.log(subject + "\n" + body);
         //sendEmail(body, subject)
         console.log('Success!', 'Thank you for your feedback!');
         setSentPop(true);

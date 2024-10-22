@@ -311,12 +311,11 @@ export default function SearchCards() {
     //-----Popular Cards Exported-----
     return (
         <SafeAreaView>
-            <Text 
-            style={coreStyles.headingText}
+            <View
+            style={styles.searchPage}
             >
-                Results for:   {search}
-            </Text>
             {restItems()}
+            </View>
 
             <CorePopup
             pop={errPop}
@@ -379,6 +378,9 @@ export default function SearchCards() {
 }
 
 const styles = StyleSheet.create({
+    searchPage: {
+        backgroundColor: '#eee'
+    },
     container: {
         width: '100%',
         marginEnd: 10,
@@ -396,14 +398,7 @@ const styles = StyleSheet.create({
         borderRadius: 11,
         margin: 8,
         elevation: 5,
-        shadowOffset: {
-            width: 1,
-            height: 1
-        },
-        shadowColor: '#333',
-        shadowOpacity: .5,
-        shadowRadius: 2,
-        backgroundColor: '#888',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         flexDirection: 'row',
     },
     cardImage: {
@@ -418,7 +413,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
         padding: 10,
-        backgroundColor: ffColors.ffRedL
+        backgroundColor: 'white'
     },
     cardText: {
         height: '45%',
@@ -426,12 +421,12 @@ const styles = StyleSheet.create({
     restaurantName: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#fff',
+        color: 'black',
         marginBottom: 10,
     },
     cardDetails: {
         fontSize: 18,
-        color: '#fff',
+        color: 'black',
         marginBottom: 6,
     },
     buttonDeactive: {

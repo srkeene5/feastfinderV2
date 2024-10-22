@@ -1,5 +1,6 @@
 import React from 'react';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
+import { coreStyles } from '../CoreComponents/CoreStyles.tsx';
 
 function FAQ() {
   const faqList = [

@@ -1,21 +1,22 @@
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ffColors } from './CoreStyles.tsx'
+import CoreDrawer from './CoreDawerComponents/CoreDrawer.tsx'
 
-export default function CoreBanner() {
-
-    const [searchValue, setSearchTerm] = React.useState('')
+interface Props {
+    searchVal?: String
+}
+const CoreBanner: React.FC<Props> = ({searchVal}) => {
+    const [open, setOpen] = useState(false);
+    const [searchValue, setSearchTerm] = React.useState(searchVal)
     const [deliveryService, setDeliveryService] = React.useState('') // New state for delivery service
 
     const navigate = useNavigate();
     const location = useLocation();
 
     function navigationHandler() {
-        if(location.pathname === '/Home' || location.pathname === '/') {
-            navigate('/SettingsNavigation', {state: {uid: 86}});
-        }
-        else {
+        if(location.pathname !== '/Home' && location.pathname !== '/') {
             navigate('/Home');
         }
     }
@@ -59,7 +60,7 @@ export default function CoreBanner() {
             <View 
             style={styles.card}
             >
-                <TouchableOpacity 
+                <Pressable
                 style={styles.cardImageHolder}
                 onPress={navigationHandler}
                 >
@@ -67,7 +68,7 @@ export default function CoreBanner() {
                     source={require('../images/FeastFinder-solid-circle.png')}
                     style={styles.cardImage}
                     />
-                </TouchableOpacity>
+                </Pressable>
                 <input
                 type='text'
                 style={styles.search}
@@ -87,10 +88,16 @@ export default function CoreBanner() {
                     <option value='Grubhub'>Grubhub</option>
                     <option value='DoorDash'>DoorDash</option>
                 </select>
+                <CoreDrawer
+                open={open}
+                setOpen={setOpen}
+                />
             </View>
         </View>
     )
 }
+
+export default CoreBanner;
 
 const styles = StyleSheet.create({
     search:{
@@ -113,7 +120,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-        backgroundColor: ffColors.ffRedD,
+        backgroundColor: ffColors.ffGreenD,
         flexDirection: 'row',
         alignItems: 'center'
     },

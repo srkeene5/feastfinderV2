@@ -7,15 +7,15 @@ import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { sendEmail } from './Email.tsx';
 
 //navigation
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CorePopup from '../../CoreComponents/CorePopup.tsx';
 import { coreStyles, ffColors } from '../../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../../CoreComponents/CoreButton.tsx';
+import { useAuth } from '../../UserComponents/Authorizer.tsx';
 
 export default function RepBPage() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const {uid} = location.state;
+  const {user} = useAuth();
 
   const [reportTextValue, setRepValue] = React.useState('')
   const [emailValue, setEmail] = React.useState('')
@@ -53,9 +53,10 @@ export default function RepBPage() {
             }
           }
           try{
-            let subject = severity +" "+ bugType + " Bug Report from User:" + uid
-            let body = severity +" "+ bugType + " Bug Report: " + reportTextEmail;
-            console.log(uid + "\n" + subject + "\n" + body);
+            console.log(user.email);
+            let subject = severity +" "+ bugType + " Bug Report from User: " + user.email
+            let body = "Bug Report: " + reportTextEmail;
+            console.log(subject + "\n" + body);
             //sendEmail(body, subject)
             console.log('Success!', 'Thank you for your feedback!');
             setSentPop(true);

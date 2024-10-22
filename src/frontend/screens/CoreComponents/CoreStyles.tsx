@@ -6,7 +6,7 @@ export const ffColors = {
   ffGreyL: '#8c8c9c',
   ffRedD: '#73142e',
   ffGreenD: '#184941',
-  ffGreyD: '#41545b'
+  ffGreyD: '#41545b',
 }
 
 export const coreStyles = StyleSheet.create({
