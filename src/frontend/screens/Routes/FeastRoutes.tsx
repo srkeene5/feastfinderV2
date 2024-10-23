@@ -40,7 +40,6 @@ export default function FeastRoutes() {
           <Route path="/ReportBugPage" element={<RepBugPage />}/>
           <Route path="/Search" element={<SearchPage />}/>
           <Route path="/FAQPage" element={<FAQPage />}/>
-          <Route path="/ChatSupport" element={<ChatSupport />}/>
         </Routes>
     )
 }

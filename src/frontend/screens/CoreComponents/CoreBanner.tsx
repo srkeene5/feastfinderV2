@@ -2,10 +2,10 @@ import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-nati
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ffColors } from './CoreStyles.tsx'
-import CoreDrawer from './CoreDawerComponents/CoreDrawer.tsx'
+import CoreDrawer from './CoreDrawer.tsx'
 
 interface Props {
-    searchVal?: String
+    searchVal?: string
 }
 const CoreBanner: React.FC<Props> = ({searchVal}) => {
     const [open, setOpen] = useState(false);
@@ -42,8 +42,6 @@ const CoreBanner: React.FC<Props> = ({searchVal}) => {
                 console.error('Error fetching restaurant:', error);
                 navigate('/Search', {state: {search: searchValue, restaurants: undefined, deliveryService, errorText: 'Error fetching restaurant:'}})
             }
-
-            setSearchTerm('');
         }
     };
 

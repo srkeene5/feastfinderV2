@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
-import { ffColors } from '../../CoreComponents/CoreStyles.tsx';
+import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../../CoreComponents/CoreButton.tsx';
 import CorePopup from '../../CoreComponents/CorePopup.tsx';
+import tw from 'twrnc';
 
 export default function AccountLinkedAPIs() {
     
@@ -275,7 +276,10 @@ export default function AccountLinkedAPIs() {
   
     return (
         <View>
-            <View>
+            <Text style={tw.style(coreForm.subheader)}>
+                Linked Accounts:
+            </Text>
+            <View style={[tw.style(coreForm.body), ]}>
                 {getLinked("DoorDash")}
                 {getLinked("GrubHub")}
                 {getLinked("UberEats")}
@@ -369,81 +373,20 @@ const styles = StyleSheet.create({
     textUnlinked: {
         color: ffColors.ffRedL,
     },
-    buttonText: {
-        fontWeight: 'bold',
-    },
     text: {
         
     },
     linkedContainer: {
         flexDirection: 'row',
-        margin: 5,
         alignItems: 'center',
     },
     serviceText: {
         fontWeight: 'bold',
     },
-    buttonUnlink: {
-        backgroundColor: '#bbbbbb',
-    },
-    buttonLink: {
-        backgroundColor: ffColors.ffGreenL,
-    },
-    button: {
-        width: 130,
-        height: 35,
-        marginRight: 10,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    popup: {
-        width: 450,
-        height: 'auto',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-    },
     popupText: {
         marginBottom: 10,
         fontSize: 15,
         fontWeight: 'bold',
-    },
-    promptText: {
-        margin: 10,
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#449366'
-    },
-    errorText: {
-        margin: 10,
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: ffColors.ffRedL
-    },
-    popupButton: {
-        backgroundColor: ffColors.ffRedL,
-        width: 100,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 10,
-    },
-    popupSubmitButton: {
-        backgroundColor: '#33aa33',
-        width: 100,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 10,
-    },
-    buttonContainer: {
-        width: '100%',
-        alignItems: 'center',
-        flexDirection:'row',
-        justifyContent: 'space-evenly',
     },
     popInput:{
         height: 'auto',

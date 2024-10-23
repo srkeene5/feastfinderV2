@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
 import AccountLinkedAPIs from './AccountLinkedAPIs.tsx';
+import tw from 'twrnc';
+import { coreForm } from '../../CoreComponents/CoreStyles.tsx';
 
 export default function Account() {
   const { user } = useAuth();
@@ -134,159 +136,120 @@ export default function Account() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <CoreBanner style={styles.banner} />
+    <div style={tw.style(coreForm.container)}>
+      <CoreBanner />
+      <div style={tw.style(coreForm.innerContainer)}>
+        <div style={coreForm.headerContainer}>
+          <h2 style={coreForm.title}>FeastFinder</h2>
+          <h2 style={coreForm.subtitle}>Account Management</h2>
+        </div>
+        <View style={tw.style(coreForm.content)}>
+          <div style={coreForm.card}>
+            {/* Error Message Display */}
+            {errorMessage ? (
+              <View style={tw.style(coreForm.formItem)}>
+                <Text style={styles.errorMessage}>{errorMessage}</Text>
+              </View>
+            ) : null}
 
-      <View style={styles.profileForm}>
-        <Text style={styles.headingText}>Account Management</Text>
+            {/* Current Address Display */}
+            <View style={tw.style(coreForm.formItem)}>
+              <Text style={tw.style(coreForm.subheader)}>Current Address:</Text>
+              <View style={tw.style(coreForm.body)}>
+                <Text style={styles.currentAddressText}>{currentAddress || 'Loading...'}</Text>
+              </View>
+            </View>
 
-        {/* Error Message Display */}
-        {errorMessage ? (
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
-        ) : null}
+            {/* New Address Input Field */}
+            <View style={tw.style(coreForm.formItem)}>
+              <Text style={tw.style(coreForm.subheader)}>New Address:</Text>
+              <View style={tw.style(coreForm.body)}>
+                <TextInput
+                  style={tw.style(coreForm.textInputSingle)}
+                  placeholder="Enter your new address"
+                  value={newAddress}
+                  onChangeText={(text) => setNewAddress(text)} // Only update newAddress state
+                />
+              </View>
+            </View>
 
-        {/* Current Address Display */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Current Address:</Text>
-          <Text style={styles.currentAddressText}>{currentAddress || 'Loading...'}</Text>
+            {/* Dietary Preferences Checkboxes */}
+            <View style={tw.style(coreForm.formItem)}>
+              <Text style={tw.style(coreForm.subheader)}>Dietary Preferences:</Text>
+              <View style={tw.style(coreForm.body)}>
+                <View style={tw.style(coreForm.checkboxContainer)}>
+                  <View style={tw.style(coreForm.checkboxItem)}>
+                    <CheckBox
+                      value={dietaryPreferences.vegetarian}
+                      onValueChange={() => handleCheckboxChange('vegetarian')}
+                    />
+                    <Text style={tw.style(coreForm.checkboxLabel)}>Vegetarian</Text>
+                  </View>
+
+                  <View style={tw.style(coreForm.checkboxItem)}>
+                    <CheckBox
+                      value={dietaryPreferences.vegan}
+                      onValueChange={() => handleCheckboxChange('vegan')}
+                    />
+                    <Text style={tw.style(coreForm.checkboxLabel)}>Vegan</Text>
+                  </View>
+
+                  <View style={tw.style(coreForm.checkboxItem)}>
+                    <CheckBox
+                      value={dietaryPreferences.glutenFree}
+                      onValueChange={() => handleCheckboxChange('glutenFree')}
+                    />
+                    <Text style={tw.style(coreForm.checkboxLabel)}>Gluten-Free</Text>
+                  </View>
+
+                  <View style={tw.style(coreForm.checkboxItem)}>
+                    <CheckBox
+                      value={dietaryPreferences.dairyFree}
+                      onValueChange={() => handleCheckboxChange('dairyFree')}
+                    />
+                    <Text style={tw.style(coreForm.checkboxLabel)}>Dairy-Free</Text>
+                  </View>
+
+                  <View style={tw.style(coreForm.checkboxItem)}>
+                    <CheckBox
+                      value={dietaryPreferences.nutFree}
+                      onValueChange={() => handleCheckboxChange('nutFree')}
+                    />
+                    <Text style={tw.style(coreForm.checkboxLabel)}>Nut-Free</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            {/* Link Accounts */}
+            <View style={tw.style(coreForm.formItem)}>
+              <AccountLinkedAPIs/>
+            </View>
+
+            {/* Save Button */}
+            <View style={tw.style(coreForm.buttonContainer)}>
+              <TouchableOpacity style={styles.saveButton} onPress={handleSaveAddress}>
+                <Text style={styles.buttonText}>Save Address</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.saveButton} onPress={handleSavePreferences}>
+                <Text style={styles.buttonText}>Save Preferences</Text>
+              </TouchableOpacity>
+            </View>
+          </div>
         </View>
-
-        {/* New Address Input Field */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>New Address:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your new address"
-            value={newAddress}
-            onChangeText={(text) => setNewAddress(text)} // Only update newAddress state
-          />
-        </View>
-
-        {/* Dietary Preferences Checkboxes */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Dietary Preferences:</Text>
-          <View style={styles.checkboxContainer}>
-            <View style={styles.checkboxItem}>
-              <CheckBox
-                value={dietaryPreferences.vegetarian}
-                onValueChange={() => handleCheckboxChange('vegetarian')}
-              />
-              <Text style={styles.checkboxLabel}>Vegetarian</Text>
-            </View>
-
-            <View style={styles.checkboxItem}>
-              <CheckBox
-                value={dietaryPreferences.vegan}
-                onValueChange={() => handleCheckboxChange('vegan')}
-              />
-              <Text style={styles.checkboxLabel}>Vegan</Text>
-            </View>
-
-            <View style={styles.checkboxItem}>
-              <CheckBox
-                value={dietaryPreferences.glutenFree}
-                onValueChange={() => handleCheckboxChange('glutenFree')}
-              />
-              <Text style={styles.checkboxLabel}>Gluten-Free</Text>
-            </View>
-
-            <View style={styles.checkboxItem}>
-              <CheckBox
-                value={dietaryPreferences.dairyFree}
-                onValueChange={() => handleCheckboxChange('dairyFree')}
-              />
-              <Text style={styles.checkboxLabel}>Dairy-Free</Text>
-            </View>
-
-            <View style={styles.checkboxItem}>
-              <CheckBox
-                value={dietaryPreferences.nutFree}
-                onValueChange={() => handleCheckboxChange('nutFree')}
-              />
-              <Text style={styles.checkboxLabel}>Nut-Free</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Link Accounts */}
-        <AccountLinkedAPIs/>
-
-        {/* Save Button */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSaveAddress}>
-            <Text style={styles.buttonText}>Save Address</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSavePreferences}>
-            <Text style={styles.buttonText}>Save Preferences</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+      </div>
+    </div>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-  banner: {
-    flex: 0,
-    width: '100%',
-  },
-  profileForm: {
-    margin: 30,
-    padding: 20,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 20,
-  },
-  headingText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
   errorMessage: {
     color: 'red',
     fontSize: 16,
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 18,
-    marginBottom: 5,
   },
   currentAddressText: {
     fontSize: 16,
     fontStyle: 'italic',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    borderRadius: 5,
-    padding: 10,
-    fontSize: 16,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 10,
-  },
-  checkboxItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 20,
-  },
-  checkboxLabel: {
-    marginLeft: 5,
-  },
-  buttonContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   saveButton: {
     backgroundColor: '#007BFF',

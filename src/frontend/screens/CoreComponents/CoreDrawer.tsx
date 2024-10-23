@@ -1,45 +1,49 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 
 import Drawer from '@mui/material/Drawer'
 import { useNavigate } from 'react-router-dom';
-import { coreStyles } from '../CoreStyles.tsx';
+import { coreStyles, ffColors } from './CoreStyles.tsx';
+import { useAuth } from '../UserComponents/Authorizer.tsx';
+import ChatSupport from '../SettingsPages/ChatComponents/ChatSupport.tsx';
 
 const CoreDrawer = ({open, setOpen}) => {
+    const [openChat, setOpenChat] = useState(false);
     const navigate = useNavigate();
+    const {logout} = useAuth();
 
     const navPages = [
         {
-            navRoute: '/Home',
-            navImg: require('../../images/home.png'),
+            navFunc: () => { navigate('/Home') },
+            navImg: require('../images/home.png'),
             navText: 'Home',
         },
         {
-            navRoute: '/AccountPage',
-            navImg: require('../../images/account.png'),
+            navFunc: () => { navigate('/AccountPage') },
+            navImg: require('../images/account.png'),
             navText: 'Account',
         },
         {
-            navRoute: '/FAQPage',
-            navImg: require('../../images/faq.png'),
+            navFunc: () => { navigate('/FAQPage')},
+            navImg: require('../images/faq.png'),
             navText: 'FAQ',
         },
         {
-            navRoute: '/ChatSupport',
-            navImg: require('../../images/chatSupport.png'),
+            navFunc: ()=>{setOpenChat(true)},
+            navImg: require('../images/chatSupport.png'),
             navText: 'Support',
         },
         {
-            navRoute: '/SuggestionPage',
-            navImg: require('../../images/suggestion.png'),
+            navFunc: () => { navigate('/SuggestionPage')},
+            navImg: require('../images/suggestion.png'),
             navText: 'Suggestions',
         },
         {
-            navRoute: '/ReportBugPage',
-            navImg: require('../../images/reportBug.png'),
+            navFunc: () => { navigate('/ReportBugPage')},
+            navImg: require('../images/reportBug.png'),
             navText: 'Report Bugs',
         },
-    ]
+    ];
 
     return (
         <View>
@@ -47,13 +51,13 @@ const CoreDrawer = ({open, setOpen}) => {
             onPress={()=>setOpen(true)}
             >
                 <Image
-                source={require('../../images/menu.png')}
+                source={require('../images/menu.png')}
                 style={styles.menuImage}
                 />
             </Pressable>
             <Drawer anchor='right' open={open} onClose={()=>setOpen(false)}>
-                <View
-                >
+                <View style={styles.navContainer}>
+                    <View>
                     <View
                     style={styles.menuHeader}
                     >
@@ -66,7 +70,7 @@ const CoreDrawer = ({open, setOpen}) => {
                     {navPages.map((item, index)=>(
                         <Pressable
                         style={styles.card}
-                        onPress={() => { navigate(item.navRoute) }}
+                        onPress={item.navFunc}
                         >
                             <Image
                             source={item.navImg}
@@ -83,8 +87,27 @@ const CoreDrawer = ({open, setOpen}) => {
                             </View>
                         </Pressable>
                     ))}
+                    </View>
+                    <Pressable
+                    style={[styles.card, styles.logout]}
+                    onPress={logout}
+                    >
+                        <Image
+                        source={require('../images/logout.png')}
+                        style={styles.navImage}
+                        />
+                        <View style={styles.navTextContainer}>
+                            <Text style={[styles.navText, {color: 'white'}]}>
+                                Logout
+                            </Text>
+                        </View>
+                    </Pressable>
                 </View>
             </Drawer>
+            <ChatSupport 
+            open={openChat}
+            setOpen={setOpenChat}
+            />
         </View>
     )
 }
@@ -124,5 +147,12 @@ const styles = StyleSheet.create({
         borderTopWidth: 0,
         borderBottomWidth: 1,
         borderColor: 'lightgrey',
+    },
+    navContainer: {
+        flex:1,
+        justifyContent: 'space-between'
+    },
+    logout: {
+        backgroundColor: ffColors.ffRedL
     },
 })

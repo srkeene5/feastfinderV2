@@ -1,6 +1,6 @@
 import React from 'react';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
-import { coreStyles } from '../CoreComponents/CoreStyles.tsx';
+import { coreForm } from '../CoreComponents/CoreStyles.tsx';
 
 export default function FAQ() {
   const faqList = [
@@ -27,21 +27,23 @@ export default function FAQ() {
   ];
 
   return (
-    <div style={coreStyles.container}>
+    <div style={coreForm.container}>
       <CoreBanner />
 
-      <div style={coreStyles.innerContainer}>
-        <div style={coreStyles.headerContainer}>
-          <h2 style={coreStyles.title}>FeastFinder</h2>
-          <h2 style={coreStyles.subtitle}>Frequently Asked Questions</h2>
+      <div style={coreForm.innerContainer}>
+        <div style={coreForm.headerContainer}>
+          <h2 style={coreForm.title}>FeastFinder</h2>
+          <h2 style={coreForm.subtitle}>Frequently Asked Questions</h2>
         </div>
 
-        <div style={coreStyles.content}>
-          <div style={coreStyles.card}>
+        <div style={coreForm.content}>
+          <div style={coreForm.card}>
             {faqList.map((faq, index) => (
-              <div key={index} style={coreStyles.faqItem}>
-                <h3 style={coreStyles.question}>{faq.question}</h3>
-                <p style={coreStyles.answer}>{faq.answer}</p>
+              <div key={index} style={coreForm.formItem}>
+                <h3 style={coreForm.subheader}>{faq.question}</h3>
+                <div style={coreForm.body}>
+                  <p style={coreForm.text}>{faq.answer}</p>
+                </div>
               </div>
             ))}
           </div>

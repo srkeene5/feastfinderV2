@@ -1,6 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export const ffColors = {
+  ffBackground: '#f6f6f6',
+  ffCard: '#ffffff',
+  ffEdge: '#dddddd',
+  ffHeading: '#111827',
+  ffBody: '#6b7280',
+  ffText: '#000000',
   ffRedL: '#b51536',
   ffGreenL: '#079373',
   ffGreyL: '#8c8c9c',
@@ -72,21 +78,12 @@ export const popStyles = StyleSheet.create({
   },
 })
 
-export const form = StyleSheet.create({
-  form: {
-    margin: 30,
-    padding: 20,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 20,
-  },
-})
-
-const coreStyles = {
+export const coreForm = {
   container: {
     minHeight: '100%',
     display: 'flex',
     flexDirection: 'column' as 'column',
-    backgroundColor: '#ffffff',
+    backgroundColor: ffColors.ffBackground,
   },
   innerContainer: {
     display: 'flex',
@@ -104,14 +101,14 @@ const coreStyles = {
     textAlign: 'center' as 'center',
     fontSize: '3rem',
     fontWeight: 'bold' as 'bold',
-    color: '#fb923c',
+    color: ffColors.ffGreenL,
   },
   subtitle: {
     marginTop: '1.5rem',
     textAlign: 'center' as 'center',
     fontSize: '1.875rem',
     fontWeight: 'bold' as 'bold',
-    color: '#111827',
+    color: ffColors.ffHeading,
   },
   content: {
     marginTop: '2rem',
@@ -121,24 +118,70 @@ const coreStyles = {
     maxWidth: '40rem',
   },
   card: {
-    backgroundColor: '#ffffff',
-    padding: '2rem 1rem',
+    backgroundColor: ffColors.ffCard,
+    padding: '1.25rem 1rem 2rem 1rem',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
     borderRadius: '0.5rem',
   },
-  faqItem: {
+  formItem: {
     marginBottom: '1.5rem',
   },
-  question: {
+  header: {
+    fontSize: '1.5rem',
+    fontWeight: 500,
+    color: ffColors.ffHeading,
+  },
+  subheader: {
     fontSize: '1.125rem',
     fontWeight: 600,
-    color: '#111827',
+    color: ffColors.ffHeading,
   },
-  answer: {
+  body: {
+    paddingLeft: '0.5rem'
+  },
+  text: {
     marginTop: '0.5rem',
     fontSize: '0.875rem',
-    color: '#6b7280',
+    color: ffColors.ffBody,
+  },
+  textInputSingle: {
+    marginTop: '0.5rem',
+    borderRadius: 20,
+    padding: 10,
+    border: '1px solid',
+    borderColor: ffColors.ffEdge,
+  },
+  textInputBox: {
+    height: 'auto',
+    marginTop: '0.5rem',
+    borderRadius: 20,
+    padding: 10,
+    resize: 'none',
+    border: '1px solid',
+    borderColor: ffColors.ffEdge,
+  },
+  dropdown: {
+    marginTop: '0.5rem',
+    borderRadius: 20,
+    padding: 10,
+    border: '1px solid',
+    borderColor: ffColors.ffEdge,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 10,
+  },
+  checkboxItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  checkboxLabel: {
+    marginLeft: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
 };
-
-export default coreStyles;
