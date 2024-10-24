@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import connectDB from './dbConnect.js'; // Import the connection module
 import User from './models/User.js';  
 import restaurantData from './restaurantData.js'; 
 import Restaurant from './models/Restaurant.js';
@@ -15,28 +16,33 @@ import locationRoutes from './routes/location.js';
 import Cart from './models/Cart.js'; // Import the Cart model
 import cartRoutes from './routes/cartroute.js'; // Import the cart route
 
+
 dotenv.config();
 
 const app = express();
+
+app.use(express.json());
 
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true, // If you need to send cookies or other credentials
 }));
 
+// Routes
+app.use('/api/auth', authRoutes); 
+app.use('/api/address', addressRoutes);
+app.use('/api/preferences', preferencesRoutes); // Preferences-related routes
+app.use('/api/chat', chatRoutes);
+app.use('/api/dining-halls', diningHallsRoutes);
+app.use('/api/location', locationRoutes);
+// Use the restaurant routes
+app.use('/api', restaurantAuthRoutes);
+app.use('/api/cartroute', cartRoutes); // Use the cart routes for checkout
+app.get('/', (req, res) => {
+  res.send('API is running...');
+});
 
-app.use(express.json());
 
-console.log(process.env.MONGO_URI); 
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('MongoDB connected');
-    populateUsers();
-    populateRestaurants(); // Call the function to populate restaurants 
-  })
-  .catch((err) => console.error('MongoDB connection error:', err));
 
 
 // Function to populate database with test users
@@ -87,25 +93,26 @@ const populateRestaurants = async () => {
   }
 };
 
-// Routes
-app.use('/api/auth', authRoutes); 
-app.use('/api/address', addressRoutes);
-app.use('/api/preferences', preferencesRoutes); // Preferences-related routes
-app.use('/api/chat', chatRoutes);
-app.use('/api/dining-halls', diningHallsRoutes);
-app.use('/api/location', locationRoutes);
-// Use the restaurant routes
-app.use('/api', restaurantAuthRoutes);
-app.use('/api/cartroute', cartRoutes); // Use the cart routes for checkout
-app.get('/', (req, res) => {
-  res.send('API is running...');
-});
 
 
+console.log(process.env.MONGO_URI); 
 
+// Connect to MongoDB and start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+const startServer = async () => {
+  await connectDB(); // Establish MongoDB connection
+  await populateUsers();
+  await populateRestaurants();
+
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
+};
+
+startServer();
+
+
+
 
 export default app;
