@@ -55,8 +55,15 @@ const UserSchema = new mongoose.Schema({
   dietaryPreferences: {
     type: [String], 
     default: []     
+  },   // New Field: Array of Cart ObjectIDs
+  // **New Field: Array of Cart ObjectIDs with Default Empty Array**
+  cartIDs: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cart' }],
+    default: []
   }
 });
+
+
 
 const User = mongoose.model('User', UserSchema);
 
