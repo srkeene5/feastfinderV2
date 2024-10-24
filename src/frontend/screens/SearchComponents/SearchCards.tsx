@@ -7,15 +7,16 @@ import {
     Text, 
     Image,
     View,
-    Pressable,
 } from 'react-native'
 
 import { useAuth } from '../UserComponents/Authorizer.tsx';
 
-import Popup from 'reactjs-popup'
+import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 // navigation
 import { useLocation, useNavigate } from 'react-router-dom';
+import CorePopup from '../CoreComponents/CorePopup.tsx';
+import CoreButton from '../CoreComponents/CoreButton.tsx';
 
 export default function SearchCards() {
 
@@ -206,16 +207,11 @@ export default function SearchCards() {
     const APIButton = (service: string, available: boolean, item) => {
         if (available) {
             return (
-                <Pressable
-                onPress={() => {checkLogin(service, item)}}
-                style={styles.buttons}
-                >
-                    <Text
-                    style={styles.buttonText}
-                    >
-                        {service}
-                    </Text>
-                </Pressable>
+                <CoreButton
+                pressFunc={() => {checkLogin(service, item)}}
+                bText={service}
+                buttonColor={ffColors.ffGreenL}
+                />
             )
         } else {
             return (
@@ -256,7 +252,7 @@ export default function SearchCards() {
                 style={styles.card}
                 >
                     <Image 
-                    source={require('../images/—Pngtree—store icon_4835876.png')}
+                    source={require('../images/testRest.png')}
                     style={styles.cardImage}
                     />
                     <View
@@ -315,60 +311,46 @@ export default function SearchCards() {
     //-----Popular Cards Exported-----
     return (
         <SafeAreaView>
-            <Text 
-            style={styles.headingText}
+            <View
+            style={styles.searchPage}
             >
-                Results for:   {search}
-            </Text>
             {restItems()}
+            </View>
 
-            <Popup 
-            open={errPop} 
-            onClose={()=>{setErrPop(false); setErrText('Error Undefined')}}
-            contentStyle={styles.popup}
-            >
-                <View>
-                    <Text
-                    style={styles.errorText}
-                    >
-                        Error: 
-                    </Text>
-                </View>
-                <View>
-                    <Text
-                    style={styles.popupText}
-                    >
-                        {errText}
-                    </Text>
-                </View>
-                <View
-                style={styles.buttonContainer}
-                >
-                    <Pressable
-                    onPress={()=>{setErrPop(false); setErrText('Error Undefined')}}
-                    style={styles.popupButton}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Close
-                        </Text>
-                    </Pressable>
-                </View>
-            </Popup>
+            <CorePopup
+            pop={errPop}
+            popTitle={"Error:"}
+            popText={errText}
+            closeFunc={()=>{setErrPop(false); setErrText('Error Undefined')}}
+            titleColor={ffColors.ffRedL}
+            buttons={[
+                {
+                    bText: 'Close',
+                    bColor: ffColors.ffRedL,
+                    bFunc: ()=>{setErrPop(false); setErrText('Error Undefined')}
+                }
+            ]}
+            />
 
-            <Popup 
-            open={loginPop} 
-            onClose={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass();}}
-            contentStyle={styles.popup}
+            <CorePopup 
+            popTitle={'Not logged into ' + buttonService + ':'}
+            popText={""}
+            closeFunc={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass();}}
+            pop={loginPop}
+            titleColor={ffColors.ffRedL}
+            buttons={[
+                {
+                    bText: 'Submit',
+                    bColor: ffColors.ffGreenL,
+                    bFunc: ()=>{popSubmitHandler()}
+                },
+                {
+                    bText: 'Close',
+                    bColor: ffColors.ffRedL,
+                    bFunc: ()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass()}
+                }
+            ]}
             >
-                <View>
-                    <Text
-                    style={styles.errorText}
-                    >
-                        Not logged into {buttonService}: 
-                    </Text>
-                </View>
                 <View
                 style={styles.loginContainer}
                 >
@@ -390,41 +372,14 @@ export default function SearchCards() {
                     placeholder='Password...'
                     />
                 </View>
-                <View
-                style={styles.buttonContainer}
-                >
-                    <Pressable
-                    onPress={()=>{popSubmitHandler()}}
-                    style={styles.popupSubmitButton}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Submit
-                        </Text>
-                    </Pressable>
-                    <Pressable
-                    onPress={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass()}}
-                    style={styles.popupButton}
-                    >
-                        <Text
-                        style={styles.buttonText}
-                        >
-                            Close
-                        </Text>
-                    </Pressable>
-                </View>
-            </Popup>
+            </CorePopup>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    headingText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        paddingHorizontal: 8,
-        margin: 10,
+    searchPage: {
+        backgroundColor: '#eee'
     },
     container: {
         width: '100%',
@@ -443,14 +398,7 @@ const styles = StyleSheet.create({
         borderRadius: 11,
         margin: 8,
         elevation: 5,
-        shadowOffset: {
-            width: 1,
-            height: 1
-        },
-        shadowColor: '#333',
-        shadowOpacity: .5,
-        shadowRadius: 2,
-        backgroundColor: '#888',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         flexDirection: 'row',
     },
     cardImage: {
@@ -465,7 +413,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
         padding: 10,
-        backgroundColor: '#ff5555'
+        backgroundColor: 'white'
     },
     cardText: {
         height: '45%',
@@ -473,22 +421,13 @@ const styles = StyleSheet.create({
     restaurantName: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#fff',
+        color: 'black',
         marginBottom: 10,
     },
     cardDetails: {
         fontSize: 18,
-        color: '#fff',
+        color: 'black',
         marginBottom: 6,
-    },
-    buttons: {
-        backgroundColor: '#e74c3c',
-        width: 100,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 5,
     },
     buttonDeactive: {
         backgroundColor: '#777777',
@@ -498,11 +437,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: 5,
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
     },
     buttonTextDeactive: {
         color: '#444',
@@ -534,48 +468,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     }, 
-    popup: {
-        width: 450,
-        height: 'auto',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-        //backgroundColor: 'red'
-    },
     popupText: {
         marginBottom: 10,
         fontSize: 15,
         fontWeight: 'bold',
-    },
-    errorText: {
-        margin: 10,
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#ff3333'
-    },
-    popupButton: {
-        backgroundColor: '#dd3333',
-        width: 100,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 10,
-    },
-    popupSubmitButton: {
-        backgroundColor: '#33aa33',
-        width: 100,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 10,
-    },
-    buttonContainer: {
-        width: '100%',
-        alignItems: 'center',
-        flexDirection:'row',
-        justifyContent: 'space-evenly',
     },
     popInput:{
         height: 'auto',
@@ -585,6 +481,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     loginContainer: {
-        margin: 20
+        marginTop:0,
+        margin: 20,
     },
 })

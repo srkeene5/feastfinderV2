@@ -18,6 +18,7 @@ import SearchPage from '../SearchComponents/SearchPage.tsx';
 import FAQPage from '../FAQComponents/FAQPage.tsx';
 import Signup from '../UserComponents/SignUp.tsx';
 import FollowUp from '../UserComponents/FollowUp.tsx';
+import ChatSupport from '../SettingsPages/ChatComponents/ChatSupport.tsx';
 
 import useRequireAuth from '../UserComponents/RequireAuth.tsx';
 

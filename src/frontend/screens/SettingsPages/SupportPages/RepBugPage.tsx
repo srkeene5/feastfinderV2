@@ -1,19 +1,22 @@
-import { StyleSheet, Text, View, SafeAreaView, Pressable } from 'react-native'
+import { Text, View } from 'react-native'
 import React from 'react'
-import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
+import tw from 'twrnc';
 
 // Components
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { sendEmail } from './Email.tsx';
 
 //navigation
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import CorePopup from '../../CoreComponents/CorePopup.tsx';
+import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx';
+import CoreButton from '../../CoreComponents/CoreButton.tsx';
+import { useAuth } from '../../UserComponents/Authorizer.tsx';
 
 export default function RepBPage() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const {uid} = location.state;
+  const {user} = useAuth();
 
   const [reportTextValue, setRepValue] = React.useState('')
   const [emailValue, setEmail] = React.useState('')
@@ -51,10 +54,11 @@ export default function RepBPage() {
             }
           }
           try{
-            let subject = severity +" "+ bugType + " Bug Report from User:" + uid
-            let body = severity +" "+ bugType + " Bug Report: " + reportTextEmail;
-            console.log(uid + "\n" + subject + "\n" + body);
-            sendEmail(body, subject)
+            console.log(user.email);
+            let subject = severity +" "+ bugType + " Bug Report from User: " + user.email
+            let body = "Bug Report: " + reportTextEmail;
+            console.log(subject + "\n" + body);
+            //sendEmail(body, subject)
             console.log('Success!', 'Thank you for your feedback!');
             setSentPop(true);
           } catch (err) {
@@ -89,284 +93,130 @@ export default function RepBPage() {
   }
 
   return (
-    <SafeAreaView>
+    <div
+    style={coreForm.container}
+    >
       <CoreBanner />
-      <View
-      style={styles.reportBug}
-      >
-        <View
-        style={styles.reportForm}
-        >
-          <Text
-          style={styles.headingText}
-          >
-            Report:
-          </Text>
-          <View
-          style={styles.reportSection}
-          >
-            <Text
-            style={styles.reportInfo}
-            >
-              Reports will be sent to developer team for review. User details will be attached.
-            </Text>
-            
-            <textarea
-            autoComplete='on'
-            autoCorrect='on'
-            autoCapitalize='on'
-            style={styles.repTextBox}
-            onChange={(event)=>{setRepValue(event.target.value)}}
-            value = {reportTextValue}
-            placeholder='Report Bug...'
-            rows={8}
-            />
-            <Text
-            style={styles.subheading}
-            >
-              Severity:
-            </Text>
-            <View>
-              <select
-              value={severity}
-              onChange={(event)=>{setSeverity(event.target.value)}}
-              style={styles.dropdownForm}
-              >
-                <option value="select">Select Severity...</option>
-                <option value="Minor">Minor</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Major">Major</option>
-                <option value="Urgent">Urgent</option>
-              </select>
-            </View>
-            <Text
-            style={styles.subheading}
-            >
-              Type:
-            </Text>
-            <View>
-              <select
-              value={bugType}
-              onChange={(event)=>{setBugType(event.target.value)}}
-              style={styles.dropdownForm}
-              >
-                <option value="select">Select Type...</option>
-                <option value="Usability">Usability</option>
-                <option value="Vulnerability">Vulnerability</option>
-                <option value="Financial">Financial Security</option>
-                <option value="Menu Entry">Menu Entry</option>
-              </select>
-            </View>
-          </View>
-          <Text
-          style={styles.headingText}
-          >
-            Email (Optional):
-          </Text>
-          <View
-          style={styles.reportSection}
-          >
-            <Text
-            style={styles.reportInfo}
-            >
-              The dev team may wish to reach out to you for a follow-up for more information about the error.
-              Include your email so the dev team can effectively identify and resovle the issue.
-            </Text>
-            <input
-            style={styles.repEmailInput}
-            onChange={(event)=>{setEmail(event.target.value)}}
-            value = {emailValue}
-            placeholder='Email...'
-            />
-          </View>
-          <View
-          style={styles.buttonContainer}
-          >
-            <Pressable
-            style={styles.submitButton}
-            onPress={()=>{subButtonPress()}}
-            >
-              <Text
-              style={styles.buttonText}
-              >
-                Submit
+      <div style={tw.style(coreForm.innerContainer)}>
+        <div style={coreForm.headerContainer}>
+          <h2 style={coreForm.title}>FeastFinder</h2>
+          <h2 style={coreForm.subtitle}>Report Bugs or Issues</h2>
+        </div>
+        <View style={tw.style(coreForm.content)}>
+          <div style={coreForm.card}>
+            <View style={tw.style(coreForm.formItem)}>
+              <Text style={tw.style(coreForm.header)}>
+                Report:
               </Text>
-            </Pressable>
-          </View>
+              <View style={tw.style(coreForm.body)}>
+                <Text style={tw.style(coreForm.text)}>
+                  Reports will be sent to developer team for review. User details will be attached.
+                </Text>
+                <textarea
+                autoComplete='on'
+                autoCorrect='on'
+                autoCapitalize='on'
+                style={tw.style(coreForm.textInputBox)}
+                onChange={(event)=>{setRepValue(event.target.value)}}
+                value = {reportTextValue}
+                placeholder='Report Bug...'
+                rows={8}
+                />
+              </View>
+            </View>
+            <View style={tw.style(coreForm.formItem)}>
+              <Text style={tw.style(coreForm.subheader)}>
+                Severity:
+              </Text>
+              <View style={tw.style(coreForm.body)}>
+                <select
+                value={severity}
+                onChange={(event)=>{setSeverity(event.target.value)}}
+                style={coreForm.dropdown}
+                >
+                  <option value="select">Select Severity...</option>
+                  <option value="Minor">Minor</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Major">Major</option>
+                  <option value="Urgent">Urgent</option>
+                </select>
+              </View>
+            </View>
+            <View style={tw.style(coreForm.formItem)}>
+              <Text style={tw.style(coreForm.subheader)}>
+                Type:
+              </Text>
+              <View style={tw.style(coreForm.body)}>
+                <select
+                value={bugType}
+                onChange={(event)=>{setBugType(event.target.value)}}
+                style={coreForm.dropdown}
+                >
+                  <option value="select">Select Type...</option>
+                  <option value="Usability">Usability</option>
+                  <option value="Vulnerability">Vulnerability</option>
+                  <option value="Financial">Financial Security</option>
+                  <option value="Menu Entry">Menu Entry</option>
+                </select>
+              </View>
+            </View>
+            <View style={tw.style(coreForm.formItem)}>
+              <Text style={tw.style(coreForm.header)}>
+                Email (Optional):
+              </Text>
+              <View style={tw.style(coreForm.body)}>
+                <Text style={tw.style(coreForm.text)}>
+                  The dev team may wish to reach out to you for a follow-up for more information about the error.
+                  Include your email so the dev team can effectively identify and resovle the issue.
+                </Text>
+                <input
+                style={coreForm.textInputSingle}
+                onChange={(event)=>{setEmail(event.target.value)}}
+                value = {emailValue}
+                placeholder='Email...'
+                />
+              </View>
+            </View>
+            <View style={tw.style(coreForm.buttonContainer)}>
+              <CoreButton 
+              pressFunc={()=>subButtonPress()}
+              bText={'Submit'}
+              buttonColor={ffColors.ffGreenL}
+              />
+            </View>
+          </div>
         </View>
-      </View>
+      </div>
 
-      <Popup 
-      open={errPop} 
-      onClose={()=>{setErrPop(false); setErrText('Error Undefined')}}
-      contentStyle={styles.popup}
-      >
-        <View>
-          <Text
-          style={styles.errorText}
-          >
-            Error: 
-          </Text>
-        </View>
-        <View>
-          <Text
-          style={styles.popupText}
-          >
-            {errText}
-          </Text>
-        </View>
-        <View
-        style={styles.buttonContainer}
-        >
-          <Pressable
-          onPress={()=>{setErrPop(false); setErrText('Error Undefined')}}
-          style={styles.popupButton}
-          >
-            <Text
-            style={styles.buttonText}
-            >
-              Close
-            </Text>
-          </Pressable>
-        </View>
-      </Popup>
+      <CorePopup 
+      popTitle={"Error:"}
+      popText={errText}
+      closeFunc={()=>{setErrPop(false); setErrText('Error Undefined')}}
+      pop={errPop}
+      titleColor={ffColors.ffRedL}
+      buttons={[
+        {
+          bText: 'Close',
+          bColor: ffColors.ffRedL,
+          bFunc: ()=>{setErrPop(false); setErrText('Error Undefined')}
+        }
+      ]}
+      />
 
-      <Popup 
-      open={sentPop} 
-      onClose={()=>{setSentPop(false); navigate('/Home');}}
-      contentStyle={styles.popup}
-      >
-        <View>
-          <Text
-          style={styles.successText}
-          >
-            Success: 
-          </Text>
-        </View>
-        <View>
-          <Text
-          style={styles.popupText}
-          >
-            {"Email Sent!\nThank You for the Report!"}
-          </Text>
-        </View>
-        <View
-        style={styles.buttonContainer}
-        >
-          <Pressable
-          onPress={()=>{resetAll(); navigate('/Home');}}
-          style={styles.popupButton}
-          >
-            <Text
-            style={styles.buttonText}
-            >
-              Close
-            </Text>
-          </Pressable>
-        </View>
-      </Popup>
-    </SafeAreaView>
+      <CorePopup 
+      popTitle={"Success:"}
+      popText={"Email Sent!\nThank You for the Report!"}
+      pop={sentPop}
+      closeFunc={()=>{resetAll(); navigate('/Home');}}
+      titleColor={ffColors.ffGreenL}
+      buttons={[
+        {
+          bText: 'Close',
+          bColor: ffColors.ffGreenL,
+          bFunc: ()=>{resetAll(); navigate('/Home');}
+        }
+      ]}
+      />
+    </div>
   )
 }
-
-const styles = StyleSheet.create({
-  headingText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingHorizontal: 0,
-  },
-  subheading: {
-    fontSize: 18,
-    //fontWeight: 'bold',
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  reportBug: {
-    alignItems: 'center'
-  },
-  repTextBox:{
-    height: 'auto',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 10,
-    resize: 'none',
-  },
-  repEmailInput:{
-    height: 'auto',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 10,
-  },
-  reportForm: {
-    //alignItems: 'center',
-    margin: 30,
-    flexGrow: 1,
-    backgroundColor: '#dddddd',
-    borderRadius: 30,
-    padding: 20
-  },
-  dropdownForm: {
-    marginBottom: 20,
-    borderRadius: 10,
-    padding: 10,
-  },
-  reportInfo: {
-    marginBottom: 20,
-  },
-  reportSection: {
-    margin: 30,
-  },
-  buttonContainer: {
-    alignItems: 'center'
-  },
-  submitButton: {
-    backgroundColor: '#dd3333',
-    width: 100,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 5,
-  },
-  buttonText: {
-    fontWeight: 'bold',
-  },
-  popup: {
-    width: 'auto',
-    height: 'auto',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    //backgroundColor: 'red'
-  },
-  popupText: {
-    marginBottom: 20,
-    fontSize: 15,
-    fontWeight: 'bold',
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  popupButton: {
-    backgroundColor: '#dd3333',
-    width: 100,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
-  },
-  errorText: {
-    margin: 10,
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#ff3333'
-  },
-  successText: {
-    margin: 10,
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#33ff33'
-  },
-})
