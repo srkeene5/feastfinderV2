@@ -124,9 +124,9 @@ const MapComponent: React.FC = () => {
 
     for (const rest of restaurants) {
       try {
-        const response = await fromAddress(rest.restaurantAddress);
-        const { lat, lng } = response.results[0].geometry.location;
-        newRestLocations.push({ lat, lng, restaurant: rest });
+        //const response = await fromAddress(rest.restaurantAddress);
+        //const { lat, lng } = response.results[0].geometry.location;
+        //newRestLocations.push({ lat, lng, restaurant: rest });
       } catch (error) {
         console.error("Geocoding error for restaurant: ", rest.restaurantAddress, error);
       }
