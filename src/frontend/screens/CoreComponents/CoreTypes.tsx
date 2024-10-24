@@ -10,6 +10,6 @@ interface Restaurant {
     uberEatsAvailable: boolean;
     doordashAvailable: boolean;
     grubhubAvailable: boolean;
-    mapUrl: string; // Added as optional
+    mapUrl?: string; // Added as optional
 }
 export type {Restaurant as Restaurant}
