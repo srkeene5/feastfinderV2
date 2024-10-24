@@ -5,6 +5,7 @@ import { useCart } from './CartContext.tsx'; // Adjust the path as necessary
 
 // Components
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
+import { coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 // Navigation
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -135,9 +136,23 @@ export default function RestPage() {
       <View style={styles.account}>
         <Text style={styles.headingText}>Service: {service}</Text>
         <Text style={styles.headingText}>
+      <View
+      style={[styles.account]}
+      >
+        <Text
+        style={coreStyles.headingText}
+        >
+          Service: {service}
+        </Text>
+        <Text
+        style={coreStyles.headingText}
+        >
           Restaurant Name: {restaurant.restaurantName}
         </Text>
         <Text style={styles.headingText}>
+        <Text
+        style={coreStyles.headingText}
+        >
           Restaurant ID: {restaurant.restaurantID}
         </Text>
 
@@ -172,17 +187,26 @@ export default function RestPage() {
             View Cart
           </button>
         </View>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">{restaurant.restaurantName} Menu</h1>
+          <ul className="divide-y divide-gray-200">
+            {restaurant.menu.map((item, index) => (
+              <MenuItem 
+              key={index} 
+              item={item} 
+              price={prices[index]}
+              quantity={quantities[index]}
+              onIncrement={()=>handleIncrement(index)}
+              onDecrement={()=>handleDecrement(index)}
+              />
+            ))}
+          </ul>
+        </div>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  headingText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingHorizontal: 8,
-  },
   account: {
     padding: 16,
   },

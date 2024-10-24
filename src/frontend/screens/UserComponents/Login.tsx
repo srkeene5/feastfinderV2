@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { useAuth } from "./Authorizer.tsx";
 import { useNavigate } from 'react-router-dom';
-import CoreBanner from "../CoreComponents/CoreBanner.tsx";
-
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Internal Issue");
-  const {user, setUserToken, logout} = useAuth();
+  const {user, setUserToken} = useAuth();
 
   const navigate = useNavigate();
 

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { View } from 'react-native'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-defaulticon-compatibility';
+import { fromAddress, setKey } from "react-geocode"
+import { Restaurant } from '../CoreComponents/CoreTypes.tsx';
+import { GAPIKEY } from '../../../config.js';
 
 // Import your custom marker images
 import userMarkerIcon from './user-marker.png'; // Replace with the actual path to your custom icon
 import diningHallMarkerIcon from './dining-hall-marker.png'; // Replace with the actual path to your custom icon
+import { useLocation } from 'react-router-dom';
 
 // Purdue Dining Halls Coordinates with Google Maps links
 const diningHalls = [
@@ -82,7 +87,11 @@ const MapUpdater = ({ location }: { location: { lat: number; lng: number } }) =>
   return null;
 };
 
-const MapComponent = () => {
+const MapComponent = ({}) => {
+  const location = useLocation();
+  const {restaurants = []} = location.state;
+  const [restLocations, setRestLocations] = useState<{lat: number, lng: number, restaurant: Restaurant}[]>([]);
+
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -102,11 +111,29 @@ const MapComponent = () => {
     } else {
       setError("Geolocation is not supported by this browser.");
     }
+    GetRestLocations()
   }, []);
 
+  //--------RestLocation Code--------
+  const GetRestLocations = async () => {
+    var newRestLocations = new Array<{lat: number, lng: number, restaurant: Restaurant}>
+    setKey(GAPIKEY)
+
+    for (const rest of restaurants) {
+      try {
+        //const response = await fromAddress(rest.restaurantAddress);
+        //const {lat,lng} = response.result[0].geometry.location;
+        //newRestLocations.push({lat, lng, restaurant: rest})
+      } catch (error) {
+        console.error("Geocoding error for restaurant: ", rest.restaurantAddress, error);
+      }
+    }
+
+    setRestLocations(newRestLocations);
+  }
+
   return (
-    <div style={{ height: '400px' }}>
-      <h1>Map of Dining Halls and Your Location</h1>
+    <View>
       {error && <p>{error}</p>}
       {userLocation ? (
         <MapContainer
@@ -142,11 +169,25 @@ const MapComponent = () => {
               </Popup>
             </Marker>
           ))}
+          {restLocations.map((restLoc)=>(
+            <Marker 
+            key={restLoc.restaurant.restaurantID}
+            position={[restLoc.lat, restLoc.lng]}
+            icon={diningHallIcon}
+            >
+              <Popup>
+                <strong>{restLoc.restaurant.restaurantName}</strong>
+                <br />
+                Distance: {haversineDistance(userLocation.lat, userLocation.lng, hall.lat, hall.lng)} km
+                <br />
+              </Popup>
+            </Marker>
+          ))}
         </MapContainer>
       ) : (
         <p>Loading location...</p>
       )}
-    </div>
+    </View>
   );
 };
 

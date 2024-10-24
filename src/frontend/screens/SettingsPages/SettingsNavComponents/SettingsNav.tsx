@@ -3,6 +3,7 @@ import React from 'react';
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { coreStyles } from '../../CoreComponents/CoreStyles.tsx';
 
 export default function SettingsNav() {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function SettingsNav() {
             <SafeAreaView>
                 <View>
                     <CoreBanner />
-                    <Text style={styles.headingText}>
+                    <Text style={coreStyles.headingText}>
                         NavigationPage: {uid}
                     </Text>
                 </View>
@@ -54,11 +55,6 @@ export default function SettingsNav() {
 }
 
 const styles = StyleSheet.create({
-    headingText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        paddingHorizontal: 8,
-    },
     card: {
         justifyContent: 'center',
         alignItems: 'center',
