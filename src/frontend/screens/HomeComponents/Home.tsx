@@ -14,6 +14,7 @@ import useRequireAuth from "../UserComponents/RequireAuth.tsx"
 import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
 import MapComponent from "../MapComponents/MapComponent.tsx";
+import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 export default function Home() {
 
@@ -23,9 +24,21 @@ export default function Home() {
     return <div> Loading... </div>
   }
   return(
-    <SafeAreaView>
+    <SafeAreaView
+    style={{backgroundColor: ffColors.ffBackground}}
+    >
       <CoreBanner />
-      <PopularCards />
+      <PopularCards 
+      fetchType={'popularRestaurants'}
+      />
+      {/* 
+      * Add new main page selection such as
+      * "Popular Near You:", "Recommended Restaurants:",
+      * "Dishes You May Like:", etc
+      * Fetch using: axios.get('http://localhost:5001/api/' + fetchType)
+      * Add new PopularCard fetchType here: 
+      */}
+
       <MapComponent />
     </SafeAreaView>
   )

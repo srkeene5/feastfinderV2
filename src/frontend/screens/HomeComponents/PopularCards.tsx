@@ -6,11 +6,13 @@ import {
     ScrollView, 
     StyleSheet,
     Text,
-    TouchableOpacity, 
+    TouchableOpacity,
+    View, 
 } from 'react-native'
+import tw from 'twrnc';
 
 
-import { coreStyles } from '../CoreComponents/CoreStyles.tsx';
+import { coreForm, coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 // navigation
 import { useNavigate } from 'react-router-dom';
@@ -30,16 +32,35 @@ interface Restaurant {
     grubhubAvailable: boolean
 }
 
-export default function PopularCards() {
-    const [fetchedRestaurants, setFetchedRestaurants] = React.useState<Restaurant[]>([]);
+interface Dish {
+    dishID: string,
+    dishName: string,
+    dishDescription: string
+}
+
+interface GenItem {
+    ID: string,
+    name: string,
+    description: string,
+    image
+}
+
+export default function PopularCards({fetchType}) {
+    const [title, setTitle] = React.useState('error: Failed to Fetch')
+    const [fetchedData, setFetchedData] = React.useState<[]>([]);
 
     const navigate = useNavigate();
     
     // Fetch the restaurant data from the backend when the component is mounted
     useEffect(() => {
-        axios.get('http://localhost:5001/api/popularRestaurants')  // Ensure your backend route is correct
+        axios.get('http://localhost:5001/api/' + fetchType)  // Ensure your backend route is correct
                 .then(response => {
-                    setFetchedRestaurants(response.data);
+                    setFetchedData(response.data);
+                    if (fetchType === 'popularRestaurants') {
+                        setTitle('Popular Near You:');
+                    } else {
+                        setTitle('Fetch Type Untitled');
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching popular restaurants:', error);
@@ -68,25 +89,60 @@ export default function PopularCards() {
         }
     }
 
-    const restItem = (item) => {
+    const restDishItem = (item: GenItem) => {
+        if (item.description.length > 20) {
+            item.description = item.description.substring(0,20) + '...';
+        }
         return (
             <TouchableOpacity
-            style={styles.card}
-            onPress={() => {handlePop(item)}}
-            >
-                <Text>
-                    {item}
-                </Text>
+            key={item.ID}
+            style={styles.container}
+            onPress={() => {handlePop(item.name)}}
+            >            
+                <View style={styles.card}>
+                    <img 
+                    src={item.image} 
+                    alt="Image not Found" style={styles.cardImage} 
+                    />
+                    <Text
+                    style={tw.style(coreForm.subheader)}
+                    >
+                        {item.name}
+                    </Text>
+                    <View
+                    style={tw.style(coreForm.body)}
+                    >
+                        <Text
+                        style={tw.style(coreForm.text)}
+                        >
+                            {item.description}
+                        </Text>
+                    </View>
+                </View>
             </TouchableOpacity>
         )
     }
 
-    const restItems = (restaurants: Restaurant[]) => {
-        var restName = new Set();
-        restaurants.forEach(restaurant => {
-            restName.add(restaurant.restaurantName)
-        });
-        return Array.from(restName).map((item, index) => restItem(item))
+    const restDishItems = (items) => {
+        var itemSub = new Array<GenItem>
+        if (items[0] && items[0].restaurantName) {
+            var restName = new Set();
+            items.forEach(restaurant => {
+                if( !restName.has(restaurant.restaurantName) ) {
+                    restName.add(restaurant.restaurantName);
+                    itemSub.push({ID: restaurant.restaurantID, name: restaurant.restaurantName, description: restaurant.restaurantName + ' Description', image: require('../images/testRest.png')})
+                }
+            });
+        } else if(items[0] && items[0].dishName) {
+            var dishName = new Set();
+            items.forEach(dish => {
+                if( !dishName.has(dish.dishName) ) {
+                    restName.add(dish.dishName);
+                    itemSub.push({ID: dish.dishID, name: dish.dishName, description: dish.dishName + ' Description', image: require('../images/testDish.png')})
+                }
+            });
+        }
+        return itemSub.map((item) => restDishItem(item))
     }
 
     //-----Popular Cards Exported-----
@@ -95,25 +151,30 @@ export default function PopularCards() {
             <Text 
             style={coreStyles.headingText}
             >
-                Popular:
+                {title}
             </Text>
             <ScrollView
-            style={styles.container}
+            style={styles.scrollCards}
             horizontal={true}
             >
-                {restItems(fetchedRestaurants)}
+                {restDishItems(fetchedData)}
             </ScrollView>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
+    scrollCards: {
+        display: 'flex',
         width: '100%',
-        marginEnd: 10,
-        marginBottom: 40
+        padding: 5
     },
-    card: {
+    container: {
+        display: 'flex',
+        marginStart: 10,
+        marginEnd: 10,
+    },
+    depcard: {
         justifyContent: 'center',
         alignItems: 'center',
         width: 'auto',
@@ -131,5 +192,25 @@ const styles = StyleSheet.create({
         shadowOpacity: .5,
         shadowRadius: 2,
         backgroundColor: '#dddddd',
+    },
+    card: {
+        backgroundColor: ffColors.ffCard,
+        //borderWidth: 1,
+        //borderColor: ffColors.ffGreenL,
+        borderRadius: 5,
+        padding: 20,
+        width: 200,
+        elevation: 4, 
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        //alignItems: 'center',
+    },
+    cardImage: {
+        width: '100%',
+        height: undefined, // To maintain aspect ratio
+        aspectRatio: 1, // Adjust as necessary for the desired aspect ratio
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
     },
 })

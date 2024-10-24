@@ -11,7 +11,7 @@ import {
 
 import { useAuth } from '../UserComponents/Authorizer.tsx';
 
-import { coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
+import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 // navigation
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -252,7 +252,7 @@ export default function SearchCards() {
                 style={styles.card}
                 >
                     <Image 
-                    source={require('../images/—Pngtree—store icon_4835876.png')}
+                    source={require('../images/testRest.png')}
                     style={styles.cardImage}
                     />
                     <View

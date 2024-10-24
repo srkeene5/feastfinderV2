@@ -72,7 +72,8 @@ const ChatSupport = ({open, setOpen}) => {
   };
   //-----Original Code-----
 
-  const [messages, setMessages] = React.useState<{ message: string; sender: boolean; link?: string; internalLink?: string }[]>([{message: "Hello! How can I help you today? You can say 'help with an order', 'help with my account', or 'talk to human support'.", sender: false}])
+  const [messageNID, setMessageNID] = React.useState(1);
+  const [messages, setMessages] = React.useState<{ messageID; message: string; sender: boolean; link?: string; internalLink?: string }[]>([{messageID: 0, message: "Hello! How can I help you today? You can say 'help with an order', 'help with my account', or 'talk to human support'.", sender: false}])
   const [message, setMessage] = React.useState('')
   const chatScrollView = useRef<ScrollView>(null);
 
@@ -84,11 +85,13 @@ const ChatSupport = ({open, setOpen}) => {
 
   const keyHandler = async (event) => {
     if (event.key === 'Enter' && message !== '') {
-      setMessages([...messages, {message: message, sender: true}]);
+      setMessages([...messages, {messageID: messageNID, message: message, sender: true}]);
+      setMessageNID(messageNID+1);
       var response = submitQuery(message);
       setMessage('');
       setTimeout(()=>{
-        setMessages([...messages, {message: message, sender: true}, {message: response.text, sender: false, link: response.link, internalLink: response.internalLink}]);
+        setMessages([...messages, {messageID: messageNID, message: message, sender: true}, {messageID: messageNID+1, message: response.text, sender: false, link: response.link, internalLink: response.internalLink}]);
+        setMessageNID(messageNID+2);
       },1000);
     }
   };
@@ -110,6 +113,7 @@ const ChatSupport = ({open, setOpen}) => {
         >
           {messages.map((item)=>(
             <Text
+            key={item.messageID}
             style={[styles.chatBubble, item.sender ? styles.userBubble : styles.otherBubble]}
             >
               {item.message}

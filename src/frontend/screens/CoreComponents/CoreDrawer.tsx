@@ -69,6 +69,7 @@ const CoreDrawer = ({open, setOpen}) => {
                     </View>
                     {navPages.map((item, index)=>(
                         <Pressable
+                        key={item.navText}
                         style={styles.card}
                         onPress={item.navFunc}
                         >
