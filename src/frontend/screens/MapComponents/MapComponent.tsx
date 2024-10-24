@@ -5,6 +5,7 @@ import L from 'leaflet';
 import 'leaflet-defaulticon-compatibility';
 import { fromAddress, setKey } from "react-geocode"
 import { Restaurant } from '../CoreComponents/CoreTypes.tsx';
+import { GAPIKEY } from '../../../config.js';
 
 // Import your custom marker images
 import userMarkerIcon from './user-marker.png'; // Replace with the actual path to your custom icon
@@ -116,7 +117,7 @@ const MapComponent = ({}) => {
   //--------RestLocation Code--------
   const GetRestLocations = async () => {
     var newRestLocations = new Array<{lat: number, lng: number, restaurant: Restaurant}>
-    setKey('AIzaSyARQ8j39qjYMPurDFGSvQPi04X2eISjNZM')
+    setKey(GAPIKEY)
 
     for (const rest of restaurants) {
       try {
