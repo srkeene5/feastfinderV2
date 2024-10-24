@@ -12,12 +12,18 @@ import preferencesRoutes from './routes/preferences.js'; // Import preferences r
 import chatRoutes from './routes/chat.js';
 import diningHallsRoutes from './routes/dininghalls.js';
 import locationRoutes from './routes/location.js';
+import Cart from './models/Cart.js'; // Import the Cart model
+import cartRoutes from './routes/cartroute.js'; // Import the cart route
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors());  // Enable CORS for all routes
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true, // If you need to send cookies or other credentials
+}));
+
 
 app.use(express.json());
 
@@ -90,9 +96,12 @@ app.use('/api/dining-halls', diningHallsRoutes);
 app.use('/api/location', locationRoutes);
 // Use the restaurant routes
 app.use('/api', restaurantAuthRoutes);
+app.use('/api/cartroute', cartRoutes); // Use the cart routes for checkout
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

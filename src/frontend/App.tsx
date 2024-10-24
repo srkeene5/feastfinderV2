@@ -3,6 +3,8 @@ import { BrowserRouter as Router} from "react-router-dom";
 
 //Authenticator
 import { AuthContextProvider } from './screens/UserComponents/Authorizer.tsx';
+import { CartContextProvider } from './screens/RestPageComponents/CartContext.tsx';
+
 
 //screens
 import FeastRoutes from './screens/Routes/FeastRoutes.tsx'; 
@@ -11,11 +13,15 @@ function App(): JSX.Element {
 
   return (
     
-    <Router>
+    
       <AuthContextProvider>
+      <CartContextProvider>
+      <Router>
         <FeastRoutes />
+        </Router>
+        </CartContextProvider>
       </AuthContextProvider>
-    </Router>
+   
     
   );
 }

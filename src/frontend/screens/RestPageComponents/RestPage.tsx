@@ -1,79 +1,180 @@
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
-import React from 'react'
+// src/frontend/screens/RestPageComponents/RestPage.tsx
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useCart } from './CartContext.tsx'; // Adjust the path as necessary
 
 // Components
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 
-// navigation
-import { useLocation } from 'react-router-dom';
+// Navigation
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const MenuItem = ({ item, price }) => {
+// Define the MenuItem component
+const MenuItem = ({ item, price, quantity, onAdd, onRemove }) => {
   return (
     <li className="flex justify-between items-center p-4 border-b border-gray-200 space-x-8">
       <span className="text-lg font-medium text-gray-800">{item}</span>
-      <span className="text-lg font-semibold text-green-600">${price.toFixed(2)}</span>
+      <span className="text-lg font-semibold text-green-600">
+        ${price.toFixed(2)}
+      </span>
+      <div className="flex space-x-2">
+        <button onClick={onRemove} disabled={quantity <= 0}>
+          -
+        </button>
+        <span>{quantity}</span>
+        <button onClick={onAdd}>+</button>
+      </div>
     </li>
   );
 };
 
-
 export default function RestPage() {
   const location = useLocation();
-  const {restaurant, service} = location.state;
+  const navigate = useNavigate();
 
-  
-    let prices = [1, 2 , 3];
+  // Extract data from navigation state
+  const { restaurant, service } = location.state || {};
+  const { cart, updateCartEntry } = useCart();
 
-    switch (service) {
-      case "DoorDash":
-        prices = restaurant.doordashMenuPrice
-        break;
-      case "UberEats":
-        prices = restaurant.ubereatsMenuPrice
-        break;
-      case "GrubHub":
-        prices = restaurant.grubhubMenuPrice
-        break;
-      default:
-        console.log("Invalid service or service's prices not available")
+  // Initialize Hooks at the top level with safe defaults
+  const [quantities, setQuantities] = useState<number[]>([]);
+  const [cartTotal, setCartTotal] = useState(0);
+
+  // Prices setup based on service
+  let prices: number[] = [];
+
+  // Find existing cart entry for this restaurant (safe check)
+  const existingCartEntry = restaurant
+    ? cart.find(
+        (entry) =>
+          entry.restaurant.restaurantID === restaurant.restaurantID &&
+          entry.service === service
+      )
+    : null;
+
+  // useEffect to update state based on existing cart entry
+  useEffect(() => {
+    if (restaurant && restaurant.menu) {
+      if (existingCartEntry) {
+        setQuantities(existingCartEntry.quantities);
+        setCartTotal(existingCartEntry.total);
+      } else {
+        setQuantities(Array(restaurant.menu.length).fill(0));
+        setCartTotal(0);
+      }
     }
-  
-    
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [existingCartEntry, restaurant]);
+
+  // Move Early Return After Hooks
+  if (!restaurant || !restaurant.menu) {
+    return <div>Error: Restaurant data is missing!</div>;
+  }
+
+  // Proceed with the component logic now that data is available
+
+  // Set up prices based on the selected service
+  switch (service) {
+    case 'DoorDash':
+      prices = restaurant.doordashMenuPrice;
+      break;
+    case 'UberEats':
+      prices = restaurant.ubereatsMenuPrice;
+      break;
+    case 'GrubHub':
+      prices = restaurant.grubhubMenuPrice;
+      break;
+    default:
+      console.log("Invalid service or service's prices not available");
+  }
+
+  // Cart logic
+  const handleAdd = (index: number) => {
+    const newQuantities = [...quantities];
+    newQuantities[index]++;
+    setQuantities(newQuantities);
+    setCartTotal(cartTotal + prices[index]);
+  };
+
+  const handleRemove = (index: number) => {
+    if (quantities[index] > 0) {
+      const newQuantities = [...quantities];
+      newQuantities[index]--;
+      setQuantities(newQuantities);
+      setCartTotal(cartTotal - prices[index]);
+    }
+  };
+
+  const handleViewCart = () => {
+    const selectedItems = restaurant.menu
+      .map((item, index) => ({
+        item,
+        price: prices[index],
+        quantity: quantities[index],
+      }))
+      .filter((item) => item.quantity > 0);
+
+    const newCartEntry = {
+      restaurant: restaurant, // Ensure this is an object, not a string
+      service: service,
+      items: selectedItems,
+      total: cartTotal,
+      quantities: quantities,
+    };
+
+    // Update the cart in the Cart Context
+    updateCartEntry(newCartEntry);
+
+    // Navigate to cart without passing cart state
+    navigate('/cart');
+  };
 
   return (
     <SafeAreaView>
       <CoreBanner />
-      <View
-      style={[styles.account]}
-      >
-        <Text
-        style={styles.headingText}
-        >
-          Service: {service}
-        </Text>
-        <Text
-        style={styles.headingText}
-        >
+      <View style={styles.account}>
+        <Text style={styles.headingText}>Service: {service}</Text>
+        <Text style={styles.headingText}>
           Restaurant Name: {restaurant.restaurantName}
         </Text>
-        <Text
-        style={styles.headingText}
-        >
+        <Text style={styles.headingText}>
           Restaurant ID: {restaurant.restaurantID}
         </Text>
 
         <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">{restaurant.restaurantName} Menu</h1>
-        <ul className="divide-y divide-gray-200">
-          {restaurant.menu.map((item, index) => (
-            <MenuItem key={index} item={item} price={prices[index]} />
-          ))}
-        </ul>
-      </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            {restaurant.restaurantName} Menu
+          </h1>
+          <ul className="divide-y divide-gray-200">
+            {restaurant.menu.map((item: string, index: number) => (
+              <MenuItem
+                key={index}
+                item={item}
+                price={prices[index]}
+                quantity={quantities[index]}
+                onAdd={() => handleAdd(index)}
+                onRemove={() => handleRemove(index)}
+              />
+            ))}
+          </ul>
+        </div>
+        {/* Checkout button */}
+        <View style={{ paddingTop: 20 }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+            Total: ${cartTotal.toFixed(2)}
+          </Text>
+        </View>
+        <View style={{ paddingTop: 20 }}>
+          <button
+            onClick={handleViewCart}
+            disabled={quantities.every((quantity) => quantity === 0)}
+          >
+            View Cart
+          </button>
+        </View>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -83,7 +184,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   account: {
-    //alignItems: 'center',
-    height: 110,
-  }
-})
+    padding: 16,
+  },
+});
