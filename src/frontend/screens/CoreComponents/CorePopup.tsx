@@ -41,6 +41,7 @@ const CorePopup: React.FC<Props> = ({children, pop, popTitle, popText, buttons, 
             >
                 {buttons.map((item, index) =>(
                     <CoreButton
+                    key={index}
                     pressFunc={item.bFunc}
                     bText={item.bText}
                     buttonColor={item.bColor}

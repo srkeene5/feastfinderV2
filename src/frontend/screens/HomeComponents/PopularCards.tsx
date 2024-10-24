@@ -18,19 +18,7 @@ import { coreForm, coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx
 import { useNavigate } from 'react-router-dom';
 
 // Define the type for your restaurant objects
-interface Restaurant {
-    restaurantID: string,
-    restaurantName: string,
-    restaurantAddress: string,
-    distance: Number,
-    menu: string[],
-    ubereatsMenuPrice: Number[],
-    doordashMenuPrice: Number[],
-    grubhubMenuPrice: Number[],
-    uberEatsAvailable: boolean,
-    doordashAvailable: boolean,
-    grubhubAvailable: boolean
-}
+
 
 interface Dish {
     dishID: string,
