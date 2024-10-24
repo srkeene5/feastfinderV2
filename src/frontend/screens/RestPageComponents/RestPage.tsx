@@ -1,5 +1,5 @@
 // src/frontend/screens/RestPageComponents/RestPage.tsx
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+
 import React, { useState, useEffect } from 'react';
 import { useCart } from './CartContext.tsx'; // Adjust the path as necessary
 
@@ -11,7 +11,15 @@ import { coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // Define the MenuItem component
-const MenuItem = ({ item, price, quantity, onAdd, onRemove }) => {
+interface MenuItemProps {
+  item: string;
+  price: number;
+  quantity: number;
+  onAdd: () => void;
+  onRemove: () => void;
+}
+
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, onAdd, onRemove }) => {
   return (
     <li className="flex justify-between items-center p-4 border-b border-gray-200 space-x-8">
       <span className="text-lg font-medium text-gray-800">{item}</span>
@@ -19,11 +27,20 @@ const MenuItem = ({ item, price, quantity, onAdd, onRemove }) => {
         ${price.toFixed(2)}
       </span>
       <div className="flex space-x-2">
-        <button onClick={onRemove} disabled={quantity <= 0}>
+        <button 
+          onClick={onRemove} 
+          disabled={quantity <= 0}
+          className="px-2 py-1 bg-red-500 text-white rounded disabled:opacity-50"
+        >
           -
         </button>
         <span>{quantity}</span>
-        <button onClick={onAdd}>+</button>
+        <button 
+          onClick={onAdd}
+          className="px-2 py-1 bg-green-500 text-white rounded"
+        >
+          +
+        </button>
       </div>
     </li>
   );
@@ -37,7 +54,7 @@ export default function RestPage() {
   const { restaurant, service } = location.state || {};
   const { cart, updateCartEntry } = useCart();
 
-  // Initialize Hooks at the top level with safe defaults
+  // Initialize state with safe defaults
   const [quantities, setQuantities] = useState<number[]>([]);
   const [cartTotal, setCartTotal] = useState(0);
 
@@ -67,12 +84,10 @@ export default function RestPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingCartEntry, restaurant]);
 
-  // Move Early Return After Hooks
+  // Early return after hooks
   if (!restaurant || !restaurant.menu) {
     return <div>Error: Restaurant data is missing!</div>;
   }
-
-  // Proceed with the component logic now that data is available
 
   // Set up prices based on the selected service
   switch (service) {
@@ -131,30 +146,16 @@ export default function RestPage() {
   };
 
   return (
-    <SafeAreaView>
+    <div>
       <CoreBanner />
-      <View style={styles.account}>
-        <Text style={styles.headingText}>Service: {service}</Text>
-        <Text style={styles.headingText}>
-      <View
-      style={[styles.account]}
-      >
-        <Text
-        style={coreStyles.headingText}
-        >
-          Service: {service}
-        </Text>
-        <Text
-        style={coreStyles.headingText}
-        >
+      <div style={styles.account}>
+        <h2 style={coreStyles.headingText}>Service: {service}</h2>
+        <h2 style={coreStyles.headingText}>
           Restaurant Name: {restaurant.restaurantName}
-        </Text>
-        <Text style={styles.headingText}>
-        <Text
-        style={coreStyles.headingText}
-        >
+        </h2>
+        <h2 style={coreStyles.headingText}>
           Restaurant ID: {restaurant.restaurantID}
-        </Text>
+        </h2>
 
         <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
@@ -174,40 +175,27 @@ export default function RestPage() {
           </ul>
         </div>
         {/* Checkout button */}
-        <View style={{ paddingTop: 20 }}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+        <div style={{ paddingTop: 20 }}>
+          <h3 style={{ fontSize: 18, fontWeight: 'bold' }}>
             Total: ${cartTotal.toFixed(2)}
-          </Text>
-        </View>
-        <View style={{ paddingTop: 20 }}>
+          </h3>
+        </div>
+        <div style={{ paddingTop: 20 }}>
           <button
             onClick={handleViewCart}
             disabled={quantities.every((quantity) => quantity === 0)}
+            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
           >
             View Cart
           </button>
-        </View>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">{restaurant.restaurantName} Menu</h1>
-          <ul className="divide-y divide-gray-200">
-            {restaurant.menu.map((item, index) => (
-              <MenuItem 
-              key={index} 
-              item={item} 
-              price={prices[index]}
-              quantity={quantities[index]}
-              onIncrement={()=>handleIncrement(index)}
-              onDecrement={()=>handleDecrement(index)}
-              />
-            ))}
-          </ul>
         </div>
-      </View>
-    </SafeAreaView>
+      </div>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   account: {
-    padding: 16,
+    padding: '16px',
   },
-});
+};
