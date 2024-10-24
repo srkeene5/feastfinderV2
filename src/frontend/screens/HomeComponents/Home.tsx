@@ -2,7 +2,6 @@ import React from "react";
 
 import {
   SafeAreaView,
-  ScrollView,
 } from "react-native";
 
 //Authentication
@@ -13,7 +12,6 @@ import useRequireAuth from "../UserComponents/RequireAuth.tsx"
 // Components
 import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
-import MapComponent from "../MapComponents/MapComponent.tsx";
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 export default function Home() {
@@ -25,7 +23,7 @@ export default function Home() {
   }
   return(
     <SafeAreaView
-    style={{backgroundColor: ffColors.ffBackground}}
+    style={{backgroundColor: ffColors.ffBackground, minHeight: '100vh', height: 'auto'}}
     >
       <CoreBanner />
       <PopularCards 
@@ -38,8 +36,6 @@ export default function Home() {
       * Fetch using: axios.get('http://localhost:5001/api/' + fetchType)
       * Add new PopularCard fetchType here: 
       */}
-
-      <MapComponent />
     </SafeAreaView>
   )
 }
