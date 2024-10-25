@@ -17,12 +17,13 @@ import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CorePopup from '../CoreComponents/CorePopup.tsx';
 import CoreButton from '../CoreComponents/CoreButton.tsx';
+import { Restaurant } from '../CoreComponents/CoreTypes.tsx';
 
 export default function SearchCards() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const {search, restaurants = [], deliveryService, errorText} = location.state;
+    const {restaurants = [], deliveryService, errorText} = location.state;
 
     const [userValue, setuserValue] = React.useState('');
     const [passValue, setPassValue] = React.useState('');
@@ -228,93 +229,70 @@ export default function SearchCards() {
         }
     }
 
-    const restItem = (
-        item: { 
-            restaurantID: string; 
-            restaurantName: string; 
-            restaurantAddress: string;
-            distance: number; 
-            doordashAvailable: boolean; 
-            grubhubAvailable: boolean; 
-            uberEatsAvailable: boolean;
-            menu;
-            doordashMenuPrice;
-            grubhubMenuPrice;
-            ubereatsMenuPrice;
-        }
-    ) => {
+    const restItem = (item: Restaurant, index: number) => {
         return (
-            <SafeAreaView 
-            style={styles.containerNew}
+            <View
+            key={item.restaurantID}
+            style={styles.card}
             >
+                <Image 
+                source={require('../images/testRest.png')}
+                style={styles.cardImage}
+                />
                 <View
-                key={item.restaurantID}
-                style={styles.card}
+                style={styles.cardContent}
                 >
-                    <Image 
-                    source={require('../images/testRest.png')}
-                    style={styles.cardImage}
-                    />
-                    <View
-                    style={styles.cardContent}
+                    <Text
+                    numberOfLines={1}
+                    style={styles.restaurantName}
                     >
-                        <View
-                        style={styles.cardText}
-                        >
-                            <Text
-                            style={styles.restaurantName}
-                            >
-                                {item.restaurantName}
-                            </Text>
-                            <Text
-                            style={styles.cardDetails}
-                            >
-                                Distance: {item.distance} Miles
-                            </Text>
-                            <Text 
-                            style={styles.cardDetails}
-                            >
-                                Address: {item.restaurantAddress}
-                            </Text>
-                        </View>
-                        <View
-                        style={styles.buttonContent}
-                        >
-                            {APIButton("DoorDash", item.doordashAvailable, item)}
-                            {APIButton("GrubHub", item.grubhubAvailable, item)}
-                            {APIButton("UberEats", item.uberEatsAvailable, item)}
-                        </View>
-                    </View>
-                </View>
-            </SafeAreaView>
-        )
-    }
-
-    const restItems = () => {
-        if (filteredRestaurants.length > 0) {
-            return (
-                <ScrollView style={styles.container}>
-                    {filteredRestaurants.map((item) => restItem(item))}
-                </ScrollView>
-            );
-        } else {
-            return (
-                <View style={styles.errorPage}>
-                    <Text style={styles.errorMessage}>
-                        {errorText || `No restaurants found for ${deliveryService || 'all services'}.`}
+                        {item.restaurantName}
+                    </Text>
+                    <Text
+                    numberOfLines={1}
+                    style={styles.cardDetails}
+                    >
+                        Distance: {item.distance.toString()} Miles
+                    </Text>
+                    <Text 
+                    numberOfLines={1}
+                    style={styles.cardDetails}
+                    >
+                        Address: {item.restaurantAddress}
+                    </Text>
+                    <Text 
+                    numberOfLines={5}
+                    style={styles.cardDetails}
+                    >
+                        Description: {item.restaurantName + ' Description...'}
                     </Text>
                 </View>
-            );
-        }
-    };
+                <View
+                style={styles.buttonContent}
+                >
+                    {APIButton("DoorDash", item.doordashAvailable, item)}
+                    {APIButton("GrubHub", item.grubhubAvailable, item)}
+                    {APIButton("UberEats", item.uberEatsAvailable, item)}
+                </View>
+            </View>
+        )
+    }
 
     //-----Popular Cards Exported-----
     return (
         <SafeAreaView>
             <View
-            style={styles.searchPage}
+            style={styles.container}
             >
-            {restItems()}
+                {filteredRestaurants.length > 0 ? (
+                    filteredRestaurants.map((item, index) => restItem(item, index))
+                ) : (
+                    <View style={styles.errorPage}>
+                        <Text style={styles.errorMessage}>
+                            {errorText || `No restaurants found for ${deliveryService || 'all services'}.`}
+                        </Text>
+                    </View>
+                )}
             </View>
 
             <CorePopup
@@ -378,26 +356,16 @@ export default function SearchCards() {
 }
 
 const styles = StyleSheet.create({
-    searchPage: {
-        backgroundColor: '#eee'
-    },
     container: {
-        width: '100%',
-        marginEnd: 10,
-        marginBottom: 40
+        padding: 10,
     },
     card: {
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        minWidth: 500,
-        width: '70%',
+        width: '100%',
         height: 300,
-        paddingBottom: 1,
-        paddingRight: 1,
-        padding:1,
         borderRadius: 11,
-        margin: 8,
+        marginBottom: 10,
         elevation: 5,
+        backgroundColor: ffColors.ffCard,
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         flexDirection: 'row',
     },
@@ -409,25 +377,22 @@ const styles = StyleSheet.create({
     },
     cardContent: {
         flex: 1,
-        height: '100%',
-        borderTopRightRadius: 10,
-        borderBottomRightRadius: 10,
         padding: 10,
-        backgroundColor: 'white'
-    },
-    cardText: {
-        height: '45%',
     },
     restaurantName: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: 'black',
-        marginBottom: 10,
+        color: ffColors.ffHeading,
+        overflow: 'hidden',
+        minWidth: 100,
+        marginBottom: 8,
     },
     cardDetails: {
         fontSize: 18,
-        color: 'black',
-        marginBottom: 6,
+        color: ffColors.ffBody,
+        overflow: 'hidden',
+        minWidth:100,
+        marginTop: 8,
     },
     buttonDeactive: {
         backgroundColor: '#777777',
@@ -444,11 +409,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     buttonContent: {
-        height: '55%',
         alignItems: 'flex-end',
         justifyContent: 'space-evenly',
-        flexDirection: 'row',
         flexWrap: 'wrap',
+        paddingRight:20,
     },
     errorPage: {
         width: '100%',
@@ -462,12 +426,6 @@ const styles = StyleSheet.create({
         margin: 10,
         color: 'red',
     },
-    //New
-    containerNew: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    }, 
     popupText: {
         marginBottom: 10,
         fontSize: 15,

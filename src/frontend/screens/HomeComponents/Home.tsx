@@ -1,45 +1,42 @@
+// src/frontend/screens/HomeComponents/Home.tsx
+
 import React from "react";
 
-import {
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+// Remove React Native imports
+// import { SafeAreaView } from "react-native";
 
-//Authentication
-
+// Authentication
 import { useAuth } from '../UserComponents/Authorizer.tsx';
 import useRequireAuth from "../UserComponents/RequireAuth.tsx"
 
 // Components
 import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
-import MapComponent from "../MapComponents/MapComponent.tsx";
+import MapComponent from "../MapComponents/MapComponent.tsx"; // Adjust the path as necessary
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 export default function Home() {
 
-  const {loading} = useAuth()
+  const { loading } = useAuth()
   useRequireAuth();
+
   if (loading) {
     return <div> Loading... </div>
   }
-  return(
-    <SafeAreaView
-    style={{backgroundColor: ffColors.ffBackground}}
+
+  return (
+    <div
+      style={{
+        backgroundColor: ffColors.ffBackground,
+        minHeight: '100vh', // '100vh' is valid in web CSS
+        height: 'auto'
+      }}
     >
       <CoreBanner />
       <PopularCards 
-      fetchType={'popularRestaurants'}
+        fetchType={'popularRestaurants'}
       />
-      {/* 
-      * Add new main page selection such as
-      * "Popular Near You:", "Recommended Restaurants:",
-      * "Dishes You May Like:", etc
-      * Fetch using: axios.get('http://localhost:5001/api/' + fetchType)
-      * Add new PopularCard fetchType here: 
-      */}
-
-      <MapComponent />
-    </SafeAreaView>
+      
+    </div>
   )
 }

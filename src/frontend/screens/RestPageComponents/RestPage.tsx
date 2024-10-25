@@ -1,165 +1,201 @@
-import { StyleSheet, Text, View, SafeAreaView, Pressable } from 'react-native'
-import React, { useState } from 'react'
+// src/frontend/screens/RestPageComponents/RestPage.tsx
+
+import React, { useState, useEffect } from 'react';
+import { useCart } from './CartContext.tsx'; // Adjust the path as necessary
 
 // Components
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import { coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
 
-// navigation
-import { useLocation } from 'react-router-dom';
+// Navigation
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const MenuItem = ({ item, price, quantity, onIncrement, onDecrement }) => {
+// Define the MenuItem component
+interface MenuItemProps {
+  item: string;
+  price: number;
+  quantity: number;
+  onAdd: () => void;
+  onRemove: () => void;
+}
+
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, onAdd, onRemove }) => {
   return (
-    <li>
-      <View style={{flexDirection: 'row'}}>
-        <View style={styles.quantityContainer}>
-          <Pressable
-          style={[styles.button, quantity > 0 ? styles.buttonSub : styles.buttonDeactive]}
-          onPress={onDecrement} 
-          disabled={quantity === 0}
-          >
-            <Text style={styles.buttonText}>-</Text>
-          </Pressable>
-          <Text style={styles.quantityText}>{quantity}</Text>
-          <Pressable
-          style={[styles.button, styles.buttonAdd]}
-          onPress={onIncrement}
-          >
-            <Text style={styles.buttonText}>+</Text>
-          </Pressable>
-        </View>
-        <View 
-        style={styles.menuItem}
+    <li className="flex justify-between items-center p-4 border-b border-gray-200 space-x-8">
+      <span className="text-lg font-medium text-gray-800">{item}</span>
+      <span className="text-lg font-semibold text-green-600">
+        ${price.toFixed(2)}
+      </span>
+      <div className="flex space-x-2">
+        <button 
+          onClick={onRemove} 
+          disabled={quantity <= 0}
+          className="px-2 py-1 bg-red-500 text-white rounded disabled:opacity-50"
         >
-          <span className="text-lg font-medium text-gray-800 m-4">{item}</span>
-          <span className="text-lg font-semibold text-green-600">${price.toFixed(2)}</span>
-        </View>
-      </View>
+          -
+        </button>
+        <span>{quantity}</span>
+        <button 
+          onClick={onAdd}
+          className="px-2 py-1 bg-green-500 text-white rounded"
+        >
+          +
+        </button>
+      </div>
     </li>
   );
 };
 
-
 export default function RestPage() {
   const location = useLocation();
-  const {restaurant, service} = location.state;
+  const navigate = useNavigate();
 
-  
-  let prices = [1, 2 , 3];
+  // Extract data from navigation state
+  const { restaurant, service } = location.state || {};
+  const { cart, updateCartEntry } = useCart();
 
+  // Initialize state with safe defaults
+  const [quantities, setQuantities] = useState<number[]>([]);
+  const [cartTotal, setCartTotal] = useState(0);
+
+  // Prices setup based on service
+  let prices: number[] = [];
+
+  // Find existing cart entry for this restaurant (safe check)
+  const existingCartEntry = restaurant
+    ? cart.find(
+        (entry) =>
+          entry.restaurant.restaurantID === restaurant.restaurantID &&
+          entry.service === service
+      )
+    : null;
+
+  // useEffect to update state based on existing cart entry
+  useEffect(() => {
+    if (restaurant && restaurant.menu) {
+      if (existingCartEntry) {
+        setQuantities(existingCartEntry.quantities);
+        setCartTotal(existingCartEntry.total);
+      } else {
+        setQuantities(Array(restaurant.menu.length).fill(0));
+        setCartTotal(0);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [existingCartEntry, restaurant]);
+
+  // Early return after hooks
+  if (!restaurant || !restaurant.menu) {
+    return <div>Error: Restaurant data is missing!</div>;
+  }
+
+  // Set up prices based on the selected service
   switch (service) {
-    case "DoorDash":
-      prices = restaurant.doordashMenuPrice
+    case 'DoorDash':
+      prices = restaurant.doordashMenuPrice;
       break;
-    case "UberEats":
-      prices = restaurant.ubereatsMenuPrice
+    case 'UberEats':
+      prices = restaurant.ubereatsMenuPrice;
       break;
-    case "GrubHub":
-      prices = restaurant.grubhubMenuPrice
+    case 'GrubHub':
+      prices = restaurant.grubhubMenuPrice;
       break;
     default:
-      console.log("Invalid service or service's prices not available")
+      console.log("Invalid service or service's prices not available");
   }
-  
-  // Button code
-  const [quantities, setQuantities] = useState(Array(restaurant.menu.length).fill(0))
 
-  const handleIncrement = (index) => {
+  // Cart logic
+  const handleAdd = (index: number) => {
     const newQuantities = [...quantities];
-    newQuantities[index] += 1;
+    newQuantities[index]++;
     setQuantities(newQuantities);
+    setCartTotal(cartTotal + prices[index]);
   };
 
-  const handleDecrement = (index) => {
-    const newQuantities = [...quantities];
-    if (newQuantities[index] > 0) {
-      newQuantities[index] -=1;
+  const handleRemove = (index: number) => {
+    if (quantities[index] > 0) {
+      const newQuantities = [...quantities];
+      newQuantities[index]--;
       setQuantities(newQuantities);
+      setCartTotal(cartTotal - prices[index]);
     }
   };
 
+  const handleViewCart = () => {
+    const selectedItems = restaurant.menu
+      .map((item, index) => ({
+        item,
+        price: prices[index],
+        quantity: quantities[index],
+      }))
+      .filter((item) => item.quantity > 0);
+
+    const newCartEntry = {
+      restaurant: restaurant, // Ensure this is an object, not a string
+      service: service,
+      items: selectedItems,
+      total: cartTotal,
+      quantities: quantities,
+    };
+
+    // Update the cart in the Cart Context
+    updateCartEntry(newCartEntry);
+
+    // Navigate to cart without passing cart state
+    navigate('/cart');
+  };
+
   return (
-    <SafeAreaView>
+    <div>
       <CoreBanner />
-      <View
-      style={[styles.account]}
-      >
-        <Text
-        style={coreStyles.headingText}
-        >
-          Service: {service}
-        </Text>
-        <Text
-        style={coreStyles.headingText}
-        >
+      <div style={styles.account}>
+        <h2 style={coreStyles.headingText}>Service: {service}</h2>
+        <h2 style={coreStyles.headingText}>
           Restaurant Name: {restaurant.restaurantName}
-        </Text>
-        <Text
-        style={coreStyles.headingText}
-        >
+        </h2>
+        <h2 style={coreStyles.headingText}>
           Restaurant ID: {restaurant.restaurantID}
-        </Text>
+        </h2>
 
         <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">{restaurant.restaurantName} Menu</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            {restaurant.restaurantName} Menu
+          </h1>
           <ul className="divide-y divide-gray-200">
-            {restaurant.menu.map((item, index) => (
-              <MenuItem 
-              key={index} 
-              item={item} 
-              price={prices[index]}
-              quantity={quantities[index]}
-              onIncrement={()=>handleIncrement(index)}
-              onDecrement={()=>handleDecrement(index)}
+            {restaurant.menu.map((item: string, index: number) => (
+              <MenuItem
+                key={index}
+                item={item}
+                price={prices[index]}
+                quantity={quantities[index]}
+                onAdd={() => handleAdd(index)}
+                onRemove={() => handleRemove(index)}
               />
             ))}
           </ul>
         </div>
-      </View>
-    </SafeAreaView>
-  )
+        {/* Checkout button */}
+        <div style={{ paddingTop: 20 }}>
+          <h3 style={{ fontSize: 18, fontWeight: 'bold' }}>
+            Total: ${cartTotal.toFixed(2)}
+          </h3>
+        </div>
+        <div style={{ paddingTop: 20 }}>
+          <button
+            onClick={handleViewCart}
+            disabled={quantities.every((quantity) => quantity === 0)}
+            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+          >
+            View Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   account: {
-    //alignItems: 'center',
-    height: 110,
+    padding: '16px',
   },
-  quantityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  quantityText: {
-    marginHorizontal: 8,
-    fontSize: 18,
-  },
-  menuItem: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 4,
-  },
-  buttonAdd: {
-    backgroundColor: ffColors.ffGreenL,
-  },
-  buttonSub: {
-    backgroundColor: ffColors.ffRedL,
-  },
-  buttonDeactive: {
-    backgroundColor: ffColors.ffGreyL,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-  },
-})
+};
