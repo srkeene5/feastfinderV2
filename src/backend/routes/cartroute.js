@@ -3,10 +3,12 @@ import mongoose from 'mongoose';
 import Cart from '../models/Cart.js'; // Import the Cart model
 import { auth } from '../middleware/auth.js'; // Import the auth middleware
 import User from '../models/User.js'; // Import the User model to retrieve user data
+import Restaurant from '../models/Restaurant.js';
 
 const router = express.Router();
 
 // Route to save the cart during checkout
+/*
 router.post('/checkout', auth, async (req, res) => {
   const { restaurants, cartTotal } = req.body;
 
@@ -50,7 +52,47 @@ router.post('/checkout', auth, async (req, res) => {
     res.status(500).json({ message: 'Failed to save cart', error: error.message });
   }
 });
+*/
 
+// Route to save the cart during checkout
+router.post('/checkout', auth, async (req, res) => {
+  const { restaurant, items, cartTotal } = req.body;
+
+  try {
+    // Fetch the user data
+    const user = await User.findById(req.user).select('username cartIDs');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Create a new cart
+    const newCart = new Cart({
+      username: user.username,
+      restaurant,
+      items,
+      cartTotal,
+    });
+
+    // Save the cart document to the database
+    const savedCart = await newCart.save();
+
+    // Add the new cart's ID to the user's 'cartIDs' array
+    await User.findByIdAndUpdate(
+      req.user,
+      { $push: { cartIDs: savedCart._id } },
+      { new: true }
+    );
+
+    res.status(201).json({
+      message: 'Cart saved successfully',
+      cartID: savedCart._id,
+    });
+  } catch (error) {
+    console.error('Error saving cart:', error);
+    res.status(500).json({ message: 'Failed to save cart', error: error.message });
+  }
+});
 
 // Optional: Route to get all carts for a user
 router.get('/mycarts', auth, async (req, res) => {
@@ -87,5 +129,157 @@ router.delete('/carts/:cartId', auth, async (req, res) => {
   }
 });
 
+// Route to delete all carts for the authenticated user
+router.delete('/mycarts', auth, async (req, res) => {
+  try {
+    // Fetch the authenticated user
+    const user = await User.findById(req.user);
 
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Get the user's cart IDs
+    const cartIds = user.cartIDs;
+
+    if (!cartIds || cartIds.length === 0) {
+      return res.status(200).json({ message: 'No carts to delete' });
+    }
+
+    // Delete all carts associated with the user
+    await Cart.deleteMany({ _id: { $in: cartIds } });
+
+    // Clear the user's cartIDs array
+    user.cartIDs = [];
+    await user.save();
+
+    res.status(200).json({ message: 'All carts deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user carts:', error);
+    res.status(500).json({ message: 'Failed to delete user carts', error: error.message });
+  }
+});
+
+// Route to get all available food delivery app prices for a specified cartId
+// returns doordash/uber/grubhub cart price and restaurant name
+router.get('/cart/:cartId/prices', auth, async (req, res) => {
+  try {
+    // Fetch the authenticated user
+    const user = await User.findById(req.user);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const { cartId } = req.params;
+
+    // Validate cartId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+      return res.status(400).json({ message: 'Invalid cart ID' });
+    }
+
+    // Fetch the cart by ID, ensuring it belongs to the user
+    const cart = await Cart.findOne({ _id: cartId, username: user.username });
+
+    if (!cart || !cart.items || cart.items.length === 0) {
+      return res.status(404).json({ message: 'Cart not found or is empty' });
+    }
+
+    // Fetch the restaurant details
+    const restaurant = await Restaurant.findOne({ restaurantID: cart.restaurant.restaurantID });
+
+    if (!restaurant) {
+      return res.status(404).json({ message: `Restaurant with ID ${cart.restaurant.restaurantID} not found` });
+    }
+
+    const serviceTotals = {
+      uberEats: 0,
+      doorDash: 0,
+      grubhub: 0,
+    };
+
+    const servicesAvailable = {
+      uberEats: restaurant.uberEatsAvailable,
+      doorDash: restaurant.doordashAvailable,
+      grubhub: restaurant.grubhubAvailable,
+    };
+
+    // For each item in the cart
+    for (const itemEntry of cart.items) {
+      const itemName = itemEntry.item;
+      const quantity = itemEntry.quantity;
+
+      // Find the index of the item in the restaurant's menu
+      const itemIndex = restaurant.menu.indexOf(itemName);
+
+      if (itemIndex === -1) {
+        return res.status(404).json({ message: `Item ${itemName} not found in restaurant ${restaurant.restaurantName}` });
+      }
+
+      // Add the item's price to each service total if the service is available
+      if (restaurant.uberEatsAvailable) {
+        serviceTotals.uberEats += restaurant.ubereatsMenuPrice[itemIndex] * quantity;
+      }
+      if (restaurant.doordashAvailable) {
+        serviceTotals.doorDash += restaurant.doordashMenuPrice[itemIndex] * quantity;
+      }
+      if (restaurant.grubhubAvailable) {
+        serviceTotals.grubhub += restaurant.grubhubMenuPrice[itemIndex] * quantity;
+      }
+    }
+
+    // Prepare the response with available services and restaurant name
+    const result = {
+      restaurant: restaurant.restaurantName,
+      prices: {},
+    };
+
+    if (servicesAvailable.uberEats) {
+      result.prices.uberEatsTotal = parseFloat(serviceTotals.uberEats.toFixed(2));
+    }
+    if (servicesAvailable.doorDash) {
+      result.prices.doorDashTotal = parseFloat(serviceTotals.doorDash.toFixed(2));
+    }
+    if (servicesAvailable.grubhub) {
+      result.prices.grubhubTotal = parseFloat(serviceTotals.grubhub.toFixed(2));
+    }
+
+    if (Object.keys(result.prices).length === 0) {
+      return res.status(400).json({ message: 'No delivery services are available for the items in your cart' });
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error calculating cart prices:', error);
+    res.status(500).json({ message: 'Failed to calculate cart prices', error: error.message });
+  }
+});
+
+// Endpoint to clear the active cart
+router.delete('/cart/clear', auth, async (req, res) => {
+  try {
+    // Delete the user's active cart
+    await Cart.findOneAndDelete({ username: req.user.username });
+
+    res.status(200).json({ message: 'Cart cleared successfully' });
+  } catch (error) {
+    console.error('Error clearing cart:', error);
+    res.status(500).json({ message: 'Failed to clear cart', error: error.message });
+  }
+});
+
+// Endpoint to get the active cart
+router.get('/cart', auth, async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ username: req.user.username });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'No active cart found' });
+    }
+
+    res.status(200).json(cart);
+  } catch (error) {
+    console.error('Error fetching cart:', error);
+    res.status(500).json({ message: 'Failed to fetch cart', error: error.message });
+  }
+});
 export default router;

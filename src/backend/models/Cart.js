@@ -18,13 +18,33 @@ const restaurantEntrySchema = new mongoose.Schema({
 });
 
 // Define the main Cart schema
-const cartSchema = new mongoose.Schema(
+/*const cartSchema = new mongoose.Schema(
   {
     username: {
       type: String,
       required: true,
     },
     restaurants: [restaurantEntrySchema], // Array of restaurant entries
+    cartTotal: {
+      type: Number,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);*/
+
+// Define the main Cart schema
+const cartSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+    },
+    restaurant: {
+      type: Object, // Contains restaurant details (e.g., ID, name)
+      required: true,
+    },
+    items: [cartItemSchema], // Array of items from the restaurant
     cartTotal: {
       type: Number,
       required: true,
