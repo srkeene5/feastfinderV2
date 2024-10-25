@@ -1,6 +1,7 @@
 // src/frontend/screens/MapComponents/MapComponent.tsx
 
 import React, { useEffect, useState } from 'react';
+import { View } from 'react-native'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'; // Ensure Leaflet CSS is imported
@@ -124,9 +125,9 @@ const MapComponent: React.FC = () => {
 
     for (const rest of restaurants) {
       try {
-        const response = await fromAddress(rest.restaurantAddress);
-        const { lat, lng } = response.results[0].geometry.location;
-        newRestLocations.push({ lat, lng, restaurant: rest });
+        //const response = await fromAddress(rest.restaurantAddress);
+        //const { lat, lng } = response.results[0].geometry.location;
+        //newRestLocations.push({ lat, lng, restaurant: rest });
       } catch (error) {
         console.error("Geocoding error for restaurant: ", rest.restaurantAddress, error);
       }
@@ -136,13 +137,13 @@ const MapComponent: React.FC = () => {
   };
 
   return (
-    <div>
+    <View style={{flex:1}}>
       {error && <p>{error}</p>}
       {userLocation ? (
         <MapContainer
           center={[40.4259, -86.9196]} // Default center near Purdue
           zoom={14}
-          style={{ height: '400px', width: '100%' }} // Map size
+          style={{ flex:1, width: '100%' }} // Map size
         >
           {/* Simplified Tile Layer (Carto Light) */}
           <TileLayer
@@ -195,7 +196,7 @@ const MapComponent: React.FC = () => {
       ) : (
         <p>Loading location...</p>
       )}
-    </div>
+    </View>
   );
 };
 
