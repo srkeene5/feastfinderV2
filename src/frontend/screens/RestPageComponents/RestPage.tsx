@@ -22,33 +22,37 @@ interface MenuItemProps {
 
 const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove }) => {
   return (
-    <li className="flex justify-between items-center p-4 border-b border-gray-200 space-x-8">
+    <li className="flex items-center justify-between p-4 mb-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm transition-shadow duration-300 hover:shadow-md">
       {/* flex justify-between items-center p-4 border-b border-gray-200 space-x-8 */}
-      <Image
-              source={require('../images/testDish.png')} 
+      <div>
+        <img
+              src={require('../images/testDish.png')} 
               //require is used for static images (can't use variable). But, we can set it up with {uri: path} later potentially
               style={{
                 height: 100,
                 width: 150,
                 borderRadius: 10,
               }}
+
+              className="w-20 h-20 object-cover rounded shadow-sm"
           />
-       <div className="mt-4 text-center">
-        <h3 className="text-xl font-semibold text-gray-800">{item}</h3>
+        </div>
+       <div className="ml-4 flex-1">
+        <h3 className="text-lg font-semibold text-gray-800">{item}</h3>
         <p className="text-lg font-bold text-green-600">${price.toFixed(2)}</p>
       </div>
       <div className="flex items-center space-x-2 mt-4">
         <button 
           onClick={onRemove} 
           disabled={quantity <= 0}
-          className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full disabled:opacity-50"
+          className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full disabled:opacity-50 hover:bg-red-600 transition duration-200 ease-in-out"
         >
           -
         </button>
         <span className="text-lg font-medium">{quantity}</span>
         <button 
           onClick={onAdd}
-          className="w-8 h-8 flex items-center justify-center bg-green-500 text-white rounded-full"
+          className="w-8 h-8 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-200 ease-in-out"
         >
           +
         </button>
@@ -176,21 +180,20 @@ export default function RestPage() {
   };
 
   return (
-    <div>
+    <div className="bg-gray-100">
       <CoreBanner />
-      <div style={styles.account}>
-        <h2 style={coreStyles.headingText}>Service: {service}</h2>
+      <div style={styles.account} className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-6 mt-6 mx-auto">
+        {/* <h2 style={coreStyles.headingText}>Service: {service}</h2>
         <h2 style={coreStyles.headingText}>
           Restaurant Name: {restaurant.restaurantName}
         </h2>
         <h2 style={coreStyles.headingText}>
           Restaurant ID: {restaurant.restaurantID}
-        </h2>
-
+        </h2> */}
+        <h1 className="text-3xl font-bold text-gray-800 text-center">
+          {restaurant.restaurantName} Menu
+        </h1>
         <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            {restaurant.restaurantName} Menu
-          </h1>
           <ul className="divide-y divide-gray-200">
             {paginatedMenuItems.map((item: string, index: number) => {
               const actualIndex = currentPage * itemsPerPage + index;
@@ -215,7 +218,7 @@ export default function RestPage() {
           <button
             onClick={() => handlePageChange('prev')}
             disabled={currentPage === 0}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50 hover:bg-gray-400 transition duration-200 ease-in-out"
           >
             Previous
           </button>
@@ -225,7 +228,7 @@ export default function RestPage() {
           <button
             onClick={() => handlePageChange('next')}
             disabled={currentPage === totalPages - 1}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50 hover:bg-gray-400 transition duration-200 ease-in-out"
           >
             Next
           </button>
@@ -239,7 +242,7 @@ export default function RestPage() {
           <button
             onClick={handleViewCart}
             disabled={quantities.every((quantity) => quantity === 0)}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50"
+            className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50 hover:bg-blue-600 transition duration-200 ease-in-out"
           >
             View Cart
           </button>
