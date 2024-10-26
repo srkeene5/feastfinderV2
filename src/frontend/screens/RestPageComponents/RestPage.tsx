@@ -5,12 +5,10 @@ import { useCart } from './CartContext.tsx'; // Adjust the path as necessary
 import {Image} from 'react-native';
 // Components
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
-import { coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
-
-// Navigation
+import { coreStyles } from '../CoreComponents/CoreStyles.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ConfirmModal from './ConfirmModal.tsx'; // Import the ConfirmModal
 
-// Define the MenuItem component
 interface MenuItemProps {
   item: string;
   price: number;
@@ -64,14 +62,12 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
 export default function RestPage() {
   const location = useLocation();
   const navigate = useNavigate();
-
-  // Extract data from navigation state
   const { restaurant, service } = location.state || {};
-  const { cart, updateCartEntry } = useCart();
+  const { cart, updateCart, clearCart } = useCart();
 
-  // Initialize state with safe defaults
   const [quantities, setQuantities] = useState<number[]>([]);
   const [cartTotal, setCartTotal] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
@@ -82,35 +78,25 @@ export default function RestPage() {
   // Prices setup based on service
   let prices: number[] = [];
 
-  // Find existing cart entry for this restaurant (safe check)
-  const existingCartEntry = restaurant
-    ? cart.find(
-        (entry) =>
-          entry.restaurant.restaurantID === restaurant.restaurantID &&
-          entry.service === service
-      )
-    : null;
-
-  // useEffect to update state based on existing cart entry
   useEffect(() => {
     if (restaurant && restaurant.menu) {
-      if (existingCartEntry) {
-        setQuantities(existingCartEntry.quantities);
-        setCartTotal(existingCartEntry.total);
+      if (cart && cart.restaurant.restaurantID === restaurant.restaurantID) {
+        setQuantities(cart.quantities);
+        setCartTotal(cart.total);
+      } else if (cart && cart.restaurant.restaurantID !== restaurant.restaurantID) {
+        setShowModal(true);
       } else {
         setQuantities(Array(restaurant.menu.length).fill(0));
         setCartTotal(0);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [existingCartEntry, restaurant]);
+  }, [cart, restaurant]);
 
-  // Early return after hooks
   if (!restaurant || !restaurant.menu) {
     return <div>Error: Restaurant data is missing!</div>;
   }
 
-  // Set up prices based on the selected service
   switch (service) {
     case 'DoorDash':
       prices = restaurant.doordashMenuPrice;
@@ -165,18 +151,32 @@ export default function RestPage() {
       .filter((item) => item.quantity > 0);
 
     const newCartEntry = {
-      restaurant: restaurant, // Ensure this is an object, not a string
+      restaurant: restaurant,
       service: service,
       items: selectedItems,
       total: cartTotal,
       quantities: quantities,
     };
 
-    // Update the cart in the Cart Context
-    updateCartEntry(newCartEntry);
-
-    // Navigate to cart without passing cart state
+    updateCart(newCartEntry);
     navigate('/cart');
+  };
+
+  const handleSwitchRestaurant = () => {
+    clearCart();
+    navigate('/home');
+  };
+
+  const handleConfirm = () => {
+    clearCart();
+    setQuantities(Array(restaurant.menu.length).fill(0));
+    setCartTotal(0);
+    setShowModal(false);
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
+    navigate('/home');
   };
 
   return (
@@ -251,8 +251,23 @@ export default function RestPage() {
               Next
             </button>
           </div>
+        
+          {/* Vertical Line */}
+          <div className="h-20 border-l border-gray-300 mx-4"></div>
+          <button onClick={handleSwitchRestaurant} className="px-4 py-2 bg-red-500 text-white rounded ml-4">
+            Switch Restaurant
+          </button>
+          </div>
         </div>
-      </div>
+
+        {/* Include the ConfirmModal */}
+        <ConfirmModal
+          isOpen={showModal}
+          title="Switch Restaurants?"
+          message={`You can only have items from one restaurant in your cart (currently from "${cart?.restaurant.restaurantName}"). Would you like to clear your cart to add items from "${restaurant.restaurantName}"?`}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
     </div>
   );
 }
@@ -262,3 +277,8 @@ const styles = {
     padding: '16px',
   },
 };
+
+
+
+
+

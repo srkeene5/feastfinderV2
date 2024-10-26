@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router} from "react-router-dom";
-
+import 'leaflet/dist/leaflet.css';
 //Authenticator
 import { AuthContextProvider } from './screens/UserComponents/Authorizer.tsx';
 import { CartContextProvider } from './screens/RestPageComponents/CartContext.tsx';
