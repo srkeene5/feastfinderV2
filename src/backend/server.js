@@ -15,7 +15,7 @@ import diningHallsRoutes from './routes/dininghalls.js';
 import locationRoutes from './routes/location.js';
 import Cart from './models/Cart.js'; // Import the Cart model
 import cartRoutes from './routes/cartroute.js'; // Import the cart route
-
+import restaurantRoutes from './routes/restaurantAuth.js';
 
 dotenv.config();
 
@@ -35,6 +35,7 @@ app.use('/api/preferences', preferencesRoutes); // Preferences-related routes
 app.use('/api/chat', chatRoutes);
 app.use('/api/dining-halls', diningHallsRoutes);
 app.use('/api/location', locationRoutes);
+app.use('/api/restaurantAuth', restaurantRoutes);
 // Use the restaurant routes
 app.use('/api', restaurantAuthRoutes);
 app.use('/api/cartroute', cartRoutes); // Use the cart routes for checkout

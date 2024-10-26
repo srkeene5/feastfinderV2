@@ -36,8 +36,9 @@ const restaurantEntrySchema = new mongoose.Schema({
 // Define the main Cart schema
 const cartSchema = new mongoose.Schema(
   {
-    username: {
-      type: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     restaurant: {
