@@ -68,7 +68,7 @@ router.post('/checkout', auth, async (req, res) => {
 
     // Create a new cart
     const newCart = new Cart({
-      username: user.username,
+      user: req.user,
       restaurant,
       items,
       cartTotal,
@@ -160,16 +160,11 @@ router.delete('/mycarts', auth, async (req, res) => {
   }
 });
 
+
 // Route to get all available food delivery app prices for a specified cartId
-// returns doordash/uber/grubhub cart price and restaurant name
+// Returns DoorDash/UberEats/Grubhub cart price and restaurant name
 router.get('/cart/:cartId/prices', auth, async (req, res) => {
   try {
-    // Fetch the authenticated user
-    const user = await User.findById(req.user);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
     const { cartId } = req.params;
 
     // Validate cartId is a valid ObjectId
@@ -178,7 +173,7 @@ router.get('/cart/:cartId/prices', auth, async (req, res) => {
     }
 
     // Fetch the cart by ID, ensuring it belongs to the user
-    const cart = await Cart.findOne({ _id: cartId, username: user.username });
+    const cart = await Cart.findOne({ _id: cartId, user: req.user });
 
     if (!cart || !cart.items || cart.items.length === 0) {
       return res.status(404).json({ message: 'Cart not found or is empty' });
@@ -188,7 +183,9 @@ router.get('/cart/:cartId/prices', auth, async (req, res) => {
     const restaurant = await Restaurant.findOne({ restaurantID: cart.restaurant.restaurantID });
 
     if (!restaurant) {
-      return res.status(404).json({ message: `Restaurant with ID ${cart.restaurant.restaurantID} not found` });
+      return res
+        .status(404)
+        .json({ message: `Restaurant with ID ${cart.restaurant.restaurantID} not found` });
     }
 
     const serviceTotals = {
@@ -212,7 +209,11 @@ router.get('/cart/:cartId/prices', auth, async (req, res) => {
       const itemIndex = restaurant.menu.indexOf(itemName);
 
       if (itemIndex === -1) {
-        return res.status(404).json({ message: `Item ${itemName} not found in restaurant ${restaurant.restaurantName}` });
+        return res
+          .status(404)
+          .json({
+            message: `Item ${itemName} not found in restaurant ${restaurant.restaurantName}`,
+          });
       }
 
       // Add the item's price to each service total if the service is available
@@ -244,7 +245,9 @@ router.get('/cart/:cartId/prices', auth, async (req, res) => {
     }
 
     if (Object.keys(result.prices).length === 0) {
-      return res.status(400).json({ message: 'No delivery services are available for the items in your cart' });
+      return res
+        .status(400)
+        .json({ message: 'No delivery services are available for the items in your cart' });
     }
 
     res.json(result);
@@ -282,4 +285,94 @@ router.get('/cart', auth, async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch cart', error: error.message });
   }
 });
+
+// Endpoint to get the 5 most recent restaurants from user's carts
+router.get('/recent-restaurants', auth, async (req, res) => {
+  try {
+    // Ensure req.user contains the user ID
+    const userId = req.user;
+
+    // Fetch the 5 most recent carts of the user
+    const carts = await Cart.find({ user: userId })
+      .sort({ createdAt: -1 }) // Sort by most recent
+      .limit(5);
+
+    if (!carts || carts.length === 0) {
+      return res.status(404).json({ message: 'No recent carts found' });
+    }
+
+    // Extract the unique restaurant IDs from the carts
+    const restaurantIDs = carts.map((cart) => cart.restaurant.restaurantID);
+
+    // Remove duplicate restaurant IDs
+    const uniqueRestaurantIDs = [...new Set(restaurantIDs)];
+
+    // Fetch the restaurant objects from the database
+    const restaurants = await Restaurant.find({ restaurantID: { $in: uniqueRestaurantIDs } });
+
+    res.status(200).json(restaurants);
+  } catch (error) {
+    console.error('Error fetching recent restaurants:', error);
+    res.status(500).json({ message: 'Failed to fetch recent restaurants', error: error.message });
+  }
+});
+
+// Returns the 8 most recent dish names, their restaurantID, restaurant name, and date ordered
+router.get('/recent-dishes', auth, async (req, res) => {
+  try {
+    const userId = req.user;
+
+    // Fetch the user's most recent carts that contain items
+    const carts = await Cart.find({ user: userId, items: { $exists: true, $ne: [] } })
+      .sort({ createdAt: -1 })
+      .limit(10); // Increase limit to have more carts to pull unique dishes from
+
+    if (!carts || carts.length === 0) {
+      return res.status(404).json({ message: 'No recent carts found' });
+    }
+
+    const recentDishes = [];
+    const dishSet = new Set();
+
+    for (const cart of carts) {
+      const { restaurant } = cart;
+      const { restaurantID, restaurantName } = restaurant;
+
+      for (const item of cart.items) {
+        if (recentDishes.length >= 8) break;
+
+        const dishKey = `${item.item}-${restaurantID}`;
+        if (!dishSet.has(dishKey)) {
+          dishSet.add(dishKey);
+
+          // Format the date to include only day, month, and year
+          const formattedDate = cart.createdAt.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
+
+          recentDishes.push({
+            dishName: item.item,
+            restaurantID: restaurantID,
+            restaurantName: restaurantName,
+            orderedAt: formattedDate,
+          });
+        }
+      }
+
+      if (recentDishes.length >= 8) break;
+    }
+
+    if (recentDishes.length === 0) {
+      return res.status(404).json({ message: 'No recent dishes found' });
+    }
+
+    res.status(200).json(recentDishes);
+  } catch (error) {
+    console.error('Error fetching recent dishes:', error);
+    res.status(500).json({ message: 'Failed to fetch recent dishes', error: error.message });
+  }
+});
+
 export default router;
