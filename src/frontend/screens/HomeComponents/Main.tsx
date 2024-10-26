@@ -41,7 +41,7 @@ function Main(): JSX.Element {
 
   useEffect(() => {
     // Run on component load to check if user is logged in
-    console.log("in here!")
+    // console.log("in here!")
 
     if (!user) {
       navigate('/account/login'); // Redirect to login if no user is found

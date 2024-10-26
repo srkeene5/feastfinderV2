@@ -193,7 +193,7 @@ export default function RestPage() {
         <h1 className="text-3xl font-bold text-gray-800 text-center">
           {restaurant.restaurantName} Menu
         </h1>
-        <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 overflow-y-auto">
           <ul className="divide-y divide-gray-200">
             {paginatedMenuItems.map((item: string, index: number) => {
               const actualIndex = currentPage * itemsPerPage + index;
@@ -212,41 +212,45 @@ export default function RestPage() {
           
           </ul>
         </div>
-
-        {/* Pagination Controls */}
-        <div className="flex justify-center space-x-4 mt-4">
-          <button
-            onClick={() => handlePageChange('prev')}
-            disabled={currentPage === 0}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50 hover:bg-gray-400 transition duration-200 ease-in-out"
-          >
-            Previous
-          </button>
-          <span className="text-lg font-medium">
-            Page {currentPage + 1} of {totalPages}
-          </span>
-          <button
-            onClick={() => handlePageChange('next')}
-            disabled={currentPage === totalPages - 1}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50 hover:bg-gray-400 transition duration-200 ease-in-out"
-          >
-            Next
-          </button>
-        </div>
-        
-        {/* Checkout Button */}
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold text-gray-800">
-            Total: ${cartTotal.toFixed(2)}
-          </h3>
-          <button
-            onClick={handleViewCart}
-            disabled={quantities.every((quantity) => quantity === 0)}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50 hover:bg-blue-600 transition duration-200 ease-in-out"
-          >
-            View Cart
-          </button>
-        
+        <div className="flex justify-between items-center sticky bottom-0 w-full bg-white p-4 mt-6 border-t border-gray-200">
+          
+          {/* Checkout Button */}
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg font-semibold text-gray-800">
+              Total: ${cartTotal.toFixed(2)}
+            </h3>
+            <button
+              onClick={handleViewCart}
+              disabled={quantities.every((quantity) => quantity === 0)}
+              className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50 hover:bg-blue-600 transition duration-200 ease-in-out"
+            >
+              View Cart
+            </button>
+            
+            
+          </div>
+          {/* Vertical Line */}
+          <div className="h-20 border-l border-gray-300 mx-4"></div>
+          {/* Pagination Controls */}
+          <div className=" space-x-4 mt-4 mx-auto">
+            <button
+              onClick={() => handlePageChange('prev')}
+              disabled={currentPage === 0}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50 hover:bg-gray-400 transition duration-200 ease-in-out"
+            >
+              Previous
+            </button>
+            <span className="text-lg font-medium">
+              Page {currentPage + 1} of {totalPages}
+            </span>
+            <button
+              onClick={() => handlePageChange('next')}
+              disabled={currentPage === totalPages - 1}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50 hover:bg-gray-400 transition duration-200 ease-in-out"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
