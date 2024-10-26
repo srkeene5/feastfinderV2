@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCart } from './CartContext.tsx'; // Adjust the path as necessary
-
+import {Image} from 'react-native';
 // Components
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import { coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
@@ -15,29 +15,40 @@ interface MenuItemProps {
   item: string;
   price: number;
   quantity: number;
+  image: string; //will adjust based on how the API is set up
   onAdd: () => void;
   onRemove: () => void;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, onAdd, onRemove }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove }) => {
   return (
     <li className="flex justify-between items-center p-4 border-b border-gray-200 space-x-8">
-      <span className="text-lg font-medium text-gray-800">{item}</span>
-      <span className="text-lg font-semibold text-green-600">
-        ${price.toFixed(2)}
-      </span>
-      <div className="flex space-x-2">
+      {/* flex justify-between items-center p-4 border-b border-gray-200 space-x-8 */}
+      <Image
+              source={require('../images/testDish.png')} 
+              //require is used for static images (can't use variable). But, we can set it up with {uri: path} later potentially
+              style={{
+                height: 100,
+                width: 150,
+                borderRadius: 10,
+              }}
+          />
+       <div className="mt-4 text-center">
+        <h3 className="text-xl font-semibold text-gray-800">{item}</h3>
+        <p className="text-lg font-bold text-green-600">${price.toFixed(2)}</p>
+      </div>
+      <div className="flex items-center space-x-2 mt-4">
         <button 
           onClick={onRemove} 
           disabled={quantity <= 0}
-          className="px-2 py-1 bg-red-500 text-white rounded disabled:opacity-50"
+          className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full disabled:opacity-50"
         >
           -
         </button>
-        <span>{quantity}</span>
+        <span className="text-lg font-medium">{quantity}</span>
         <button 
           onClick={onAdd}
-          className="px-2 py-1 bg-green-500 text-white rounded"
+          className="w-8 h-8 flex items-center justify-center bg-green-500 text-white rounded-full"
         >
           +
         </button>
@@ -57,6 +68,12 @@ export default function RestPage() {
   // Initialize state with safe defaults
   const [quantities, setQuantities] = useState<number[]>([]);
   const [cartTotal, setCartTotal] = useState(0);
+
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const totalItems = restaurant.menu.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   // Prices setup based on service
   let prices: number[] = [];
@@ -103,6 +120,19 @@ export default function RestPage() {
     default:
       console.log("Invalid service or service's prices not available");
   }
+
+  // Page logic
+
+  const handlePageChange = (direction) => {
+    setCurrentPage((prevPage) => {
+      if (direction === 'next' && prevPage < totalPages - 1) return prevPage + 1;
+      if (direction === 'prev' && prevPage > 0) return prevPage - 1;
+      return prevPage;
+    });
+  };
+
+  const startIndex = currentPage * itemsPerPage;
+  const paginatedMenuItems = restaurant.menu.slice(startIndex, startIndex + itemsPerPage);
 
   // Cart logic
   const handleAdd = (index: number) => {
@@ -162,32 +192,58 @@ export default function RestPage() {
             {restaurant.restaurantName} Menu
           </h1>
           <ul className="divide-y divide-gray-200">
-            {restaurant.menu.map((item: string, index: number) => (
+            {paginatedMenuItems.map((item: string, index: number) => {
+              const actualIndex = currentPage * itemsPerPage + index;
+              return (
               <MenuItem
-                key={index}
+                key={actualIndex}
                 item={item}
-                price={prices[index]}
-                quantity={quantities[index]}
-                onAdd={() => handleAdd(index)}
-                onRemove={() => handleRemove(index)}
+                price={prices[actualIndex]}
+                quantity={quantities[actualIndex]}
+                image={'../images/testDish.png'}
+                onAdd={() => handleAdd(actualIndex)}
+                onRemove={() => handleRemove(actualIndex)}
               />
-            ))}
+              );
+            })}
+          
           </ul>
         </div>
-        {/* Checkout button */}
-        <div style={{ paddingTop: 20 }}>
-          <h3 style={{ fontSize: 18, fontWeight: 'bold' }}>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center space-x-4 mt-4">
+          <button
+            onClick={() => handlePageChange('prev')}
+            disabled={currentPage === 0}
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-lg font-medium">
+            Page {currentPage + 1} of {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange('next')}
+            disabled={currentPage === totalPages - 1}
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+        
+        {/* Checkout Button */}
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold text-gray-800">
             Total: ${cartTotal.toFixed(2)}
           </h3>
-        </div>
-        <div style={{ paddingTop: 20 }}>
           <button
             onClick={handleViewCart}
             disabled={quantities.every((quantity) => quantity === 0)}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+            className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50"
           >
             View Cart
           </button>
+        
         </div>
       </div>
     </div>
