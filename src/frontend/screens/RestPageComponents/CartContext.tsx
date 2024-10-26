@@ -1,10 +1,11 @@
 // src/frontend/screens/RestPageComponents/CartContext.tsx
+
 import React, { createContext, useContext, useState } from 'react';
-import { CartEntry } from '../../../types/Cart'; // Define proper TypeScript interfaces in a separate file
+import { CartEntry } from '../../../types/Cart'; // Ensure this interface is updated
 
 interface CartContextType {
-  cart: CartEntry[];
-  updateCartEntry: (updatedEntry: CartEntry) => void;
+  cart: CartEntry | null;
+  updateCart: (updatedCart: CartEntry) => void;
   clearCart: () => void;
 }
 
@@ -27,32 +28,25 @@ interface CartContextProviderProps {
 
 // CartContextProvider component
 export const CartContextProvider: React.FC<CartContextProviderProps> = ({ children }) => {
-  const [cart, setCart] = useState<CartEntry[]>([]);
+  const [cart, setCart] = useState<CartEntry | null>(null);
 
-  const updateCartEntry = (updatedEntry: CartEntry) => {
-    setCart((prevCart) => {
-      const index = prevCart.findIndex(
-        (entry) =>
-          entry.restaurant.restaurantID === updatedEntry.restaurant.restaurantID &&
-          entry.service === updatedEntry.service
-      );
-      if (index >= 0) {
-        const newCart = [...prevCart];
-        newCart[index] = updatedEntry;
-        return newCart;
-      } else {
-        return [...prevCart, updatedEntry];
-      }
-    });
+  const updateCart = (updatedCart: CartEntry) => {
+    // If there's an existing cart, check if the restaurant matches
+    if (cart && cart.restaurant.restaurantID !== updatedCart.restaurant.restaurantID) {
+      alert('You can only have items from one restaurant in your cart. Please clear your cart to add items from a different restaurant.');
+      return;
+    }
+    setCart(updatedCart);
   };
 
   const clearCart = () => {
-    setCart([]);
+    setCart(null);
   };
 
   return (
-    <CartContext.Provider value={{ cart, updateCartEntry, clearCart }}>
+    <CartContext.Provider value={{ cart, updateCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
 };
+
