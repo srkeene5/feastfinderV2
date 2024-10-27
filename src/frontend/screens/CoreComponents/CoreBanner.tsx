@@ -209,8 +209,12 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
 
                         {/* Apply and Close Buttons */}
                         <View style={styles.popupButtonContainer}>
-                            <Button title="Apply Filters" onPress={applyFilters} />
-                            <Button title="Close" color="red" onPress={toggleFilterPopup} />
+                            <TouchableOpacity style={styles.saveButton} onPress={applyFilters}>
+                                <Text style={styles.buttonText}>Apply Filters</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.saveButton} onPress={toggleFilterPopup}>
+                                <Text style={styles.buttonText}>Close</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -346,5 +350,18 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#ccc',
         borderWidth: 1,
+    },
+    saveButton: {
+        backgroundColor: '#007BFF',
+        padding: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+        flex: 1,
+        marginRight: 10,
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
