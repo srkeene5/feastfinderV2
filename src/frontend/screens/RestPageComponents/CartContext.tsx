@@ -1,6 +1,6 @@
 // src/frontend/screens/RestPageComponents/CartContext.tsx
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CartEntry } from '../../../types/Cart'; // Ensure this interface is updated
 
 interface CartContextType {
@@ -21,14 +21,16 @@ export const useCart = (): CartContextType => {
   return context;
 };
 
-// Define the props type for CartContextProvider
-interface CartContextProviderProps {
-  children: React.ReactNode;
-}
-
 // CartContextProvider component
-export const CartContextProvider: React.FC<CartContextProviderProps> = ({ children }) => {
-  const [cart, setCart] = useState<CartEntry | null>(null);
+export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [cart, setCart] = useState<CartEntry | null>(() => {
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : null;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   const updateCart = (updatedCart: CartEntry) => {
     // If there's an existing cart, check if the restaurant matches
@@ -41,6 +43,7 @@ export const CartContextProvider: React.FC<CartContextProviderProps> = ({ childr
 
   const clearCart = () => {
     setCart(null);
+    localStorage.removeItem('cart');
   };
 
   return (
@@ -49,4 +52,5 @@ export const CartContextProvider: React.FC<CartContextProviderProps> = ({ childr
     </CartContext.Provider>
   );
 };
+
 

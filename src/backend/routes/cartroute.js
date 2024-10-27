@@ -54,43 +54,41 @@ router.post('/checkout', auth, async (req, res) => {
 });
 */
 
-// Route to save the cart during checkout
-router.post('/checkout', auth, async (req, res) => {
-  const { restaurant, items, cartTotal } = req.body;
-
+router.post('/cart/create', auth, async (req, res) => {
   try {
-    // Fetch the user data
-    const user = await User.findById(req.user).select('username cartIDs');
+    const { restaurant, items, service, total, quantities } = req.body;
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    if (!restaurant || !items || !service || !total || !quantities) {
+      return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    // Create a new cart
     const newCart = new Cart({
       user: req.user,
       restaurant,
       items,
-      cartTotal,
+      service,
+      total,
+      quantities,
     });
 
-    // Save the cart document to the database
-    const savedCart = await newCart.save();
+    await newCart.save();
 
-    // Add the new cart's ID to the user's 'cartIDs' array
-    await User.findByIdAndUpdate(
+    // Add cart ID to user's cartIDs array
+    const updatedUser = await User.findByIdAndUpdate(
       req.user,
-      { $push: { cartIDs: savedCart._id } },
+      { $push: { cartIDs: newCart._id } },
       { new: true }
     );
 
-    res.status(201).json({
-      message: 'Cart saved successfully',
-      cartID: savedCart._id,
-    });
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+
+    res.status(201).json({ message: 'Cart created successfully', cartID: newCart._id });
   } catch (error) {
-    console.error('Error saving cart:', error);
-    res.status(500).json({ message: 'Failed to save cart', error: error.message });
+    console.error('Error creating cart:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
@@ -167,93 +165,59 @@ router.get('/cart/:cartId/prices', auth, async (req, res) => {
   try {
     const { cartId } = req.params;
 
-    // Validate cartId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(cartId)) {
       return res.status(400).json({ message: 'Invalid cart ID' });
     }
 
-    // Fetch the cart by ID, ensuring it belongs to the user
     const cart = await Cart.findOne({ _id: cartId, user: req.user });
 
     if (!cart || !cart.items || cart.items.length === 0) {
       return res.status(404).json({ message: 'Cart not found or is empty' });
     }
 
-    // Fetch the restaurant details
     const restaurant = await Restaurant.findOne({ restaurantID: cart.restaurant.restaurantID });
 
     if (!restaurant) {
-      return res
-        .status(404)
-        .json({ message: `Restaurant with ID ${cart.restaurant.restaurantID} not found` });
+      return res.status(404).json({ message: 'Restaurant not found' });
     }
 
     const serviceTotals = {
-      uberEats: 0,
-      doorDash: 0,
-      grubhub: 0,
+      uberEatsTotal: 0,
+      doorDashTotal: 0,
+      grubhubTotal: 0,
     };
 
-    const servicesAvailable = {
-      uberEats: restaurant.uberEatsAvailable,
-      doorDash: restaurant.doordashAvailable,
-      grubhub: restaurant.grubhubAvailable,
-    };
-
-    // For each item in the cart
-    for (const itemEntry of cart.items) {
-      const itemName = itemEntry.item;
-      const quantity = itemEntry.quantity;
-
-      // Find the index of the item in the restaurant's menu
-      const itemIndex = restaurant.menu.indexOf(itemName);
+    for (const item of cart.items) {
+      const itemIndex = restaurant.menu.indexOf(item.item);
 
       if (itemIndex === -1) {
-        return res
-          .status(404)
-          .json({
-            message: `Item ${itemName} not found in restaurant ${restaurant.restaurantName}`,
-          });
+        return res.status(404).json({ message: `Item ${item.item} not found in restaurant menu` });
       }
 
-      // Add the item's price to each service total if the service is available
-      if (restaurant.uberEatsAvailable) {
-        serviceTotals.uberEats += restaurant.ubereatsMenuPrice[itemIndex] * quantity;
+      const quantity = item.quantity;
+
+      if (restaurant.ubereatsAvailable && item.pricePerService.uberEats !== null) {
+        serviceTotals.uberEatsTotal += item.pricePerService.uberEats * quantity;
       }
-      if (restaurant.doordashAvailable) {
-        serviceTotals.doorDash += restaurant.doordashMenuPrice[itemIndex] * quantity;
+
+      if (restaurant.doordashAvailable && item.pricePerService.doorDash !== null) {
+        serviceTotals.doorDashTotal += item.pricePerService.doorDash * quantity;
       }
-      if (restaurant.grubhubAvailable) {
-        serviceTotals.grubhub += restaurant.grubhubMenuPrice[itemIndex] * quantity;
+
+      if (restaurant.grubhubAvailable && item.pricePerService.grubhub !== null) {
+        serviceTotals.grubhubTotal += item.pricePerService.grubhub * quantity;
       }
     }
 
-    // Prepare the response with available services and restaurant name
-    const result = {
-      restaurant: restaurant.restaurantName,
-      prices: {},
-    };
+    // Remove totals for services that are not available
+    if (!restaurant.ubereatsAvailable) delete serviceTotals.uberEatsTotal;
+    if (!restaurant.doordashAvailable) delete serviceTotals.doorDashTotal;
+    if (!restaurant.grubhubAvailable) delete serviceTotals.grubhubTotal;
 
-    if (servicesAvailable.uberEats) {
-      result.prices.uberEatsTotal = parseFloat(serviceTotals.uberEats.toFixed(2));
-    }
-    if (servicesAvailable.doorDash) {
-      result.prices.doorDashTotal = parseFloat(serviceTotals.doorDash.toFixed(2));
-    }
-    if (servicesAvailable.grubhub) {
-      result.prices.grubhubTotal = parseFloat(serviceTotals.grubhub.toFixed(2));
-    }
-
-    if (Object.keys(result.prices).length === 0) {
-      return res
-        .status(400)
-        .json({ message: 'No delivery services are available for the items in your cart' });
-    }
-
-    res.json(result);
+    res.json(serviceTotals);
   } catch (error) {
-    console.error('Error calculating cart prices:', error);
-    res.status(500).json({ message: 'Failed to calculate cart prices', error: error.message });
+    console.error('Error fetching service prices:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -375,4 +339,7 @@ router.get('/recent-dishes', auth, async (req, res) => {
   }
 });
 
+
+
 export default router;
+

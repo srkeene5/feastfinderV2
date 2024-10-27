@@ -37,7 +37,7 @@ export default function SearchCards() {
     //api platform selection logic
         // Check the availability of the restaurant based on the delivery service selected by the user
         const filterBySelectedService = (restaurant) => {
-            if (deliveryService === 'UberEats') return restaurant.uberEatsAvailable;
+            if (deliveryService === 'UberEats') return restaurant.ubereatsAvailable;
             if (deliveryService === 'Grubhub') return restaurant.grubhubAvailable;
             if (deliveryService === 'DoorDash') return restaurant.doordashAvailable;
             return true; // If no specific service is selected, return all restaurants
@@ -272,7 +272,7 @@ export default function SearchCards() {
                 >
                     {APIButton("DoorDash", item.doordashAvailable, item)}
                     {APIButton("GrubHub", item.grubhubAvailable, item)}
-                    {APIButton("UberEats", item.uberEatsAvailable, item)}
+                    {APIButton("UberEats", item.ubereatsAvailable, item)}
                 </View>
             </View>
         )

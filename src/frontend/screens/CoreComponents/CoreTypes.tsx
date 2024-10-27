@@ -7,7 +7,7 @@ interface Restaurant {
     ubereatsMenuPrice: number[];
     doordashMenuPrice: number[];
     grubhubMenuPrice: number[];
-    uberEatsAvailable: boolean;
+    ubereatsAvailable: boolean;
     doordashAvailable: boolean;
     grubhubAvailable: boolean;
     mapUrl?: string; // Added as optional
