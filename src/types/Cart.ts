@@ -2,35 +2,18 @@
 
 export interface CartItem {
   item: string;
-  price: number;
   quantity: number;
-}
-
-export interface Restaurant {
-  restaurantID: string;
-  restaurantName: string;
-  restaurantAddress: string;
-  distance: number;
-  menu: string[];
-  ubereatsMenuPrice: number[];
-  doordashMenuPrice: number[];
-  grubhubMenuPrice: number[];
-  uberEatsAvailable: boolean;
-  doordashAvailable: boolean;
-  grubhubAvailable: boolean;
+  prices: {
+    doordash: number;
+    ubereats: number;
+    grubhub: number;
+  };
 }
 
 export interface CartEntry {
-  restaurant: Restaurant;
-  service: string;
+  restaurant: any; // Replace 'any' with the appropriate type if available
   items: CartItem[];
-  total: number;
   quantities: number[];
+  service: string;
+  total: number;
 }
-
-export interface CartContextType {
-  cart: CartEntry | null;
-  updateCart: (updatedCart: CartEntry) => void;
-  clearCart: () => void;
-}
-  

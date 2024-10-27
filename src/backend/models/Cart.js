@@ -1,55 +1,33 @@
 // src/backend/models/Cart.js
+
 import mongoose from 'mongoose';
+import User from './User.js'; // Make sure to import the User model
 
 // Define the schema for individual cart items
 const cartItemSchema = new mongoose.Schema({
   item: { type: String, required: true },
-  price: { type: Number, required: true },
   quantity: { type: Number, required: true },
-});
-
-// Define the schema for each restaurant entry in the cart
-const restaurantEntrySchema = new mongoose.Schema({
-  restaurant: { type: Object, required: true }, // Changed from String to Object
-  service: { type: String, required: true },
-  items: [cartItemSchema],
-  total: { type: Number, required: true },
-  quantities: { type: [Number], required: true }, // Ensure quantities array is stored
-});
-
-// Define the main Cart schema
-/*const cartSchema = new mongoose.Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-    },
-    restaurants: [restaurantEntrySchema], // Array of restaurant entries
-    cartTotal: {
-      type: Number,
-      required: true,
-    },
+  prices: {
+    doordash: { type: Number, required: true },
+    ubereats: { type: Number, required: true },
+    grubhub: { type: Number, required: true },
   },
-  { timestamps: true }
-);*/
+});
 
 // Define the main Cart schema
 const cartSchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     restaurant: {
-      type: Object, // Contains restaurant details (e.g., ID, name)
-      required: true,
+      restaurantID: { type: String, required: true },
+      restaurantName: { type: String, required: true },
+      
+      // ... other restaurant details
     },
-    items: [cartItemSchema], // Array of items from the restaurant
-    cartTotal: {
-      type: Number,
-      required: true,
-    },
+    items: [cartItemSchema],
+    service: { type: String, required: true },
+    total: { type: Number, required: true },
+    quantities: { type: [Number], required: true },
   },
   { timestamps: true }
 );
@@ -65,11 +43,11 @@ cartSchema.set('toJSON', {
 });
 
 // Post middleware for findOneAndDelete
-cartSchema.post('findOneAndDelete', async function(doc, next) {
+cartSchema.post('findOneAndDelete', async function (doc, next) {
   if (doc) {
     try {
       // Find the user associated with this cart
-      const user = await User.findOne({ cartIDs: doc._id });
+      const user = await User.findById(doc.user);
 
       if (user) {
         // Remove the cart ID from the user's cartIDs array
@@ -88,11 +66,11 @@ cartSchema.post('findOneAndDelete', async function(doc, next) {
 });
 
 // Similarly, handle deleteOne
-cartSchema.post('deleteOne', { document: true, query: false }, async function(doc, next) {
+cartSchema.post('deleteOne', { document: true, query: false }, async function (doc, next) {
   if (doc) {
     try {
       // Find the user associated with this cart
-      const user = await User.findOne({ cartIDs: doc._id });
+      const user = await User.findById(doc.user);
 
       if (user) {
         // Remove the cart ID from the user's cartIDs array

@@ -1,109 +1,189 @@
-// src/frontend/screens/RestPageComponents/CartPage.tsx
+// src/frontend/screens/CartPageComponents/CartPage.tsx
 
-import React from 'react';
-import axios from 'axios';
-import { View, Text, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useCart } from './CartContext.tsx'; // Corrected path
+import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../UserComponents/Authorizer.tsx';
-import { useCart } from './CartContext.tsx';
+import { CartItem } from '../../../types/Cart'; // Adjusted path
 
-const CartPage = () => {
+const CartPage: React.FC = () => {
+  const { cart, clearCart } = useCart(); // Destructure clearCart from useCart
   const navigate = useNavigate();
-  const { cart, clearCart } = useCart();
-  const { user } = useAuth();
 
-  if (!cart) {
-    return (
-      <View>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Your Cart is Empty</Text>
-        <Button title="Back to Home" onPress={() => navigate('/home')} />
-      </View>
-    );
-  }
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [selectedService, setSelectedService] = useState<string | null>(null);
 
-  // Function to handle navigating back to the restaurant page
-  const handleBackToRestaurant = () => {
-    navigate('/restaurant', {
-      state: {
-        restaurant: cart.restaurant,
-        service: cart.service,
-      },
-    });
+  // Redirect to home if cart is empty
+  useEffect(() => {
+    if (!cart || !cart.items || cart.items.length === 0) {
+      navigate('/home');
+    }
+  }, [cart, navigate]);
+
+  // Function to calculate total for a specific service
+  const calculateServiceTotal = (service: string) => {
+    return cart.items.reduce((total: number, item: CartItem) => {
+      const price = item.prices[service.toLowerCase()];
+      return total + price * item.quantity;
+    }, 0);
   };
 
-  // Function to handle checkout and save cart to the backend
-  const handleCheckout = async () => {
-    try {
-      const token = user?.token; // Retrieve the token from AuthContext
+  // Function to handle checkout
+  const handleCheckout = async (serviceName: string) => {
+    // Call the backend to store the cart
+    const success = await createCartInDatabase({ ...cart, service: serviceName });
 
-      if (!token) {
-        alert('You must be logged in to checkout.');
-        return;
-      }
-
-      // Log cart data being sent to backend
-      console.log('Cart data being sent to backend:', cart);
-
-      const response = await axios.post(
-        'http://localhost:5001/api/cartroute/checkout',
-        {
-          restaurant: cart.restaurant,
-          items: cart.items,
-          cartTotal: cart.total,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 201) {
-        alert(`Cart saved successfully! Cart ID: ${response.data.cartID}`);
-        clearCart(); // Clear the cart after successful checkout
-        navigate('/home'); // Navigate to home or order confirmation page
-      } else {
-        alert('Failed to save cart');
-      }
-    } catch (error) {
-      console.error('Error during checkout:', error);
-      alert('Error during checkout');
+    if (success) {
+      // Set the selected service and show the success modal
+      setSelectedService(serviceName);
+      setShowSuccessModal(true);
     }
   };
 
+  // Function to get the URL for a specific service
+  const getServiceURL = (serviceName: string) => {
+    switch (serviceName) {
+      case 'UberEats':
+        return 'https://www.ubereats.com';
+      case 'DoorDash':
+        return 'https://www.doordash.com';
+      case 'Grubhub':
+        return 'https://www.grubhub.com';
+      default:
+        return '#';
+    }
+  };
+
+  // Function to create the cart in the database
+  const createCartInDatabase = async (cartData: any): Promise<boolean> => {
+    try {
+      // Retrieve the 'user' object from localStorage
+      const userData = localStorage.getItem('user');
+
+      if (!userData) {
+        console.error('No user data found in localStorage.');
+        alert('You are not logged in. Please log in to proceed.');
+        return false;
+      }
+
+      // Parse the JSON string to an object
+      const user = JSON.parse(userData);
+
+      // Extract the token
+      const token = user.token;
+
+      if (!token) {
+        console.error('No token found in user data.');
+        alert('Authentication token is missing. Please log in again.');
+        return false;
+      }
+
+      console.log('Using token:', token); // Debugging line
+
+      // Make the POST request with the correct token
+      const response = await fetch('http://localhost:5001/api/cartroute/cart/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(cartData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Error response from server:', data);
+        alert(`Error: ${data.message}`);
+        return false;
+      }
+
+      console.log('Cart saved:', data);
+      // Remove the alert, handled by the modal
+      return true;
+    } catch (error: any) { // TypeScript requires a type for 'error'
+      console.error('Error saving cart:', error);
+      alert('An unexpected error occurred while saving the cart.');
+      return false;
+    }
+  };
+
+  // Prevent rendering if cart is empty (handled by useEffect)
+  if (!cart || !cart.items || cart.items.length === 0) {
+    return null; // Or a loading spinner if desired
+  }
+
   return (
-    <View>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Your Cart</Text>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-          {cart.restaurant.restaurantName} - {cart.service}
-        </Text>
-        {cart.items.map((item, idx) => (
-          <View
-            key={idx}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 10,
-            }}
-          >
-            <Text>
-              {item.item} (x{item.quantity})
-            </Text>
-            <Text>${(item.quantity * item.price).toFixed(2)}</Text>
-          </View>
-        ))}
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-          Cart Total: ${cart.total.toFixed(2)}
-        </Text>
-      </View>
+    <div>
+      <CoreBanner />
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
 
-      {/* Back to Restaurant Button */}
-      <Button title="Back to Restaurant" onPress={handleBackToRestaurant} />
+        {/* Services Sections */}
+        {['DoorDash', 'UberEats', 'Grubhub'].map((service) => {
+          const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
+          const serviceTotal = calculateServiceTotal(service);
 
-      {/* Proceed to Checkout Button */}
-      <Button title="Proceed to Checkout" onPress={handleCheckout} />
-    </View>
+          return (
+            <div key={service} className="border p-4 mb-4">
+              <h2 className="text-xl font-semibold mb-2">{service}</h2>
+              {serviceAvailable ? (
+                <>
+                  {/* Display selected items and prices */}
+                  <ul>
+                    {cart.items.map((item: CartItem, index: number) => (
+                      <li key={index} className="flex justify-between">
+                        <span>
+                          {item.item} x {item.quantity}
+                        </span>
+                        <span>
+                          $
+                          {(
+                            item.prices[service.toLowerCase()] * item.quantity
+                          ).toFixed(2)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex justify-between font-bold mt-2">
+                    <span>Total:</span>
+                    <span>${serviceTotal.toFixed(2)}</span>
+                  </div>
+                  <button
+                    onClick={() => handleCheckout(service)}
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+                  >
+                    Checkout with {service}
+                  </button>
+                </>
+              ) : (
+                <p>Not Available</p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Success Modal */}
+      {showSuccessModal && selectedService && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-xl font-semibold mb-4">Checkout Successful!</h2>
+            <p>You can proceed to {selectedService} to place your order.</p>
+            <button
+              onClick={() => {
+                window.open(getServiceURL(selectedService), '_blank');
+                clearCart();
+                navigate('/home');
+              }}
+              className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

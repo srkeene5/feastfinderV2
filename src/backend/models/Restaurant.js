@@ -34,7 +34,7 @@ const restaurantSchema = new mongoose.Schema({
     type: Number,
     required: true
   }],
-  uberEatsAvailable: {
+  ubereatsAvailable: {
     type: Boolean,
     required: true
   },
