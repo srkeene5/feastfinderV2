@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Image, View } from 'react-native'
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
@@ -45,15 +46,23 @@ export default function SignUp() {
 
     return (
         <div>
-            <div className='flex min-h-full flex-col bg-white justify-center py-12 sm:px-6 lg:px-8'>
-                <div className='sm:mx-auto sm:w-full sm:max-w-md'>
-                    <h2 className='mt-6 text-center text-5xl font-bold tracking-tight text-orange-400'>
+            <div className="flex min-h-screen flex-col bg-gradient-to-tl from-ffRedL via-ffGreyL to-ffGreenL justify-center py-12 sm:px-6 lg:px-8">
+
+                <div className="flex flex-col sm:mx-auto sm:w-full sm:max-w-md justify-center items-center">
+                    <Image
+                        source={require('../images/FeastFinder-solid-circle.png')}
+                        style={{
+                            height: 90, 
+                            width: 120,  // Increase the width proportionally
+                        }}
+                        />
+                    <h2 className='mt-6 text-center text-5xl font-bold tracking-tight text-white'>
                         FeastFinder
                     </h2>
                     <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
                         Create a new account
                     </h2>
-                    <p className='mt-2 text-center text-sm text-gray-600'>
+                    <p className='mt-2 text-center text-sm text-white'>
                         Already have an account?{" "}
                         <a
                             href='/account/login'

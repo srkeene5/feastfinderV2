@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Image, View } from 'react-native'
 import { useAuth } from "./Authorizer.tsx";
 import { useNavigate } from 'react-router-dom';
+// import { coreForm } from '../CoreComponents/CoreStyles.tsx';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -60,13 +62,20 @@ function Login() {
     
     <div>
       {/* <CoreBanner /> */}
-      <div className="flex min-h-full flex-col bg-white justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          {/* Replace with logo */}
-          <h2 className="mt-6 text-center text-5xl font-bold tracking-tight text-orange-400">
+      <div className="flex min-h-screen flex-col bg-gradient-to-tl from-ffRedL via-ffGreyL to-ffGreenL justify-center py-12 sm:px-6 lg:px-8">
+
+        <div className="flex flex-col sm:mx-auto sm:w-full sm:max-w-md justify-center items-center">
+          <Image
+              source={require('../images/FeastFinder-solid-circle.png')}
+              style={{
+                height: 90, 
+                width: 120,  // Increase the width proportionally
+              }}
+            />
+          <h2 className="mt-3 text-center text-5xl font-bold tracking-tight text-white">
             FeastFinder
           </h2>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+          <h2 className="mt-5 text-center text-3xl font-bold tracking-tight text-black">
             Login to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
@@ -131,7 +140,7 @@ function Login() {
                 </div>
               )}
 
-              <div className="flex items-center justify-between">
+              {/* <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <input
                     id="remember-me"
@@ -155,7 +164,7 @@ function Login() {
                     Forgot your password?
                   </a>
                 </div>
-              </div>
+              </div> */}
 
               <div>
                 <button

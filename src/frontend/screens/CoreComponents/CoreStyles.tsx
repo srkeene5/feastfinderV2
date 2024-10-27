@@ -15,6 +15,8 @@ export const ffColors = {
   ffGreyD: '#41545b',
 }
 
+
+
 export const coreStyles = StyleSheet.create({
   darkMText: {
     color: '#FFFFFF'
