@@ -13,7 +13,7 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
     const [searchValue, setSearchTerm] = useState(searchVal);
     const [deliveryService, setDeliveryService] = useState(''); // State for delivery service
     const [cuisine, setCuisine] = useState(''); // State for cuisine filter
-    const [searchType, setSearchType] = useState('restaurant'); // New state for differentiating search types
+    const [searchType, setSearchType] = useState('restaurant'); // Default is "Restaurants"
     const [isFilterPopupVisible, setFilterPopupVisible] = useState(false); // State to control popup visibility
     const [timeRanges, setTimeRanges] = useState({
         breakfast: false,
@@ -60,9 +60,9 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
         setSearchTerm(event.target.value);
     };
 
-    // Handle the search type change (restaurant or dish)
-    const handleSearchTypeChange = (event) => {
-        setSearchType(event.target.value);
+    // Handle search type change
+    const handleSearchTypeChange = (type) => {
+        setSearchType(type);
     };
 
     // Open or close the filter popup
@@ -91,19 +91,55 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
                     <Pressable style={styles.cardImageHolder} onPress={navigationHandler}>
                         <Image source={require('../images/FeastFinder-solid-circle.png')} style={styles.cardImage} />
                     </Pressable>
+
+                    <View style={styles.buttonGroup}>
+                        {/* Restaurants button */}
+                        <TouchableOpacity
+                            style={[
+                                styles.searchTypeButton,
+                                searchType === 'restaurant' ? styles.selectedButton : styles.unselectedButton,
+                            ]}
+                            onPress={() => handleSearchTypeChange('restaurant')}
+                        >
+                            <Text
+                                style={[
+                                    styles.buttonText,
+                                    searchType === 'restaurant' ? styles.selectedText : styles.unselectedText,
+                                ]}
+                            >
+                                Restaurants
+                            </Text>
+                        </TouchableOpacity>
+
+                        {/* Dishes button */}
+                        <TouchableOpacity
+                            style={[
+                                styles.searchTypeButton,
+                                searchType === 'dish' ? styles.selectedButton : styles.unselectedButton,
+                            ]}
+                            onPress={() => handleSearchTypeChange('dish')}
+                        >
+                            <Text
+                                style={[
+                                    styles.buttonText,
+                                    searchType === 'dish' ? styles.selectedText : styles.unselectedText,
+                                ]}
+                            >
+                                Dishes
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* Search input field */}
                     <input
                         type="text"
-                        style={styles.search}
+                        style={styles.searchInput}
                         onChange={inputHandler}
                         value={searchValue}
                         placeholder="Search..."
                         onKeyDown={keyHandler}
                     />
-                    {/* Dropdown to select search type (Restaurant or Dish) within the search bar */}
-                    <select style={styles.searchTypeDropdown} onChange={handleSearchTypeChange} value={searchType}>
-                        <option value="restaurant">Restaurants</option>
-                        <option value="dish">Dishes</option>
-                    </select>
+
                     {/* Filter Button to open the popup */}
                     <TouchableOpacity
                         style={[
@@ -115,6 +151,7 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
                     >
                         <Text style={styles.filterButtonText}>Filter</Text>
                     </TouchableOpacity>
+
                     <CoreDrawer open={open} setOpen={setOpen} />
                 </View>
             </View>
@@ -192,7 +229,23 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-    search: {
+    card: {
+        width: '100%',
+        backgroundColor: ffColors.ffGreenD,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    cardImageHolder: {
+        height: 90,
+        width: 120,
+        margin: 5,
+        borderRadius: 45,
+    },
+    cardImage: {
+        height: 90,
+        width: 120,
+    },
+    searchInput: {
         height: 60,
         margin: 20,
         marginRight: 25,
@@ -201,14 +254,33 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
     },
-    searchTypeDropdown: {
-        height: 60,
-        width: 150,
-        marginRight: 20,
-        borderRadius: 20,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        padding: 10,
+    buttonGroup: {
+        flexDirection: 'row',
+        margin: 20,
+    },
+    searchTypeButton: {
+        height: 40,
+        width: 120,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    selectedButton: {
+        backgroundColor: ffColors.ffGreenL,
+    },
+    unselectedButton: {
+        backgroundColor: '#ccc',
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    selectedText: {
+        color: '#fff',
+    },
+    unselectedText: {
+        color: '#666',
     },
     filterButton: {
         backgroundColor: ffColors.ffGreenL,
@@ -226,22 +298,6 @@ const styles = StyleSheet.create({
     },
     filterButtonDisabled: {
         backgroundColor: '#ccc', // Grey out the filter button when disabled
-    },
-    card: {
-        width: '100%',
-        backgroundColor: ffColors.ffGreenD,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    cardImageHolder: {
-        height: 90,
-        width: 120,
-        margin: 5,
-        borderRadius: 45,
-    },
-    cardImage: {
-        height: 90,
-        width: 120,
     },
     popupOverlay: {
         flex: 1,
