@@ -236,8 +236,10 @@ export default function SearchCards() {
             style={styles.card}
             >
                 <Image 
-                source={require('../images/testRest.png')}
+                //source={require('../images/testRest.png')}
+                source={{ uri: item.restaurantImage ? String(item.restaurantImage) : '/images/testRest.png' }}
                 style={styles.cardImage}
+                resizeMode="contain"
                 />
                 <View
                 style={styles.cardContent}

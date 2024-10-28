@@ -10,6 +10,11 @@ interface Restaurant {
     ubereatsAvailable: boolean;
     doordashAvailable: boolean;
     grubhubAvailable: boolean;
+    cuisineType: String;
+    operatingHours: String[];
+    restaurantImage: String;
+    menuItemImages: String[];
+
     mapUrl?: string; // Added as optional
 }
 export type {Restaurant as Restaurant}
