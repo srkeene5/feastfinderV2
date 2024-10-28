@@ -60,7 +60,8 @@ const populateUsers = async () => {
     const testUsers = [
       { username: 'user1', email: 'user1_test@example.com', password: 'password1' },
       { username: 'user2', email: 'user2_test@example.com', password: 'password2' },
-      { username: 'user3', email: 'user3_test@example.com', password: 'password3' }
+      { username: 'user3', email: 'user3_test@example.com', password: 'password3' },
+      { username: 'user4', email: 'user4_test@example.com', password: 'password4' }
     ];
 
     // Insert test users into the database

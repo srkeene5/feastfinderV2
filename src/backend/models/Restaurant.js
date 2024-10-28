@@ -45,7 +45,26 @@ const restaurantSchema = new mongoose.Schema({
   grubhubAvailable: {
     type: Boolean,
     required: true
-  }
+  },
+  // New fields
+  cuisineType: {
+    type: String,
+    enum: ['Italian', 'Indian', 'Japanese', 'Chinese', 'Mexican', 'American'],
+    required: true
+  },
+  operatingHours: [{
+    type: String,
+    enum: ['Breakfast', 'Lunch', 'Dinner', 'Brunch', 'All Day'],
+    required: true
+  }],
+  restaurantImage: {
+    type: String,
+    required: true
+  },
+  menuItemImages: [{
+    type: String,
+    required: true
+  }]
 });
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);

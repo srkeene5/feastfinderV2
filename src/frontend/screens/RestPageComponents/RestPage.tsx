@@ -11,6 +11,7 @@ interface MenuItemProps {
   price: number;
   quantity: number;
   image: string; // Will adjust based on how the API is set up
+  
   onAdd: () => void;
   onRemove: () => void;
 }
@@ -20,12 +21,15 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
     <li className="flex items-center justify-between p-4 mb-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm transition-shadow duration-300 hover:shadow-md">
       <div>
         <img
-          src={require('../images/testDish.png')}
+          //src={require('../images/testDish.png')}
+          src={image} // Use the passed-in image prop
           alt="Dish image"
           style={{
             height: 100,
             width: 150,
             borderRadius: 10,
+            objectFit: 'contain', // Ensures the entire image is visible within the box
+
           }}
           className="w-20 h-20 object-cover rounded shadow-sm"
         />
@@ -219,7 +223,7 @@ export default function RestPage() {
                   item={item}
                   price={prices[actualIndex]}
                   quantity={quantities[actualIndex]}
-                  image={'../images/testDish.png'}
+                  image={restaurant.menuItemImages[actualIndex]} // Pass image directly
                   onAdd={() => handleAdd(actualIndex)}
                   onRemove={() => handleRemove(actualIndex)}
                 />
