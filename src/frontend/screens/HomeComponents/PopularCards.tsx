@@ -7,7 +7,8 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View, 
+    View,
+    Image, 
 } from 'react-native'
 import tw from 'twrnc';
 
@@ -30,7 +31,7 @@ interface GenItem {
     ID: string,
     name: string,
     description: string,
-    image
+    image: string // Update the type to string for compatibility with Image source
 }
 
 export default function PopularCards({fetchType}) {
@@ -88,9 +89,14 @@ export default function PopularCards({fetchType}) {
             onPress={() => {handlePop(item.name)}}
             >            
                 <View style={styles.card}>
-                    <img 
+                    {/* <img 
                     src={item.image} 
                     alt="Image not Found" style={styles.cardImage} 
+                    /> */}
+                       <Image 
+                        source={{ uri: item.image }} // Use the dynamic image source
+                        style={styles.cardImage} 
+                        resizeMode="contain" // Ensures image fits within the card without being cut off
                     />
                     <Text
                     style={tw.style(coreForm.subheader)}
@@ -118,7 +124,8 @@ export default function PopularCards({fetchType}) {
             items.forEach(restaurant => {
                 if( !restName.has(restaurant.restaurantName) ) {
                     restName.add(restaurant.restaurantName);
-                    itemSub.push({ID: restaurant.restaurantID, name: restaurant.restaurantName, description: restaurant.restaurantName + ' Description', image: require('../images/testRest.png')})
+                    itemSub.push({ID: restaurant.restaurantID, name: restaurant.restaurantName, description: restaurant.restaurantName + ' Description', image: restaurant.restaurantImage || '/images/testRest.png' })
+                    //image: require('../images/testRest.png')
                 }
             });
         } else if(items[0] && items[0].dishName) {
