@@ -1026,7 +1026,7 @@ const restaurantData = [
     ubereatsAvailable: true,
     doordashAvailable: true,
     grubhubAvailable: false,
-    cuisineType: "American",
+    cuisineType: "Italian",
     operatingHours: ["Breakfast", "Brunch", "Lunch", "Dinner"],
     restaurantImage: "/images/the_pasta_house/the-pasta-house-logo.jpg",
     menuItemImages: [
