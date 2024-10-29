@@ -45,6 +45,13 @@ router.get('/me', auth, async (req, res) => {
 //   }
 // });
 
+// Helper function to generate random integers between min and max (inclusive)
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 router.post('/register', async (req, res) => {
   const { email, password } = req.body;
 
@@ -67,6 +74,11 @@ router.post('/register', async (req, res) => {
 
     await user.save();
 
+    // Generate random deals between 5 and 20
+    const doorDashDeal = getRandomIntInclusive(5, 20);
+    const grubHubDeal = getRandomIntInclusive(5, 20);
+    const uberEatsDeal = getRandomIntInclusive(5, 20);
+
     // Create appLogin document
     const appLogin = new AppLogin({
       userID: user._id,
@@ -78,6 +90,9 @@ router.post('/register', async (req, res) => {
         `${username}@ubereats.com`,
         `${username}@grubhub.com`,
       ],
+      doorDashDeal: doorDashDeal,
+      grubHubDeal: grubHubDeal,
+      uberEatsDeal: uberEatsDeal,
     });
 
     await appLogin.save();
@@ -92,6 +107,8 @@ router.post('/register', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 

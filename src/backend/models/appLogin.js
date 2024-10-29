@@ -13,6 +13,18 @@ const appLoginSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
+  doorDashDeal: {
+    type: Number,
+    required: true,
+  },
+  grubHubDeal: {
+    type: Number,
+    required: true,
+  },
+  uberEatsDeal: {
+    type: Number,
+    required: true,
+  },
 });
 
 const AppLogin = mongoose.model('AppLogin', appLoginSchema);
