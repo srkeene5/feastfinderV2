@@ -1,3 +1,5 @@
+// src/backend/models/appLogin.js
+
 import mongoose from 'mongoose';
 
 const appLoginSchema = new mongoose.Schema({
@@ -8,9 +10,9 @@ const appLoginSchema = new mongoose.Schema({
   },
   username: { type: String, required: true },
   email: { type: String, required: true },
-  passwordHash: { type: String, required: true }, // Store hashed password
+  passwordHash: { type: String, required: true }, // Store hashed main account password
   logins: {
-    type: [String],
+    type: [String], // Array of app account emails
     required: true,
   },
   doorDashDeal: {
@@ -30,3 +32,5 @@ const appLoginSchema = new mongoose.Schema({
 const AppLogin = mongoose.model('AppLogin', appLoginSchema);
 
 export default AppLogin;
+
+

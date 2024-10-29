@@ -150,40 +150,6 @@ router.get('/protected', auth, async (req, res) => {
       }
     });
 
-/*
-router.put('/address', auth, async (req, res) => {
-  const { street, city, state, postalCode, country } = req.body;
-    
-  if (!street || !city || !state || !postalCode || !country) {
-    return res.status(400).json({ msg: 'Please provide all address fields' });
-  }
-    
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.user,
-      {
-        address: {
-          street,
-          city,
-          state,
-          postalCode,
-          country
-        }
-      },
-      { new: true } // Return the updated document
-    ).select('-password');
-    
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-    
-    res.json(user);
-  } catch (err) {
-    console.error('Error updating address:', err.message);
-    res.status(500).send('Server error');
-  }
-});
-*/
 
 // Logout route
 router.post('/logout', auth, async (req, res) => {
@@ -205,8 +171,174 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
+/* logs in to uber/doordash/login account. example of response:
+
+{
+  "msg": "Logged into DoorDash successfully",
+  "service": "DoorDash",
+  "deal": 15,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+}
+*/
+router.post('/app-login', async (req, res) => {
+  const { email, password } = req.body;
+
+  // Basic validation
+  if (!email || !password) {
+    return res.status(400).json({ msg: 'Please provide both email and password' });
+  }
+
+  try {
+    // Find the AppLogin document that includes the provided email
+    const appLogin = await AppLogin.findOne({ logins: email });
+
+    if (!appLogin) {
+      return res.status(400).json({ msg: 'App account not found' });
+    }
+
+    // Compare the provided password with the stored passwordHash
+    const isMatch = await bcrypt.compare(password, appLogin.passwordHash);
+
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    // Determine which service the email belongs to
+    let service = '';
+    let deal = 0;
+
+    if (email.endsWith('@doordash.com')) {
+      service = 'DoorDash';
+      deal = appLogin.doorDashDeal;
+    } else if (email.endsWith('@ubereats.com')) {
+      service = 'UberEats';
+      deal = appLogin.uberEatsDeal;
+    } else if (email.endsWith('@grubhub.com')) {
+      service = 'Grubhub';
+      deal = appLogin.grubHubDeal;
+    } else {
+      return res.status(400).json({ msg: 'Invalid app account domain' });
+    }
+
+    // Optionally, generate a JWT for the app account session
+    const token = jwt.sign(
+      { appEmail: email, service: service },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({ 
+      msg: `Logged into ${service} successfully`,
+      service: service,
+      deal: deal,
+      token: token // Optional: Provide a token for further authenticated requests
+    });
+  } catch (err) {
+    console.error('Error during app login:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+export const appAuth = async (req, res, next) => {
+  const authHeader = req.header('Authorization');
+
+  if (!authHeader) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+
+  try {
+    // Check if the token is blacklisted
+    const blacklisted = await BlacklistedToken.findOne({ token });
+    if (blacklisted) {
+      return res.status(401).json({ msg: 'Token has been revoked. Please log in again.' });
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.appEmail = decoded.appEmail;
+    req.service = decoded.service;
+    next();
+  } catch (err) {
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
+};
+
+/* invalidates the uber/doordash/grubhub token
+example response:
+{
+    "msg": "Successfully logged out"
+}
+*/
+router.post('/app-logout', appAuth, async (req, res) => {
+  try {
+    const authHeader = req.header('Authorization');
+    const token = authHeader.split(' ')[1];
+
+    // Decode the token to get expiration time
+    const decoded = jwt.decode(token);
+    const expiresAt = new Date(decoded.exp * 1000); // Convert to milliseconds
+
+    // Add the token to the blacklist
+    const blacklistedToken = new BlacklistedToken({ token, expiresAt });
+    await blacklistedToken.save();
+
+    res.status(200).json({ msg: `Successfully logged out of ${decoded.service}` });
+  } catch (error) {
+    console.error('Error during app logout:', error.message);
+    res.status(500).json({ msg: 'Server error', error });
+  }
+});
+
+/* gets the app name and deal amount given a Bearer token
+example of response:
+{
+  "service": "DoorDash",
+  "deal": 15
+}
+
+*/
+router.get('/app-deal', appAuth, async (req, res) => {
+  const { appEmail, service } = req;
+
+  try {
+    // Find the AppLogin document containing the appEmail
+    const appLogin = await AppLogin.findOne({ logins: appEmail });
+
+    if (!appLogin) {
+      return res.status(400).json({ msg: 'App account not found' });
+    }
+
+    let deal = 0;
+
+    switch (service) {
+      case 'DoorDash':
+        deal = appLogin.doorDashDeal;
+        break;
+      case 'UberEats':
+        deal = appLogin.uberEatsDeal;
+        break;
+      case 'Grubhub':
+        deal = appLogin.grubHubDeal;
+        break;
+      default:
+        return res.status(400).json({ msg: 'Invalid service' });
+    }
+
+    res.json({ service, deal });
+  } catch (err) {
+    console.error('Error fetching app deal:', err.message);
+    res.status(500).send('Server error');
+  }
+});
 
 
+/*
 // puts user's uber's login and hashed password in database
 router.put('/uberlogin', auth, async (req, res) => {
   const { uber_email, uber_password } = req.body;
@@ -416,4 +548,5 @@ router.delete('/grubhublogin', auth, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+*/
 export default router;
