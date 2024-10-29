@@ -5,26 +5,51 @@ import Restaurant from '../models/Restaurant.js';  // Import Restaurant model
 const router = express.Router();
 
 
+// restaurantAuth.js
 
 
 router.get('/searchRestaurant', async (req, res) => {
-    const { name, dish } = req.query;
+    const { name, dish, cuisineType, operatingHours, deliveryService } = req.query;
 
     try {
-        let restaurants;
+        let query = {};
 
         if (name) {
-            // Search for restaurants by name
-            restaurants = await Restaurant.find({ restaurantName: new RegExp(name, 'i') });
-        } else if (dish) {
-            // Search for restaurants offering the dish
-            const searchTerm = dish.toLowerCase();
-            restaurants = await Restaurant.find({
-                menu: { $elemMatch: { $regex: new RegExp(searchTerm, 'i') } }
-            });
-        } else {
-            return res.status(400).json({ message: 'Please provide a restaurant name or dish to search' });
+            query.restaurantName = new RegExp(name, 'i');
         }
+
+        if (dish) {
+            const searchTerm = dish.toLowerCase();
+            query.menu = { $elemMatch: { $regex: new RegExp(searchTerm, 'i') } };
+        }
+
+        if (cuisineType && cuisineType !== 'All Cuisines') {
+            query.cuisineType = cuisineType;
+        }
+
+        if (operatingHours) {
+            const operatingHoursArray = operatingHours.split(',');
+
+            if (operatingHoursArray.includes('All Day')) {
+                // User selected 'All Day', include restaurants where 'All Day' is in operatingHours
+                query.operatingHours = { $in: ['All Day'] };
+            } else {
+                // Include restaurants where operatingHours includes any of the selected time ranges or 'All Day'
+                query.operatingHours = { $in: operatingHoursArray.concat('All Day') };
+            }
+        }
+
+        if (deliveryService && deliveryService !== 'All Services') {
+            if (deliveryService === 'UberEats') {
+                query.ubereatsAvailable = true;
+            } else if (deliveryService === 'Grubhub') {
+                query.grubhubAvailable = true;
+            } else if (deliveryService === 'DoorDash') {
+                query.doordashAvailable = true;
+            }
+        }
+
+        const restaurants = await Restaurant.find(query);
 
         if (!restaurants.length) {
             return res.status(404).json({ message: 'No restaurants found' });
@@ -36,6 +61,36 @@ router.get('/searchRestaurant', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+// router.get('/searchRestaurant', async (req, res) => {
+//     const { name, dish } = req.query;
+
+//     try {
+//         let restaurants;
+
+//         if (name) {
+//             // Search for restaurants by name
+//             restaurants = await Restaurant.find({ restaurantName: new RegExp(name, 'i') });
+//         } else if (dish) {
+//             // Search for restaurants offering the dish
+//             const searchTerm = dish.toLowerCase();
+//             restaurants = await Restaurant.find({
+//                 menu: { $elemMatch: { $regex: new RegExp(searchTerm, 'i') } }
+//             });
+//         } else {
+//             return res.status(400).json({ message: 'Please provide a restaurant name or dish to search' });
+//         }
+
+//         if (!restaurants.length) {
+//             return res.status(404).json({ message: 'No restaurants found' });
+//         }
+
+//         res.json(restaurants);
+//     } catch (error) {
+//         console.error('Error fetching restaurants:', error.message);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// });
 
 // In restaurantAuth.js or a similar route file
 router.get('/popularRestaurants', async (req, res) => {

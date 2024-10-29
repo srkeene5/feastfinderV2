@@ -196,7 +196,7 @@ const restaurantData = [
     //     grubhubAvailable: false
     // },
     {
-        restaurantID: "17cd35x",
+        restaurantID: "17cd32x",
         restaurantName: "Chipotle",
         restaurantAddress: "Park Avenue 70512",
         distance: 0.9,
@@ -365,19 +365,29 @@ const restaurantData = [
     //     doordashAvailable: true,
     //     grubhubAvailable: false
     // },
-    // {
-    //     restaurantID: "39kl91q",
-    //     restaurantName: "Taco Fiesta",
-    //     restaurantAddress: "50 Fiesta Plaza, 40123",
-    //     distance: 1.5,
-    //     menu: ["Taco", "Burrito", "Quesadilla", "Nachos", "Guacamole", "Churros", "Fajitas", "Tortilla Soup", "Mexican Rice", "Horchata"],
-    //     ubereatsMenuPrice: [3.95, 8.25, 7.75, 6.50, 4.95, 3.25, 11.50, 5.95, 3.50, 2.75],
-    //     doordashMenuPrice: [4.10, 8.50, 8.00, 6.75, 5.10, 3.45, 11.75, 6.10, 3.65, 2.85],
-    //     grubhubMenuPrice: [3.85, 8.15, 7.50, 6.40, 4.85, 3.30, 11.40, 5.85, 3.45, 2.70],
-    //     ubereatsAvailable: true,
-    //     doordashAvailable: true,
-    //     grubhubAvailable: true
-    // }
+    {
+        restaurantID: "39kl91q",
+        restaurantName: "Taco Fiesta",
+        restaurantAddress: "50 Fiesta Plaza, 40123",
+        distance: 1.5,
+        menu: ["Taco", "Burrito", "Quesadilla", "Nachos", "Guacamole", "Churros", "Fajitas", "Tortilla Soup", "Mexican Rice", "Horchata"],
+        ubereatsMenuPrice: [3.95, 8.25, 7.75, 6.50, 4.95, 3.25, 11.50, 5.95, 3.50, 2.75],
+        doordashMenuPrice: [4.10, 8.50, 8.00, 6.75, 5.10, 3.45, 11.75, 6.10, 3.65, 2.85],
+        grubhubMenuPrice: [3.85, 8.15, 7.50, 6.40, 4.85, 3.30, 11.40, 5.85, 3.45, 2.70],
+        ubereatsAvailable: true,
+        doordashAvailable: true,
+        grubhubAvailable: true,
+        cuisineType: "Mexican",
+        operatingHours: ["Breakfast", "Brunch", "Dinner"],
+        restaurantImage: "/images/chipotle/chipotle-logo.png",
+        menuItemImages: [
+        "/images/chipotle/burrito.jpg", "/images/chipotle/bowl.jpg",
+        "/images/chipotle/tacos.jpg", "/images/chipotle/salad.jpg",
+        "/images/chipotle/chips_guac.jpg", "/images/chipotle/quesadilla.jpg",
+        "/images/chipotle/bowl.jpg", "/images/chipotle/bowl.jpg",
+        "/images/chipotle/burrito.jpg", "/images/chipotle/burrito.jpg"
+    ]
+    }
 ];
 
 export default restaurantData;

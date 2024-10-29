@@ -44,7 +44,8 @@ export default function SearchCards() {
     };
 
     // Filter results based on the selected delivery service availability
-    const filteredResults = results.filter(filterBySelectedService);
+    //const filteredResults = results.filter(filterBySelectedService);
+    const filteredResults = results;
 
     const resetUserPass = () => {
         setuserValue('');
