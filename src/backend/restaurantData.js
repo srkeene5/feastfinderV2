@@ -1,3 +1,5 @@
+
+
 const restaurantData = [
         {
             restaurantID: "66f5ara",
@@ -97,7 +99,7 @@ const restaurantData = [
     //     restaurantName: "KFC",
     //     restaurantAddress: "Main Avenue 40205",
     //     distance: 1.0,
-    //     menu: ["Fried Chicken Bucket", "Chicken Sandwich", "Popcorn Chicken", "Chicken Tenders", "Mashed Potatoes", "Coleslaw", "Mac and Cheese", "Biscuit", "Chocolate Chip Cookie", "Fountain Drink"],
+    //     menu: ["Fried Chicken Bucket", "Chicken Sandwich Deluxe", "Popcorn Chicken", "Chicken Tenders", "Mashed Potatoes", "Coleslaw", "Mac and Cheese", "Biscuit", "Chocolate Chip Cookie", "Fountain Drink"],
     //     ubereatsMenuPrice: [21.50, 6.75, 4.25, 7.40, 2.99, 2.25, 3.49, 1.69, 1.50, 2.29],
     //     doordashMenuPrice: [22.05, 6.50, 4.40, 7.25, 2.79, 2.40, 3.35, 1.55, 1.45, 2.10],
     //     grubhubMenuPrice: [20.99, 6.90, 4.35, 7.55, 2.89, 2.19, 3.59, 1.60, 1.35, 2.45],
@@ -110,8 +112,7 @@ const restaurantData = [
     //     restaurantName: "KFC",
     //     restaurantAddress: "Broadway St 40321",
     //     distance: 1.6,
-    //     menu: ["Fried Chicken Bucket", "Chicken Sandwich", "Popcorn Chicken", "Chicken Tenders", "Mashed Potatoes", "Coleslaw", "Mac and Cheese", "Biscuit", "Chocolate Chip Cookie", "Fountain Drink"],
-    //     ubereatsMenuPrice: [21.95, 6.55, 4.45, 7.20, 3.05, 2.15, 3.29, 1.59, 1.40, 2.35],
+//     menu: ["Fried Chicken Bucket", "Chicken Sandwich Deluxe", "Popcorn Chicken", "Chicken Tenders", "Mashed Potatoes", "Coleslaw", "Mac and Cheese", "Biscuit", "Chocolate Chip Cookie", "Fountain Drink"],    //     ubereatsMenuPrice: [21.95, 6.55, 4.45, 7.20, 3.05, 2.15, 3.29, 1.59, 1.40, 2.35],
     //     doordashMenuPrice: [22.10, 6.60, 4.50, 7.30, 2.95, 2.35, 3.15, 1.50, 1.55, 2.20],
     //     grubhubMenuPrice: [21.30, 6.80, 4.55, 7.45, 3.10, 2.20, 3.45, 1.62, 1.55, 2.30],
     //     ubereatsAvailable: true,
@@ -123,8 +124,7 @@ const restaurantData = [
     //     restaurantName: "KFC",
     //     restaurantAddress: "Lakeshore Rd 40011",
     //     distance: 2.2,
-    //     menu: ["Fried Chicken Bucket", "Chicken Sandwich", "Popcorn Chicken", "Chicken Tenders", "Mashed Potatoes", "Coleslaw", "Mac and Cheese", "Biscuit", "Chocolate Chip Cookie", "Fountain Drink"],
-    //     ubereatsMenuPrice: [22.25, 6.65, 4.30, 7.35, 2.99, 2.29, 3.49, 1.65, 1.45, 2.30],
+//     menu: ["Fried Chicken Bucket", "Chicken Sandwich Deluxe", "Popcorn Chicken", "Chicken Tenders", "Mashed Potatoes", "Coleslaw", "Mac and Cheese", "Biscuit", "Chocolate Chip Cookie", "Fountain Drink"],    //     ubereatsMenuPrice: [22.25, 6.65, 4.30, 7.35, 2.99, 2.29, 3.49, 1.65, 1.45, 2.30],
     //     doordashMenuPrice: [21.85, 6.40, 4.25, 7.15, 2.75, 2.20, 3.25, 1.50, 1.50, 2.15],
     //     grubhubMenuPrice: [21.70, 6.75, 4.55, 7.50, 2.89, 2.15, 3.55, 1.69, 1.60, 2.35],
     //     ubereatsAvailable: false,
@@ -136,8 +136,7 @@ const restaurantData = [
     //     restaurantName: "KFC",
     //     restaurantAddress: "Willow St 40165",
     //     distance: 3.0,
-    //     menu: ["Fried Chicken Bucket", "Chicken Sandwich", "Popcorn Chicken", "Chicken Tenders", "Mashed Potatoes", "Coleslaw", "Mac and Cheese", "Biscuit", "Chocolate Chip Cookie", "Fountain Drink"],
-    //     ubereatsMenuPrice: [21.65, 6.50, 4.35, 7.50, 3.05, 2.35, 3.65, 1.55, 1.55, 2.20],
+//     menu: ["Fried Chicken Bucket", "Chicken Sandwich Deluxe", "Popcorn Chicken", "Chicken Tenders", "Mashed Potatoes", "Coleslaw", "Mac and Cheese", "Biscuit", "Chocolate Chip Cookie", "Fountain Drink"],    //     ubereatsMenuPrice: [21.65, 6.50, 4.35, 7.50, 3.05, 2.35, 3.65, 1.55, 1.55, 2.20],
     //     doordashMenuPrice: [22.30, 6.55, 4.25, 7.20, 2.95, 2.40, 3.45, 1.50, 1.60, 2.10],
     //     grubhubMenuPrice: [21.85, 6.70, 4.45, 7.35, 2.99, 2.25, 3.60, 1.65, 1.50, 2.25],
     //     ubereatsAvailable: true,

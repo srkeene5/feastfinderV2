@@ -1,3 +1,4 @@
+
 import React from 'react'
 
 import { 
@@ -23,7 +24,7 @@ export default function SearchCards() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const {restaurants = [], deliveryService, errorText} = location.state;
+    const { results = [], searchType, search, deliveryService, errorText } = location.state;
 
     const [userValue, setuserValue] = React.useState('');
     const [passValue, setPassValue] = React.useState('');
@@ -34,17 +35,16 @@ export default function SearchCards() {
     const [holdItem, setHoldItem] = React.useState(null);
     const { user } = useAuth();
 
-    //api platform selection logic
-        // Check the availability of the restaurant based on the delivery service selected by the user
-        const filterBySelectedService = (restaurant) => {
-            if (deliveryService === 'UberEats') return restaurant.ubereatsAvailable;
-            if (deliveryService === 'Grubhub') return restaurant.grubhubAvailable;
-            if (deliveryService === 'DoorDash') return restaurant.doordashAvailable;
-            return true; // If no specific service is selected, return all restaurants
-        };
-    
-    // Filter restaurants based on the selected delivery service availability
-    const filteredRestaurants = restaurants.filter(filterBySelectedService);
+    // Function to filter items based on the selected delivery service
+    const filterBySelectedService = (item) => {
+        if (deliveryService === 'UberEats') return item.ubereatsAvailable;
+        if (deliveryService === 'Grubhub') return item.grubhubAvailable;
+        if (deliveryService === 'DoorDash') return item.doordashAvailable;
+        return true; // If no specific service is selected, return all items
+    };
+
+    // Filter results based on the selected delivery service availability
+    const filteredResults = results.filter(filterBySelectedService);
 
     const resetUserPass = () => {
         setuserValue('');
@@ -63,8 +63,8 @@ export default function SearchCards() {
         }
 
         try {
-            var response
-            var fetchAddr = 'http://localhost:5001/api/auth/'
+            let response;
+            let fetchAddr = 'http://localhost:5001/api/auth/';
             switch (buttonService) {
                 case "DoorDash":
                     fetchAddr += 'doordashlogin';
@@ -133,7 +133,7 @@ export default function SearchCards() {
     }
 
     const checkLogin = async (service: string, item) => {
-        var fetchAddr = 'http://localhost:5001/api/auth/'
+        let fetchAddr = 'http://localhost:5001/api/auth/';
         switch (service) {
             case "DoorDash":
                 fetchAddr += 'doordash';
@@ -152,9 +152,6 @@ export default function SearchCards() {
         }
         fetchAddr += 'login/status';
         
-        //setHoldItem(item)
-        //setButtonService(service);
-        //setLoginPop(true);
         try {
             const res = await fetch(fetchAddr, {
                 method: 'GET',
@@ -165,7 +162,7 @@ export default function SearchCards() {
             });
             if (res.ok) {
                 const data = await res.json();
-                var isStored
+                let isStored;
                 switch (service) {
                     case "DoorDash":
                         isStored = data.doordash_stored;
@@ -183,7 +180,7 @@ export default function SearchCards() {
                         return;
                 }
 
-                console.log("LoggedIn "+(isStored))
+                console.log("LoggedIn " + isStored);
                 if (isStored) {
                     console.log('fetch: Successful');
                     navigate('/restaurant', {state: {restaurant: item, service: service}})
@@ -209,19 +206,15 @@ export default function SearchCards() {
         if (available) {
             return (
                 <CoreButton
-                pressFunc={() => {checkLogin(service, item)}}
-                bText={service}
-                buttonColor={ffColors.ffGreenL}
+                    pressFunc={() => {checkLogin(service, item)}}
+                    bText={service}
+                    buttonColor={ffColors.ffGreenL}
                 />
             )
         } else {
             return (
-                <View
-                style={styles.buttonDeactive}
-                >
-                    <Text
-                    style={styles.buttonTextDeactive}
-                    >
+                <View style={styles.buttonDeactive}>
+                    <Text style={styles.buttonTextDeactive}>
                         {service}
                     </Text>
                 </View>
@@ -232,46 +225,41 @@ export default function SearchCards() {
     const restItem = (item: Restaurant, index: number) => {
         return (
             <View
-            key={item.restaurantID}
-            style={styles.card}
+                key={item.restaurantID}
+                style={styles.card}
             >
                 <Image 
-                //source={require('../images/testRest.png')}
-                source={{ uri: item.restaurantImage ? String(item.restaurantImage) : '/images/testRest.png' }}
-                style={styles.cardImage}
-                resizeMode="contain"
+                    source={{ uri: item.restaurantImage ? String(item.restaurantImage) : '/images/testRest.png' }}
+                    style={styles.cardImage}
+                    resizeMode="contain"
                 />
-                <View
-                style={styles.cardContent}
-                >
+                <View style={styles.cardContent}>
                     <Text
-                    numberOfLines={1}
-                    style={styles.restaurantName}
+                        numberOfLines={1}
+                        style={styles.restaurantName}
                     >
                         {item.restaurantName}
                     </Text>
                     <Text
-                    numberOfLines={1}
-                    style={styles.cardDetails}
+                        numberOfLines={1}
+                        style={styles.cardDetails}
                     >
                         Distance: {item.distance.toString()} Miles
                     </Text>
                     <Text 
-                    numberOfLines={1}
-                    style={styles.cardDetails}
+                        numberOfLines={1}
+                        style={styles.cardDetails}
                     >
                         Address: {item.restaurantAddress}
                     </Text>
                     <Text 
-                    numberOfLines={5}
-                    style={styles.cardDetails}
+                        numberOfLines={5}
+                        style={styles.cardDetails}
                     >
                         Description: {item.restaurantName + ' Description...'}
                     </Text>
                 </View>
-                <View
-                style={styles.buttonContent}
-                >
+                <View style={styles.buttonContent}>
                     {APIButton("DoorDash", item.doordashAvailable, item)}
                     {APIButton("GrubHub", item.grubhubAvailable, item)}
                     {APIButton("UberEats", item.ubereatsAvailable, item)}
@@ -280,76 +268,153 @@ export default function SearchCards() {
         )
     }
 
-    //-----Popular Cards Exported-----
+    const goToDishRestaurants = async (dishName) => {
+        try {
+            const response = await fetch(`http://localhost:5001/api/searchRestaurant?dish=${encodeURIComponent(dishName)}`);
+            if (response.ok) {
+                const restaurantResults = await response.json();
+                navigate('/Search', {
+                    state: {
+                        search: dishName,
+                        results: restaurantResults,
+                        searchType: 'restaurant',
+                        deliveryService,
+                    }
+                });
+            } else {
+                console.log('No restaurants found for dish:', dishName);
+                navigate('/Search', {
+                    state: {
+                        search: dishName,
+                        results: [],
+                        searchType: 'restaurant',
+                        deliveryService,
+                        errorText: 'No results found'
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching restaurants:', error);
+            navigate('/Search', {
+                state: {
+                    search: dishName,
+                    results: [],
+                    searchType: 'restaurant',
+                    deliveryService,
+                    errorText: 'Error fetching restaurants'
+                }
+            });
+        }
+    };
+    
+
+
+    const dishItem = (item, index) => {
+        return (
+            <View
+                key={index}
+                style={styles.card}
+            >
+                <Image 
+                    source={{ uri: item.image ? String(item.image) : '/images/default_dish.png' }}
+                    style={styles.cardImage}
+                    resizeMode="contain"
+                />
+                <View style={styles.cardContent}>
+                    <Text
+                        numberOfLines={1}
+                        style={styles.dishName}
+                    >
+                        {item.dishName}
+                    </Text>
+                    <Text 
+                        numberOfLines={1}
+                        style={styles.cardDetails}
+                    >
+                    Available at: {item.restaurantNames[0]}
+                    </Text>
+                </View>
+                <View style={styles.buttonContent}>
+                    <CoreButton
+                        pressFunc={() => goToDishRestaurants(item.dishName)}
+                        bText="View Restaurants"
+                        buttonColor={ffColors.ffGreenL}
+                    />
+                </View>
+            </View>
+        )
+    }
+    //-----Main Render-----
     return (
         <SafeAreaView>
-            <View
-            style={styles.container}
-            >
-                {filteredRestaurants.length > 0 ? (
-                    filteredRestaurants.map((item, index) => restItem(item, index))
+            <View style={styles.container}>
+                {filteredResults.length > 0 ? (
+                    searchType === 'restaurant' ? (
+                        filteredResults.map((item, index) => restItem(item, index))
+                    ) : (
+                        filteredResults.map((item, index) => dishItem(item, index))
+                    )
                 ) : (
                     <View style={styles.errorPage}>
                         <Text style={styles.errorMessage}>
-                            {errorText || `No restaurants found for ${deliveryService || 'all services'}.`}
+                            {errorText || `No results found for ${deliveryService || 'all services'}.`}
                         </Text>
                     </View>
                 )}
             </View>
 
+            {/* Error Popup */}
             <CorePopup
-            pop={errPop}
-            popTitle={"Error:"}
-            popText={errText}
-            closeFunc={()=>{setErrPop(false); setErrText('Error Undefined')}}
-            titleColor={ffColors.ffRedL}
-            buttons={[
-                {
-                    bText: 'Close',
-                    bColor: ffColors.ffRedL,
-                    bFunc: ()=>{setErrPop(false); setErrText('Error Undefined')}
-                }
-            ]}
+                pop={errPop}
+                popTitle={"Error:"}
+                popText={errText}
+                closeFunc={()=>{setErrPop(false); setErrText('Error Undefined')}}
+                titleColor={ffColors.ffRedL}
+                buttons={[
+                    {
+                        bText: 'Close',
+                        bColor: ffColors.ffRedL,
+                        bFunc: ()=>{setErrPop(false); setErrText('Error Undefined')}
+                    }
+                ]}
             />
 
+            {/* Login Popup */}
             <CorePopup 
-            popTitle={'Not logged into ' + buttonService + ':'}
-            popText={""}
-            closeFunc={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass();}}
-            pop={loginPop}
-            titleColor={ffColors.ffRedL}
-            buttons={[
-                {
-                    bText: 'Submit',
-                    bColor: ffColors.ffGreenL,
-                    bFunc: ()=>{popSubmitHandler()}
-                },
-                {
-                    bText: 'Close',
-                    bColor: ffColors.ffRedL,
-                    bFunc: ()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass()}
-                }
-            ]}
+                popTitle={'Not logged into ' + buttonService + ':'}
+                popText={""}
+                closeFunc={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass();}}
+                pop={loginPop}
+                titleColor={ffColors.ffRedL}
+                buttons={[
+                    {
+                        bText: 'Submit',
+                        bColor: ffColors.ffGreenL,
+                        bFunc: ()=>{popSubmitHandler()}
+                    },
+                    {
+                        bText: 'Close',
+                        bColor: ffColors.ffRedL,
+                        bFunc: ()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass()}
+                    }
+                ]}
             >
-                <View
-                style={styles.loginContainer}
-                >
-                    <Text
-                    style={styles.popupText}
-                    >
+                <View style={styles.loginContainer}>
+                    <Text style={styles.popupText}>
                         Login:
                     </Text>
                     <input
-                    style={styles.popInput}
-                    onChange={(event)=>{setuserValue(event.target.value)}}
-                    value = {userValue}
-                    placeholder='Username...'
+                        style={styles.popInput}
+                        onChange={(event)=>{setuserValue(event.target.value)}}
+                        value={userValue}
+                        placeholder='Username...'
                     />
                     <input
-                    style={styles.popInput}
-                    onChange={(event)=>{setPassValue(event.target.value)}}
-                    value = {passValue}
-                    placeholder='Password...'
+                        type="password"
+                        style={styles.popInput}
+                        onChange={(event)=>{setPassValue(event.target.value)}}
+                        value={passValue}
+                        placeholder='Password...'
                     />
                 </View>
             </CorePopup>
@@ -383,6 +448,14 @@ const styles = StyleSheet.create({
     },
     restaurantName: {
         fontSize: 28,
+        fontWeight: 'bold',
+        color: ffColors.ffHeading,
+        overflow: 'hidden',
+        minWidth: 100,
+        marginBottom: 8,
+    },
+    dishName: {
+        fontSize: 24,
         fontWeight: 'bold',
         color: ffColors.ffHeading,
         overflow: 'hidden',
@@ -439,6 +512,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         padding: 10,
+        width: '100%',
     },
     loginContainer: {
         marginTop:0,
