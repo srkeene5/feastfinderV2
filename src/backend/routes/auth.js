@@ -52,6 +52,11 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// generate deals with a 50% chance of being 0
+function getRandomDeal() {
+  return Math.random() < 0.5 ? 0 : getRandomIntInclusive(5, 20);
+}
+
 router.post('/register', async (req, res) => {
   const { email, password } = req.body;
 
@@ -74,10 +79,10 @@ router.post('/register', async (req, res) => {
 
     await user.save();
 
-    // Generate random deals between 5 and 20
-    const doorDashDeal = getRandomIntInclusive(5, 20);
-    const grubHubDeal = getRandomIntInclusive(5, 20);
-    const uberEatsDeal = getRandomIntInclusive(5, 20);
+    // Generate random deals between 5 and 20 or 0
+    const doorDashDeal = getRandomDeal();
+    const grubHubDeal = getRandomDeal();
+    const uberEatsDeal = getRandomDeal();
 
     // Create appLogin document
     const appLogin = new AppLogin({
