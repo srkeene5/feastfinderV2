@@ -195,21 +195,31 @@ const restaurantData = [
     //     doordashAvailable: true,
     //     grubhubAvailable: false
     // },
-    // {
-    //     restaurantID: "17cd34x",
-    //     restaurantName: "Chipotle",
-    //     restaurantAddress: "Park Avenue 70512",
-    //     distance: 0.9,
-    //     menu: ["Burrito", "Burrito Bowl", "Tacos", "Salad", "Chips & Guacamole", "Quesadilla", "Sofritas Bowl", "Steak Bowl", "Barbacoa Burrito", "Chicken Burrito"],
-    //     ubereatsMenuPrice: [8.25, 8.15, 7.85, 7.50, 4.25, 8.95, 8.00, 9.45, 9.10, 8.50],
-    //     doordashMenuPrice: [8.50, 8.25, 7.75, 7.35, 4.50, 9.10, 8.25, 9.65, 9.30, 8.40],
-    //     grubhubMenuPrice: [8.40, 8.20, 7.95, 7.60, 4.35, 9.00, 8.15, 9.55, 9.20, 8.60],
-    //     ubereatsAvailable: true,
-    //     doordashAvailable: true,
-    //     grubhubAvailable: false,
-    // },
+    {
+        restaurantID: "17cd35x",
+        restaurantName: "Chipotle",
+        restaurantAddress: "Park Avenue 70512",
+        distance: 0.9,
+        menu: ["Burrito", "Burrito Bowl", "Tacos", "Salad", "Chips & Guacamole", "Quesadilla", "Sofritas Bowl", "Steak Bowl", "Barbacoa Burrito", "Chicken Burrito"],
+        ubereatsMenuPrice: [8.25, 8.15, 7.85, 7.50, 4.25, 8.95, 8.00, 9.45, 9.10, 8.50],
+        doordashMenuPrice: [8.50, 8.25, 7.75, 7.35, 4.50, 9.10, 8.25, 9.65, 9.30, 8.40],
+        grubhubMenuPrice: [8.40, 8.20, 7.95, 7.60, 4.35, 9.00, 8.15, 9.55, 9.20, 8.60],
+        ubereatsAvailable: true,
+        doordashAvailable: true,
+        grubhubAvailable: false,
+        cuisineType: "Mexican",
+        operatingHours: ["All Day"],
+        restaurantImage: "/images/chipotle/chipotle-logo.png",
+        menuItemImages: [
+        "/images/chipotle/burrito.jpg", "/images/chipotle/bowl.jpg",
+        "/images/chipotle/tacos.jpg", "/images/chipotle/salad.jpg",
+        "/images/chipotle/chips_guac.jpg", "/images/chipotle/quesadilla.jpg",
+        "/images/chipotle/bowl.jpg", "/images/chipotle/bowl.jpg",
+        "/images/chipotle/burrito.jpg", "/images/chipotle/burrito.jpg"
+    ]
+    },
 
-    // {
+    // ,{
     //     restaurantID: "23ef67y",
     //     restaurantName: "Chipotle",
     //     restaurantAddress: "Cedar Street 70612",
