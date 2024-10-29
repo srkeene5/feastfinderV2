@@ -64,7 +64,8 @@ const restaurantSchema = new mongoose.Schema({
   menuItemImages: [{
     type: String,
     required: true
-  }]
+  }],
+  
 });
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);

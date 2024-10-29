@@ -1,4 +1,3 @@
-
 import React from 'react'
 
 import { 
@@ -11,39 +10,85 @@ import {
 } from 'react-native'
 
 import { useAuth } from '../UserComponents/Authorizer.tsx';
-
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
-
-// navigation
 import { useLocation, useNavigate } from 'react-router-dom';
 import CorePopup from '../CoreComponents/CorePopup.tsx';
 import CoreButton from '../CoreComponents/CoreButton.tsx';
 import { Restaurant } from '../CoreComponents/CoreTypes.tsx';
+import { Star } from 'lucide-react';
 
 export default function SearchCards() {
-
     const navigate = useNavigate();
     const location = useLocation();
     const { results = [], searchType, search, deliveryService, errorText } = location.state;
 
     const [userValue, setuserValue] = React.useState('');
     const [passValue, setPassValue] = React.useState('');
-    const [errPop, setErrPop] = React.useState(false)
-    const [errText, setErrText] = React.useState('Error Undefined')
-    const [loginPop, setLoginPop] = React.useState(false)
-    const [buttonService, setButtonService] = React.useState('Error Undefined')
+    const [errPop, setErrPop] = React.useState(false);
+    const [errText, setErrText] = React.useState('Error Undefined');
+    const [loginPop, setLoginPop] = React.useState(false);
+    const [buttonService, setButtonService] = React.useState('Error Undefined');
     const [holdItem, setHoldItem] = React.useState(null);
     const { user } = useAuth();
 
-    // Function to filter items based on the selected delivery service
+    // Modified review states to include all reviews
+    const [reviewPop, setReviewPop] = React.useState(false);
+    const [reviewsViewPop, setReviewsViewPop] = React.useState(false);
+    const [selectedRestaurant, setSelectedRestaurant] = React.useState(null);
+    const [selectedRestaurantReviews, setSelectedRestaurantReviews] = React.useState([]);
+    const [reviewText, setReviewText] = React.useState('');
+    const [rating, setRating] = React.useState(0);
+    const [hoveredRating, setHoveredRating] = React.useState(0);
+    const [restaurants, setRestaurants] = React.useState([]);
+
+    // Dummy data for initial reviews
+    const dummyReviews = [
+        {
+            reviewId: 1,
+            username: "JohnDoe",
+            rating: 4,
+            reviewText: "Great food and atmosphere! Would definitely come back.",
+            createdAt: "2024-03-15T10:30:00"
+        },
+        {
+            reviewId: 2,
+            username: "JaneSmith",
+            rating: 5,
+            reviewText: "Best restaurant in town. The service was exceptional.",
+            createdAt: "2024-03-14T15:45:00"
+        },
+        {
+            reviewId: 3,
+            username: "MikeJohnson",
+            rating: 3,
+            reviewText: "Decent food but a bit pricey. Service was okay.",
+            createdAt: "2024-03-13T18:20:00"
+        }
+    ];
+
+    // Initialize restaurants state when results change
+    React.useEffect(() => {
+        const initializedRestaurants = results.map(restaurant => ({
+            ...restaurant,
+            reviews: dummyReviews,
+            averageRating: calculateAverageRating(dummyReviews)
+        }));
+        setRestaurants(initializedRestaurants);
+    }, [results]);
+
+    const calculateAverageRating = (reviews) => {
+        if (!reviews || reviews.length === 0) return 0;
+        const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+        return Number((sum / reviews.length).toFixed(1));
+    };
+
     const filterBySelectedService = (item) => {
         if (deliveryService === 'UberEats') return item.ubereatsAvailable;
         if (deliveryService === 'Grubhub') return item.grubhubAvailable;
         if (deliveryService === 'DoorDash') return item.doordashAvailable;
-        return true; // If no specific service is selected, return all items
+        return true;
     };
 
-    // Filter results based on the selected delivery service availability
     const filteredResults = results.filter(filterBySelectedService);
 
     const resetUserPass = () => {
@@ -72,7 +117,7 @@ export default function SearchCards() {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization' : "Bearer " + user.token
+                            'Authorization': "Bearer " + user.token
                         },
                         body: JSON.stringify({
                             doordash_email: userValue,
@@ -86,7 +131,7 @@ export default function SearchCards() {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization' : "Bearer " + user.token
+                            'Authorization': "Bearer " + user.token
                         },
                         body: JSON.stringify({
                             grubhub_email: userValue,
@@ -100,7 +145,7 @@ export default function SearchCards() {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization' : "Bearer " + user.token
+                            'Authorization': "Bearer " + user.token
                         },
                         body: JSON.stringify({
                             uber_email: userValue,
@@ -121,11 +166,10 @@ export default function SearchCards() {
                 throw new Error(data.msg || 'Failed to register');
             }
 
-            console.log('Registration successful:', data);
-            setLoginPop(false); 
+            setLoginPop(false);
             setButtonService('Error Undefined');
             resetUserPass();
-            navigate('/restaurant', {state: {restaurant: holdItem, service: buttonService}})
+            navigate('/restaurant', { state: { restaurant: holdItem, service: buttonService } })
         } catch (err) {
             setErrText(err.message);
             setErrPop(true);
@@ -151,13 +195,13 @@ export default function SearchCards() {
                 return;
         }
         fetchAddr += 'login/status';
-        
+
         try {
             const res = await fetch(fetchAddr, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization' : "Bearer " + user.token
+                    'Authorization': "Bearer " + user.token
                 },
             });
             if (res.ok) {
@@ -180,10 +224,8 @@ export default function SearchCards() {
                         return;
                 }
 
-                console.log("LoggedIn " + isStored);
                 if (isStored) {
-                    console.log('fetch: Successful');
-                    navigate('/restaurant', {state: {restaurant: item, service: service}})
+                    navigate('/restaurant', { state: { restaurant: item, service: service } })
                 } else {
                     setHoldItem(item);
                     setButtonService(service);
@@ -191,14 +233,12 @@ export default function SearchCards() {
                 }
             } else {
                 const errorData = await res.json();
-                console.error('Error during login:', errorData);
                 setErrText(errorData.msg);
-                setErrPop(true);  // Set error state on failure
+                setErrPop(true);
             }
-        } catch(error){
-            console.error('Network error:', error);
+        } catch (error) {
             setErrText("Network error\nCheck internet connection");
-            setErrPop(true);  // Handle network error
+            setErrPop(true);
         }
     }
 
@@ -206,7 +246,7 @@ export default function SearchCards() {
         if (available) {
             return (
                 <CoreButton
-                    pressFunc={() => {checkLogin(service, item)}}
+                    pressFunc={() => { checkLogin(service, item) }}
                     bText={service}
                     buttonColor={ffColors.ffGreenL}
                 />
@@ -222,14 +262,87 @@ export default function SearchCards() {
         }
     }
 
+    const StarRating = ({ rating, interactive = false, onRatingChange = null, hoverRating = null }) => {
+        return (
+            <View style={styles.starContainer}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                        key={star}
+                        style={{
+                            cursor: interactive ? 'pointer' : 'default',
+                            marginRight: 4
+                        }}
+                        onClick={interactive ? () => onRatingChange(star) : undefined}
+                        onMouseEnter={interactive ? () => setHoveredRating(star) : undefined}
+                        onMouseLeave={interactive ? () => setHoveredRating(0) : undefined}
+                        fill={(interactive ? (star <= (hoveredRating || rating)) : (star <= rating)) ? "#FFD700" : "none"}
+                        color="#FFD700"
+                        size={interactive ? 32 : 20}
+                    />
+                ))}
+                {!interactive && (
+                    <Text style={styles.ratingText}>
+                        ({rating.toFixed(1)})
+                    </Text>
+                )}
+            </View>
+        );
+    };
+
+    const handleReviewSubmit = () => {
+        if (rating === 0) {
+            setErrText("Please select a rating");
+            setErrPop(true);
+            return;
+        }
+
+        if (!reviewText.trim()) {
+            setErrText("Please write a review");
+            setErrPop(true);
+            return;
+        }
+
+        // Create new review
+        const newReview = {
+            reviewId: Date.now(),
+            username: user?.username || "Anonymous",
+            rating: rating,
+            reviewText: reviewText,
+            createdAt: new Date().toISOString()
+        };
+
+        // Update restaurants state with new review
+        setRestaurants(prevRestaurants => {
+            return prevRestaurants.map(restaurant => {
+                if (restaurant.restaurantID === selectedRestaurant.restaurantID) {
+                    const updatedReviews = [newReview, ...restaurant.reviews];
+                    return {
+                        ...restaurant,
+                        reviews: updatedReviews,
+                        averageRating: calculateAverageRating(updatedReviews)
+                    };
+                }
+                return restaurant;
+            });
+        });
+
+        // Reset form and close popup
+        setReviewText('');
+        setRating(0);
+        setReviewPop(false);
+        setSelectedRestaurant(null);
+    };
+
     const restItem = (item: Restaurant, index: number) => {
+        const restaurantData = restaurants.find(r => r.restaurantID === item.restaurantID) || item;
+        
         return (
             <View
-                key={item.restaurantID}
+                key={restaurantData.restaurantID}
                 style={styles.card}
             >
-                <Image 
-                    source={{ uri: item.restaurantImage ? String(item.restaurantImage) : '/images/testRest.png' }}
+                <Image
+                    source={{ uri: restaurantData.restaurantImage ? String(restaurantData.restaurantImage) : '/images/testRest.png' }}
                     style={styles.cardImage}
                     resizeMode="contain"
                 />
@@ -238,76 +351,55 @@ export default function SearchCards() {
                         numberOfLines={1}
                         style={styles.restaurantName}
                     >
-                        {item.restaurantName}
+                        {restaurantData.restaurantName}
+                    </Text>
+                    <StarRating rating={restaurantData.averageRating || 0} />
+                    <Text
+                        numberOfLines={1}
+                        style={styles.cardDetails}
+                    >
+                        Distance: {restaurantData.distance.toString()} Miles
                     </Text>
                     <Text
                         numberOfLines={1}
                         style={styles.cardDetails}
                     >
-                        Distance: {item.distance.toString()} Miles
+                        Address: {restaurantData.restaurantAddress}
                     </Text>
-                    <Text 
-                        numberOfLines={1}
-                        style={styles.cardDetails}
-                    >
-                        Address: {item.restaurantAddress}
-                    </Text>
-                    <Text 
+                    <Text
                         numberOfLines={5}
                         style={styles.cardDetails}
                     >
-                        Description: {item.restaurantName + ' Description...'}
+                        Description: {restaurantData.restaurantName + ' Description...'}
                     </Text>
+                    <View style={styles.reviewButtonsContainer}>
+                        <CoreButton
+                            pressFunc={() => {
+                                setSelectedRestaurant(restaurantData);
+                                setReviewPop(true);
+                            }}
+                            bText="Leave a Review"
+                            buttonColor={ffColors.ffBlueL}
+                        />
+                        <CoreButton
+                            pressFunc={() => {
+                                setSelectedRestaurant(restaurantData);
+                                setSelectedRestaurantReviews(restaurantData.reviews);
+                                setReviewsViewPop(true);
+                            }}
+                            bText="View Reviews"
+                            buttonColor={ffColors.ffPurpleL}
+                        />
+                    </View>
                 </View>
                 <View style={styles.buttonContent}>
-                    {APIButton("DoorDash", item.doordashAvailable, item)}
-                    {APIButton("GrubHub", item.grubhubAvailable, item)}
-                    {APIButton("UberEats", item.ubereatsAvailable, item)}
+                    {APIButton("DoorDash", restaurantData.doordashAvailable, restaurantData)}
+                    {APIButton("GrubHub", restaurantData.grubhubAvailable, restaurantData)}
+                    {APIButton("UberEats", restaurantData.ubereatsAvailable, restaurantData)}
                 </View>
             </View>
-        )
-    }
-
-    const goToDishRestaurants = async (dishName) => {
-        try {
-            const response = await fetch(`http://localhost:5001/api/searchRestaurant?dish=${encodeURIComponent(dishName)}`);
-            if (response.ok) {
-                const restaurantResults = await response.json();
-                navigate('/Search', {
-                    state: {
-                        search: dishName,
-                        results: restaurantResults,
-                        searchType: 'restaurant',
-                        deliveryService,
-                    }
-                });
-            } else {
-                console.log('No restaurants found for dish:', dishName);
-                navigate('/Search', {
-                    state: {
-                        search: dishName,
-                        results: [],
-                        searchType: 'restaurant',
-                        deliveryService,
-                        errorText: 'No results found'
-                    }
-                });
-            }
-        } catch (error) {
-            console.error('Error fetching restaurants:', error);
-            navigate('/Search', {
-                state: {
-                    search: dishName,
-                    results: [],
-                    searchType: 'restaurant',
-                    deliveryService,
-                    errorText: 'Error fetching restaurants'
-                }
-            });
-        }
+        );
     };
-    
-
 
     const dishItem = (item, index) => {
         return (
@@ -315,7 +407,7 @@ export default function SearchCards() {
                 key={index}
                 style={styles.card}
             >
-                <Image 
+                <Image
                     source={{ uri: item.image ? String(item.image) : '/images/default_dish.png' }}
                     style={styles.cardImage}
                     resizeMode="contain"
@@ -327,11 +419,11 @@ export default function SearchCards() {
                     >
                         {item.dishName}
                     </Text>
-                    <Text 
+                    <Text
                         numberOfLines={1}
                         style={styles.cardDetails}
                     >
-                    Available at: {item.restaurantNames[0]}
+                        Available at: {item.restaurantNames[0]}
                     </Text>
                 </View>
                 <View style={styles.buttonContent}>
@@ -340,11 +432,11 @@ export default function SearchCards() {
                         bText="View Restaurants"
                         buttonColor={ffColors.ffGreenL}
                     />
-                </View>
+</View>
             </View>
         )
     }
-    //-----Main Render-----
+
     return (
         <SafeAreaView>
             <View style={styles.container}>
@@ -368,34 +460,34 @@ export default function SearchCards() {
                 pop={errPop}
                 popTitle={"Error:"}
                 popText={errText}
-                closeFunc={()=>{setErrPop(false); setErrText('Error Undefined')}}
+                closeFunc={() => { setErrPop(false); setErrText('Error Undefined') }}
                 titleColor={ffColors.ffRedL}
                 buttons={[
                     {
                         bText: 'Close',
                         bColor: ffColors.ffRedL,
-                        bFunc: ()=>{setErrPop(false); setErrText('Error Undefined')}
+                        bFunc: () => { setErrPop(false); setErrText('Error Undefined') }
                     }
                 ]}
             />
 
             {/* Login Popup */}
-            <CorePopup 
+            <CorePopup
                 popTitle={'Not logged into ' + buttonService + ':'}
                 popText={""}
-                closeFunc={()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass();}}
+                closeFunc={() => { setLoginPop(false); setButtonService('Error Undefined'); resetUserPass(); }}
                 pop={loginPop}
                 titleColor={ffColors.ffRedL}
                 buttons={[
                     {
                         bText: 'Submit',
                         bColor: ffColors.ffGreenL,
-                        bFunc: ()=>{popSubmitHandler()}
+                        bFunc: () => { popSubmitHandler() }
                     },
                     {
                         bText: 'Close',
                         bColor: ffColors.ffRedL,
-                        bFunc: ()=>{setLoginPop(false); setButtonService('Error Undefined'); resetUserPass()}
+                        bFunc: () => { setLoginPop(false); setButtonService('Error Undefined'); resetUserPass() }
                     }
                 ]}
             >
@@ -405,21 +497,123 @@ export default function SearchCards() {
                     </Text>
                     <input
                         style={styles.popInput}
-                        onChange={(event)=>{setuserValue(event.target.value)}}
+                        onChange={(event) => { setuserValue(event.target.value) }}
                         value={userValue}
                         placeholder='Username...'
                     />
                     <input
                         type="password"
                         style={styles.popInput}
-                        onChange={(event)=>{setPassValue(event.target.value)}}
+                        onChange={(event) => { setPassValue(event.target.value) }}
                         value={passValue}
                         placeholder='Password...'
                     />
                 </View>
             </CorePopup>
+
+            {/* Review Popup */}
+            <CorePopup
+                popTitle={`Leave a Review for ${selectedRestaurant?.restaurantName || ''}`}
+                popText={''}
+                closeFunc={() => {
+                    setReviewPop(false);
+                    setSelectedRestaurant(null);
+                    setReviewText('');
+                    setRating(0);
+                    setHoveredRating(0);
+                }}
+                pop={reviewPop}
+                titleColor={ffColors.ffBlueL}
+                buttons={[
+                    {
+                        bText: 'Submit',
+                        bColor: ffColors.ffGreenL,
+                        bFunc: handleReviewSubmit
+                    },
+                    {
+                        bText: 'Cancel',
+                        bColor: ffColors.ffRedL,
+                        bFunc: () => {
+                            setReviewPop(false);
+                            setSelectedRestaurant(null);
+                            setReviewText('');
+                            setRating(0);
+                            setHoveredRating(0);
+                        }
+                    }
+                ]}
+            >
+                <View style={styles.reviewContainer}>
+                    <Text style={styles.popupText}>
+                        Rate your experience:
+                    </Text>
+                    <StarRating 
+                        rating={rating} 
+                        interactive={true} 
+                        onRatingChange={setRating}
+                        hoverRating={hoveredRating}
+                    />
+                    <Text style={styles.popupText}>
+                        Your review:
+                    </Text>
+                    <textarea
+                        style={styles.reviewInput}
+                        onChange={(event) => setReviewText(event.target.value)}
+                        value={reviewText}
+                        placeholder='Write your review here...'
+                        rows={4}
+                    />
+                </View>
+            </CorePopup>
+
+            {/* Reviews View Popup */}
+            <CorePopup
+                popTitle={`Reviews for ${selectedRestaurant?.restaurantName || ''}`}
+                popText={''}
+                closeFunc={() => {
+                    setReviewsViewPop(false);
+                    setSelectedRestaurant(null);
+                    setSelectedRestaurantReviews([]);
+                }}
+                pop={reviewsViewPop}
+                titleColor={ffColors.ffBlueL}
+                buttons={[
+                    {
+                        bText: 'Close',
+                        bColor: ffColors.ffRedL,
+                        bFunc: () => {
+                            setReviewsViewPop(false);
+                            setSelectedRestaurant(null);
+                            setSelectedRestaurantReviews([]);
+                        }
+                    }
+                ]}
+            >
+                <ScrollView style={styles.reviewsContainer}>
+                    <View style={styles.reviewsSummary}>
+                        <StarRating rating={selectedRestaurant?.averageRating || 0} />
+                        <Text style={styles.reviewsCount}>
+                            {selectedRestaurantReviews.length} reviews
+                        </Text>
+                    </View>
+                    {selectedRestaurantReviews.map((review) => (
+                        <View key={review.reviewId} style={styles.reviewItem}>
+                            <View style={styles.reviewHeader}>
+                                <Text style={styles.reviewUsername}>{review.username}</Text>
+                                <StarRating rating={review.rating} />
+                                <Text style={styles.reviewDate}>
+                                    {new Date(review.createdAt).toLocaleDateString()}
+                                </Text>
+                            </View>
+                            <Text style={styles.reviewText}>
+                                {review.reviewText}
+                            </Text>
+                        </View>
+                    ))}
+                </ScrollView>
+            </CorePopup>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -506,7 +700,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
     },
-    popInput:{
+    popInput: {
         height: 'auto',
         marginBottom: 20,
         borderWidth: 1,
@@ -515,7 +709,84 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     loginContainer: {
-        marginTop:0,
+        marginTop: 0,
         margin: 20,
     },
-})
+    starContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 5,
+    },
+    ratingText: {
+        marginLeft: 5,
+        fontSize: 16,
+        color: ffColors.ffBody,
+    },
+    reviewContainer: {
+        margin: 20,
+    },
+    reviewInput: {
+        marginBottom: 20,
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        width: '100%',
+        minHeight: 100,
+        borderColor: '#ccc',
+        resize: 'vertical',
+        fontFamily: 'inherit',
+        fontSize: 14,
+    },
+    reviewButtonsContainer: {
+        flexDirection: 'row',
+        gap: 5,
+        marginTop: 10,
+    },
+    reviewsContainer: {
+        maxHeight: 400,
+        padding: 10,
+    },
+    reviewsSummary: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+        marginBottom: 15,
+    },
+    reviewsCount: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: ffColors.ffBody,
+    },
+    reviewItem: {
+        marginBottom: 20,
+        padding: 10,
+        backgroundColor: '#f8f8f8',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#eee',
+    },
+    reviewHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 8,
+        flexWrap: 'wrap',
+        gap: 8,
+    },
+    reviewUsername: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        color: ffColors.ffHeading,
+    },
+    reviewDate: {
+        fontSize: 14,
+        color: '#666',
+    },
+    reviewText: {
+        fontSize: 14,
+        color: ffColors.ffBody,
+        lineHeight: 20,
+    }
+});
