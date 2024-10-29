@@ -1,17 +1,26 @@
-// src/frontend/screens/CartPageComponents/CartPage.tsx
-
 import React, { useState, useEffect } from 'react';
 import { useCart } from './CartContext.tsx'; // Corrected path
 import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useNavigate } from 'react-router-dom';
 import { CartItem } from '../../../types/Cart'; // Adjusted path
+import { useAuth } from '../UserComponents/Authorizer.tsx'; // Authentication hook
+import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for login
+import { ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
 
 const CartPage: React.FC = () => {
   const { cart, clearCart } = useCart(); // Destructure clearCart from useCart
   const navigate = useNavigate();
+  const { user } = useAuth(); // Authentication context
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [errPop, setErrPop] = useState(false);
+  const [errText, setErrText] = useState('Error Undefined');
+  const [loginPop, setLoginPop] = useState(false);
+  const [buttonService, setButtonService] = useState<string>('Error Undefined'); // Ensure it's string type
+  const [holdCartData, setHoldCartData] = useState(null); // Store cart data for later processing
+  const [userValue, setUserValue] = useState(''); // Store username input
+  const [passValue, setPassValue] = useState(''); // Store password input
 
   // Redirect to home if cart is empty
   useEffect(() => {
@@ -23,71 +32,142 @@ const CartPage: React.FC = () => {
   // Function to calculate total for a specific service
   const calculateServiceTotal = (service: string) => {
     return cart.items.reduce((total: number, item: CartItem) => {
-      const price = item.prices[service.toLowerCase()];
+      const price = item.prices[service.toLowerCase()]; // We still lower-case the key lookup here since the backend data uses lowercase keys
       return total + price * item.quantity;
     }, 0);
   };
 
-  // Function to handle checkout
-  const handleCheckout = async (serviceName: string) => {
-    // Call the backend to store the cart
-    const success = await createCartInDatabase({ ...cart, service: serviceName });
-
-    if (success) {
-      // Set the selected service and show the success modal
-      setSelectedService(serviceName);
-      setShowSuccessModal(true);
-    }
+  const resetUserPass = () => {
+    setUserValue('');
+    setPassValue('');
   };
 
-  // Function to get the URL for a specific service
-  const getServiceURL = (serviceName: string) => {
-    switch (serviceName) {
-      case 'UberEats':
-        return 'https://www.ubereats.com';
-      case 'DoorDash':
-        return 'https://www.doordash.com';
-      case 'Grubhub':
-        return 'https://www.grubhub.com';
+  const checkLogin = async (service: string) => {
+    let fetchAddr = 'http://localhost:5001/api/auth/';
+    console.log('Selected service:', service); // Debugging: Log the selected service
+
+    switch (service) {
+      case 'doordash':
+        fetchAddr += 'doordash';
+        break;
+      case 'grubhub':
+        fetchAddr += 'grubhub';
+        break;
+      case 'ubereats':
+        fetchAddr += 'uber';
+        break;
       default:
-        return '#';
+        setErrText("Internal Service Error: Delivery Service not recognized");
+        setErrPop(true);
+        return false;
     }
-  };
 
-  // Function to create the cart in the database
-  const createCartInDatabase = async (cartData: any): Promise<boolean> => {
+    fetchAddr += 'login/status';
+
     try {
-      // Retrieve the 'user' object from localStorage
-      const userData = localStorage.getItem('user');
+      const res = await fetch(fetchAddr, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
-      if (!userData) {
-        console.error('No user data found in localStorage.');
-        alert('You are not logged in. Please log in to proceed.');
+      if (res.ok) {
+        const data = await res.json();
+        let isStored;
+        switch (service) {
+          case 'doordash':
+            isStored = data.doordash_stored;
+            break;
+          case 'grubhub':
+            isStored = data.grubhub_stored;
+            break;
+          case 'ubereats':
+            isStored = data.uber_stored;
+            break;
+          default:
+            isStored = false;
+        }
+
+        if (isStored) {
+          return true;
+        } else {
+          setButtonService(service);
+          setHoldCartData(cart);
+          setLoginPop(true);
+          return false;
+        }
+      } else {
+        const errorData = await res.json();
+        setErrText(errorData.msg);
+        setErrPop(true);
         return false;
       }
+    } catch (error) {
+      setErrText('Network error\nCheck internet connection');
+      setErrPop(true);
+      return false;
+    }
+  };
 
-      // Parse the JSON string to an object
+  const popSubmitHandler = async () => {
+    if (!userValue || !passValue) {
+      setErrText('Username and Password cannot be blank');
+      setErrPop(true);
+      return;
+    }
+
+    try {
+      let fetchAddr = `http://localhost:5001/api/auth/${buttonService.toLowerCase()}login`;
+
+      const response = await fetch(fetchAddr, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          [`${buttonService.toLowerCase()}_email`]: userValue,
+          [`${buttonService.toLowerCase()}_password`]: passValue,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.msg || 'Failed to login');
+      }
+
+      setLoginPop(false);
+      setButtonService('Error Undefined');
+      resetUserPass();
+
+      await proceedToCheckout(buttonService, holdCartData);
+    } catch (err) {
+      setErrText(err.message || 'Login failed');
+      setErrPop(true);
+    }
+  };
+
+  const proceedToCheckout = async (serviceName: string, cartData: any) => {
+    try {
+      const userData = localStorage.getItem('user');
+      if (!userData) {
+        alert('You are not logged in. Please log in to proceed.');
+        return;
+      }
+
       const user = JSON.parse(userData);
-
-      // Extract the token
       const token = user.token;
 
-      if (!token) {
-        console.error('No token found in user data.');
-        alert('Authentication token is missing. Please log in again.');
-        return false;
-      }
-
-      console.log('Using token:', token); // Debugging line
-
-      // Make the POST request with the correct token
       const response = await fetch('http://localhost:5001/api/cartroute/cart/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(cartData),
+        body: JSON.stringify({ ...cartData, service: serviceName }),
       });
 
       const data = await response.json();
@@ -95,22 +175,41 @@ const CartPage: React.FC = () => {
       if (!response.ok) {
         console.error('Error response from server:', data);
         alert(`Error: ${data.message}`);
-        return false;
+        return;
       }
 
-      console.log('Cart saved:', data);
-      // Remove the alert, handled by the modal
-      return true;
-    } catch (error: any) { // TypeScript requires a type for 'error'
-      console.error('Error saving cart:', error);
+      window.open(getServiceURL(serviceName), '_blank');
+      clearCart();
+      navigate('/home');
+    } catch (error) {
       alert('An unexpected error occurred while saving the cart.');
-      return false;
     }
   };
 
-  // Prevent rendering if cart is empty (handled by useEffect)
+  const handleCheckout = async (serviceName: string) => {
+    const isLoggedIn = await checkLogin(serviceName);
+
+    if (isLoggedIn) {
+      window.open(getServiceURL(serviceName), '_blank');
+      await proceedToCheckout(serviceName, cart);
+    }
+  };
+
+  const getServiceURL = (serviceName: string) => {
+    switch (serviceName) {
+      case 'ubereats':
+        return 'https://www.ubereats.com';
+      case 'doordash':
+        return 'https://www.doordash.com';
+      case 'grubhub':
+        return 'https://www.grubhub.com';
+      default:
+        return '#';
+    }
+  };
+
   if (!cart || !cart.items || cart.items.length === 0) {
-    return null; // Or a loading spinner if desired
+    return null;
   }
 
   return (
@@ -119,7 +218,6 @@ const CartPage: React.FC = () => {
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
 
-        {/* Services Sections */}
         {['DoorDash', 'UberEats', 'Grubhub'].map((service) => {
           const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
           const serviceTotal = calculateServiceTotal(service);
@@ -129,19 +227,11 @@ const CartPage: React.FC = () => {
               <h2 className="text-xl font-semibold mb-2">{service}</h2>
               {serviceAvailable ? (
                 <>
-                  {/* Display selected items and prices */}
                   <ul>
                     {cart.items.map((item: CartItem, index: number) => (
                       <li key={index} className="flex justify-between">
-                        <span>
-                          {item.item} x {item.quantity}
-                        </span>
-                        <span>
-                          $
-                          {(
-                            item.prices[service.toLowerCase()] * item.quantity
-                          ).toFixed(2)}
-                        </span>
+                        <span>{item.item} x {item.quantity}</span>
+                        <span>${(item.prices[service.toLowerCase()] * item.quantity).toFixed(2)}</span>
                       </li>
                     ))}
                   </ul>
@@ -150,7 +240,7 @@ const CartPage: React.FC = () => {
                     <span>${serviceTotal.toFixed(2)}</span>
                   </div>
                   <button
-                    onClick={() => handleCheckout(service)}
+                    onClick={() => handleCheckout(service.toLowerCase())}
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
                   >
                     Checkout with {service}
@@ -164,28 +254,84 @@ const CartPage: React.FC = () => {
         })}
       </div>
 
-      {/* Success Modal */}
-      {showSuccessModal && selectedService && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-            <h2 className="text-xl font-semibold mb-4">Checkout Successful!</h2>
-            <p>You can proceed to {selectedService} to place your order.</p>
-            <button
-              onClick={() => {
-                window.open(getServiceURL(selectedService), '_blank');
-                clearCart();
-                navigate('/home');
-              }}
-              className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
-            >
-              OK
-            </button>
-          </div>
+      <CorePopup
+        pop={errPop}
+        popTitle={"Error:"}
+        popText={errText}
+        closeFunc={() => setErrPop(false)}
+        titleColor={ffColors.ffRedL}
+        buttons={[
+          {
+            bText: 'Close',
+            bColor: ffColors.ffRedL,
+            bFunc: () => setErrPop(false),
+          },
+        ]}
+      />
+
+      <CorePopup
+        pop={loginPop}
+        popTitle={`Not logged into ${buttonService}:`}
+        popText={""}
+        closeFunc={() => setLoginPop(false)}
+        titleColor={ffColors.ffRedL}
+        buttons={[
+          {
+            bText: 'Submit',
+            bColor: ffColors.ffGreenL,
+            bFunc: popSubmitHandler,
+          },
+          {
+            bText: 'Close',
+            bColor: ffColors.ffRedL,
+            bFunc: () => {
+              setLoginPop(false);
+              resetUserPass();
+            },
+          },
+        ]}
+      >
+        <div style={styles.loginContainer}>
+          <div style={styles.popupText}>Login:</div>
+          <input
+            type="text"
+            style={styles.popInput}
+            value={userValue}
+            onChange={(event) => setUserValue(event.target.value)}
+            placeholder="Username..."
+          />
+          <input
+            type="password"
+            style={styles.popInput}
+            value={passValue}
+            onChange={(event) => setPassValue(event.target.value)}
+            placeholder="Password..."
+          />
         </div>
-      )}
+      </CorePopup>
     </div>
   );
 };
 
-export default CartPage;
+// Adding styles for the CartPage login popup from SearchCards
+const styles = {
+  loginContainer: {
+    marginTop: 0,
+    margin: 20,
+  },
+  popupText: {
+    marginBottom: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  popInput: {
+    height: 'auto',
+    marginBottom: 20,
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+    width: '100%',
+  },
+};
 
+export default CartPage;
