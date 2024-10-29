@@ -39,28 +39,49 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
             console.log(`Searching for: ${searchValue}, Type: ${searchType}, Service: ${deliveryService}, Cuisine: ${cuisine}, and Time Ranges: ${selectedTimeRanges}`);
 
             try {
-                //const response = await fetch(`http://localhost:5001/api/search?name=${searchValue}&type=${searchType}&service=${deliveryService}&cuisine=${cuisine}&timeRanges=${selectedTimeRanges}`);
-                const response = await fetch(`http://localhost:5001/api/searchRestaurant?name=${searchValue}`);
+                let response;
+                if (searchType === 'restaurant') {
+                    response = await fetch(`http://localhost:5001/api/searchRestaurant?name=${searchValue}`);
+                } else if (searchType === 'dish') {
+                    response = await fetch(`http://localhost:5001/api/searchDish?name=${searchValue}`);
+                }
                 if (response.ok) {
                     const results = await response.json();
                     console.log('Results Found:', results);
-                    //navigate('/Search', { state: { search: searchValue, results, searchType, deliveryService, cuisine, timeRanges: selectedTimeRanges } });
-                    // Eventually, navigate should reflect above
                     navigate('/Search', { 
                         state: { 
+                            //restaurants: results, 
                             search: searchValue, 
-                            restaurants: results, 
-                            deliveryService,
+                            results, 
+                            searchType, 
+                            deliveryService, 
+                            cuisine, 
+                            timeRanges: selectedTimeRanges  
                         } 
                     });
                 } else {
                     console.log('No results found');
-                    navigate('/Search', { state: { search: searchValue, results: undefined, searchType, deliveryService, cuisine, timeRanges: selectedTimeRanges, errorText: 'No results found' } });
+                    navigate('/Search', { state: { 
+                        search: searchValue, 
+                        results: [], 
+                        searchType, 
+                        deliveryService, 
+                        cuisine, 
+                        timeRanges: selectedTimeRanges, 
+                        errorText: 'No results found' } });
                     // Eventually, navigate should reflect above
                 }
             } catch (error) {
                 console.error('Error fetching results:', error);
-                navigate('/Search', { state: { search: searchValue, results: undefined, searchType, deliveryService, cuisine, timeRanges: selectedTimeRanges, errorText: 'Error fetching results' } });
+                navigate('/Search', { 
+                    state: { 
+                        search: searchValue, 
+                        results: [], 
+                        searchType, 
+                        deliveryService, 
+                        cuisine, 
+                        timeRanges: selectedTimeRanges, 
+                        errorText: 'Error fetching results' } });
                 // Eventually, navigate should reflect above
             }
         }

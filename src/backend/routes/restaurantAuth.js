@@ -1,21 +1,35 @@
+
 import express from 'express';
 import Restaurant from '../models/Restaurant.js';  // Import Restaurant model
 
 const router = express.Router();
 
-// API endpoint to search for restaurants by name (returns all matching restaurants)
+
+
+
 router.get('/searchRestaurant', async (req, res) => {
-    const { name } = req.query;
+    const { name, dish } = req.query;
 
     try {
-        // Search for all restaurants that match the name (case-insensitive)
-        const restaurants = await Restaurant.find({ restaurantName: new RegExp(name, 'i') });
+        let restaurants;
+
+        if (name) {
+            // Search for restaurants by name
+            restaurants = await Restaurant.find({ restaurantName: new RegExp(name, 'i') });
+        } else if (dish) {
+            // Search for restaurants offering the dish
+            const searchTerm = dish.toLowerCase();
+            restaurants = await Restaurant.find({
+                menu: { $elemMatch: { $regex: new RegExp(searchTerm, 'i') } }
+            });
+        } else {
+            return res.status(400).json({ message: 'Please provide a restaurant name or dish to search' });
+        }
 
         if (!restaurants.length) {
             return res.status(404).json({ message: 'No restaurants found' });
         }
 
-        // Return the full restaurant object
         res.json(restaurants);
     } catch (error) {
         console.error('Error fetching restaurants:', error.message);
@@ -33,5 +47,60 @@ router.get('/popularRestaurants', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+
+
+
+router.get('/searchDish', async (req, res) => {
+    const { name } = req.query;
+
+    if (!name) {
+        return res.status(400).json({ msg: 'Please provide a dish name to search' });
+    }
+
+    const searchTerm = name.toLowerCase();
+    const results = {}; // Use an object to store unique dishes by normalized dish name
+
+    try {
+        const restaurants = await Restaurant.find();
+
+        restaurants.forEach((restaurant) => {
+            restaurant.menu.forEach((dishName, index) => {
+                if (dishName.toLowerCase().includes(searchTerm)) {
+                    // Normalize the dish name
+                    const normalizedDishName = dishName.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/gi, '');
+
+                    if (!results[normalizedDishName]) {
+                        results[normalizedDishName] = {
+                            dishName: dishName,
+                            // Since multiple restaurants have this dish, we can list all restaurant names
+                            restaurantNames: [restaurant.restaurantName],
+                            image: restaurant.menuItemImages[index],
+                            ubereatsAvailable: restaurant.ubereatsAvailable,
+                            doordashAvailable: restaurant.doordashAvailable,
+                            grubhubAvailable: restaurant.grubhubAvailable,
+                            // Other fields as needed
+                        };
+                    } else {
+                        // If the dish already exists, add the restaurant name to the list
+                        results[normalizedDishName].restaurantNames.push(restaurant.restaurantName);
+                    }
+                }
+            });
+        });
+
+        const resultsArray = Object.values(results);
+
+        if (resultsArray.length === 0) {
+            return res.status(404).json({ msg: 'No dishes found matching your search' });
+        }
+
+        res.json(resultsArray);
+    } catch (error) {
+        console.error('Error fetching dishes:', error.message);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 export default router;

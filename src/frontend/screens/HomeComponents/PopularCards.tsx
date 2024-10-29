@@ -1,3 +1,5 @@
+
+
 import axios from 'axios';
 import React, { useEffect } from 'react'
 
@@ -12,14 +14,10 @@ import {
 } from 'react-native'
 import tw from 'twrnc';
 
-
 import { coreForm, coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 // navigation
 import { useNavigate } from 'react-router-dom';
-
-// Define the type for your restaurant objects
-
 
 interface Dish {
     dishID: string,
@@ -36,80 +34,101 @@ interface GenItem {
 
 export default function PopularCards({fetchType}) {
     const [title, setTitle] = React.useState('error: Failed to Fetch')
-    const [fetchedData, setFetchedData] = React.useState<[]>([]);
+    const [fetchedData, setFetchedData] = React.useState<any[]>([]);
 
     const navigate = useNavigate();
     
     // Fetch the restaurant data from the backend when the component is mounted
     useEffect(() => {
         axios.get('http://localhost:5001/api/' + fetchType)  // Ensure your backend route is correct
-                .then(response => {
-                    setFetchedData(response.data);
-                    if (fetchType === 'popularRestaurants') {
-                        setTitle('Popular Near You:');
-                    } else {
-                        setTitle('Fetch Type Untitled');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching popular restaurants:', error);
-                });
-    }, []);
+            .then(response => {
+                setFetchedData(response.data);
+                if (fetchType === 'popularRestaurants') {
+                    setTitle('Popular Near You:');
+                } else {
+                    setTitle('Fetch Type Untitled');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching popular restaurants:', error);
+            });
+    }, [fetchType]);
 
     const handlePop = async (name: string) => {
         console.log("Searching for: " + name);
         try {
             // Send the request to your backend API
-            const response = await fetch('http://localhost:5001/api/searchRestaurant?name=' + name);
+            const response = await fetch('http://localhost:5001/api/searchRestaurant?name=' + encodeURIComponent(name));
                 
             // Check if the response is OK and parse JSON
             if (response.ok) {
-                const restaurants = await response.json();
+                const results = await response.json();
                 // Log the entire restaurant object(s)
-                console.log('Restaurants Found:', restaurants);
-                navigate('/Search', {state: {search: name, restaurants: restaurants, errorText: ''}})
+                console.log('Restaurants Found:', results);
+                navigate('/Search', {
+                    state: {
+                        search: name,
+                        results: results,
+                        searchType: 'restaurant',
+                        deliveryService: '', // Adjust if needed
+                        errorText: ''
+                    }
+                });
             } else {
                 console.log('No restaurants found');
-                navigate('/Search', {state: {search: name, restaurants: undefined, errorText: 'No restaurants found'}})
+                navigate('/Search', {
+                    state: {
+                        search: name,
+                        results: [],
+                        searchType: 'restaurant',
+                        deliveryService: '', // Adjust if needed
+                        errorText: 'No restaurants found'
+                    }
+                });
             }
         } catch (error) {
             console.error('Error fetching restaurant:', error);
-            navigate('/Search', {state: {search: name, restaurants: undefined, errorText: 'Error fetching restaurant:'}})
+            navigate('/Search', {
+                state: {
+                    search: name,
+                    results: [],
+                    searchType: 'restaurant',
+                    deliveryService: '', // Adjust if needed
+                    errorText: 'Error fetching restaurant'
+                }
+            });
         }
     }
 
     const restDishItem = (item: GenItem) => {
-        if (item.description.length > 20) {
-            item.description = item.description.substring(0,20) + '...';
-        }
+        const truncatedDescription = item.description.length > 20
+            ? item.description.substring(0, 20) + '...'
+            : item.description;
+
         return (
             <TouchableOpacity
-            key={item.ID}
-            style={styles.container}
-            onPress={() => {handlePop(item.name)}}
+                key={item.ID}
+                style={styles.container}
+                onPress={() => {handlePop(item.name)}}
             >            
                 <View style={styles.card}>
-                    {/* <img 
-                    src={item.image} 
-                    alt="Image not Found" style={styles.cardImage} 
-                    /> */}
-                       <Image 
+                    <Image 
                         source={{ uri: item.image }} // Use the dynamic image source
                         style={styles.cardImage} 
                         resizeMode="contain" // Ensures image fits within the card without being cut off
                     />
                     <Text
-                    style={tw.style(coreForm.subheader)}
+                        style={tw.style(coreForm.subheader)}
                     >
                         {item.name}
                     </Text>
                     <View
-                    style={tw.style(coreForm.body)}
+                        style={tw.style(coreForm.body)}
                     >
                         <Text
-                        style={tw.style(coreForm.text)}
+                            style={tw.style(coreForm.text)}
                         >
-                            {item.description}
+                            {truncatedDescription}
                         </Text>
                     </View>
                 </View>
@@ -117,40 +136,51 @@ export default function PopularCards({fetchType}) {
         )
     }
 
-    const restDishItems = (items) => {
-        var itemSub = new Array<GenItem>
-        if (items[0] && items[0].restaurantName) {
-            var restName = new Set();
-            items.forEach(restaurant => {
-                if( !restName.has(restaurant.restaurantName) ) {
-                    restName.add(restaurant.restaurantName);
-                    itemSub.push({ID: restaurant.restaurantID, name: restaurant.restaurantName, description: restaurant.restaurantName + ' Description', image: restaurant.restaurantImage || '/images/testRest.png' })
-                    //image: require('../images/testRest.png')
-                }
-            });
-        } else if(items[0] && items[0].dishName) {
-            var dishName = new Set();
-            items.forEach(dish => {
-                if( !dishName.has(dish.dishName) ) {
-                    restName.add(dish.dishName);
-                    itemSub.push({ID: dish.dishID, name: dish.dishName, description: dish.dishName + ' Description', image: require('../images/testDish.png')})
-                }
-            });
+    const restDishItems = (items: any[]) => {
+        const itemSub: GenItem[] = [];  // Explicitly declare the type here
+        if (items && items.length > 0) {
+            if (items[0].restaurantName) {
+                const restNameSet = new Set();
+                items.forEach(restaurant => {
+                    if (!restNameSet.has(restaurant.restaurantName)) {
+                        restNameSet.add(restaurant.restaurantName);
+                        itemSub.push({
+                            ID: restaurant.restaurantID,
+                            name: restaurant.restaurantName,
+                            description: restaurant.restaurantName + ' Description',
+                            image: restaurant.restaurantImage || '/images/testRest.png'
+                        });
+                    }
+                });
+            } else if (items[0].dishName) {
+                const dishNameSet = new Set();
+                items.forEach(dish => {
+                    if (!dishNameSet.has(dish.dishName)) {
+                        dishNameSet.add(dish.dishName);
+                        itemSub.push({
+                            ID: dish.dishID,
+                            name: dish.dishName,
+                            description: dish.dishName + ' Description',
+                            image: '/images/testDish.png' // Adjust image as needed
+                        });
+                    }
+                });
+            }
         }
-        return itemSub.map((item) => restDishItem(item))
+        return itemSub.map((item) => restDishItem(item));
     }
 
     //-----Popular Cards Exported-----
     return (
         <SafeAreaView>
             <Text 
-            style={coreStyles.headingText}
+                style={coreStyles.headingText}
             >
                 {title}
             </Text>
             <ScrollView
-            style={styles.scrollCards}
-            horizontal={true}
+                style={styles.scrollCards}
+                horizontal={true}
             >
                 {restDishItems(fetchedData)}
             </ScrollView>
@@ -190,8 +220,6 @@ const styles = StyleSheet.create({
     },
     card: {
         backgroundColor: ffColors.ffCard,
-        //borderWidth: 1,
-        //borderColor: ffColors.ffGreenL,
         borderRadius: 5,
         padding: 20,
         width: 200,
@@ -199,7 +227,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 8,
-        //alignItems: 'center',
     },
     cardImage: {
         width: '100%',
