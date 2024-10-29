@@ -10,18 +10,28 @@ interface Props {
 
 const CoreBanner: React.FC<Props> = ({ searchVal }) => {
     const [open, setOpen] = useState(false);
-    const [searchValue, setSearchTerm] = useState(searchVal);
+    const [searchValue, setSearchTerm] = useState(searchVal || '');
     const [deliveryService, setDeliveryService] = useState(''); // State for delivery service
     const [cuisine, setCuisine] = useState(''); // State for cuisine filter
     const [searchType, setSearchType] = useState('restaurant'); // Default is "Restaurants"
     const [isFilterPopupVisible, setFilterPopupVisible] = useState(false); // State to control popup visibility
-    const [timeRanges, setTimeRanges] = useState({
-        breakfast: false,
-        brunch: false,
-        lunch: false,
-        dinner: false,
-        allDay: false,
-    });
+// Update timeRanges state to use consistent keys
+const [timeRanges, setTimeRanges] = useState({
+    breakfast: false,
+    brunch: false,
+    lunch: false,
+    dinner: false,
+    allDay: false,
+});
+
+// Create a mapping from timeRanges keys to actual strings
+const timeRangeMapping = {
+    breakfast: 'Breakfast',
+    brunch: 'Brunch',
+    lunch: 'Lunch',
+    dinner: 'Dinner',
+    allDay: 'All Day', // Note the space instead of a hyphen
+};
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -32,60 +42,129 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
         }
     }
 
-    // Send search query, search type, and filters to the backend
-    const keyHandler = async (event) => {
-        if (event.key === 'Enter' && searchValue !== '') {
-            const selectedTimeRanges = Object.keys(timeRanges).filter((range) => timeRanges[range]);
-            console.log(`Searching for: ${searchValue}, Type: ${searchType}, Service: ${deliveryService}, Cuisine: ${cuisine}, and Time Ranges: ${selectedTimeRanges}`);
+    // // Send search query, search type, and filters to the backend
+    // const keyHandler = async (event) => {
+    //     if (event.key === 'Enter' && searchValue !== '') {
+    //         const selectedTimeRanges = Object.keys(timeRanges).filter((range) => timeRanges[range]);
+    //         console.log(`Searching for: ${searchValue}, Type: ${searchType}, Service: ${deliveryService}, Cuisine: ${cuisine}, and Time Ranges: ${selectedTimeRanges}`);
 
-            try {
-                let response;
-                if (searchType === 'restaurant') {
-                    response = await fetch(`http://localhost:5001/api/searchRestaurant?name=${searchValue}`);
-                } else if (searchType === 'dish') {
-                    response = await fetch(`http://localhost:5001/api/searchDish?name=${searchValue}`);
-                }
-                if (response.ok) {
-                    const results = await response.json();
-                    console.log('Results Found:', results);
-                    navigate('/Search', { 
-                        state: { 
-                            //restaurants: results, 
-                            search: searchValue, 
-                            results, 
-                            searchType, 
-                            deliveryService, 
-                            cuisine, 
-                            timeRanges: selectedTimeRanges  
-                        } 
-                    });
-                } else {
-                    console.log('No results found');
-                    navigate('/Search', { state: { 
-                        search: searchValue, 
-                        results: [], 
-                        searchType, 
-                        deliveryService, 
-                        cuisine, 
-                        timeRanges: selectedTimeRanges, 
-                        errorText: 'No results found' } });
-                    // Eventually, navigate should reflect above
-                }
-            } catch (error) {
-                console.error('Error fetching results:', error);
+    //         try {
+    //             let response;
+    //             if (searchType === 'restaurant') {
+    //                 response = await fetch(`http://localhost:5001/api/searchRestaurant?name=${searchValue}`);
+    //             } else if (searchType === 'dish') {
+    //                 response = await fetch(`http://localhost:5001/api/searchDish?name=${searchValue}`);
+    //             }
+    //             if (response.ok) {
+    //                 const results = await response.json();
+    //                 console.log('Results Found:', results);
+    //                 navigate('/Search', { 
+    //                     state: { 
+    //                         //restaurants: results, 
+    //                         search: searchValue, 
+    //                         results, 
+    //                         searchType, 
+    //                         deliveryService, 
+    //                         cuisine, 
+    //                         timeRanges: selectedTimeRanges  
+    //                     } 
+    //                 });
+    //             } else {
+    //                 console.log('No results found');
+    //                 navigate('/Search', { state: { 
+    //                     search: searchValue, 
+    //                     results: [], 
+    //                     searchType, 
+    //                     deliveryService, 
+    //                     cuisine, 
+    //                     timeRanges: selectedTimeRanges, 
+    //                     errorText: 'No results found' } });
+    //                 // Eventually, navigate should reflect above
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching results:', error);
+    //             navigate('/Search', { 
+    //                 state: { 
+    //                     search: searchValue, 
+    //                     results: [], 
+    //                     searchType, 
+    //                     deliveryService, 
+    //                     cuisine, 
+    //                     timeRanges: selectedTimeRanges, 
+    //                     errorText: 'Error fetching results' } });
+    //             // Eventually, navigate should reflect above
+    //         }
+    //     }
+    // };
+
+    // CoreBanner.tsx
+
+const keyHandler = async (event) => {
+    if (event.key === 'Enter' && searchValue !== '') {
+        const selectedTimeRanges = Object.keys(timeRanges).filter((range) => timeRanges[range]).map((range) => timeRangeMapping[range]);;
+        console.log(`Searching for: ${searchValue}, Type: ${searchType}, Service: ${deliveryService}, Cuisine: ${cuisine}, and Time Ranges: ${selectedTimeRanges}`);
+
+        try {
+            let response;
+            let queryParams = `name=${encodeURIComponent(searchValue)}`;
+
+            if (cuisine && cuisine !== 'All Cuisines') {
+                queryParams += `&cuisineType=${encodeURIComponent(cuisine)}`;
+            }
+
+            if (deliveryService && deliveryService !== 'All Services') {
+                queryParams += `&deliveryService=${encodeURIComponent(deliveryService)}`;
+            }
+
+            if (selectedTimeRanges.length > 0) {
+                queryParams += `&operatingHours=${encodeURIComponent(selectedTimeRanges.join(','))}`;
+            }
+
+            if (searchType === 'restaurant') {
+                response = await fetch(`http://localhost:5001/api/searchRestaurant?${queryParams}`);
+            } else if (searchType === 'dish') {
+                response = await fetch(`http://localhost:5001/api/searchDish?name=${encodeURIComponent(searchValue)}`);
+            }
+
+            if (response.ok) {
+                const results = await response.json();
+                console.log('Results Found:', results);
                 navigate('/Search', { 
                     state: { 
                         search: searchValue, 
-                        results: [], 
+                        results, 
                         searchType, 
                         deliveryService, 
                         cuisine, 
-                        timeRanges: selectedTimeRanges, 
-                        errorText: 'Error fetching results' } });
-                // Eventually, navigate should reflect above
+                        timeRanges: selectedTimeRanges  
+                    } 
+                });
+            } else {
+                console.log('No results found');
+                navigate('/Search', { state: { 
+                    search: searchValue, 
+                    results: [], 
+                    searchType, 
+                    deliveryService, 
+                    cuisine, 
+                    timeRanges: selectedTimeRanges, 
+                    errorText: 'No results found' } });
             }
+        } catch (error) {
+            console.error('Error fetching results:', error);
+            navigate('/Search', { 
+                state: { 
+                    search: searchValue, 
+                    results: [], 
+                    searchType, 
+                    deliveryService, 
+                    cuisine, 
+                    timeRanges: selectedTimeRanges, 
+                    errorText: 'Error fetching results' } });
         }
-    };
+    }
+};
+
 
     const inputHandler = (event) => {
         setSearchTerm(event.target.value);
@@ -211,32 +290,33 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
                             <option value="Mexican">Mexican</option>
                             <option value="Indian">Indian</option>
                             <option value="Japanese">Japanese</option>
+                            <option value="American">American</option>
                         </select>
 
                         {/* Time Ranges Filter */}
                         <Text style={styles.popupLabel}>Operating Hours:</Text>
-                        <View style={styles.checkboxContainer}>
-                            <View style={styles.checkboxItem}>
-                                <input type="checkbox" checked={timeRanges.breakfast} onChange={() => handleTimeRangeChange('breakfast')} />
-                                <Text style={styles.checkboxLabel}>Breakfast (6:00 AM - 10:00 AM)</Text>
-                            </View>
-                            <View style={styles.checkboxItem}>
-                                <input type="checkbox" checked={timeRanges.brunch} onChange={() => handleTimeRangeChange('brunch')} />
-                                <Text style={styles.checkboxLabel}>Brunch (10:00 AM - 12:00 PM)</Text>
-                            </View>
-                            <View style={styles.checkboxItem}>
-                                <input type="checkbox" checked={timeRanges.lunch} onChange={() => handleTimeRangeChange('lunch')} />
-                                <Text style={styles.checkboxLabel}>Lunch (12:00 PM - 3:00 PM)</Text>
-                            </View>
-                            <View style={styles.checkboxItem}>
-                                <input type="checkbox" checked={timeRanges.dinner} onChange={() => handleTimeRangeChange('dinner')} />
-                                <Text style={styles.checkboxLabel}>Dinner (5:00 PM - 9:00 PM)</Text>
-                            </View>
-                            <View style={styles.checkboxItem}>
-                                <input type="checkbox" checked={timeRanges.allDay} onChange={() => handleTimeRangeChange('allDay')} />
-                                <Text style={styles.checkboxLabel}>All-Day (24/7)</Text>
-                            </View>
-                        </View>
+<View style={styles.checkboxContainer}>
+    <View style={styles.checkboxItem}>
+        <input type="checkbox" checked={timeRanges.breakfast} onChange={() => handleTimeRangeChange('breakfast')} />
+        <Text style={styles.checkboxLabel}>Breakfast</Text>
+    </View>
+    <View style={styles.checkboxItem}>
+        <input type="checkbox" checked={timeRanges.brunch} onChange={() => handleTimeRangeChange('brunch')} />
+        <Text style={styles.checkboxLabel}>Brunch</Text>
+    </View>
+    <View style={styles.checkboxItem}>
+        <input type="checkbox" checked={timeRanges.lunch} onChange={() => handleTimeRangeChange('lunch')} />
+        <Text style={styles.checkboxLabel}>Lunch</Text>
+    </View>
+    <View style={styles.checkboxItem}>
+        <input type="checkbox" checked={timeRanges.dinner} onChange={() => handleTimeRangeChange('dinner')} />
+        <Text style={styles.checkboxLabel}>Dinner</Text>
+    </View>
+    <View style={styles.checkboxItem}>
+        <input type="checkbox" checked={timeRanges.allDay} onChange={() => handleTimeRangeChange('allDay')} />
+        <Text style={styles.checkboxLabel}>All Day</Text>
+    </View>
+</View>
 
                         {/* Apply and Close Buttons */}
                         <View style={styles.popupButtonContainer}>

@@ -104,7 +104,7 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   await connectDB(); // Establish MongoDB connection
-  await populateUsers();
+  //await populateUsers();
   await populateRestaurants();
 
   app.listen(PORT, () => {

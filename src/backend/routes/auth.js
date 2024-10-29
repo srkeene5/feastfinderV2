@@ -1,7 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js'; 
+import User from '../models/User.js';
+import AppLogin from '../models/appLogin.js'; // Import the AppLogin model
 import { auth } from '../middleware/auth.js'; 
 import BlacklistedToken from '../models/BlacklistedToken.js';
 
@@ -16,8 +17,48 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+// router.post('/register', async (req, res) => {
+//   const { username, email, password } = req.body;
+
+//   try {
+//     let user = await User.findOne({ email });
+//     if (user) {
+//       return res.status(400).json({ msg: 'User already exists' });
+//     }
+
+//     user = new User({
+//       username,
+//       email,
+//       password: await bcrypt.hash(password, 10)
+//     });
+
+//     await user.save();
+
+//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+//       expiresIn: '24h'
+//     });
+
+//     res.status(201).json({ token });
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server error');
+//   }
+// });
+
+// Helper function to generate random integers between min and max (inclusive)
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// generate deals with a 50% chance of being 0
+function getRandomDeal() {
+  return Math.random() < 0.5 ? 0 : getRandomIntInclusive(5, 20);
+}
+
 router.post('/register', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -25,24 +66,53 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ msg: 'User already exists' });
     }
 
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // Extract username from email
+    const username = email.split('@')[0];
+
     user = new User({
       username,
       email,
-      password: await bcrypt.hash(password, 10)
+      password: passwordHash, // Store hashed password
     });
 
     await user.save();
 
+    // Generate random deals between 5 and 20 or 0
+    const doorDashDeal = getRandomDeal();
+    const grubHubDeal = getRandomDeal();
+    const uberEatsDeal = getRandomDeal();
+
+    // Create appLogin document
+    const appLogin = new AppLogin({
+      userID: user._id,
+      username: username,
+      email: email,
+      passwordHash: passwordHash, // Store hashed password
+      logins: [
+        `${username}@doordash.com`,
+        `${username}@ubereats.com`,
+        `${username}@grubhub.com`,
+      ],
+      doorDashDeal: doorDashDeal,
+      grubHubDeal: grubHubDeal,
+      uberEatsDeal: uberEatsDeal,
+    });
+
+    await appLogin.save();
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '24h'
+      expiresIn: '24h',
     });
 
     res.status(201).json({ token });
   } catch (err) {
-    console.error(err.message);
+    console.error('Error during registration:', err.message);
     res.status(500).send('Server error');
   }
 });
+
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -85,40 +155,6 @@ router.get('/protected', auth, async (req, res) => {
       }
     });
 
-/*
-router.put('/address', auth, async (req, res) => {
-  const { street, city, state, postalCode, country } = req.body;
-    
-  if (!street || !city || !state || !postalCode || !country) {
-    return res.status(400).json({ msg: 'Please provide all address fields' });
-  }
-    
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.user,
-      {
-        address: {
-          street,
-          city,
-          state,
-          postalCode,
-          country
-        }
-      },
-      { new: true } // Return the updated document
-    ).select('-password');
-    
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-    
-    res.json(user);
-  } catch (err) {
-    console.error('Error updating address:', err.message);
-    res.status(500).send('Server error');
-  }
-});
-*/
 
 // Logout route
 router.post('/logout', auth, async (req, res) => {
@@ -140,47 +176,174 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
-/*
-router.delete('/address', auth, async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.user,
-      { $unset: { address: "" } }, // remove the 'address' field
-      { new: true } // return the updated document
-    ).select('-password');
+/* logs in to uber/doordash/login account. example of response:
 
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-
-    res.json({ msg: 'Address deleted successfully', user });
-  } catch (err) {
-    console.error('Error deleting address:', err.message);
-    res.status(500).send('Server error');
-  }
-});
-
-router.get('/address', auth, async (req, res) => {
-  try {
-    // find the user by their ID and select only the 'address' field
-    const user = await User.findById(req.user).select('address');
-
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-
-    if (!user.address) {
-      return res.status(404).json({ msg: 'Address not found' });
-    }
-
-    res.json({ address: user.address });
-  } catch (err) {
-    console.error('Error fetching address:', err.message);
-    res.status(500).send('Server error');
-  }
-});
+{
+  "msg": "Logged into DoorDash successfully",
+  "service": "DoorDash",
+  "deal": 15,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+}
 */
+router.post('/app-login', async (req, res) => {
+  const { email, password } = req.body;
 
+  // Basic validation
+  if (!email || !password) {
+    return res.status(400).json({ msg: 'Please provide both email and password' });
+  }
+
+  try {
+    // Find the AppLogin document that includes the provided email
+    const appLogin = await AppLogin.findOne({ logins: email });
+
+    if (!appLogin) {
+      return res.status(400).json({ msg: 'App account not found' });
+    }
+
+    // Compare the provided password with the stored passwordHash
+    const isMatch = await bcrypt.compare(password, appLogin.passwordHash);
+
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    // Determine which service the email belongs to
+    let service = '';
+    let deal = 0;
+
+    if (email.endsWith('@doordash.com')) {
+      service = 'DoorDash';
+      deal = appLogin.doorDashDeal;
+    } else if (email.endsWith('@ubereats.com')) {
+      service = 'UberEats';
+      deal = appLogin.uberEatsDeal;
+    } else if (email.endsWith('@grubhub.com')) {
+      service = 'Grubhub';
+      deal = appLogin.grubHubDeal;
+    } else {
+      return res.status(400).json({ msg: 'Invalid app account domain' });
+    }
+
+    // Optionally, generate a JWT for the app account session
+    const token = jwt.sign(
+      { appEmail: email, service: service },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({ 
+      msg: `Logged into ${service} successfully`,
+      service: service,
+      deal: deal,
+      token: token // Optional: Provide a token for further authenticated requests
+    });
+  } catch (err) {
+    console.error('Error during app login:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+export const appAuth = async (req, res, next) => {
+  const authHeader = req.header('Authorization');
+
+  if (!authHeader) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+
+  try {
+    // Check if the token is blacklisted
+    const blacklisted = await BlacklistedToken.findOne({ token });
+    if (blacklisted) {
+      return res.status(401).json({ msg: 'Token has been revoked. Please log in again.' });
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.appEmail = decoded.appEmail;
+    req.service = decoded.service;
+    next();
+  } catch (err) {
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
+};
+
+/* invalidates the uber/doordash/grubhub token
+example response:
+{
+    "msg": "Successfully logged out"
+}
+*/
+router.post('/app-logout', appAuth, async (req, res) => {
+  try {
+    const authHeader = req.header('Authorization');
+    const token = authHeader.split(' ')[1];
+
+    // Decode the token to get expiration time
+    const decoded = jwt.decode(token);
+    const expiresAt = new Date(decoded.exp * 1000); // Convert to milliseconds
+
+    // Add the token to the blacklist
+    const blacklistedToken = new BlacklistedToken({ token, expiresAt });
+    await blacklistedToken.save();
+
+    res.status(200).json({ msg: `Successfully logged out of ${decoded.service}` });
+  } catch (error) {
+    console.error('Error during app logout:', error.message);
+    res.status(500).json({ msg: 'Server error', error });
+  }
+});
+
+/* gets the app name and deal amount given a Bearer token
+example of response:
+{
+  "service": "DoorDash",
+  "deal": 15
+}
+
+*/
+router.get('/app-deal', appAuth, async (req, res) => {
+  const { appEmail, service } = req;
+
+  try {
+    // Find the AppLogin document containing the appEmail
+    const appLogin = await AppLogin.findOne({ logins: appEmail });
+
+    if (!appLogin) {
+      return res.status(400).json({ msg: 'App account not found' });
+    }
+
+    let deal = 0;
+
+    switch (service) {
+      case 'DoorDash':
+        deal = appLogin.doorDashDeal;
+        break;
+      case 'UberEats':
+        deal = appLogin.uberEatsDeal;
+        break;
+      case 'Grubhub':
+        deal = appLogin.grubHubDeal;
+        break;
+      default:
+        return res.status(400).json({ msg: 'Invalid service' });
+    }
+
+    res.json({ service, deal });
+  } catch (err) {
+    console.error('Error fetching app deal:', err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+
+/*
 // puts user's uber's login and hashed password in database
 router.put('/uberlogin', auth, async (req, res) => {
   const { uber_email, uber_password } = req.body;
@@ -390,4 +553,5 @@ router.delete('/grubhublogin', auth, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+*/
 export default router;

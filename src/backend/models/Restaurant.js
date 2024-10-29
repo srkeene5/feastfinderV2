@@ -49,7 +49,7 @@ const restaurantSchema = new mongoose.Schema({
   // New fields
   cuisineType: {
     type: String,
-    enum: ['Italian', 'Indian', 'Japanese', 'Chinese', 'Mexican', 'American'],
+    enum: ['Italian', 'Indian', 'Japanese', 'Chinese', 'Mexican', 'American', 'All'],
     required: true
   },
   operatingHours: [{
