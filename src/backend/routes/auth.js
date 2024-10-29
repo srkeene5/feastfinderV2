@@ -1,7 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js'; 
+import User from '../models/User.js';
+import AppLogin from '../models/appLogin.js'; // Import the AppLogin model
 import { auth } from '../middleware/auth.js'; 
 import BlacklistedToken from '../models/BlacklistedToken.js';
 
@@ -16,8 +17,43 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+// router.post('/register', async (req, res) => {
+//   const { username, email, password } = req.body;
+
+//   try {
+//     let user = await User.findOne({ email });
+//     if (user) {
+//       return res.status(400).json({ msg: 'User already exists' });
+//     }
+
+//     user = new User({
+//       username,
+//       email,
+//       password: await bcrypt.hash(password, 10)
+//     });
+
+//     await user.save();
+
+//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+//       expiresIn: '24h'
+//     });
+
+//     res.status(201).json({ token });
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server error');
+//   }
+// });
+
+// Helper function to generate random integers between min and max (inclusive)
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 router.post('/register', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -25,24 +61,53 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ msg: 'User already exists' });
     }
 
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // Extract username from email
+    const username = email.split('@')[0];
+
     user = new User({
       username,
       email,
-      password: await bcrypt.hash(password, 10)
+      password: passwordHash, // Store hashed password
     });
 
     await user.save();
 
+    // Generate random deals between 5 and 20
+    const doorDashDeal = getRandomIntInclusive(5, 20);
+    const grubHubDeal = getRandomIntInclusive(5, 20);
+    const uberEatsDeal = getRandomIntInclusive(5, 20);
+
+    // Create appLogin document
+    const appLogin = new AppLogin({
+      userID: user._id,
+      username: username,
+      email: email,
+      passwordHash: passwordHash, // Store hashed password
+      logins: [
+        `${username}@doordash.com`,
+        `${username}@ubereats.com`,
+        `${username}@grubhub.com`,
+      ],
+      doorDashDeal: doorDashDeal,
+      grubHubDeal: grubHubDeal,
+      uberEatsDeal: uberEatsDeal,
+    });
+
+    await appLogin.save();
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '24h'
+      expiresIn: '24h',
     });
 
     res.status(201).json({ token });
   } catch (err) {
-    console.error(err.message);
+    console.error('Error during registration:', err.message);
     res.status(500).send('Server error');
   }
 });
+
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -140,46 +205,7 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
-/*
-router.delete('/address', auth, async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.user,
-      { $unset: { address: "" } }, // remove the 'address' field
-      { new: true } // return the updated document
-    ).select('-password');
 
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-
-    res.json({ msg: 'Address deleted successfully', user });
-  } catch (err) {
-    console.error('Error deleting address:', err.message);
-    res.status(500).send('Server error');
-  }
-});
-
-router.get('/address', auth, async (req, res) => {
-  try {
-    // find the user by their ID and select only the 'address' field
-    const user = await User.findById(req.user).select('address');
-
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-
-    if (!user.address) {
-      return res.status(404).json({ msg: 'Address not found' });
-    }
-
-    res.json({ address: user.address });
-  } catch (err) {
-    console.error('Error fetching address:', err.message);
-    res.status(500).send('Server error');
-  }
-});
-*/
 
 // puts user's uber's login and hashed password in database
 router.put('/uberlogin', auth, async (req, res) => {
