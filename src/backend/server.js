@@ -16,6 +16,8 @@ import locationRoutes from './routes/location.js';
 import Cart from './models/Cart.js'; // Import the Cart model
 import cartRoutes from './routes/cartroute.js'; // Import the cart route
 import restaurantRoutes from './routes/restaurantAuth.js';
+import reviewRoutes from './routes/reviews.js';
+import Review from './models/Review.js';
 
 dotenv.config();
 
@@ -36,6 +38,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/dining-halls', diningHallsRoutes);
 app.use('/api/location', locationRoutes);
 app.use('/api/restaurantAuth', restaurantRoutes);
+app.use('/api/reviews', reviewRoutes);
 // Use the restaurant routes
 app.use('/api', restaurantAuthRoutes);
 app.use('/api/cartroute', cartRoutes); // Use the cart routes for checkout
@@ -72,6 +75,16 @@ const populateUsers = async () => {
   }
 };
 
+const dropReviewIndexes = async () => {
+  try {
+    console.log('Attempting to drop indexes from reviews collection...');
+    await mongoose.connection.collection('reviews').dropIndexes();
+    console.log('Successfully dropped indexes from reviews collection');
+  } catch (error) {
+    console.log('No indexes to drop or already dropped:', error.message);
+  }
+};
+
 // Function to populate the database with restaurant data
 const populateRestaurants = async () => {
   try {
@@ -95,7 +108,47 @@ const populateRestaurants = async () => {
   }
 };
 
+const populateInitialReviews = async () => {
+  try {
+    // Check if reviews already exist
+    const reviewCount = await Review.countDocuments();
+    if (reviewCount > 0) {
+      console.log('Reviews already exist in the database.');
+      return;
+    }
 
+    // Get all restaurants
+    const restaurants = await Restaurant.find({});
+    
+    // Create some initial reviews for each restaurant
+    const initialReviews = [];
+    
+    for (const restaurant of restaurants) {
+      // Add 2-3 initial reviews per restaurant
+      initialReviews.push({
+        restaurantID: restaurant.restaurantID,
+        username: 'InitialReviewer1',
+        rating: 4,
+        reviewText: `Initial review for ${restaurant.restaurantName}. Great place!`,
+        createdAt: new Date()
+      });
+      
+      initialReviews.push({
+        restaurantID: restaurant.restaurantID,
+        username: 'InitialReviewer2',
+        rating: 5,
+        reviewText: `Another initial review for ${restaurant.restaurantName}. Excellent service!`,
+        createdAt: new Date()
+      });
+    }
+
+    // Insert the initial reviews
+    await Review.insertMany(initialReviews);
+    console.log('Initial reviews have been added to the database.');
+  } catch (err) {
+    console.error('Error populating initial reviews:', err);
+  }
+};
 
 console.log(process.env.MONGO_URI); 
 
@@ -104,8 +157,10 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   await connectDB(); // Establish MongoDB connection
+  await dropReviewIndexes();
   //await populateUsers();
   await populateRestaurants();
+  await populateInitialReviews();
 
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
