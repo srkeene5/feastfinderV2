@@ -1264,7 +1264,7 @@ const restaurantData = [
     ubereatsAvailable: true,
     doordashAvailable: false,
     grubhubAvailable: true,
-    cuisineType: "Cajun",
+    cuisineType: "American",
     operatingHours: ["All Day"],
     restaurantImage: "/images/popeyes/popeyes-logo.png",
     menuItemImages: [
@@ -1303,7 +1303,7 @@ const restaurantData = [
     ubereatsAvailable: false,
     doordashAvailable: true,
     grubhubAvailable: true,
-    cuisineType: "Cajun",
+    cuisineType: "American",
     operatingHours: ["All Day"],
     restaurantImage: "/images/popeyes/popeyes-logo.png",
     menuItemImages: [
@@ -1342,7 +1342,7 @@ const restaurantData = [
     ubereatsAvailable: true,
     doordashAvailable: true,
     grubhubAvailable: false,
-    cuisineType: "Cajun",
+    cuisineType: "American",
     operatingHours: ["All Day"],
     restaurantImage: "/images/popeyes/popeyes-logo.png",
     menuItemImages: [
@@ -1381,7 +1381,7 @@ const restaurantData = [
     ubereatsAvailable: true,
     doordashAvailable: false,
     grubhubAvailable: true,
-    cuisineType: "Cajun",
+    cuisineType: "American",
     operatingHours: ["All Day"],
     restaurantImage: "/images/popeyes/popeyes-logo.png",
     menuItemImages: [
@@ -1576,7 +1576,7 @@ const restaurantData = [
     ubereatsAvailable: true,
     doordashAvailable: true,
     grubhubAvailable: false,
-    cuisineType: "Sandwiches",
+    cuisineType: "American",
     operatingHours: ["All Day"],
     restaurantImage: "/images/subway/subway-logo.png",
     menuItemImages: [
@@ -1615,7 +1615,7 @@ const restaurantData = [
     ubereatsAvailable: false,
     doordashAvailable: true,
     grubhubAvailable: true,
-    cuisineType: "Sandwiches",
+    cuisineType: "American",
     operatingHours: ["All Day"],
     restaurantImage: "/images/subway/subway-logo.png",
     menuItemImages: [
@@ -1654,7 +1654,7 @@ const restaurantData = [
     ubereatsAvailable: true,
     doordashAvailable: false,
     grubhubAvailable: true,
-    cuisineType: "Sandwiches",
+    cuisineType: "American",
     operatingHours: ["All Day"],
     restaurantImage: "/images/subway/subway-logo.png",
     menuItemImages: [
@@ -1693,7 +1693,7 @@ const restaurantData = [
     ubereatsAvailable: true,
     doordashAvailable: true,
     grubhubAvailable: false,
-    cuisineType: "Sandwiches",
+    cuisineType: "American",
     operatingHours: ["All Day"],
     restaurantImage: "/images/subway/subway-logo.png",
     menuItemImages: [
