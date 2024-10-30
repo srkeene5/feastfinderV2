@@ -295,7 +295,7 @@ export default function SearchCards() {
                 });
             }
         } catch (error) {
-            console.error('Error fetching restaurants:', error);
+            console.error('Error fetching restaurant:', error);
             navigate('/Search', {
                 state: {
                     search: dishName,
