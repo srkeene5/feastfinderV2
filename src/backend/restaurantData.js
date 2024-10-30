@@ -1269,7 +1269,7 @@ const restaurantData = [
     restaurantImage: "/images/popeyes/popeyes-logo.png",
     menuItemImages: [
       "/images/popeyes/chicken_sandwich.jpg",
-      "/images/popeyes/spicy_chicken_sandwich.jpg",
+      "/images/popeyes/pop_spicy_chicken_sandwich.jpg",
       "/images/popeyes/chicken_tenders.jpg",
       "/images/popeyes/popcorn_shrimp.jpg",
       "/images/popeyes/cajun_fries.jpg",
@@ -1308,7 +1308,7 @@ const restaurantData = [
     restaurantImage: "/images/popeyes/popeyes-logo.png",
     menuItemImages: [
       "/images/popeyes/chicken_sandwich.jpg",
-      "/images/popeyes/spicy_chicken_sandwich.jpg",
+      "/images/popeyes/pop_spicy_chicken_sandwich.jpg",
       "/images/popeyes/chicken_tenders.jpg",
       "/images/popeyes/popcorn_shrimp.jpg",
       "/images/popeyes/cajun_fries.jpg",
@@ -1347,7 +1347,7 @@ const restaurantData = [
     restaurantImage: "/images/popeyes/popeyes-logo.png",
     menuItemImages: [
       "/images/popeyes/chicken_sandwich.jpg",
-      "/images/popeyes/spicy_chicken_sandwich.jpg",
+      "/images/popeyes/pop_spicy_chicken_sandwich.jpg",
       "/images/popeyes/chicken_tenders.jpg",
       "/images/popeyes/popcorn_shrimp.jpg",
       "/images/popeyes/cajun_fries.jpg",
@@ -1386,7 +1386,7 @@ const restaurantData = [
     restaurantImage: "/images/popeyes/popeyes-logo.png",
     menuItemImages: [
       "/images/popeyes/chicken_sandwich.jpg",
-      "/images/popeyes/spicy_chicken_sandwich.jpg",
+      "/images/popeyes/pop_spicy_chicken_sandwich.jpg",
       "/images/popeyes/chicken_tenders.jpg",
       "/images/popeyes/popcorn_shrimp.jpg",
       "/images/popeyes/cajun_fries.jpg",

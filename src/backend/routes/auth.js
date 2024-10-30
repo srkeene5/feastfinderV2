@@ -343,7 +343,7 @@ router.get('/app-deal', appAuth, async (req, res) => {
 });
 
 
-/*
+
 // puts user's uber's login and hashed password in database
 router.put('/uberlogin', auth, async (req, res) => {
   const { uber_email, uber_password } = req.body;
@@ -553,5 +553,5 @@ router.delete('/grubhublogin', auth, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-*/
+
 export default router;
