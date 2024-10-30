@@ -109,57 +109,18 @@ export default function SearchCards() {
 
         try {
             let response;
-            let fetchAddr = 'http://localhost:5001/api/auth/';
-            switch (buttonService) {
-                case "DoorDash":
-                    fetchAddr += 'doordashlogin';
-                    response = await fetch(fetchAddr, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': "Bearer " + user.token
-                        },
-                        body: JSON.stringify({
-                            doordash_email: userValue,
-                            doordash_password: passValue,
-                        }),
-                    });
-                    break;
-                case "GrubHub":
-                    fetchAddr += 'grubhublogin';
-                    response = await fetch(fetchAddr, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': "Bearer " + user.token
-                        },
-                        body: JSON.stringify({
-                            grubhub_email: userValue,
-                            grubhub_password: passValue,
-                        }),
-                    });
-                    break;
-                case "UberEats":
-                    fetchAddr += 'uberlogin';
-                    response = await fetch(fetchAddr, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': "Bearer " + user.token
-                        },
-                        body: JSON.stringify({
-                            uber_email: userValue,
-                            uber_password: passValue,
-                        }),
-                    });
-                    break;
-                default:
-                    console.error('switchFailure');
-                    setErrText("Internal Service Error\nDelivery Service not recognized");
-                    setErrPop(true);
-                    return;
-            }
-
+            var fetchAddr = 'http://localhost:5001/api/auth/app-login'
+            response = await fetch(fetchAddr, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization' : "Bearer " + user.token
+                },
+                body: JSON.stringify({
+                    email: userValue,
+                    password: passValue,
+                }),
+            });
             const data = await response.json();
 
             if (!response.ok) {
