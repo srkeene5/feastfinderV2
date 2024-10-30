@@ -56,6 +56,7 @@ export default function SearchCards() {
   const [buttonService, setButtonService] = React.useState("Error Undefined");
   const [holdItem, setHoldItem] = React.useState(null);
   const { user } = useAuth();
+  const [isLoadingReviews, setIsLoadingReviews] = React.useState(false);
 
   // Modified review states to include all reviews
   const [reviewPop, setReviewPop] = React.useState(false);
@@ -98,10 +99,13 @@ export default function SearchCards() {
   React.useEffect(() => {
     const initializedRestaurants = results.map((restaurant) => ({
       ...restaurant,
-      reviews: dummyReviews,
-      averageRating: calculateAverageRating(dummyReviews),
+      reviews: [],
+      averageRating: 0,
     }));
     setRestaurants(initializedRestaurants);
+    results.forEach((restaurant) => {
+      fetchReviews(restaurant.restaurantID);
+    });
   }, [results]);
 
   const calculateAverageRating = (reviews) => {
@@ -298,54 +302,109 @@ export default function SearchCards() {
     );
   };
 
-  const handleReviewSubmit = () => {
+  const handleReviewSubmit = async () => {
+    console.log('=== Starting Review Submission ===');
+    console.log('Review Data:', {
+      restaurantID: selectedRestaurant?.restaurantID,
+      username: user?.username,
+      rating,
+      reviewText,
+      token: user?.token // Don't log full token in production!
+    });
+  
     if (rating === 0) {
+      console.log('Validation failed: No rating selected');
       setErrText("Please select a rating");
       setErrPop(true);
       return;
     }
-
+  
     if (!reviewText.trim()) {
+      console.log('Validation failed: No review text');
       setErrText("Please write a review");
       setErrPop(true);
       return;
     }
-
+  
     if (!selectedRestaurant) {
+      console.log('Validation failed: No restaurant selected');
       setErrText("No restaurant selected");
       setErrPop(true);
       return;
     }
-
-    // Create new review
-    const newReview = {
-      reviewId: Date.now(),
-      username: user?.username || "Anonymous",
-      rating: rating,
-      reviewText: reviewText,
-      createdAt: new Date().toISOString(),
-    };
-
-    // Update restaurants state with new review
-    setRestaurants((prevRestaurants) => {
-      return prevRestaurants.map((restaurant) => {
-        if (restaurant.restaurantID === selectedRestaurant.restaurantID) {
-          const updatedReviews = [newReview, ...restaurant.reviews];
-          return {
-            ...restaurant,
-            reviews: updatedReviews,
-            averageRating: calculateAverageRating(updatedReviews),
-          };
-        }
-        return restaurant;
+  
+    try {
+      console.log('Sending POST request to /api/reviews');
+      const response = await fetch('http://localhost:5001/api/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + user.token,
+        },
+        body: JSON.stringify({
+          restaurantID: selectedRestaurant.restaurantID,
+          username: user?.username || 'Anonymous',
+          rating: rating,
+          reviewText: reviewText,
+        }),
       });
-    });
+  
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server responded with error:', errorText);
+        throw new Error(errorText);
+      }
+  
+      const savedReview = await response.json();
+      console.log('Successfully saved review:', savedReview);
+  
+      // Fetch updated reviews
+      console.log('Fetching updated reviews for restaurant:', selectedRestaurant.restaurantID);
+      await fetchReviews(selectedRestaurant.restaurantID);
+  
+      // Reset form and close popup
+      console.log('Resetting form and closing popup');
+      setReviewText("");
+      setRating(0);
+      setReviewPop(false);
+      setSelectedRestaurant(null);
+  
+    } catch (error) {
+      console.error('Error in handleReviewSubmit:', error);
+      setErrText('Failed to submit review: ' + error.message);
+      setErrPop(true);
+    }
+  };
 
-    // Reset form and close popup
-    setReviewText("");
-    setRating(0);
-    setReviewPop(false);
-    setSelectedRestaurant(null);
+  const fetchReviews = async (restaurantID) => {
+    setIsLoadingReviews(true);
+    try {
+      const response = await fetch(`http://localhost:5001/api/reviews/restaurant/${restaurantID}`);
+      if (response.ok) {
+        const reviews = await response.json();
+        // Update restaurants state with fetched reviews
+        setRestaurants((prevRestaurants) => {
+          return prevRestaurants.map((restaurant) => {
+            if (restaurant.restaurantID === restaurantID) {
+              return {
+                ...restaurant,
+                reviews: reviews,
+                averageRating: calculateAverageRating(reviews),
+              };
+            }
+            return restaurant;
+          });
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      setErrText('Failed to load reviews');
+      setErrPop(true);
+    } finally {
+      setIsLoadingReviews(false);
+    }
   };
 
   const restItem = (item: Restaurant, index: number) => {

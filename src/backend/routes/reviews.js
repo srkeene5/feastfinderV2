@@ -1,62 +1,49 @@
-// backend/routes/reviews.js
+import express from 'express';
+import Review from '../models/Review.js';
+import { auth } from '../middleware/auth.js';   // Assuming you have this middleware
 
-const express = require('express');
 const router = express.Router();
-const fs = require('fs').promises;
-const path = require('path');
-
-// Define path to reviews.json
-const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
-
-// Ensure the reviews file exists
-async function ensureReviewsFile() {
-    try {
-        await fs.access(REVIEWS_FILE);
-    } catch {
-        await fs.mkdir(path.dirname(REVIEWS_FILE), { recursive: true });
-        await fs.writeFile(REVIEWS_FILE, JSON.stringify({}));
+router.post('/', auth, async (req, res) => {
+    console.log('Received review submission:', req.body);
+  
+    // Simple validation
+    if (!req.body.restaurantID || !req.body.username || !req.body.rating || !req.body.reviewText) {
+      return res.status(400).json({
+        message: 'Missing required fields',
+        received: req.body
+      });
     }
-}
-
-// Get all reviews for a restaurant
-router.get('/:restaurantId', async (req, res) => {
+  
     try {
-        await ensureReviewsFile();
-        const reviews = JSON.parse(await fs.readFile(REVIEWS_FILE, 'utf8'));
-        const restaurantReviews = reviews[req.params.restaurantId] || [];
-        res.json(restaurantReviews);
+      // Create new review every time
+      const review = new Review({
+        restaurantID: req.body.restaurantID,
+        username: req.body.username,
+        rating: req.body.rating,
+        reviewText: req.body.reviewText
+      });
+  
+      const savedReview = await review.save();
+      console.log('Review saved successfully:', savedReview);
+      res.status(201).json(savedReview);
     } catch (error) {
-        console.error('Error fetching reviews:', error);
-        res.status(500).json({ error: 'Failed to fetch reviews' });
+      console.error('Error saving review:', error);
+      res.status(400).json({ message: error.message });
     }
-});
-
-// Add a new review
-router.post('/:restaurantId', async (req, res) => {
+  });
+  
+  // GET route to fetch reviews for a restaurant
+  router.get('/restaurant/:restaurantID', async (req, res) => {
     try {
-        await ensureReviewsFile();
-        const reviews = JSON.parse(await fs.readFile(REVIEWS_FILE, 'utf8'));
-        
-        const newReview = {
-            reviewId: Date.now(),
-            username: req.body.username || "Anonymous",
-            rating: req.body.rating,
-            reviewText: req.body.reviewText,
-            createdAt: new Date().toISOString()
-        };
-
-        if (!reviews[req.params.restaurantId]) {
-            reviews[req.params.restaurantId] = [];
-        }
-        
-        reviews[req.params.restaurantId].unshift(newReview);
-        await fs.writeFile(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
-        
-        res.status(201).json(newReview);
+      const reviews = await Review.find({ 
+        restaurantID: req.params.restaurantID 
+      })
+      .sort({ createdAt: -1 }); // Sort by newest first
+      
+      res.json(reviews);
     } catch (error) {
-        console.error('Error saving review:', error);
-        res.status(500).json({ error: 'Failed to save review' });
+      res.status(500).json({ message: error.message });
     }
-});
+  });
 
-module.exports = router;
+export default router;

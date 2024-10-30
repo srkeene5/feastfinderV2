@@ -14,6 +14,7 @@ import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
 import MapComponent from "../MapComponents/MapComponent.tsx"; // Adjust the path as necessary
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
+import DishRecommendations from "./DishRecommendations.tsx";
 
 export default function Home() {
 
@@ -36,6 +37,7 @@ export default function Home() {
       <PopularCards 
         fetchType={'popularRestaurants'}
       />
+      <DishRecommendations />
       
     </div>
   )
