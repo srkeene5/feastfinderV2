@@ -187,7 +187,6 @@ router.post('/logout', auth, async (req, res) => {
 */
 router.post('/app-login', async (req, res) => {
   const { email, password } = req.body;
-
   // Basic validation
   if (!email || !password) {
     return res.status(400).json({ msg: 'Please provide both email and password' });
@@ -211,21 +210,35 @@ router.post('/app-login', async (req, res) => {
     // Determine which service the email belongs to
     let service = '';
     let deal = 0;
+    let loginField = '';
 
     if (email.endsWith('@doordash.com')) {
       service = 'DoorDash';
       deal = appLogin.doorDashDeal;
+      loginField = 'doordash_logged_in';
     } else if (email.endsWith('@ubereats.com')) {
       service = 'UberEats';
       deal = appLogin.uberEatsDeal;
+      loginField = 'uber_logged_in';
     } else if (email.endsWith('@grubhub.com')) {
       service = 'Grubhub';
       deal = appLogin.grubHubDeal;
+      loginField = 'grubhub_logged_in';
     } else {
       return res.status(400).json({ msg: 'Invalid app account domain' });
     }
 
-    // Optionally, generate a JWT for the app account session
+
+    // Update the User's Login Status
+    const user = await User.findById(appLogin.userID);
+    if (user) {
+      user[loginField] = true;
+      await user.save();
+    } else {
+      return res.status(400).json({ msg: 'Associated user not found' });
+    }
+
+    // Generate a JWT for the app account session
     const token = jwt.sign(
       { appEmail: email, service: service },
       process.env.JWT_SECRET,
@@ -293,10 +306,65 @@ router.post('/app-logout', appAuth, async (req, res) => {
     const blacklistedToken = new BlacklistedToken({ token, expiresAt });
     await blacklistedToken.save();
 
+    // Update the User's Login Status
+    let loginField = '';
+    if (decoded.service === 'DoorDash') {
+      loginField = 'doordash_logged_in';
+    } else if (decoded.service === 'UberEats') {
+      loginField = 'uber_logged_in';
+    } else if (decoded.service === 'Grubhub') {
+      loginField = 'grubhub_logged_in';
+    } else {
+      return res.status(400).json({ msg: 'Invalid service in token' });
+    }
+    // Find the AppLogin document using appEmail
+    const appLogin = await AppLogin.findOne({ logins: decoded.appEmail });
+    if (appLogin) {
+      const user = await User.findById(appLogin.userID);
+      if (user) {
+        user[loginField] = false;
+        await user.save();
+      } else {
+        return res.status(400).json({ msg: 'Associated user not found' });
+      }
+    } else {
+      return res.status(400).json({ msg: 'AppLogin document not found' });
+    }
+
     res.status(200).json({ msg: `Successfully logged out of ${decoded.service}` });
   } catch (error) {
     console.error('Error during app logout:', error.message);
     res.status(500).json({ msg: 'Server error', error });
+  }
+});
+
+/*
+provide Bearer token. get token from feastfinder login
+example response:
+{
+    "uber_logged_in": false,
+    "doordash_logged_in": true,
+    "grubhub_logged_in": true
+}
+*/
+router.get('/app-status', auth, async (req, res) => {
+  try {
+    const userId = req.user; // Assuming the main auth middleware sets req.user to the user's ID
+    const user = await User.findById(userId).select('uber_logged_in doordash_logged_in grubhub_logged_in');
+
+    if (!user) {
+      console.log('User not found');
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({
+      uber_logged_in: user.uber_logged_in,
+      doordash_logged_in: user.doordash_logged_in,
+      grubhub_logged_in: user.grubhub_logged_in
+    });
+  } catch (err) {
+    console.error('Error fetching app status:', err.message);
+    res.status(500).send('Server error');
   }
 });
 
