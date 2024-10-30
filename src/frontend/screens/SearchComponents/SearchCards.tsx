@@ -359,7 +359,46 @@ export default function SearchCards() {
                     {APIButton("UberEats", restaurantData.ubereatsAvailable, restaurantData)}
                 </View>
             </View>
-        );
+        )
+    }
+
+    const goToDishRestaurants = async (dishName) => {
+        try {
+            const response = await fetch(`http://localhost:5001/api/searchRestaurant?dish=${encodeURIComponent(dishName)}`);
+            if (response.ok) {
+                const restaurantResults = await response.json();
+                navigate('/Search', {
+                    state: {
+                        search: dishName,
+                        results: restaurantResults,
+                        searchType: 'restaurant',
+                        deliveryService,
+                    }
+                });
+            } else {
+                console.log('No restaurants found for dish:', dishName);
+                navigate('/Search', {
+                    state: {
+                        search: dishName,
+                        results: [],
+                        searchType: 'restaurant',
+                        deliveryService,
+                        errorText: 'No results found'
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching restaurant:', error);
+            navigate('/Search', {
+                state: {
+                    search: dishName,
+                    results: [],
+                    searchType: 'restaurant',
+                    deliveryService,
+                    errorText: 'Error fetching restaurants'
+                }
+            });
+        }
     };
 
     const dishItem = (item, index) => {
