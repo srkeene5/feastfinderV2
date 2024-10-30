@@ -244,9 +244,6 @@ router.post('/app-login', async (req, res) => {
   }
 });
 
-
-
-
 export const appAuth = async (req, res, next) => {
   const authHeader = req.header('Authorization');
 
@@ -319,7 +316,7 @@ router.get('/app-deal', appAuth, async (req, res) => {
     const appLogin = await AppLogin.findOne({ logins: appEmail });
 
     if (!appLogin) {
-      return res.status(400).json({ msg: 'App account not found' + appEmail + "123"});
+      return res.status(400).json({ msg: 'App account not found' });
     }
 
     let deal = 0;
@@ -338,7 +335,7 @@ router.get('/app-deal', appAuth, async (req, res) => {
         return res.status(400).json({ msg: 'Invalid service' });
     }
 
-    res.json({ service, deal});
+    res.json({ service, deal });
   } catch (err) {
     console.error('Error fetching app deal:', err.message);
     res.status(500).send('Server error');
@@ -416,7 +413,7 @@ router.delete('/uberlogin', auth, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-/*
+
 // puts user's doordash login and hashed password in database
 router.put('/doordashlogin', auth, async (req, res) => {
   const { doordash_email, doordash_password } = req.body;
@@ -447,7 +444,7 @@ router.put('/doordashlogin', auth, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-*/
+
 // returns "doordash_stored": true if user's doordash login credentials is in database
 // returns "doordash_stored": false if user's doordash login credentials is not in the database
 router.get('/doordashlogin/status', auth, async (req, res) => {
