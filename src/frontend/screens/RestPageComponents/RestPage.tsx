@@ -36,7 +36,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
       </div>
       <div className="ml-4 flex-1">
         <h3 className="text-lg font-semibold text-gray-800">{item}</h3>
-        <p className="text-lg font-bold text-green-600">${price.toFixed(2)}</p>
+        <div className="flex items-center space-x-2 mt-1">
+          {/* replace the condition with the deal. If there is a deal, then show that the price changed*/}
+          {Number(price) > 5 && (
+            <p className="text-sm font-medium text-gray-500 line-through">${(Number(price) * 1.2).toFixed(2)}</p>
+          )}
+          <p className="text-lg font-bold text-green-600">${price.toFixed(2)}</p>
+        </div>
       </div>
       <div className="flex items-center space-x-2 mt-4">
         <button
