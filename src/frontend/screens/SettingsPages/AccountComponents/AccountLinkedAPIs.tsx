@@ -58,7 +58,8 @@ export default function AccountLinkedAPIs() {
             });
             if (res.ok) {
                 const data = await res.json();
-                var isStored
+                // console.log("status check: ", data)
+                var isStored = "default"
                 switch (service) {
                     case "DoorDash":
                         setDoordashLink(data.doordash_stored);
@@ -73,7 +74,7 @@ export default function AccountLinkedAPIs() {
                         console.error('switchFailure');
                         return;
                 }
-                console.log("LoggedIn to "+ service + ": "+(isStored))
+                //console.log("LoggedIn to "+ service + ": "+(isStored))
             } else {
                 const errorData = await res.json();
                 console.error('Error during login:', errorData);
@@ -165,58 +166,39 @@ export default function AccountLinkedAPIs() {
 
         try {
             var response
-            var fetchAddr = 'http://localhost:5001/api/auth/'
-            switch (buttonService) {
-                case "DoorDash":
-                    fetchAddr += 'doordashlogin';
-                    response = await fetch(fetchAddr, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization' : "Bearer " + user.token
-                        },
-                        body: JSON.stringify({
-                            doordash_email: userValue,
-                            doordash_password: passValue,
-                        }),
-                    });
-                    break;
-                case "GrubHub":
-                    fetchAddr += 'grubhublogin';
-                    response = await fetch(fetchAddr, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization' : "Bearer " + user.token
-                        },
-                        body: JSON.stringify({
-                            grubhub_email: userValue,
-                            grubhub_password: passValue,
-                        }),
-                    });
-                    break;
-                case "UberEats":
-                    fetchAddr += 'uberlogin';
-                    response = await fetch(fetchAddr, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization' : "Bearer " + user.token
-                        },
-                        body: JSON.stringify({
-                            uber_email: userValue,
-                            uber_password: passValue,
-                        }),
-                    });
-                    break;
-                default:
-                    console.error('switchFailure');
-                    setErrText("Internal Service Error\nDelivery Service not recognized");
-                    setErrPop(true);
-                    return;
-            }
+            var fetchAddr = 'http://localhost:5001/api/auth/app-login'
+            response = await fetch(fetchAddr, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization' : "Bearer " + user.token
+                },
+                body: JSON.stringify({
+                    email: userValue,
+                    password: passValue,
+                }),
+            });
+            
 
             const data = await response.json();
+
+            var response2
+            var fetchAddr2 = 'http://localhost:5001/api/auth/app-deal'
+            response2 = await fetch(fetchAddr2, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization' : "Bearer " + data.token,
+                    
+                },
+                // body: JSON.stringify({
+                //     appEmail: userValue,
+                // }),
+            });
+            
+
+            const data2= await response2.json();
+            console.log("deals: ", data2)
 
             if (!response.ok) {
                 throw new Error(data.msg || 'Failed to register');

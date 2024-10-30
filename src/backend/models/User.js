@@ -23,16 +23,18 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
-  /*
-  address: {
-    street: { type: String },
-    city: { type: String },
-    state: { type: String },
-    postalCode: { type: String },
-    country: { type: String }
+  uber_logged_in: {
+    type: Boolean,
+    default: false
   },
-  */
+  doordash_logged_in: {
+    type: Boolean,
+    default: false
+  },
+  grubhub_logged_in: {
+    type: Boolean,
+    default: false
+  },
   uber_email: {
     type: String,
   },
@@ -55,8 +57,7 @@ const UserSchema = new mongoose.Schema({
   dietaryPreferences: {
     type: [String], 
     default: []     
-  },   // New Field: Array of Cart ObjectIDs
-  // **New Field: Array of Cart ObjectIDs with Default Empty Array**
+  },   
   cartIDs: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cart' }],
     default: []
