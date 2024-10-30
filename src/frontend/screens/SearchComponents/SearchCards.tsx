@@ -155,6 +155,21 @@ export default function SearchCards() {
         throw new Error(data.msg || "Failed to register");
       }
 
+      switch (buttonService) {
+        case "DoorDash":
+            localStorage.setItem("doordash_token", data.token);
+            break;
+        case "GrubHub":
+            localStorage.setItem("grubhub_token", data.token);
+            break;
+        case "UberEats":
+            localStorage.setItem("ubereats_token", data.token);
+            break;
+        default:
+            console.error('switchFailure');
+            return;
+    }
+
       setLoginPop(false);
       setButtonService("Error Undefined");
       resetUserPass();
@@ -168,25 +183,8 @@ export default function SearchCards() {
   };
 
   const checkLogin = async (service: string, item) => {
-    let fetchAddr = "http://localhost:5001/api/auth/";
-    switch (service) {
-      case "DoorDash":
-        fetchAddr += "doordash";
-        break;
-      case "GrubHub":
-        fetchAddr += "grubhub";
-        break;
-      case "UberEats":
-        fetchAddr += "uber";
-        break;
-      default:
-        console.error("switchFailure");
-        setErrText("Internal Service Error\nDelivery Service not recognized");
-        setErrPop(true);
-        return;
-    }
-    fetchAddr += "login/status";
-
+    let fetchAddr = "http://localhost:5001/api/auth/app-status";
+    
     try {
       const res = await fetch(fetchAddr, {
         method: "GET",
@@ -200,14 +198,14 @@ export default function SearchCards() {
         let isStored;
         switch (service) {
           case "DoorDash":
-            isStored = data.doordash_stored;
-            break;
+              isStored = data.doordash_logged_in;
+              break;
           case "GrubHub":
-            isStored = data.grubhub_stored;
-            break;
+              isStored = data.grubhub_logged_in;
+              break;
           case "UberEats":
-            isStored = data.uber_stored;
-            break;
+              isStored = data.uber_logged_in;
+              break;
           default:
             console.error("switchFailure");
             setErrText(
