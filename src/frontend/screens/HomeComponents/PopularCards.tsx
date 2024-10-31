@@ -1,6 +1,3 @@
-
-
-import axios from 'axios';
 import React, { useEffect } from 'react'
 
 import { 
@@ -18,16 +15,12 @@ import { coreForm, coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx
 
 // navigation
 import { useNavigate } from 'react-router-dom';
-
-interface Dish {
-    dishID: string,
-    dishName: string,
-    dishDescription: string
-}
+import { useAuth } from '../UserComponents/Authorizer.tsx';
 
 interface GenItem {
     ID: string,
     name: string,
+    searchName: string,
     description: string,
     image: string // Update the type to string for compatibility with Image source
 }
@@ -35,23 +28,39 @@ interface GenItem {
 export default function PopularCards({fetchType}) {
     const [title, setTitle] = React.useState('error: Failed to Fetch')
     const [fetchedData, setFetchedData] = React.useState<any[]>([]);
+    const {user} = useAuth();
 
     const navigate = useNavigate();
     
     // Fetch the restaurant data from the backend when the component is mounted
     useEffect(() => {
-        axios.get('http://localhost:5001/api/' + fetchType)  // Ensure your backend route is correct
-            .then(response => {
-                setFetchedData(response.data);
+        const restReq = async () => {
+            try {
+                const response = await fetch(`http://localhost:5001/api/${fetchType}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${user.token}`
+                    },
+                })
+                const data = await response.json();
+                setFetchedData(data);
                 if (fetchType === 'popularRestaurants') {
                     setTitle('Popular Near You:');
+                } else if (fetchType === 'cartroute/recent-restaurants') {
+                    setTitle('Recent Restaurants:');
+                } else if (fetchType === 'cartroute/recent-dishes') {
+                    setTitle('Recent Dishes:');
                 } else {
                     setTitle('Fetch Type Untitled');
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching popular restaurants:', error);
-            });
+            } catch(error) {
+                console.error(`Error fetching ${fetchType}:`, error);
+                setTitle('error: Failed to Fetch');
+            }
+        }
+        restReq();
+        
     }, [fetchType]);
 
     const handlePop = async (name: string) => {
@@ -109,7 +118,7 @@ export default function PopularCards({fetchType}) {
             <TouchableOpacity
                 key={item.ID}
                 style={styles.container}
-                onPress={() => {handlePop(item.name)}}
+                onPress={() => {handlePop(item.searchName)}}
             >            
                 <View style={styles.card}>
                     <Image 
@@ -139,20 +148,7 @@ export default function PopularCards({fetchType}) {
     const restDishItems = (items: any[]) => {
         const itemSub: GenItem[] = [];  // Explicitly declare the type here
         if (items && items.length > 0) {
-            if (items[0].restaurantName) {
-                const restNameSet = new Set();
-                items.forEach(restaurant => {
-                    if (!restNameSet.has(restaurant.restaurantName)) {
-                        restNameSet.add(restaurant.restaurantName);
-                        itemSub.push({
-                            ID: restaurant.restaurantID,
-                            name: restaurant.restaurantName,
-                            description: restaurant.restaurantName + ' Description',
-                            image: restaurant.restaurantImage || '/images/testRest.png'
-                        });
-                    }
-                });
-            } else if (items[0].dishName) {
+            if (items[0].dishName) {
                 const dishNameSet = new Set();
                 items.forEach(dish => {
                     if (!dishNameSet.has(dish.dishName)) {
@@ -160,8 +156,23 @@ export default function PopularCards({fetchType}) {
                         itemSub.push({
                             ID: dish.dishID,
                             name: dish.dishName,
+                            searchName: dish.restaurantName,
                             description: dish.dishName + ' Description',
-                            image: '/images/testDish.png' // Adjust image as needed
+                            image: dish.dishImage || require('../images/testDish.png') // Adjust image as needed
+                        });
+                    }
+                });
+            } else if (items[0].restaurantName) {
+                const restNameSet = new Set();
+                items.forEach(restaurant => {
+                    if (!restNameSet.has(restaurant.restaurantName)) {
+                        restNameSet.add(restaurant.restaurantName);
+                        itemSub.push({
+                            ID: restaurant.restaurantID,
+                            name: restaurant.restaurantName,
+                            searchName: restaurant.restaurantName,
+                            description: restaurant.restaurantName + ' Description',
+                            image: restaurant.restaurantImage || '/images/testRest.png'
                         });
                     }
                 });

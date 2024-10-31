@@ -9,6 +9,7 @@ export const ffColors = {
   ffText: '#000000',
   ffRedL: '#b51536',
   ffGreenL: '#079373',
+  ffGreyXL: '#cdcdd0',
   ffGreyL: '#8c8c9c',
   ffRedD: '#73142e',
   ffGreenD: '#184941',

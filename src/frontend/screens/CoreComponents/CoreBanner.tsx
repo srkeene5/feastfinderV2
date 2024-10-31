@@ -338,7 +338,6 @@ export default CoreBanner;
 
 const styles = StyleSheet.create({
     pageContainer: {
-        flex: 1,
     },
     container: {
         width: '100%',
@@ -386,10 +385,6 @@ const styles = StyleSheet.create({
     },
     unselectedButton: {
         backgroundColor: '#ccc',
-    },
-    buttonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
     },
     selectedText: {
         color: '#fff',

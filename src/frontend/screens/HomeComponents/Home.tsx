@@ -37,6 +37,12 @@ export default function Home() {
       <PopularCards 
         fetchType={'popularRestaurants'}
       />
+      <PopularCards
+        fetchType={'cartroute/recent-restaurants'}
+      />
+      <PopularCards
+        fetchType={'cartroute/recent-dishes'}
+      />
       <DishRecommendations />
       
     </div>

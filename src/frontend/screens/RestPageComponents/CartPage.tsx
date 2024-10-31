@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { CartItem } from '../../../types/Cart'; // Adjusted path
 import { useAuth } from '../UserComponents/Authorizer.tsx'; // Authentication hook
 import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for login
-import { ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
+import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
 
 const CartPage: React.FC = () => {
   const { cart, clearCart } = useCart(); // Destructure clearCart from useCart
@@ -260,41 +260,87 @@ const CartPage: React.FC = () => {
   }
 
   return (
-    <div>
+    <div
+      style={{backgroundColor: ffColors.ffBackground, height: '100vh'}}
+    >
       <CoreBanner />
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
+        <h1 
+          className="text-2xl font-bold mb-4"
+          style={{color: ffColors.ffText}}
+        >
+          Your Cart
+        </h1>
 
         {['DoorDash', 'UberEats', 'Grubhub'].map((service) => {
           const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
           const serviceTotal = calculateServiceTotal(service);
 
           return (
-            <div key={service} className="border p-4 mb-4">
-              <h2 className="text-xl font-semibold mb-2">{service}</h2>
+            <div 
+              key={service} 
+              className="border p-4 mb-4"
+              style={coreForm.card}
+            >
+              <h2 
+                className="text-xl font-semibold mb-2"
+                style={coreForm.header}
+              >
+                {service}
+              </h2>
               {serviceAvailable ? (
-                <>
+                <div
+                  style={coreForm.body}
+                >
                   <ul>
                     {cart.items.map((item: CartItem, index: number) => (
-                      <li key={index} className="flex justify-between">
-                        <span>{item.item} x {item.quantity}</span>
-                        <span>${(item.prices[service.toLowerCase()] * item.quantity).toFixed(2)}</span>
+                      <li 
+                        key={index} 
+                        className="flex justify-between"
+                      >
+                        <span>
+                          <p
+                            style={{color: ffColors.ffBody}}
+                          >
+                            {item.item} x {item.quantity}
+                          </p>
+                        </span>
+                        <span>
+                          <p
+                            style={{color: ffColors.ffBody}}
+                          >
+                            ${(item.prices[service.toLowerCase()] * item.quantity).toFixed(2)}
+                          </p>
+                        </span>
                       </li>
                     ))}
                   </ul>
                   <div className="flex justify-between font-bold mt-2">
-                    <span>Total:</span>
-                    <span>${serviceTotal.toFixed(2)}</span>
+                    <p
+                      style={{color: ffColors.ffHeading}}
+                    >
+                      Total:
+                    </p>
+                    <p
+                      style={{color: ffColors.ffHeading}}
+                    >
+                      ${serviceTotal.toFixed(2)}
+                    </p>
                   </div>
                   <button
                     onClick={() => handleCheckout(service.toLowerCase())}
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+                    style={{backgroundColor: ffColors.ffGreenL}}
                   >
                     Checkout with {service}
                   </button>
-                </>
+                </div>
               ) : (
-                <p>Not Available</p>
+                <p
+                  style={{color: ffColors.ffBody}}
+                >
+                  Not Available
+                </p>
               )}
             </div>
           );

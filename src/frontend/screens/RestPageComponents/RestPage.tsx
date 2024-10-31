@@ -5,6 +5,7 @@ import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useLocation, useNavigate } from 'react-router-dom';
 import ConfirmModal from './ConfirmModal.tsx'; // Corrected path
 import { CartItem, CartEntry } from '../../../types/Cart'; // Adjusted path
+import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 interface MenuItemProps {
   item: string;
@@ -30,7 +31,10 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
     currPrice = currPrice * (100 - deal) / 100;
   }
   return (
-    <li className="flex items-center justify-between p-4 mb-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm transition-shadow duration-300 hover:shadow-md">
+    <li 
+      className="flex items-center justify-between p-4 mb-4 rounded-lg shadow-sm transition-shadow duration-300 hover:shadow-md"
+      style={{backgroundColor: ffColors.ffCard, borderColor: ffColors.ffEdge, borderWidth: 1}}
+    >
       <div>
         <img
           //src={require('../images/testDish.png')}
@@ -47,27 +51,44 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
         />
       </div>
       <div className="ml-4 flex-1">
-        <h3 className="text-lg font-semibold text-gray-800">{item}</h3>
+        <h3 
+          className="text-lg font-semibold"
+          style={{color: ffColors.ffText}}
+        >
+          {item}
+        </h3>
         <div className="flex items-center space-x-2 mt-1">
           {/* replace the condition with the deal. If there is a deal, then show that the price changed*/}
           {(deal !== null && Number(deal) > 0) && (
-            <p className="text-sm font-medium text-gray-500 line-through">${oldPrice.toFixed(2)}</p>
+            <p 
+              className="text-sm font-medium text-gray-500 line-through"
+              style={{color: ffColors.ffBody}}
+            >
+              ${oldPrice.toFixed(2)}
+            </p>
           )}
-          <p className="text-lg font-bold text-green-600">${currPrice.toFixed(2)}</p>
+          <p 
+            className="text-lg font-bold text-green-600"
+            style={{color: ffColors.ffGreenL}}
+          >
+            ${currPrice.toFixed(2)}
+          </p>
         </div>
       </div>
       <div className="flex items-center space-x-2 mt-4">
         <button
           onClick={onRemove}
           disabled={quantity <= 0}
-          className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full disabled:opacity-50 hover:bg-red-600 transition duration-200 ease-in-out"
+          className="w-8 h-8 flex items-center justify-center text-white rounded-full disabled:opacity-50 hover:bg-red-600 transition duration-200 ease-in-out"
+          style={{backgroundColor: ffColors.ffRedL}}
         >
           -
         </button>
         <span className="text-lg font-medium">{quantity}</span>
         <button
           onClick={onAdd}
-          className="w-8 h-8 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-200 ease-in-out"
+          className="w-8 h-8 flex items-center justify-center text-white rounded-full hover:bg-green-600 transition duration-200 ease-in-out"
+          style={{backgroundColor: ffColors.ffGreenL}}
         >
           +
         </button>
@@ -269,17 +290,26 @@ export default function RestPage() {
   const displayTotal = isNaN(cartTotal) || cartTotal === undefined ? 0 : cartTotal;
 
   return (
-    <div className="bg-gray-100">
+    <div style={{backgroundColor:ffColors.ffBackground}}>
       <CoreBanner />
       <div
         style={styles.account}
         className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-6 mt-6 mx-auto"
       >
-        <h1 className="text-3xl font-bold text-gray-800 text-center">
+        <h1 
+          className="text-3xl font-bold text-gray-800 text-center"
+          style={{color: ffColors.ffText}}
+        >
           {restaurant.restaurantName} Menu
         </h1>
-        <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 overflow-y-auto">
-          <ul className="divide-y divide-gray-200">
+        <div 
+          className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 overflow-y-auto"
+          style={{backgroundColor: ffColors.ffCard}}
+        >
+          <ul 
+            className="divide-y divide-gray-200"
+            style={{backgroundColor: ffColors.ffCard, color: ffColors.ffText}}
+          >
             {paginatedMenuItems.map((item: string, index: number) => {
               const actualIndex = currentPage * itemsPerPage + index;
               return (
@@ -297,22 +327,32 @@ export default function RestPage() {
             })}
           </ul>
         </div>
-        <div className="flex justify-between items-center sticky bottom-0 w-full bg-white p-4 mt-6 border-t border-gray-200">
+        <div 
+          className="flex justify-between items-center sticky bottom-0 w-full bg-white p-4 mt-6 border-t border-gray-200"
+          style={{backgroundColor: ffColors.ffCard}}
+        >
           {/* Checkout Button */}
           <div className="flex flex-col items-center">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 
+              className="text-lg font-semibold text-gray-800"
+              style={{color: ffColors.ffText}}
+            >
               Total: ${displayTotal.toFixed(2)}
             </h3>
             <button
               onClick={handleViewCart}
               disabled={quantities.every((quantity) => quantity === 0)}
               className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50 hover:bg-blue-600 transition duration-200 ease-in-out"
+              style={{backgroundColor: ffColors.ffGreenL}}
             >
               View Cart
             </button>
           </div>
           {/* Vertical Line */}
-          <div className="h-20 border-l border-gray-300 mx-4"></div>
+          <div 
+            className="h-20 border-l border-gray-300 mx-4"
+            style={{borderColor: ffColors.ffEdge}}
+          ></div>
           {/* Pagination Controls */}
           <div className="space-x-4 mt-4 mx-auto">
             <button
@@ -322,7 +362,10 @@ export default function RestPage() {
             >
               Previous
             </button>
-            <span className="text-lg font-medium">
+            <span 
+              className="text-lg font-medium"
+              style={{color: ffColors.ffText}}
+            >
               Page {currentPage + 1} of {totalPages}
             </span>
             <button
@@ -334,10 +377,14 @@ export default function RestPage() {
             </button>
           </div>
           {/* Vertical Line */}
-          <div className="h-20 border-l border-gray-300 mx-4"></div>
+          <div 
+            className="h-20 border-l mx-4"
+            style={{borderColor: ffColors.ffEdge}}
+          ></div>
           <button
             onClick={handleSwitchRestaurant}
-            className="px-4 py-2 bg-red-500 text-white rounded ml-4"
+            className="px-4 py-2 text-white rounded ml-4"
+            style={{backgroundColor: ffColors.ffRedL}}
           >
             Switch Restaurant
           </button>
@@ -359,5 +406,6 @@ export default function RestPage() {
 const styles = {
   account: {
     padding: '16px',
+    backgroundColor: ffColors.ffCard
   },
 };
