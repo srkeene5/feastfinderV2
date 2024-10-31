@@ -1,19 +1,17 @@
-// src/frontend/screens/MapComponents/MapComponent.tsx
-
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native'
+import React, { useEffect, useState, useCallback } from 'react';
+import { View } from 'react-native';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'; // Ensure Leaflet CSS is imported
 import 'leaflet-defaulticon-compatibility'; // To fix default icon issues
-import { fromAddress, setKey } from "react-geocode";
+
 import { Restaurant } from '../CoreComponents/CoreTypes.tsx';
 import { GAPIKEY } from '../../../config.js'; // Ensure this path is correct
 
 // Import your custom marker images
-import userMarkerIcon from './user-marker.png'; // Ensure the file exists
-import diningHallMarkerIcon from './dining-hall-marker.png'; // Ensure the file exists
-import { useLocation } from 'react-router-dom';
+import userMarkerIcon from './user-marker.png';
+import diningHallMarkerIcon from './dining-hall-marker.png';
+import restaurantMarkerIcon from './restaurant-marker.png';
 
 // Purdue Dining Halls Coordinates with Google Maps links
 const diningHalls = [
@@ -49,7 +47,7 @@ const diningHalls = [
   },
 ];
 
-// Custom icon for the user's location
+// Custom icon for user's location
 const userIcon = new L.Icon({
   iconUrl: userMarkerIcon,
   iconSize: [35, 45],
@@ -65,7 +63,15 @@ const diningHallIcon = new L.Icon({
   popupAnchor: [0, -40],
 });
 
-// Haversine Formula to calculate straight-line distance between two lat/lng coordinates
+// Custom icon for restaurants
+const restaurantIcon = new L.Icon({
+  iconUrl: restaurantMarkerIcon,
+  iconSize: [35, 45],
+  iconAnchor: [17, 42],
+  popupAnchor: [0, -40],
+});
+
+// Helper to calculate straight-line distance between two coordinates
 const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const toRad = (value: number) => (value * Math.PI) / 180;
   const R = 6371; // Radius of the Earth in kilometers
@@ -75,11 +81,10 @@ const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = R * c; // Distance in kilometers
-  return distance.toFixed(2); // Return in kilometers (rounded to 2 decimals)
+  return (R * c).toFixed(2); // Distance in kilometers (rounded to 2 decimals)
 };
 
-// Helper component to move the map's view to the user's location
+// Helper component to move the map's view to user's location
 const MapUpdater = ({ location }: { location: { lat: number; lng: number } }) => {
   const map = useMap();
   useEffect(() => {
@@ -90,13 +95,42 @@ const MapUpdater = ({ location }: { location: { lat: number; lng: number } }) =>
   return null;
 };
 
-const MapComponent: React.FC = () => {
-  const location = useLocation();
-  const { restaurants = [] } = location.state || {};
-  const [restLocations, setRestLocations] = useState<{ lat: number; lng: number; restaurant: Restaurant }[]>([]);
+// New function to get coordinates
+const getCoordinates = async (address: string): Promise<{ lat: number; lng: number } | null> => {
+  try {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GAPIKEY}`
+    );
+    const data = await response.json();
+    if (data.status === "OK" && data.results.length > 0) {
+      const { lat, lng } = data.results[0].geometry.location;
+      return { lat, lng };
+    } else {
+      console.error("Geocoding error:", data.status);
+      return null;
+    }
+  } catch (error) {
+    console.error("Geocoding error:", error);
+    return null;
+  }
+};
 
+const MapComponent: React.FC<{ restaurants: Restaurant[] }> = ({ restaurants }) => {
+  const [restLocations, setRestLocations] = useState<{ lat: number; lng: number; restaurant: Restaurant }[]>([]);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch restaurant locations
+  const GetRestLocations = useCallback(async () => {
+    const newRestLocations: { lat: number; lng: number; restaurant: Restaurant }[] = [];
+    for (const rest of restaurants) {
+      const coordinates = await getCoordinates(rest.restaurantAddress);
+      if (coordinates) {
+        newRestLocations.push({ lat: coordinates.lat, lng: coordinates.lng, restaurant: rest });
+      }
+    }
+    setRestLocations(newRestLocations);
+  }, [restaurants]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -115,51 +149,26 @@ const MapComponent: React.FC = () => {
       setError("Geolocation is not supported by this browser.");
     }
     GetRestLocations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  //--------RestLocation Code--------
-  const GetRestLocations = async () => {
-    const newRestLocations: { lat: number; lng: number; restaurant: Restaurant }[] = [];
-    setKey(GAPIKEY);
-
-    for (const rest of restaurants) {
-      try {
-        //const response = await fromAddress(rest.restaurantAddress);
-        //const { lat, lng } = response.results[0].geometry.location;
-        //newRestLocations.push({ lat, lng, restaurant: rest });
-      } catch (error) {
-        console.error("Geocoding error for restaurant: ", rest.restaurantAddress, error);
-      }
-    }
-
-    setRestLocations(newRestLocations);
-  };
+  }, [restaurants, GetRestLocations]);
 
   return (
-    <View style={{flex:1}}>
+    <View style={{ flex: 1 }}>
       {error && <p>{error}</p>}
       {userLocation ? (
         <MapContainer
-          center={[40.4259, -86.9196]} // Default center near Purdue
+          center={[userLocation.lat, userLocation.lng]}
           zoom={14}
-          style={{ flex:1, width: '100%' }} // Map size
+          style={{ flex: 1, width: '100%' }}
         >
-          {/* Simplified Tile Layer (Carto Light) */}
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
           />
-
-          {/* Move the map to the user's location */}
           <MapUpdater location={userLocation} />
-
-          {/* User location marker with custom icon */}
           <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
             <Popup>You are here</Popup>
           </Marker>
 
-          {/* Dining Hall markers with custom icon, distance, and Google Maps link */}
           {diningHalls.map((hall) => (
             <Marker key={hall.name} position={[hall.lat, hall.lng]} icon={diningHallIcon}>
               <Popup>
@@ -174,19 +183,24 @@ const MapComponent: React.FC = () => {
             </Marker>
           ))}
 
-          {/* Restaurant markers */}
           {restLocations.map((restLoc) => (
             <Marker
               key={restLoc.restaurant.restaurantID}
               position={[restLoc.lat, restLoc.lng]}
-              icon={diningHallIcon}
+              icon={restaurantIcon}
             >
               <Popup>
                 <strong>{restLoc.restaurant.restaurantName}</strong>
                 <br />
                 Distance: {haversineDistance(userLocation.lat, userLocation.lng, restLoc.lat, restLoc.lng)} km
                 <br />
-                <a href={restLoc.restaurant.mapUrl} target="_blank" rel="noopener noreferrer">
+                Address: {restLoc.restaurant.restaurantAddress}
+                <br />
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restLoc.restaurant.restaurantAddress)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Open in Google Maps
                 </a>
               </Popup>
