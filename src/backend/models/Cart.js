@@ -17,9 +17,7 @@ const cartItemSchema = new mongoose.Schema({
 // Define the main Cart schema
 const cartSchema = new mongoose.Schema(
   {
-    //user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    username: { type: String, required: true }, // Change user to username
-
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     restaurant: {
       restaurantID: { type: String, required: true },
       restaurantName: { type: String, required: true },
@@ -49,7 +47,7 @@ cartSchema.post('findOneAndDelete', async function (doc, next) {
   if (doc) {
     try {
       // Find the user associated with this cart
-      const user = await User.findOne({ username: doc.username });
+      const user = await User.findById(doc.user);
 
       if (user) {
         // Remove the cart ID from the user's cartIDs array
@@ -72,7 +70,7 @@ cartSchema.post('deleteOne', { document: true, query: false }, async function (d
   if (doc) {
     try {
       // Find the user associated with this cart
-      const user = await User.findOne({ username: doc.username });
+      const user = await User.findById(doc.user);
 
       if (user) {
         // Remove the cart ID from the user's cartIDs array
