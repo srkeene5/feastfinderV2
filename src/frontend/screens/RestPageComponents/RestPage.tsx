@@ -1,35 +1,36 @@
 // src/frontend/screens/RestPageComponents/RestPage.tsx
 import React, { useState, useEffect } from 'react';
-import { useCart } from './CartContext.tsx'; // Corrected path
-import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
+import { useCart } from './CartContext.tsx';
+import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ConfirmModal from './ConfirmModal.tsx'; // Corrected path
-import { CartItem, CartEntry } from '../../../types/Cart'; // Adjusted path
+import ConfirmModal from './ConfirmModal.tsx';
+import { CartItem, CartEntry } from '../../../types/Cart';
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 
 interface MenuItemProps {
   item: string;
   price: number;
   quantity: number;
-  image: string; // Will adjust based on how the API is set up
-  
+  image: string;
+
   onAdd: () => void;
   onRemove: () => void;
 
-  deal: number | null
+  deal: number | null;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove, deal}) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove, deal }) => {
   useEffect(() => {
-    console.log("Deal: ", deal)
-  });
+    console.log("Deal: ", deal);
+  }, [deal]);
 
-  var currPrice = Number(price);
-  var oldPrice = Number(price);
+  let currPrice = Number(price);
+  let oldPrice = Number(price);
 
-  if (deal !== undefined && deal !== null) {
+  if (deal !== undefined && deal !== null && deal > 0) {
     currPrice = currPrice * (100 - deal) / 100;
   }
+
   return (
     <li 
       className="flex items-center justify-between p-4 mb-4 rounded-lg shadow-sm transition-shadow duration-300 hover:shadow-md"
@@ -37,15 +38,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
     >
       <div>
         <img
-          //src={require('../images/testDish.png')}
-          src={image} // Use the passed-in image prop
+          src={image}
           alt="Dish image"
           style={{
             height: 100,
             width: 150,
             borderRadius: 10,
-            objectFit: 'contain', // Ensures the entire image is visible within the box
-
+            objectFit: 'contain',
           }}
           className="w-20 h-20 object-cover rounded shadow-sm"
         />
@@ -58,7 +57,6 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
           {item}
         </h3>
         <div className="flex items-center space-x-2 mt-1">
-          {/* replace the condition with the deal. If there is a deal, then show that the price changed*/}
           {(deal !== null && Number(deal) > 0) && (
             <p 
               className="text-sm font-medium text-gray-500 line-through"
@@ -115,49 +113,48 @@ export default function RestPage() {
 
   const [deal, setDeal] = useState<number>(0);
 
-
   // Prices setup based on service
   let prices: number[] = [];
 
   const getDeals = async () => {
-    var app_token;
+    let app_token;
     switch (service) {
       case "DoorDash":
-          app_token = localStorage.getItem('doordash_token');
-          break;
+        app_token = localStorage.getItem('doordash_token');
+        break;
       case "GrubHub":
-          app_token = localStorage.getItem('grubhub_token');
-          break;
+        app_token = localStorage.getItem('grubhub_token');
+        break;
       case "UberEats":
-          app_token = localStorage.getItem('ubereats_token');
-          break;
+        app_token = localStorage.getItem('ubereats_token');
+        break;
       default:
-          console.error('switchFailure');
-          return;
-  }
+        console.error('Invalid service');
+        return;
+    }
 
-    var response
-    var fetchAddr = 'http://localhost:5001/api/auth/app-deal'
-    response = await fetch(fetchAddr, {
+    try {
+      const fetchAddr = 'http://localhost:5001/api/auth/app-deal';
+      const response = await fetch(fetchAddr, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization' : "Bearer " + app_token,
-            
+          'Content-Type': 'application/json',
+          'Authorization' : "Bearer " + app_token,
         },
-        // body: JSON.stringify({
-        //     appEmail: userValue,
-        // }),
-    });
-    
+      });
 
-    const data = await response.json();
-    console.log("deals: ", data)
-    setDeal(data.deal)
-   
-  }
+      if (!response.ok) {
+        console.error('Failed to fetch deals:', response.statusText);
+        return;
+      }
 
-  //Get deals
+      const data = await response.json();
+      console.log("Deals fetched: ", data);
+      setDeal(data.deal || 0);
+    } catch (error) {
+      console.error('Error fetching deals:', error);
+    }
+  };
 
   useEffect(() => {
     getDeals();
@@ -226,7 +223,38 @@ export default function RestPage() {
     const newQuantities = [...quantities];
     newQuantities[index]++;
     setQuantities(newQuantities);
-    setCartTotal((prevTotal) => prevTotal + (prices[index] * (100 - deal) / 100));
+    const addedAmount = prices[index] * (100 - deal) / 100;
+    setCartTotal((prevTotal) => {
+      const newTotal = prevTotal + addedAmount;
+      console.log(`Added ${addedAmount} to cartTotal. New total: ${newTotal}`);
+      return newTotal;
+    });
+
+    // Update the cart context
+    const selectedItems: CartItem[] = restaurant.menu.map((item, idx) => ({
+      item,
+      quantity: newQuantities[idx],
+      prices: {
+        doordash: restaurant.doordashMenuPrice[idx],
+        ubereats: restaurant.ubereatsMenuPrice[idx],
+        grubhub: restaurant.grubhubMenuPrice[idx],
+      },
+    })).filter(item => item.quantity > 0);
+
+    const total = selectedItems.reduce(
+      (acc, item) => acc + item.prices[normalizedService] * item.quantity,
+      0
+    );
+
+    const newCartEntry: CartEntry = {
+      restaurant: restaurant,
+      service: service,
+      items: selectedItems,
+      total: total,
+      quantities: newQuantities,
+    };
+
+    updateCart(newCartEntry);
   };
 
   const handleRemove = (index: number) => {
@@ -234,7 +262,38 @@ export default function RestPage() {
       const newQuantities = [...quantities];
       newQuantities[index]--;
       setQuantities(newQuantities);
-      setCartTotal((prevTotal) => prevTotal - (prices[index] * (100 - deal) / 100));
+      const removedAmount = prices[index] * (100 - deal) / 100;
+      setCartTotal((prevTotal) => {
+        const newTotal = prevTotal - removedAmount;
+        console.log(`Removed ${removedAmount} from cartTotal. New total: ${newTotal}`);
+        return newTotal;
+      });
+
+      // Update the cart context
+      const selectedItems: CartItem[] = restaurant.menu.map((item, idx) => ({
+        item,
+        quantity: newQuantities[idx],
+        prices: {
+          doordash: restaurant.doordashMenuPrice[idx],
+          ubereats: restaurant.ubereatsMenuPrice[idx],
+          grubhub: restaurant.grubhubMenuPrice[idx],
+        },
+      })).filter(item => item.quantity > 0);
+
+      const total = selectedItems.reduce(
+        (acc, item) => acc + item.prices[normalizedService] * item.quantity,
+        0
+      );
+
+      const newCartEntry: CartEntry = {
+        restaurant: restaurant,
+        service: service,
+        items: selectedItems,
+        total: total,
+        quantities: newQuantities,
+      };
+
+      updateCart(newCartEntry);
     } else {
       console.error(`Cannot remove item at index ${index}`);
     }
@@ -318,7 +377,7 @@ export default function RestPage() {
                   item={item}
                   price={prices[actualIndex]}
                   quantity={quantities[actualIndex]}
-                  image={restaurant.menuItemImages[actualIndex]} // Pass image directly
+                  image={restaurant.menuItemImages[actualIndex]}
                   onAdd={() => handleAdd(actualIndex)}
                   onRemove={() => handleRemove(actualIndex)}
                   deal={deal}
