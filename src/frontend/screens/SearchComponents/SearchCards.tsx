@@ -196,6 +196,7 @@ export default function SearchCards() {
       if (res.ok) {
         const data = await res.json();
         let isStored;
+        // console.log(service)
         switch (service) {
           case "DoorDash":
               isStored = data.doordash_logged_in;

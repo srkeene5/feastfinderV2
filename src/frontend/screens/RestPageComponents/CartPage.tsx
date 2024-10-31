@@ -43,51 +43,37 @@ const CartPage: React.FC = () => {
   };
 
   const checkLogin = async (service: string) => {
-    let fetchAddr = 'http://localhost:5001/api/auth/';
-    console.log('Selected service:', service); // Debugging: Log the selected service
-
-    switch (service) {
-      case 'doordash':
-        fetchAddr += 'doordash';
-        break;
-      case 'grubhub':
-        fetchAddr += 'grubhub';
-        break;
-      case 'ubereats':
-        fetchAddr += 'uber';
-        break;
-      default:
-        setErrText("Internal Service Error: Delivery Service not recognized");
-        setErrPop(true);
-        return false;
-    }
-
-    fetchAddr += 'login/status';
-
+    let fetchAddr = "http://localhost:5001/api/auth/app-status";
+    
     try {
       const res = await fetch(fetchAddr, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + user.token,
         },
       });
-
       if (res.ok) {
         const data = await res.json();
         let isStored;
+        console.log(service + "Hello")
         switch (service) {
-          case 'doordash':
-            isStored = data.doordash_stored;
-            break;
-          case 'grubhub':
-            isStored = data.grubhub_stored;
-            break;
-          case 'ubereats':
-            isStored = data.uber_stored;
-            break;
+          case "doordash":
+              isStored = data.doordash_logged_in;
+              break;
+          case "grubhub":
+              isStored = data.grubhub_logged_in;
+              break;
+          case "ubereats":
+              isStored = data.uber_logged_in;
+              break;
           default:
-            isStored = false;
+            console.error("switchFailure");
+            setErrText(
+              "Internal Service Error\nDelivery Service not recognized"
+            );
+            setErrPop(true);
+            return false;
         }
 
         if (isStored) {
@@ -105,13 +91,74 @@ const CartPage: React.FC = () => {
         return false;
       }
     } catch (error) {
-      setErrText('Network error\nCheck internet connection');
+      setErrText("Network error\nCheck internet connection");
       setErrPop(true);
       return false;
     }
   };
 
   const popSubmitHandler = async () => {
+    if (!userValue) {
+      setErrText("Username Blank");
+      setErrPop(true);
+      return;
+    } else if (!passValue) {
+      setErrText("Password Blank");
+      setErrPop(true);
+      return;
+    }
+
+    try {
+      let response;
+      var fetchAddr = "http://localhost:5001/api/auth/app-login";
+      response = await fetch(fetchAddr, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + user.token,
+        },
+        body: JSON.stringify({
+          email: userValue,
+          password: passValue,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.msg || "Failed to register");
+      }
+      console.log(buttonService)
+      switch (buttonService) {
+        case "doordash":
+            localStorage.setItem("doordash_token", data.token);
+            break;
+        case "grubhub":
+            localStorage.setItem("grubhub_token", data.token);
+            break;
+        case "ubereats":
+            localStorage.setItem("ubereats_token", data.token);
+            break;
+        default:
+            console.error('switchFailure');
+            return;
+    }
+
+      if (!response.ok) {
+        throw new Error(data.msg || 'Failed to login');
+      }
+
+      setLoginPop(false);
+      setButtonService('Error Undefined');
+      resetUserPass();
+
+      await proceedToCheckout(buttonService, holdCartData);
+    } catch (err) {
+      setErrText(err.message || 'Login failed');
+      setErrPop(true);
+    }
+  };  
+
+  /*const popSubmitHandler = async () => {
     if (!userValue || !passValue) {
       setErrText('Username and Password cannot be blank');
       setErrPop(true);
@@ -149,7 +196,7 @@ const CartPage: React.FC = () => {
       setErrPop(true);
     }
   };
-
+*/
   const proceedToCheckout = async (serviceName: string, cartData: any) => {
     try {
       const userData = localStorage.getItem('user');
