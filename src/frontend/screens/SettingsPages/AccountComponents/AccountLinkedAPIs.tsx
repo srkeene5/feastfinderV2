@@ -43,7 +43,7 @@ export default function AccountLinkedAPIs() {
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log("status check: ", data)
+                // console.log("status check: ", data)
                 switch (service) {
                     case "DoorDash":
                         setDoordashLink(data.doordash_logged_in);

@@ -18,7 +18,7 @@ const CartPage: React.FC = () => {
   const [errText, setErrText] = useState('Error Undefined');
   const [loginPop, setLoginPop] = useState(false);
   const [buttonService, setButtonService] = useState<string>('Error Undefined'); // Ensure it's string type
-  const [holdCartData, setHoldCartData] = useState(null); // Store cart data for later processing
+  const [holdCartData, setHoldCartData] = useState<any | null>(null); // Store cart data for later processing
   const [userValue, setUserValue] = useState(''); // Store username input
   const [passValue, setPassValue] = useState(''); // Store password input
 
@@ -31,7 +31,7 @@ const CartPage: React.FC = () => {
 
   // Function to calculate total for a specific service
   const calculateServiceTotal = (service: string) => {
-    return cart.items.reduce((total: number, item: CartItem) => {
+    return cart?.items.reduce((total: number, item: CartItem) => {
       const price = item.prices[service.toLowerCase()]; // We still lower-case the key lookup here since the backend data uses lowercase keys
       return total + price * item.quantity;
     }, 0);
@@ -324,7 +324,7 @@ const CartPage: React.FC = () => {
                     <p
                       style={{color: ffColors.ffHeading}}
                     >
-                      ${serviceTotal.toFixed(2)}
+                      ${serviceTotal?.toFixed(2)}
                     </p>
                   </div>
                   <button
