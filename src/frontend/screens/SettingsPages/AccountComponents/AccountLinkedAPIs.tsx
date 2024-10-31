@@ -31,22 +31,7 @@ export default function AccountLinkedAPIs() {
     }
 
     const checkLogin = async (service: string) => {
-        var fetchAddr = 'http://localhost:5001/api/auth/'
-        switch (service) {
-            case "DoorDash":
-                fetchAddr += 'doordash';
-                break;
-            case "GrubHub":
-                fetchAddr += 'grubhub';
-                break;
-            case "UberEats":
-                fetchAddr += 'uber';
-                break;
-            default:
-                console.error('switchFailure');
-                return;
-        }
-        fetchAddr += 'login/status';
+        var fetchAddr = 'http://localhost:5001/api/auth/app-status'
         
         try {
             const res = await fetch(fetchAddr, {
@@ -58,17 +43,16 @@ export default function AccountLinkedAPIs() {
             });
             if (res.ok) {
                 const data = await res.json();
-                // console.log("status check: ", data)
-                var isStored = "default"
+                console.log("status check: ", data)
                 switch (service) {
                     case "DoorDash":
-                        setDoordashLink(data.doordash_stored);
+                        setDoordashLink(data.doordash_logged_in);
                         break;
                     case "GrubHub":
-                        setGrubhubLink(data.grubhub_stored);
+                        setGrubhubLink(data.grubhub_logged_in);
                         break;
                     case "UberEats":
-                        setUberLink(data.uber_stored);
+                        setUberLink(data.uber_logged_in);
                         break;
                     default:
                         console.error('switchFailure');
@@ -179,32 +163,48 @@ export default function AccountLinkedAPIs() {
                 }),
             });
             
-
+            
             const data = await response.json();
 
-            var response2
-            var fetchAddr2 = 'http://localhost:5001/api/auth/app-deal'
-            response2 = await fetch(fetchAddr2, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization' : "Bearer " + data.token,
+            // var response2
+            // var fetchAddr2 = 'http://localhost:5001/api/auth/app-deal'
+            // response2 = await fetch(fetchAddr2, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization' : "Bearer " + data.token,
                     
-                },
-                // body: JSON.stringify({
-                //     appEmail: userValue,
-                // }),
-            });
+            //     },
+            //     // body: JSON.stringify({
+            //     //     appEmail: userValue,
+            //     // }),
+            // });
             
 
-            const data2= await response2.json();
-            console.log("deals: ", data2)
+            // const data2= await response2.json();
+            // console.log("deals: ", data2)
 
             if (!response.ok) {
                 throw new Error(data.msg || 'Failed to register');
             }
 
             console.log('Registration successful:', data);
+
+            switch (buttonService) {
+                case "DoorDash":
+                    localStorage.setItem("doordash_token", data.token);
+                    break;
+                case "GrubHub":
+                    localStorage.setItem("grubhub_token", data.token);
+                    break;
+                case "UberEats":
+                    localStorage.setItem("ubereats_token", data.token);
+                    break;
+                default:
+                    console.error('switchFailure');
+                    return;
+            }
+
             setLoginPop(false); 
             setButtonService('Error Undefined');
             resetUserPass();
@@ -216,16 +216,18 @@ export default function AccountLinkedAPIs() {
 
     const popLogoutHandler = async () => {
         try {
-            var fetchAddr = 'http://localhost:5001/api/auth/'
+            var fetchAddr = 'http://localhost:5001/api/auth/app-logout'
+            var app_token;
+            
             switch (buttonService) {
                 case "DoorDash":
-                    fetchAddr += 'doordashlogin';
+                    app_token = localStorage.getItem('doordash_token');
                     break;
                 case "GrubHub":
-                    fetchAddr += 'grubhublogin';
+                    app_token = localStorage.getItem('grubhub_token');
                     break;
                 case "UberEats":
-                    fetchAddr += 'uberlogin';
+                    app_token = localStorage.getItem('ubereats_token');
                     break;
                 default:
                     console.error('switchFailure');
@@ -233,11 +235,14 @@ export default function AccountLinkedAPIs() {
                     setErrPop(true);
                     return;
             }
+            if (!app_token) {
+                throw new Error("Can't find token for, " + buttonService);
+            }
             const response = await fetch(fetchAddr, {
-                method: 'DELETE',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization' : "Bearer " + user.token
+                    'Authorization' : "Bearer " + app_token
                 },
             });
 

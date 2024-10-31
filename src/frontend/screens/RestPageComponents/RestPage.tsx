@@ -14,9 +14,21 @@ interface MenuItemProps {
   
   onAdd: () => void;
   onRemove: () => void;
+
+  deal: number | null
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove, deal}) => {
+  useEffect(() => {
+    console.log("Deal: ", deal)
+  });
+
+  var currPrice = Number(price);
+  var oldPrice = Number(price);
+
+  if (deal !== undefined && deal !== null) {
+    currPrice = currPrice * (100 - deal) / 100;
+  }
   return (
     <li className="flex items-center justify-between p-4 mb-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm transition-shadow duration-300 hover:shadow-md">
       <div>
@@ -38,10 +50,10 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
         <h3 className="text-lg font-semibold text-gray-800">{item}</h3>
         <div className="flex items-center space-x-2 mt-1">
           {/* replace the condition with the deal. If there is a deal, then show that the price changed*/}
-          {Number(price) > 5 && (
-            <p className="text-sm font-medium text-gray-500 line-through">${(Number(price) * 1.2).toFixed(2)}</p>
+          {(deal !== null && Number(deal) > 0) && (
+            <p className="text-sm font-medium text-gray-500 line-through">${oldPrice.toFixed(2)}</p>
           )}
-          <p className="text-lg font-bold text-green-600">${price.toFixed(2)}</p>
+          <p className="text-lg font-bold text-green-600">${currPrice.toFixed(2)}</p>
         </div>
       </div>
       <div className="flex items-center space-x-2 mt-4">
@@ -80,8 +92,55 @@ export default function RestPage() {
   const totalItems = restaurant?.menu?.length || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  const [deal, setDeal] = useState<number>(0);
+
+
   // Prices setup based on service
   let prices: number[] = [];
+
+  const getDeals = async () => {
+    var app_token;
+    switch (service) {
+      case "DoorDash":
+          app_token = localStorage.getItem('doordash_token');
+          break;
+      case "GrubHub":
+          app_token = localStorage.getItem('grubhub_token');
+          break;
+      case "UberEats":
+          app_token = localStorage.getItem('ubereats_token');
+          break;
+      default:
+          console.error('switchFailure');
+          return;
+  }
+
+    var response
+    var fetchAddr = 'http://localhost:5001/api/auth/app-deal'
+    response = await fetch(fetchAddr, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : "Bearer " + app_token,
+            
+        },
+        // body: JSON.stringify({
+        //     appEmail: userValue,
+        // }),
+    });
+    
+
+    const data = await response.json();
+    console.log("deals: ", data)
+    setDeal(data.deal)
+   
+  }
+
+  //Get deals
+
+  useEffect(() => {
+    getDeals();
+  }, []);
 
   useEffect(() => {
     if (restaurant && restaurant.menu) {
@@ -146,7 +205,7 @@ export default function RestPage() {
     const newQuantities = [...quantities];
     newQuantities[index]++;
     setQuantities(newQuantities);
-    setCartTotal((prevTotal) => prevTotal + prices[index]);
+    setCartTotal((prevTotal) => prevTotal + (prices[index] * (100 - deal) / 100));
   };
 
   const handleRemove = (index: number) => {
@@ -154,7 +213,7 @@ export default function RestPage() {
       const newQuantities = [...quantities];
       newQuantities[index]--;
       setQuantities(newQuantities);
-      setCartTotal((prevTotal) => prevTotal - prices[index]);
+      setCartTotal((prevTotal) => prevTotal - (prices[index] * (100 - deal) / 100));
     } else {
       console.error(`Cannot remove item at index ${index}`);
     }
@@ -232,6 +291,7 @@ export default function RestPage() {
                   image={restaurant.menuItemImages[actualIndex]} // Pass image directly
                   onAdd={() => handleAdd(actualIndex)}
                   onRemove={() => handleRemove(actualIndex)}
+                  deal={deal}
                 />
               );
             })}
