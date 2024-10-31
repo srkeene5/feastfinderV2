@@ -1,10 +1,5 @@
 import React from "react";
-
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 // Components
 import SearchCards from "./SearchCards.tsx";
@@ -15,29 +10,23 @@ import { ffColors } from "../CoreComponents/CoreStyles.tsx";
 
 export default function SearchPage() {
   const location = useLocation();
-  const {search} = location.state;
+  const { search, results } = location.state;
 
-  return(
+  return (
     <View style={styles.container}>
-      <CoreBanner searchVal={search}/>
-      <View
-      style={styles.searchPageContainer}
-      >
-        <View
-        style={styles.mapContainer}
-        >
-          <MapComponent />
+      <CoreBanner searchVal={search} />
+      <View style={styles.searchPageContainer}>
+        <View style={styles.mapContainer}>
+          <MapComponent restaurants={results} />
         </View>
-        <View
-        style={styles.cardsContainer}
-        >
+        <View style={styles.cardsContainer}>
           <ScrollView>
             <SearchCards />
           </ScrollView>
         </View>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -48,7 +37,7 @@ const styles = StyleSheet.create({
   },
   searchPageContainer: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   mapContainer: {
     flex: 1,
@@ -57,6 +46,6 @@ const styles = StyleSheet.create({
   },
   cardsContainer: {
     flex: 1.75,
-    maxHeight: '100%'
+    maxHeight: '100%',
   },
-})
+});

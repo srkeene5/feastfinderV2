@@ -2,7 +2,7 @@ const restaurantData = [
   {
     restaurantID: "66f5ara",
     restaurantName: "McDonalds",
-    restaurantAddress: "King's Street 47905",
+    restaurantAddress: "McDonalds, 124 E State St, West Lafayette, IN 47906",
     distance: 0.5,
     menu: [
       "Big Mac",
@@ -47,7 +47,7 @@ const restaurantData = [
   {
     restaurantID: "13c821c",
     restaurantName: "McDonalds",
-    restaurantAddress: "North Wood St 47805",
+    restaurantAddress: "McDonalds, 605 W Stadium Ave, West Lafayette, IN 47906",
     distance: 0.8,
     menu: [
       "Big Mac",
@@ -92,7 +92,7 @@ const restaurantData = [
   {
     restaurantID: "21e7b6f",
     restaurantName: "McDonalds",
-    restaurantAddress: "Elm Drive 48085",
+    restaurantAddress: "McDonalds, 613 Sagamore Pkwy W, West Lafayette, IN 47906",
     distance: 1.2,
     menu: [
       "Big Mac",
@@ -135,7 +135,7 @@ const restaurantData = [
   {
     restaurantID: "89d3c1b",
     restaurantName: "McDonalds",
-    restaurantAddress: "Main Street 48212",
+    restaurantAddress: "McDonalds, 510 Sagamore Pkwy N, Lafayette, IN 47904",
     distance: 2.5,
     menu: [
       "Big Mac",
@@ -180,7 +180,7 @@ const restaurantData = [
   {
     restaurantID: "35ab42f",
     restaurantName: "KFC",
-    restaurantAddress: "Main Avenue 40205",
+    restaurantAddress: "KFC, 1331 S Rangeline Rd, Carmel, IN 46032",
     distance: 1.0,
     menu: [
       "Fried Chicken Bucket",
@@ -225,7 +225,7 @@ const restaurantData = [
   {
     restaurantID: "54cd31e",
     restaurantName: "KFC",
-    restaurantAddress: "Broadway St 40321",
+    restaurantAddress: "KFC, 8737 IN-114, Rensselaer, IN 47978",
     distance: 1.6,
     menu: [
       "Fried Chicken Bucket",
@@ -263,7 +263,7 @@ const restaurantData = [
   {
     restaurantID: "23df67b",
     restaurantName: "KFC",
-    restaurantAddress: "Lakeshore Rd 40011",
+    restaurantAddress: "KFC, 3561 Promenade Parkway, Lafayette, IN 47909",
     distance: 2.2,
     menu: [
       "Fried Chicken Bucket",
@@ -305,7 +305,7 @@ const restaurantData = [
   {
     restaurantID: "91ae82d",
     restaurantName: "KFC",
-    restaurantAddress: "Willow St 40165",
+    restaurantAddress: "KFC, 3809 South Street, Lafayette, IN 47905",
     distance: 3.0,
     menu: [
       "Fried Chicken Bucket",
@@ -344,9 +344,9 @@ const restaurantData = [
     ],
   },
   {
-    restaurantID: "12ab34c",
+    restaurantID: "12ab36c",
     restaurantName: "Burger King",
-    restaurantAddress: "Oak Street 30521",
+    restaurantAddress: "Burger King, 1069 Sagamore Pkwy W, West Lafayette, IN 47906",
     distance: 1.5,
     menu: [
       "Whopper",
@@ -360,15 +360,9 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
-    ubereatsMenuPrice: [
-      6.49, 4.29, 6.99, 5.39, 2.99, 2.79, 3.29, 3.99, 2.29, 4.99,
-    ],
-    doordashMenuPrice: [
-      6.79, 4.1, 6.79, 5.59, 2.89, 2.99, 3.39, 3.89, 2.19, 5.09,
-    ],
-    grubhubMenuPrice: [
-      6.29, 4.45, 7.09, 5.19, 3.09, 2.69, 3.19, 3.79, 2.35, 4.79,
-    ],
+    ubereatsMenuPrice: [6.49, 4.29, 6.99, 5.39, 2.99, 2.79, 3.29, 3.99, 2.29, 4.99],
+    doordashMenuPrice: [6.79, 4.1, 6.79, 5.59, 2.89, 2.99, 3.39, 3.89, 2.19, 5.09],
+    grubhubMenuPrice: [6.29, 4.45, 7.09, 5.19, 3.09, 2.69, 3.19, 3.79, 2.35, 4.79],
     ubereatsAvailable: true,
     doordashAvailable: true,
     grubhubAvailable: true,
@@ -391,7 +385,7 @@ const restaurantData = [
   {
     restaurantID: "56cd78e",
     restaurantName: "Burger King",
-    restaurantAddress: "Pine Avenue 30612",
+    restaurantAddress: "Burger King, 2175 Greenbush St, Lafayette, IN 47904",
     distance: 2.3,
     menu: [
       "Whopper",
@@ -405,12 +399,8 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
-    ubereatsMenuPrice: [
-      6.55, 4.19, 7.1, 5.49, 3.05, 2.69, 3.39, 3.89, 2.25, 5.19,
-    ],
-    doordashMenuPrice: [
-      6.99, 4.25, 6.99, 5.69, 2.95, 2.89, 3.25, 3.79, 2.15, 4.99,
-    ],
+    ubereatsMenuPrice: [6.55, 4.19, 7.1, 5.49, 3.05, 2.69, 3.39, 3.89, 2.25, 5.19],
+    doordashMenuPrice: [6.99, 4.25, 6.99, 5.69, 2.95, 2.89, 3.25, 3.79, 2.15, 4.99],
     grubhubMenuPrice: [6.39, 4.5, 7.2, 5.25, 3.19, 2.79, 3.1, 3.99, 2.45, 5.09],
     ubereatsAvailable: false,
     doordashAvailable: true,
@@ -434,7 +424,7 @@ const restaurantData = [
   {
     restaurantID: "34ab90d",
     restaurantName: "Burger King",
-    restaurantAddress: "Lakeview Rd 30911",
+    restaurantAddress: "Burger King, 2338 Teal Rd, Lafayette, IN 47905",
     distance: 3.0,
     menu: [
       "Whopper",
@@ -448,15 +438,9 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
-    ubereatsMenuPrice: [
-      6.39, 4.15, 7.05, 5.35, 3.19, 2.89, 3.19, 3.69, 2.29, 4.89,
-    ],
-    doordashMenuPrice: [
-      6.59, 4.35, 6.95, 5.65, 3.05, 2.79, 3.25, 3.79, 2.39, 5.05,
-    ],
-    grubhubMenuPrice: [
-      6.49, 4.55, 7.15, 5.45, 3.09, 2.95, 3.35, 3.99, 2.45, 4.95,
-    ],
+    ubereatsMenuPrice: [6.39, 4.15, 7.05, 5.35, 3.19, 2.89, 3.19, 3.69, 2.29, 4.89],
+    doordashMenuPrice: [6.59, 4.35, 6.95, 5.65, 3.05, 2.79, 3.25, 3.79, 2.39, 5.05],
+    grubhubMenuPrice: [6.49, 4.55, 7.15, 5.45, 3.09, 2.95, 3.35, 3.99, 2.45, 4.95],
     ubereatsAvailable: true,
     doordashAvailable: false,
     grubhubAvailable: true,
@@ -477,9 +461,9 @@ const restaurantData = [
     ],
   },
   {
-    restaurantID: "78ef34g",
+    restaurantID: "78ef44g",
     restaurantName: "Burger King",
-    restaurantAddress: "Elm Street 31001",
+    restaurantAddress: "Burger King, 4092 South St, Lafayette, IN 47905",
     distance: 1.8,
     menu: [
       "Whopper",
@@ -493,15 +477,9 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
-    ubereatsMenuPrice: [
-      6.69, 4.2, 6.85, 5.29, 3.09, 2.79, 3.09, 3.79, 2.19, 5.09,
-    ],
-    doordashMenuPrice: [
-      6.89, 4.39, 7.05, 5.59, 2.95, 2.95, 3.15, 3.89, 2.25, 5.29,
-    ],
-    grubhubMenuPrice: [
-      6.55, 4.49, 7.0, 5.39, 3.29, 2.85, 3.35, 3.85, 2.35, 5.19,
-    ],
+    ubereatsMenuPrice: [6.69, 4.2, 6.85, 5.29, 3.09, 2.79, 3.09, 3.79, 2.19, 5.09],
+    doordashMenuPrice: [6.89, 4.39, 7.05, 5.59, 2.95, 2.95, 3.15, 3.89, 2.25, 5.29],
+    grubhubMenuPrice: [6.55, 4.49, 7.0, 5.39, 3.29, 2.85, 3.35, 3.85, 2.35, 5.19],
     ubereatsAvailable: true,
     doordashAvailable: true,
     grubhubAvailable: false,
@@ -524,7 +502,7 @@ const restaurantData = [
   {
     restaurantID: "17cd32x",
     restaurantName: "Chipotle",
-    restaurantAddress: "Park Avenue 70512",
+    restaurantAddress: "Chipotle, 200 W State St, West Lafayette, IN 47906",
     distance: 0.9,
     menu: [
       "Burrito",
@@ -565,7 +543,7 @@ const restaurantData = [
   {
     restaurantID: "23ef67y",
     restaurantName: "Chipotle",
-    restaurantAddress: "Cedar Street 70612",
+    restaurantAddress: "Chipotle, 2400 N Salisbury St, West Lafayette, IN 47906",
     distance: 1.2,
     menu: [
       "Burrito",
@@ -604,7 +582,7 @@ const restaurantData = [
   {
     restaurantID: "37fg89z",
     restaurantName: "Chipotle",
-    restaurantAddress: "River Road 70721",
+    restaurantAddress: "Chipotle, 4030 South St, Lafayette, IN 47905",
     distance: 2.0,
     menu: [
       "Burrito",
@@ -643,7 +621,7 @@ const restaurantData = [
   {
     restaurantID: "45hi12w",
     restaurantName: "Chipotle",
-    restaurantAddress: "Maple Avenue 70812",
+    restaurantAddress: "Chipotle, 3211 Builder Dr, Lafayette, IN 47909",
     distance: 1.5,
     menu: [
       "Burrito",
@@ -686,7 +664,7 @@ const restaurantData = [
   {
     restaurantID: "99bc12x",
     restaurantName: "Applebee's",
-    restaurantAddress: "Sunset Blvd 30125",
+    restaurantAddress: "Applebee's, 3009 Northwestern Ave, West Lafayette, IN 47906",
     distance: 1.2,
     menu: [
       "Bourbon Street Chicken & Shrimp",
@@ -731,7 +709,7 @@ const restaurantData = [
   {
     restaurantID: "12de45z",
     restaurantName: "Applebee's",
-    restaurantAddress: "Lakeside Rd 30589",
+    restaurantAddress: "Applebee's, Tippecanoe Mall, 2415 Sagamore Pkwy S, Lafayette, IN 47905",
     distance: 2.5,
     menu: [
       "Bourbon Street Chicken & Shrimp",
@@ -776,7 +754,7 @@ const restaurantData = [
   {
     restaurantID: "45ef67y",
     restaurantName: "Applebee's",
-    restaurantAddress: "Mountain View Ave 30878",
+    restaurantAddress: "Applebee's, 2432 E Wabash St, Frankfort, IN 46041",
     distance: 3.0,
     menu: [
       "Bourbon Street Chicken & Shrimp",
@@ -822,7 +800,7 @@ const restaurantData = [
   {
     restaurantID: "67gh89v",
     restaurantName: "Applebee's",
-    restaurantAddress: "Ocean Drive 30999",
+    restaurantAddress: "Applebee's, 1516 S Washington St, Crawfordsville, IN 47933",
     distance: 1.8,
     menu: [
       "Bourbon Street Chicken & Shrimp",
@@ -867,7 +845,7 @@ const restaurantData = [
   {
     restaurantID: "87ab12x",
     restaurantName: "Bistro Bella",
-    restaurantAddress: "456 Grove Street, 10121",
+    restaurantAddress: "Bistro Bella, 44 Cesar E. Chavez Ave SW, Grand Rapids, MI 49503",
     distance: 2.0,
     menu: [
       "Grilled Salmon",
@@ -910,8 +888,8 @@ const restaurantData = [
 
   {
     restaurantID: "91de34v",
-    restaurantName: "The Vegan Haven",
-    restaurantAddress: "325 Riverside Blvd, 10221",
+    restaurantName: "Ripple & Company",
+    restaurantAddress: "Ripple & Company, 1007 Main St, Lafayette, IN 47901",
     distance: 1.2,
     menu: [
       "Vegan Burger",
@@ -939,25 +917,25 @@ const restaurantData = [
     grubhubAvailable: true,
     cuisineType: "American",
     operatingHours: ["Breakfast", "Lunch", "Dinner"],
-    restaurantImage: "/images/the_vegan_haven/vegan_haven_logo.png",
+    restaurantImage: "/images/rippleAndCompany/RippleAndCompanylogo.png",
     menuItemImages: [
-      "/images/the_vegan_haven/vegan_burger.webp",
-      "/images/the_vegan_haven/quinoa-salad.jpg",
-      "/images/the_vegan_haven/vegan_nachos.webp",
-      "/images/the_vegan_haven/tofu_stirfry.jpg",
-      "/images/the_vegan_haven/vegan-pizza.jpg",
-      "/images/the_vegan_haven/baked-sweet-potato-fries-12.jpg",
-      "/images/the_vegan_haven/lentil soup.jpg",
-      "/images/the_vegan_haven/avocado-toast-hero-cropped.jpg",
-      "/images/the_vegan_haven/vegan brownie.jpg",
-      "/images/the_vegan_haven/iced-matcha-latte-hero.webp",
+      "/images/rippleAndCompany/vegan_burger.webp",
+      "/images/rippleAndCompany/quinoa-salad.jpg",
+      "/images/rippleAndCompany/vegan_nachos.webp",
+      "/images/rippleAndCompany/tofu_stirfry.jpg",
+      "/images/rippleAndCompany/vegan-pizza.jpg",
+      "/images/rippleAndCompany/baked-sweet-potato-fries-12.jpg",
+      "/images/rippleAndCompany/lentil soup.jpg",
+      "/images/rippleAndCompany/avocado-toast-hero-cropped.jpg",
+      "/images/rippleAndCompany/vegan brownie.jpg",
+      "/images/rippleAndCompany/iced-matcha-latte-hero.webp",
     ],
   },
 
   {
     restaurantID: "54cd67b",
-    restaurantName: "The Rustic Table",
-    restaurantAddress: "78 Main Street, 10331",
+    restaurantName: "Revolution Barbeque",
+    restaurantAddress: "Revolution Barbeque, 721 Main St, Lafayette, IN 47901",
     distance: 0.8,
     menu: [
       "BBQ Pulled Pork Sandwich",
@@ -985,24 +963,24 @@ const restaurantData = [
     grubhubAvailable: true,
     cuisineType: "American",
     operatingHours: ["Breakfast", "Dinner"],
-    restaurantImage: "/images/the_rustic_table/rustic_table_logo.jpg",
+    restaurantImage: "/images/revolution_bbq/revolution_bbq.png",
     menuItemImages: [
-      "/images/the_rustic_table/bbq_pulled_pork.jpg",
-      "/images/the_rustic_table/roast-chicken.avif",
-      "/images/the_rustic_table/beef-brisket-20.jpg",
-      "/images/the_rustic_table/cornbread.jpg",
-      "/images/the_rustic_table/house_salad.jpg",
-      "/images/the_rustic_table/Fried-Green-Tomatoes.jpeg",
-      "/images/the_rustic_table/mac_cheese.jpg",
-      "/images/the_rustic_table/apple-pie.jpg",
-      "/images/the_rustic_table/sweet-tea.webp",
-      "/images/the_rustic_table/lemonade.jpg",
+      "/images/revolution_bbq/bbq_pulled_pork.jpg",
+      "/images/revolution_bbq/roast-chicken.avif",
+      "/images/revolution_bbq/beef-brisket-20.jpg",
+      "/images/revolution_bbq/cornbread.jpg",
+      "/images/revolution_bbq/house_salad.jpg",
+      "/images/revolution_bbq/Fried-Green-Tomatoes.jpeg",
+      "/images/revolution_bbq/mac_cheese.jpg",
+      "/images/revolution_bbq/apple-pie.jpg",
+      "/images/revolution_bbq/sweet-tea.webp",
+      "/images/revolution_bbq/lemonade.jpg",
     ],
   },
   {
     restaurantID: "54gh78b",
-    restaurantName: "The Pasta House",
-    restaurantAddress: "122 Maple Street, 30456",
+    restaurantName: "Olive Garden",
+    restaurantAddress: "Olive Garden, 4151 South St, Lafayette, IN 47905",
     distance: 0.9,
     menu: [
       "Spaghetti Bolognese",
@@ -1028,24 +1006,24 @@ const restaurantData = [
     grubhubAvailable: false,
     cuisineType: "Italian",
     operatingHours: ["Breakfast", "Brunch", "Lunch", "Dinner"],
-    restaurantImage: "/images/the_pasta_house/the-pasta-house-logo.jpg",
+    restaurantImage: "/images/olive_garden/olive_garden_logo_hr.webp",
     menuItemImages: [
-      "/images/the_pasta_house/spaghetti-bolog.avif",
-      "/images/the_pasta_house/fettuccine.jpg",
-      "/images/the_pasta_house/lasagna.jpg",
-      "/images/the_pasta_house/penne-arrabbiata-with-chickpeas2.jpg",
-      "/images/the_pasta_house/19192garlic_bread.avif",
-      "/images/the_pasta_house/caesarsalad.jpg",
-      "/images/the_pasta_house/minestrone.webp",
-      "/images/the_pasta_house/tiramisu.webp",
-      "/images/the_pasta_house/cannoli.jpg",
-      "/images/the_pasta_house/espresso-pastahouse.webp",
+      "/images/olive_garden/spaghetti-bolog.avif",
+      "/images/olive_garden/fettuccine.jpg",
+      "/images/olive_garden/lasagna.jpg",
+      "/images/olive_garden/penne-arrabbiata-with-chickpeas2.jpg",
+      "/images/olive_garden/19192garlic_bread.avif",
+      "/images/olive_garden/caesarsalad.jpg",
+      "/images/olive_garden/minestrone.webp",
+      "/images/olive_garden/tiramisu.webp",
+      "/images/olive_garden/cannoli.jpg",
+      "/images/olive_garden/espresso-pastahouse.webp",
     ],
   },
   {
     restaurantID: "39kl91q",
-    restaurantName: "Taco Fiesta",
-    restaurantAddress: "50 Fiesta Plaza, 40123",
+    restaurantName: "Nom Nom Tacos",
+    restaurantAddress: "Nom Nom Tacos, 102 N 3rd St, Lafayette, IN 47901",
     distance: 1.5,
     menu: [
       "Taco",
@@ -1069,18 +1047,18 @@ const restaurantData = [
     grubhubAvailable: true,
     cuisineType: "Mexican",
     operatingHours: ["Breakfast", "Brunch", "Dinner"],
-    restaurantImage: "/images/taco_fiesta/tacofiesta_logo.avif",
+    restaurantImage: "/images/nom_nom/nom_nom_logo.avif",
     menuItemImages: [
-      "/images/taco_fiesta/taco.webp",
-      "/images/taco_fiesta/burrito.webp",
-      "/images/taco_fiesta/Quesadilla.jpg",
-      "/images/taco_fiesta/nachos.webp",
-      "/images/taco_fiesta/guac.webp",
-      "/images/taco_fiesta/churros.jpg",
-      "/images/taco_fiesta/fajitas.webp",
-      "/images/taco_fiesta/tortilla-soup.jpg",
-      "/images/taco_fiesta/mexican_rice.jpg",
-      "/images/taco_fiesta/horchata-6.jpg",
+      "/images/nom_nom/taco.webp",
+      "/images/nom_nom/burrito.webp",
+      "/images/nom_nom/Quesadilla.jpg",
+      "/images/nom_nom/nachos.webp",
+      "/images/nom_nom/guac.webp",
+      "/images/nom_nom/churros.jpg",
+      "/images/nom_nom/fajitas.webp",
+      "/images/nom_nom/tortilla-soup.jpg",
+      "/images/nom_nom/mexican_rice.jpg",
+      "/images/nom_nom/horchata-6.jpg",
     ],
   },
 
@@ -1088,7 +1066,7 @@ const restaurantData = [
   {
     restaurantID: "a1b2c3d",
     restaurantName: "Wendy's",
-    restaurantAddress: "123 Maple Street, 12345",
+    restaurantAddress: "Wendy's, 252 E State St, West Lafayette, IN 47906",
     distance: 0.7,
     menu: [
       "Dave's Single",
@@ -1127,7 +1105,7 @@ const restaurantData = [
   {
     restaurantID: "e4f5g6h",
     restaurantName: "Wendy's",
-    restaurantAddress: "456 Oak Avenue, 12346",
+    restaurantAddress: "Wendy's, 701 Sagamore Pk, West Lafayette, IN 47906",
     distance: 1.2,
     menu: [
       "Dave's Single",
@@ -1166,7 +1144,7 @@ const restaurantData = [
   {
     restaurantID: "i7j8k9l",
     restaurantName: "Wendy's",
-    restaurantAddress: "789 Pine Road, 12347",
+    restaurantAddress: "Wendy's, 1201 Teal Rd, Lafayette, IN 47905",
     distance: 2.0,
     menu: [
       "Dave's Single",
@@ -1205,7 +1183,7 @@ const restaurantData = [
   {
     restaurantID: "m0n1o2p",
     restaurantName: "Wendy's",
-    restaurantAddress: "321 Cedar Lane, 12348",
+    restaurantAddress: "Wendy's, 3621 State Rte 38, Lafayette, IN 47905",
     distance: 2.8,
     menu: [
       "Dave's Single",
@@ -1244,7 +1222,7 @@ const restaurantData = [
   {
     restaurantID: "q3r4s5t",
     restaurantName: "Popeyes",
-    restaurantAddress: "987 Elm Street, 23456",
+    restaurantAddress: "Popeyes, 3836 South St, Lafayette, IN 47905",
     distance: 0.9,
     menu: [
       "Chicken Sandwich",
@@ -1283,7 +1261,7 @@ const restaurantData = [
   {
     restaurantID: "u6v7w8x",
     restaurantName: "Popeyes",
-    restaurantAddress: "654 Spruce Avenue, 23457",
+    restaurantAddress: "Popeyes, 5930 Whitestown Pkwy, Whitestown, IN 46075",
     distance: 1.5,
     menu: [
       "Chicken Sandwich",
@@ -1322,7 +1300,7 @@ const restaurantData = [
   {
     restaurantID: "y9z0a1b",
     restaurantName: "Popeyes",
-    restaurantAddress: "321 Birch Road, 23458",
+    restaurantAddress: "Popeyes, 3131 Sachem Ct N, West Lafayette, IN 47906",
     distance: 2.3,
     menu: [
       "Chicken Sandwich",
@@ -1361,7 +1339,7 @@ const restaurantData = [
   {
     restaurantID: "c2d3e4f",
     restaurantName: "Popeyes",
-    restaurantAddress: "852 Willow Lane, 23459",
+    restaurantAddress: "Popeyes, 1705 E Markland Ave, Kokomo, IN 46901",
     distance: 3.1,
     menu: [
       "Chicken Sandwich",
@@ -1400,7 +1378,7 @@ const restaurantData = [
   {
     restaurantID: "g5h6i7j",
     restaurantName: "Pizza Hut",
-    restaurantAddress: "159 Oak Street, 34567",
+    restaurantAddress: "Pizza Hut, 100 Farabee Dr N, Lafayette, IN 47905",
     distance: 0.6,
     menu: [
       "Pepperoni Pizza",
@@ -1439,7 +1417,7 @@ const restaurantData = [
   {
     restaurantID: "k8l9m0n",
     restaurantName: "Pizza Hut",
-    restaurantAddress: "753 Pine Avenue, 34568",
+    restaurantAddress: "Pizza Hut, 506 Sagamore Pkwy W, West Lafayette, IN 47906",
     distance: 1.4,
     menu: [
       "Pepperoni Pizza",
@@ -1478,7 +1456,7 @@ const restaurantData = [
   {
     restaurantID: "o1p2q3r",
     restaurantName: "Pizza Hut",
-    restaurantAddress: "246 Birch Road, 34569",
+    restaurantAddress: "Pizza Hut, 35 Beck Ln, Lafayette, IN 47909",
     distance: 2.5,
     menu: [
       "Pepperoni Pizza",
@@ -1517,7 +1495,7 @@ const restaurantData = [
   {
     restaurantID: "s4t5u6v",
     restaurantName: "Pizza Hut",
-    restaurantAddress: "987 Cedar Lane, 34570",
+    restaurantAddress: "Pizza Hut, 3209 Builder Dr, Lafayette, IN 47909",
     distance: 3.2,
     menu: [
       "Pepperoni Pizza",
@@ -1556,7 +1534,7 @@ const restaurantData = [
   {
     restaurantID: "d8e9f0g",
     restaurantName: "Subway",
-    restaurantAddress: "123 Main Street, 45678",
+    restaurantAddress: "Subway, 7701 W Indiana 28, Frankfort, IN 46041",
     distance: 0.5,
     menu: [
       "Italian B.M.T.",
@@ -1595,7 +1573,7 @@ const restaurantData = [
   {
     restaurantID: "h1i2j3k",
     restaurantName: "Subway",
-    restaurantAddress: "456 Elm Avenue, 45679",
+    restaurantAddress: "Subway, 1010 Corey Blvd, Crawfordsville, IN 47933",
     distance: 1.1,
     menu: [
       "Italian B.M.T.",
@@ -1634,7 +1612,7 @@ const restaurantData = [
   {
     restaurantID: "l4m5n6o",
     restaurantName: "Subway",
-    restaurantAddress: "789 Pine Road, 45680",
+    restaurantAddress: "Subway, 1309 Darlington Ave, Crawfordsville, IN 47933",
     distance: 2.0,
     menu: [
       "Italian B.M.T.",
@@ -1673,7 +1651,7 @@ const restaurantData = [
   {
     restaurantID: "p7q8r9s",
     restaurantName: "Subway",
-    restaurantAddress: "321 Cedar Lane, 45681",
+    restaurantAddress: "Subway, 4403 IN-32, Crawfordsville, IN 47933",
     distance: 2.7,
     menu: [
       "Italian B.M.T.",
@@ -1712,7 +1690,7 @@ const restaurantData = [
   {
     restaurantID: "t0u1v2w",
     restaurantName: "Taco Bell",
-    restaurantAddress: "123 Maple Street, 56789",
+    restaurantAddress: "Taco Bell, 1016 West Sagamore, West Lafayette, IN 47906",
     distance: 0.8,
     menu: [
       "Crunchy Taco",
@@ -1751,7 +1729,7 @@ const restaurantData = [
   {
     restaurantID: "x3y4z5a",
     restaurantName: "Taco Bell",
-    restaurantAddress: "456 Oak Avenue, 56790",
+    restaurantAddress: "Taco Bell, 2190 S 26th St, Lafayette, IN 47905",
     distance: 1.3,
     menu: [
       "Crunchy Taco",
@@ -1790,7 +1768,7 @@ const restaurantData = [
   {
     restaurantID: "b6c7d8e",
     restaurantName: "Taco Bell",
-    restaurantAddress: "789 Pine Road, 56791",
+    restaurantAddress: "Taco Bell, 3805 South St, Lafayette, IN 47905",
     distance: 2.1,
     menu: [
       "Crunchy Taco",
@@ -1829,7 +1807,7 @@ const restaurantData = [
   {
     restaurantID: "e9f0g1h",
     restaurantName: "Taco Bell",
-    restaurantAddress: "321 Cedar Lane, 56792",
+    restaurantAddress: "Taco Bell, 5900 IN-43, West Lafayette, IN 47906",
     distance: 2.9,
     menu: [
       "Crunchy Taco",
@@ -1868,7 +1846,7 @@ const restaurantData = [
   {
     restaurantID: "i2j3k4l",
     restaurantName: "Chick-Fil-A",
-    restaurantAddress: "159 Oak Street, 67890",
+    restaurantAddress: "Chick-Fil-A, 401 N Russell St, West Lafayette, IN 47906",
     distance: 0.7,
     menu: [
       "Chicken Sandwich",
@@ -1907,7 +1885,7 @@ const restaurantData = [
   {
     restaurantID: "m5n6o7p",
     restaurantName: "Chick-Fil-A",
-    restaurantAddress: "753 Pine Avenue, 67891",
+    restaurantAddress: "Chick-Fil-A, 50 N Creasy Ln, Lafayette, IN 47905",
     distance: 1.5,
     menu: [
       "Chicken Sandwich",
@@ -1946,7 +1924,7 @@ const restaurantData = [
   {
     restaurantID: "q8r9s0t",
     restaurantName: "Chick-Fil-A",
-    restaurantAddress: "246 Birch Road, 67892",
+    restaurantAddress: "Chick-Fil-A, 3929 Bonlou Ct, Lafayette, IN 47905",
     distance: 2.4,
     menu: [
       "Chicken Sandwich",
@@ -1985,7 +1963,7 @@ const restaurantData = [
   {
     restaurantID: "u1v2w3x",
     restaurantName: "Chick-Fil-A",
-    restaurantAddress: "987 Cedar Lane, 67893",
+    restaurantAddress: "Chick-Fil-A, 763 E Tournament Trl, Westfield, IN 46074",
     distance: 3.3,
     menu: [
       "Chicken Sandwich",
