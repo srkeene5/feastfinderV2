@@ -298,6 +298,14 @@ router.get('/recent-dishes', auth, async (req, res) => {
     const recentDishes = [];
     const dishSet = new Set();
 
+    const restaurantIDs = [...new Set(carts.map(cart => cart.restaurant.restaurantID))];
+    const restaurants = await Restaurant.find({restaurantID: {$in: restaurantIDs}});
+
+    const restaurantMap = {};
+    restaurants.forEach(restaurant => {
+      restaurantMap[restaurant.restaurantID] = restaurant;
+    })
+
     for (const cart of carts) {
       const { restaurant } = cart;
       const { restaurantID, restaurantName } = restaurant;
@@ -316,11 +324,16 @@ router.get('/recent-dishes', auth, async (req, res) => {
             day: 'numeric',
           });
 
+          const rest = restaurantMap[restaurantID];
+          const itemIndex = rest.menu.findIndex(dish => dish === item.item);
+          const dishImage = itemIndex !== -1 ? rest.menuItemImages[itemIndex] : null;
+
           recentDishes.push({
             dishName: item.item,
             restaurantID: restaurantID,
             restaurantName: restaurantName,
             orderedAt: formattedDate,
+            dishImage: dishImage,
           });
         }
       }
