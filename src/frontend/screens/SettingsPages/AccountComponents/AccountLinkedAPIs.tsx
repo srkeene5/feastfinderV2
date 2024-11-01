@@ -300,12 +300,14 @@ export default function AccountLinkedAPIs() {
                         Login:
                     </Text>
                     <input
+                    type='text'
                     style={styles.popInput}
                     onChange={(event)=>{setuserValue(event.target.value)}}
                     value = {userValue}
                     placeholder='Username...'
                     />
                     <input
+                    type='password'
                     style={styles.popInput}
                     onChange={(event)=>{setPassValue(event.target.value)}}
                     value = {passValue}

@@ -5,9 +5,9 @@ import {
     ScrollView, 
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
-    Image, 
+    Image,
+    Pressable, 
 } from 'react-native'
 import tw from 'twrnc';
 
@@ -115,7 +115,7 @@ export default function PopularCards({fetchType}) {
             : item.description;
 
         return (
-            <TouchableOpacity
+            <Pressable
                 key={item.ID}
                 style={styles.container}
                 onPress={() => {handlePop(item.searchName)}}
@@ -141,7 +141,7 @@ export default function PopularCards({fetchType}) {
                         </Text>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </Pressable>
         )
     }
 
@@ -154,7 +154,7 @@ export default function PopularCards({fetchType}) {
                     if (!dishNameSet.has(dish.dishName)) {
                         dishNameSet.add(dish.dishName);
                         itemSub.push({
-                            ID: dish.dishID,
+                            ID: dish.dishName,
                             name: dish.dishName,
                             searchName: dish.restaurantName,
                             description: dish.dishName + ' Description',
@@ -177,8 +177,15 @@ export default function PopularCards({fetchType}) {
                     }
                 });
             }
+            return itemSub.map((item) => restDishItem(item));
+        } else {
+            var errorText = fetchType === 'popularRestaurants' ? 'No Restaurants Found' : 'No Recent History Found'
+            return (
+                <div style={{marginLeft: 32}}>
+                    <p style={coreForm.subheader}>{errorText}</p>
+                </div>
+            ) 
         }
-        return itemSub.map((item) => restDishItem(item));
     }
 
     //-----Popular Cards Exported-----
