@@ -16,4 +16,5 @@ export interface CartEntry {
   quantities: number[];
   service: string;
   total: number;
+  discount?: number;
 }

@@ -20,16 +20,16 @@ interface MenuItemProps {
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove, deal }) => {
-  useEffect(() => {
-    console.log("Deal: ", deal);
-  }, [deal]);
+  // useEffect(() => {
+  //   console.log("Deal: ", deal);
+  // }, [deal]);
 
-  let currPrice = Number(price);
-  let oldPrice = Number(price);
+  // let currPrice = Number(price);
+  // let oldPrice = Number(price);
 
-  if (deal !== undefined && deal !== null && deal > 0) {
-    currPrice = currPrice * (100 - deal) / 100;
-  }
+  // if (deal !== undefined && deal !== null && deal > 0) {
+  //   currPrice = currPrice * (100 - deal) / 100;
+  // }
 
   return (
     <li 
@@ -57,19 +57,19 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd
           {item}
         </h3>
         <div className="flex items-center space-x-2 mt-1">
-          {(deal !== null && Number(deal) > 0) && (
+          {/* {(deal !== null && Number(deal) > 0) && (
             <p 
               className="text-sm font-medium text-gray-500 line-through"
               style={{color: ffColors.ffBody}}
             >
               ${oldPrice.toFixed(2)}
             </p>
-          )}
+          )} */}
           <p 
             className="text-lg font-bold text-green-600"
             style={{color: ffColors.ffGreenL}}
           >
-            ${currPrice.toFixed(2)}
+            ${price.toFixed(2)}
           </p>
         </div>
       </div>
@@ -223,7 +223,7 @@ export default function RestPage() {
     const newQuantities = [...quantities];
     newQuantities[index]++;
     setQuantities(newQuantities);
-    const addedAmount = prices[index] * (100 - deal) / 100;
+    const addedAmount = prices[index];
     setCartTotal((prevTotal) => {
       const newTotal = prevTotal + addedAmount;
       console.log(`Added ${addedAmount} to cartTotal. New total: ${newTotal}`);
@@ -252,6 +252,7 @@ export default function RestPage() {
       items: selectedItems,
       total: total,
       quantities: newQuantities,
+      discount: deal
     };
 
     updateCart(newCartEntry);
@@ -262,7 +263,7 @@ export default function RestPage() {
       const newQuantities = [...quantities];
       newQuantities[index]--;
       setQuantities(newQuantities);
-      const removedAmount = prices[index] * (100 - deal) / 100;
+      const removedAmount = prices[index];
       setCartTotal((prevTotal) => {
         const newTotal = prevTotal - removedAmount;
         console.log(`Removed ${removedAmount} from cartTotal. New total: ${newTotal}`);
@@ -291,6 +292,7 @@ export default function RestPage() {
         items: selectedItems,
         total: total,
         quantities: newQuantities,
+        discount: deal
       };
 
       updateCart(newCartEntry);
@@ -323,6 +325,7 @@ export default function RestPage() {
       items: selectedItems,
       total: total,
       quantities: quantities,
+      discount: deal
     };
 
     updateCart(newCartEntry);
@@ -361,6 +364,19 @@ export default function RestPage() {
         >
           {restaurant.restaurantName} Menu
         </h1>
+
+        {deal > 0 && (
+          <p 
+            className="text-center text-sm font-semibold p-2 rounded text-ffGreenL"
+            // style={{
+            //   color: ffColors.ffGreenD,
+            //   backgroundColor: ffColors.ffGreenL,
+            //   border: `1px solid ${ffColors.ffGreenD}`
+            // }}
+          >
+            {deal}% discount applied at checkout!
+          </p>
+        )}
         <div 
           className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 overflow-y-auto"
           style={{backgroundColor: ffColors.ffCard}}

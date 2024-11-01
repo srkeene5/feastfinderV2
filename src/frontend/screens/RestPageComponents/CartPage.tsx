@@ -32,8 +32,21 @@ const CartPage: React.FC = () => {
   // Function to calculate total for a specific service
   const calculateServiceTotal = (service: string) => {
     return cart?.items.reduce((total: number, item: CartItem) => {
+      console.log(service, cart.service)
+      const discount = cart.discount ?? 0;
       const price = item.prices[service.toLowerCase()]; // We still lower-case the key lookup here since the backend data uses lowercase keys
-      return total + price * item.quantity;
+      return total + (price * item.quantity);
+    }, 0);
+  };
+
+  // Function to calculate total for a specific service
+  // use cart.service to see if the discount should be applied to this service or not.
+  const calculateAfterDiscountTotal = (service: string) => {
+    if (service.toLowerCase() != cart?.service.toLowerCase()) return calculateServiceTotal(service);
+    return cart?.items.reduce((total: number, item: CartItem) => {
+      const discount = cart.discount ?? 0;
+      const price = item.prices[service.toLowerCase()]; // We still lower-case the key lookup here since the backend data uses lowercase keys
+      return total + (price * item.quantity * (100 - discount) / 100);
     }, 0);
   };
 
@@ -275,7 +288,7 @@ const CartPage: React.FC = () => {
         {['DoorDash', 'UberEats', 'Grubhub'].map((service) => {
           const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
           const serviceTotal = calculateServiceTotal(service);
-
+          const discountTotal = calculateAfterDiscountTotal(service);
           return (
             <div 
               key={service} 
@@ -316,16 +329,20 @@ const CartPage: React.FC = () => {
                     ))}
                   </ul>
                   <div className="flex justify-between font-bold mt-2">
-                    <p
-                      style={{color: ffColors.ffHeading}}
-                    >
-                      Total:
-                    </p>
-                    <p
-                      style={{color: ffColors.ffHeading}}
-                    >
-                      ${serviceTotal?.toFixed(2)}
-                    </p>
+                    <p style={{ color: ffColors.ffHeading }}>Total:</p>
+                      <div className="flex items-center">
+                        {serviceTotal !== discountTotal && (
+                          <p 
+                            className="text-gray-500 line-through mr-2"
+                            style={{ color: ffColors.ffText }}
+                          >
+                            ${serviceTotal?.toFixed(2)}
+                          </p>
+                        )}
+                        <p style={{ color: ffColors.ffHeading }}>
+                          ${discountTotal?.toFixed(2)}
+                        </p>
+                      </div>
                   </div>
                   <button
                     onClick={() => handleCheckout(service.toLowerCase())}
