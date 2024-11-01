@@ -93,7 +93,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
     }
     setUser(null);
     setUserInfo(null);
-    localStorage.removeItem('user');
+    //localStorage.removeItem('user');
   };
 
   const validateToken = async () => {

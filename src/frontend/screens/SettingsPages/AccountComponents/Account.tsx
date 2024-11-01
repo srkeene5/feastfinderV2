@@ -22,6 +22,7 @@ export default function Account() {
   // Fetch the current address and dietary preferences from backend on component load
   useEffect(() => {
     const fetchProfileData = async () => {
+     
       try {
         const addressResponse = await fetch('http://localhost:5001/api/address/recent', {
           method: 'GET',
@@ -52,9 +53,9 @@ export default function Account() {
         console.error('Error fetching profile data:', error);
       }
     };
-
-    fetchProfileData();
-  }, [user.token]);
+    if (user)
+      fetchProfileData();
+  }, [user]);
 
   // Address format validation
   const isValidAddressFormat = (address) => {
