@@ -171,45 +171,6 @@ const CartPage: React.FC = () => {
     }
   };  
 
-  /*const popSubmitHandler = async () => {
-    if (!userValue || !passValue) {
-      setErrText('Username and Password cannot be blank');
-      setErrPop(true);
-      return;
-    }
-
-    try {
-      let fetchAddr = `http://localhost:5001/api/auth/${buttonService.toLowerCase()}login`;
-
-      const response = await fetch(fetchAddr, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({
-          [`${buttonService.toLowerCase()}_email`]: userValue,
-          [`${buttonService.toLowerCase()}_password`]: passValue,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.msg || 'Failed to login');
-      }
-
-      setLoginPop(false);
-      setButtonService('Error Undefined');
-      resetUserPass();
-
-      await proceedToCheckout(buttonService, holdCartData);
-    } catch (err) {
-      setErrText(err.message || 'Login failed');
-      setErrPop(true);
-    }
-  };
-*/
   const proceedToCheckout = async (serviceName: string, cartData: any) => {
     try {
       const userData = localStorage.getItem('user');
