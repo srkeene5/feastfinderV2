@@ -1,0 +1,236 @@
+[
+    {
+      "question": "What is FeastFinder?",
+      "answer": "FeastFinder is a platform designed to help you discover the best local dining experiences based on your preferences. For more information, visit the 'FAQ' page on the navigation panel."
+    },
+    {
+      "question": "I need help with my account.",
+      "answer": "Sure thing! To change things around with your account, go to the three bars on the top right of the app to open the navigation panel. Click on 'Account' to change account settings. For help, click on 'Report Bugs' or drop a suggestion on the 'Suggestions' page."
+    },
+
+    {"question": "How do I create an account?",
+      "answer": "You can create an account by clicking the 'Sign Up' link on the login page and filling out your personal details."
+    },
+    {"question": "How do I reset my password?",
+      "answer": "To reset your password, click 'Forgot your password?' on the login page, and we’ll send you instructions via email."
+    },
+    {"question": "Can I change my email address?",
+      "answer": "Yes, you can update your email address by navigating to the account settings page and following the instructions."
+    },
+    {"question": "Is FeastFinder free to use?",
+      "answer": "Yes, the basic version of FeastFinder is completely free, but premium features are available for a fee."
+    },
+    {"question": "How do I create an account on FeastFinder?",
+      "answer": "To create an account, go to the signup page, enter your details, and click 'Create Account'."
+    },
+    {
+      "question": "How can I add my delivery address?",
+      "answer": "After logging in, go to the three bars on the top right of the app to open the navigation panel. You can add or edit it in the 'account' settings."
+    },
+    {
+      "question": "How do I add items to my cart?",
+      "answer": "Navigate to the menu of a restaurant, select items, and click 'Add to Cart' to add them to your cart."
+    },
+    {
+      "question": "How can I delete items from my cart?",
+      "answer": "In the cart page, click the '-' button next to an item to decrease quantity or remove it entirely."
+    },
+    {
+      "question": "What is the ‘Compare Price’ feature?",
+      "answer": "The 'Compare Price' feature shows the total cost of your cart on different delivery platforms so you can choose the best option. The prices should compare automatically for you."
+    },
+    {
+      "question": "How do I view my past orders?",
+      "answer": "Go to the 'Past Orders' page from your account to view all previous orders, including restaurant and item details."
+    },
+    {
+      "question": "Can I search for specific dishes instead of restaurants?",
+      "answer": "Yes, select the 'Dishes' button and enter the dish name in the search bar."
+    },
+    {
+      "question": "How do I enable dark mode?",
+      "answer": "In your account settings, toggle the dark mode option to switch to a darker theme."
+    },
+    {
+      "question": "How can I filter restaurants by cuisine type?",
+      "answer": "Use the cuisine filter near the search bar to view only restaurants offering the selected cuisine type."
+    },
+    {
+      "question": "What happens if I lose internet connection?",
+      "answer": "If you lose connection, you’ll be redirected to a 'No Connection' page until internet access is restored."
+    },
+    {
+      "question": "How do I access live support?",
+      "answer": "Click on 'Support' in the dropdown menu and select 'Live Support' to connect with our support team."
+    },
+    {
+      "question": "Can I receive notifications about security updates?",
+      "answer": "Yes, you can opt-in to receive email notifications about security updates and service status in your account settings."
+    },
+    {
+      "question": "How do I leave a review for a restaurant?",
+      "answer": "You can either search for the restaurant or select it from the home page. From here, you can click on the leave a review button on the restaurant card to leave a review."
+    },
+    {
+      "question": "Can I view deals from different delivery apps?",
+      "answer": "Yes. On the restaurant menu page, you should be able to apply deals. The discounted prices will be reflected in your cart."
+    },
+    {
+      "question": "How can I search for a restaurant near me?",
+      "answer": "Use the search bar on the landing page, and the app will show nearby restaurant options. You can also use the filters to narrow your search"
+    },
+    {
+      "question": "How do I connect my DoorDash account?",
+      "answer": "In your profile, select 'Link Accounts' and log into your DoorDash account to access deals and discounts."
+    },
+    {
+      "question": "How do I connect my Ubereats account?",
+      "answer": "In your profile, select 'Link Accounts' and log into your Ubereats account to access deals and discounts."
+    },
+    {
+      "question": "How do I connect my Grubhub account?",
+      "answer": "In your profile, select 'Link Accounts' and log into your Grubhub account to access deals and discounts."
+    },
+    {
+      "question": "How do I enable dietary preferences?",
+      "answer":"After logging in, go to the three bars on the top right of the app to open the navigation panel. You can add or edit your dietary preferences in the 'account' settings."
+    },
+    {
+      "question": "Can I reorder items from my past orders?",
+      "answer": "Yes, go to 'Past Orders' and select the items you’d like to reorder with a single click."
+    },
+    {
+      "question": "How can I report a bug?",
+      "answer": "In the 'Support' section, select 'Report Bug' to describe the issue and send it directly to the dev team."
+    },
+    {
+      "question": "How do I reset my password?",
+      "answer": "Click 'Forgot Password' on the login page to reset your password via email."
+    },
+    {
+      "question": "How can I change my account details?",
+      "answer": "Visit the account settings page to update your details, including address, dietary preferences, and linked accounts."
+    },
+    {
+      "question": "Can I see reviews for restaurants?",
+      "answer": "Yes, restaurant reviews are available on the search results page, so you can choose based on ratings and feedback."
+    },
+    {
+      "question": "How do I contact support?",
+      "answer": "Click on 'Support' to chat with a support representative, a support bot like me or 'Report Bug' to submit an issue."
+    },
+    {
+      "question": "How can I sort results by price?",
+      "answer": "Use the 'Sort by Price' option to organize dishes from lowest to highest price."
+    },
+    {
+      "question": "Can I access my GrubHub account deals?",
+      "answer": "Yes, log in to your GrubHub account through the app to apply deals and discounts to your cart."
+    },
+    {
+      "question": "Can I access my Doordash account deals?",
+      "answer": "Yes, log in to your Doordash account through the app to apply deals and discounts to your cart."
+    },
+    {
+      "question": "Can I access my Ubereats account deals?",
+      "answer": "Yes, log in to your Ubereats account through the app to apply deals and discounts to your cart."
+    },
+    {
+      "question": "How do I find restaurants offering Uber Eats delivery?",
+      "answer": "Use the search feature to see if Uber Eats is available for the selected restaurant."
+    },
+    {
+      "question": "How do I find restaurants offering Grubhub delivery?",
+      "answer": "Use the search feature to see if Grubhub is available for the selected restaurant."
+    },
+    {
+      "question": "How do I find restaurants offering Doordash delivery?",
+      "answer": "Use the search feature to see if Doordash is available for the selected restaurant."
+    },
+    {
+      "question": "Can I include specific delivery services from search results?",
+      "answer": "Yes, go to settings and select which delivery services to include in your search."
+    },
+    {
+      "question": "What does 'Search by Dish' mean?",
+      "answer": "This feature allows you to search by a specific dish instead of a restaurant name."
+    },
+    {
+      "question": "How do I leave feedback on support received?",
+      "answer": "After using support, navigate to the 'suggestions' page in account settings to leave feedback about your experience."
+    },
+    {
+      "question": "Can I log into multiple delivery accounts?",
+      "answer": "Yes, you can link multiple accounts (e.g., DoorDash, Uber Eats) in your profile settings."
+    },
+    {
+      "question": "What happens if a dish is unavailable?",
+      "answer": "If a dish is unavailable, it will be marked as 'No results found' in the menu and cannot be added to the cart."
+    },
+    {
+      "question": "Can I reorder the same items?",
+      "answer": "Yes, visit the 'Past Orders' section to reorder items you've previously bought."
+    },
+    {
+      "question": "What should I do if the app is slow?",
+      "answer": "Clear your cache, and ensure a stable internet connection. If issues persist, contact support."
+    },
+    {
+      "question": "Can I add feedback on a delivery service?",
+      "answer": "Yes, after an order, you can rate the delivery service on the suggestions page."
+    },
+    {
+      "question": "How can I check the delivery fees for each service?",
+      "answer": "When comparing prices, delivery fees for each service are displayed along with the total cost."
+    },
+    {
+      "question": "How do I switch between delivery services?",
+      "answer": "On the checkout page, you can select any available delivery service for your order."
+    },
+    {
+      "question": "How do I know if my search results are filtered correctly?",
+      "answer": "Filtered results will display indicators showing applied filters like cuisine type or dietary preferences."
+    },
+    {
+      "question": "What can I do if you cannot answer a question?",
+      "answer": "If I'm incapable of giving you an answer, feel free to submit a bug report from the 'report bugs' section or drop a suggestion on the 'Suggestions' tab. I'm sorry for the inconvenience :,)"
+    },
+    {
+      "question": "How can I make recommendations more accurate?",
+      "answer": "Order regularly and allow the app to use your preferences to personalize recommendations."
+    },
+    {
+      "question": "How do I add a restaurant to my favorites?",
+      "answer": "On the restaurant page, click 'Add to Favorites' to save it in your profile for quick access."
+    },
+    {
+      "question": "Can I see estimated delivery times?",
+      "answer": "Yes, when comparing prices, you’ll also see estimated delivery times for each service."
+    },
+    {
+      "question": "Can I select multiple delivery services?",
+      "answer": "Yes, you can switch between services like DoorDash and Uber Eats to find the best deal."
+    },
+    {
+      "question": "How do I customize my order?",
+      "answer": "When adding an item to your cart, you’ll see options to select add-ons and adjust quantities."
+    },
+    {
+      "question": "How do I log out of my account?",
+      "answer": "Click on your profile icon, then select 'Logout' to sign out from the app."
+    },
+    {
+      "question": "I need help with a doordash order",
+      "answer": "You can get help with your DoorDash order here: 'https://help.doordash.com/consumers/s/consumer-support?language=en_US'."
+    },
+    {
+      "question": "I need help with a Grubhub order",
+      "answer": "You can get help with your Grubhub order here: 'https://about.grubhub.com/media/contact-us/'."
+    },
+    {
+      "question": "I need help with a Ubereats order",
+      "answer": "You can get help with your Ubereats order here: 'https://help.uber.com/en/ubereats/restaurants'."
+    }
+  ]
+
+  

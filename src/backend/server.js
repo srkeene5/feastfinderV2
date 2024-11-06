@@ -19,9 +19,12 @@ import restaurantRoutes from './routes/restaurantAuth.js';
 import reviewRoutes from './routes/reviews.js';
 import Review from './models/Review.js';
 
+
+
 dotenv.config();
 
 const app = express();
+
 
 app.use(express.json());
 
@@ -153,7 +156,7 @@ const populateInitialReviews = async () => {
 console.log(process.env.MONGO_URI); 
 
 // Connect to MongoDB and start the server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 const startServer = async () => {
   await connectDB(); // Establish MongoDB connection
