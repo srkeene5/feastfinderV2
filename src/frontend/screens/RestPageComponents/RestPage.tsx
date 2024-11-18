@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ConfirmModal from './ConfirmModal.tsx';
 import { CartItem, CartEntry } from '../../../types/Cart';
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
+import { API_BASE_URL } from '../../../config.js';
 
 interface MenuItemProps {
   item: string;
@@ -20,17 +21,7 @@ interface MenuItemProps {
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove, deal }) => {
-  // useEffect(() => {
-  //   console.log("Deal: ", deal);
-  // }, [deal]);
-
-  // let currPrice = Number(price);
-  // let oldPrice = Number(price);
-
-  // if (deal !== undefined && deal !== null && deal > 0) {
-  //   currPrice = currPrice * (100 - deal) / 100;
-  // }
-
+ 
   return (
     <li 
       className="flex items-center justify-between p-4 mb-4 rounded-lg shadow-sm transition-shadow duration-300 hover:shadow-md"
@@ -134,7 +125,7 @@ export default function RestPage() {
     }
 
     try {
-      const fetchAddr = 'http://localhost:5001/api/auth/app-deal';
+      const fetchAddr = `${API_BASE_URL}/api/auth/app-deal`;
       const response = await fetch(fetchAddr, {
         method: 'GET',
         headers: {

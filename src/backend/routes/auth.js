@@ -17,33 +17,6 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
-// router.post('/register', async (req, res) => {
-//   const { username, email, password } = req.body;
-
-//   try {
-//     let user = await User.findOne({ email });
-//     if (user) {
-//       return res.status(400).json({ msg: 'User already exists' });
-//     }
-
-//     user = new User({
-//       username,
-//       email,
-//       password: await bcrypt.hash(password, 10)
-//     });
-
-//     await user.save();
-
-//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: '24h'
-//     });
-
-//     res.status(201).json({ token });
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send('Server error');
-//   }
-// });
 
 // Helper function to generate random integers between min and max (inclusive)
 function getRandomIntInclusive(min, max) {

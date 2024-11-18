@@ -5,6 +5,7 @@ import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../../CoreComponents/CoreButton.tsx';
 import CorePopup from '../../CoreComponents/CorePopup.tsx';
 import tw from 'twrnc';
+import { API_BASE_URL } from '../../../../config.js';
 
 export default function AccountLinkedAPIs() {
     
@@ -31,7 +32,7 @@ export default function AccountLinkedAPIs() {
     }
 
     const checkLogin = async (service: string) => {
-        var fetchAddr = 'http://localhost:5001/api/auth/app-status'
+        var fetchAddr = `${API_BASE_URL}/api/auth/app-status`
         
         try {
             const res = await fetch(fetchAddr, {
@@ -150,7 +151,7 @@ export default function AccountLinkedAPIs() {
 
         try {
             var response
-            var fetchAddr = 'http://localhost:5001/api/auth/app-login'
+            var fetchAddr = `${API_BASE_URL}/api/auth/app-login`
             response = await fetch(fetchAddr, {
                 method: 'POST',
                 headers: {
@@ -166,24 +167,7 @@ export default function AccountLinkedAPIs() {
             
             const data = await response.json();
 
-            // var response2
-            // var fetchAddr2 = 'http://localhost:5001/api/auth/app-deal'
-            // response2 = await fetch(fetchAddr2, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization' : "Bearer " + data.token,
-                    
-            //     },
-            //     // body: JSON.stringify({
-            //     //     appEmail: userValue,
-            //     // }),
-            // });
-            
-
-            // const data2= await response2.json();
-            // console.log("deals: ", data2)
-
+      
             if (!response.ok) {
                 throw new Error(data.msg || 'Failed to register');
             }
@@ -216,7 +200,7 @@ export default function AccountLinkedAPIs() {
 
     const popLogoutHandler = async () => {
         try {
-            var fetchAddr = 'http://localhost:5001/api/auth/app-logout'
+            var fetchAddr = `${API_BASE_URL}/api/auth/app-logout`
             var app_token;
             
             switch (buttonService) {

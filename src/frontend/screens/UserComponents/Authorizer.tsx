@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { API_BASE_URL } from '../../../config.js';
 
 interface AuthContextType {
   user: any;
@@ -34,6 +35,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const user = JSON.parse(storedUser);
+      console.log('Stored user:', storedUser);
       setUser(user);
     }
 
@@ -73,7 +75,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
     const token = user?.token;
     const authToken = 'Bearer ' + token;
     try {
-      const res = await fetch('http://localhost:5001/api/auth/logout', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,8 +100,9 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
 
   const validateToken = async () => {
     console.log('in validateToken()');
+    console.log('Token being sent:', user?.token);  
     try {
-      const response = await fetch('http://localhost:5001/api/auth/protected', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/protected`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
