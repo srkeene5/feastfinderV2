@@ -29,7 +29,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://feastfinderapp.netlify.app'],  
+  origin: ['http://localhost:3000', 'https://feastfinder407.netlify.app'],  
   credentials: true, // If you need to send cookies or other credentials
 }));
 
