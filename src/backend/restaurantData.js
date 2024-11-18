@@ -16,6 +16,381 @@ const restaurantData = [
       "Ice Cream cone",
       "Happy Meal",
     ],
+    menuOptions: [
+      [//"Big Mac"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              options: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
+            },
+            {
+              optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Lettuce", optionPrice: 0}, {optionName: "Extra Lettuce", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Pickle", optionPrice: 0}, {optionName: "Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Patties", optionPrice: 0}, {optionName: "Remove 1 Patty", optionPrice: 0}, 
+                {optionName: "Add 1 Patty", optionPrice: 1.2}, {optionName: "Add 2 Patties", optionPrice: 2.4}
+              ]
+            },
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add Ons
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+            {
+              optionList: [{optionName: "Add Mayonnaise", optionPrice: 0.4}, {optionName: "Add Extra Mayonnaise", optionPrice: 0.8}]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Nuggets"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Piece", optionPrice: -1}, {optionName: "6 Piece", optionPrice: 0},
+                {optionName: "10 Piece", optionPrice: 2}, {optionName: "20 Piece", optionPrice: 5}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: []
+        }
+      ],
+      [//"Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Small", optionPrice: -3},{optionName: "Medium", optionPrice: 0},
+                {optionName: "Large", optionPrice: 4}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            }
+          ]
+        }
+      ],
+      [//"Coke"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Extra Small", optionPrice: -1}, {optionName: "Small", optionPrice: 0},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.5}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: [{optionName: "No Ice", optionPrice: 0}, {optionName: "Extra Ice", optionPrice: 0}]
+            }
+          ]
+        }
+      ],
+      [//"Cheeseburger"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Mustard", optionPrice: 0}, {optionName: "Extra Mustard", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Ketchup", optionPrice: 0}, {optionName: "Extra Ketchup", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Pickle", optionPrice: 0}, {optionName: "Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: [{optionName: "No Patty", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+            {
+              optionList: [{optionName: "Add Lettuce", optionPrice: 0.5}, {optionName: "Add Extra Lettuce", optionPrice: 1}]
+            },
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+            {
+              optionList: [{optionName: "Add Mayonnaise", optionPrice: 0.4}, {optionName: "Add Extra Mayonnaise", optionPrice: 0.8}]
+            },
+          ]
+        }
+      ],
+      [//"McChicken"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Lettuce", optionPrice: 0}, {optionName: "Extra Lettuce", optionPrice: 0.5}]
+            },
+            {
+              optionList: [{optionName: "No Mayonnaise", optionPrice: 0}, {optionName: "Extra Mayonnaise", optionPrice: 0.4}]
+            },
+            {
+              optionList: [{optionName: "No Patty", optionPrice: 0}, {optionName: "Extra Patty", optionPrice: 1.5}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Mustard", optionPrice: 0}, {optionName: "Add Extra Mustard", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Ketchup", optionPrice: 0}, {optionName: "Add Extra Ketchup", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Pickle", optionPrice: 0}, {optionName: "Add Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Cheese", optionPrice: 0.7}, {optionName: "Add Extra Cheese", optionPrice: 1.4}]
+            },
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+          ]
+        }
+      ],
+      [//"Mocha Frappe"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Small", optionPrice: 0}, {optionName: "Medium", optionPrice: 1},
+                {optionName: "Large", optionPrice: 1.5}
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "No Ice", optionPrice: 0}, {optionName: "Extra Ice", optionPrice: 0},
+                {optionName: "2x Extra Ice", optionPrice: 1}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Whipped Cream", optionPrice: 0}, {optionName: "Extra Whipped Cream", optionPrice: 0.5},
+                {optionName: "2x Extra Whipped Cream", optionPrice: 1}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Chocolate Drizzle", optionPrice: 0}, {optionName: "Extra Chocolate Drizzle", optionPrice: 0.5},
+                {optionName: "2x Extra Chocolate Drizzle", optionPrice: 1}
+              ]
+            },
+            //Add ons
+            {
+              optionList: 
+              [
+                {optionName: "Add 1 Crushed Oreo", optionPrice: 0.5}, {optionName: "Add 2 Crushed Oreo", optionPrice: 1},
+                {optionName: "Add 3 Crushed Oreo", optionPrice: 1.5}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Egg McMuffin"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Butter", optionPrice: 0}, {optionName: "Extra Butter", optionPrice: 0.25}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: [{optionName: "No Round Egg", optionPrice: 0}, {optionName: "Extra Round Egg", optionPrice: 2}]
+            },
+            {
+              optionList: [{optionName: "No Canadian Bacon", optionPrice: 0}, {optionName: "Extra Canadian Bacon", optionPrice: 1.5}]
+            },
+            {
+              optionList: [{optionName: "No English McMuffin", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+          ]
+        }
+      ],
+      [//"Ice Cream cone"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Happy Meal"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "4 Piece", optionPrice: 0}, {optionName: "6 Piece", optionPrice: 1}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: []
+        }
+      ]
+    ],
     ubereatsMenuPrice: [
       5.53, 5.67, 3.07, 2.89, 3.69, 4.89, 3.29, 2.79, 1.07, 3.29,
     ],
@@ -60,6 +435,381 @@ const restaurantData = [
       "Egg McMuff in",
       "Ice Cream cone",
       "Happy Meal",
+    ],
+    menuOptions: [
+      [//"Big Mac"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              options: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
+            },
+            {
+              optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Lettuce", optionPrice: 0}, {optionName: "Extra Lettuce", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Pickle", optionPrice: 0}, {optionName: "Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Patties", optionPrice: 0}, {optionName: "Remove 1 Patty", optionPrice: 0}, 
+                {optionName: "Add 1 Patty", optionPrice: 1.2}, {optionName: "Add 2 Patties", optionPrice: 2.4}
+              ]
+            },
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add Ons
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+            {
+              optionList: [{optionName: "Add Mayonnaise", optionPrice: 0.4}, {optionName: "Add Extra Mayonnaise", optionPrice: 0.8}]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Nuggets"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Piece", optionPrice: -1}, {optionName: "6 Piece", optionPrice: 0},
+                {optionName: "10 Piece", optionPrice: 2}, {optionName: "20 Piece", optionPrice: 5}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: []
+        }
+      ],
+      [//"Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Small", optionPrice: -3},{optionName: "Medium", optionPrice: 0},
+                {optionName: "Large", optionPrice: 4}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            }
+          ]
+        }
+      ],
+      [//"Coke"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Extra Small", optionPrice: -1}, {optionName: "Small", optionPrice: 0},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.5}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: [{optionName: "No Ice", optionPrice: 0}, {optionName: "Extra Ice", optionPrice: 0}]
+            }
+          ]
+        }
+      ],
+      [//"Cheeseburger"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Mustard", optionPrice: 0}, {optionName: "Extra Mustard", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Ketchup", optionPrice: 0}, {optionName: "Extra Ketchup", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Pickle", optionPrice: 0}, {optionName: "Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: [{optionName: "No Patty", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+            {
+              optionList: [{optionName: "Add Lettuce", optionPrice: 0.5}, {optionName: "Add Extra Lettuce", optionPrice: 1}]
+            },
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+            {
+              optionList: [{optionName: "Add Mayonnaise", optionPrice: 0.4}, {optionName: "Add Extra Mayonnaise", optionPrice: 0.8}]
+            },
+          ]
+        }
+      ],
+      [//"McChicken"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Lettuce", optionPrice: 0}, {optionName: "Extra Lettuce", optionPrice: 0.5}]
+            },
+            {
+              optionList: [{optionName: "No Mayonnaise", optionPrice: 0}, {optionName: "Extra Mayonnaise", optionPrice: 0.4}]
+            },
+            {
+              optionList: [{optionName: "No Patty", optionPrice: 0}, {optionName: "Extra Patty", optionPrice: 1.5}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Mustard", optionPrice: 0}, {optionName: "Add Extra Mustard", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Ketchup", optionPrice: 0}, {optionName: "Add Extra Ketchup", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Pickle", optionPrice: 0}, {optionName: "Add Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Cheese", optionPrice: 0.7}, {optionName: "Add Extra Cheese", optionPrice: 1.4}]
+            },
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+          ]
+        }
+      ],
+      [//"Mocha Frappe"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Small", optionPrice: 0}, {optionName: "Medium", optionPrice: 1},
+                {optionName: "Large", optionPrice: 1.5}
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "No Ice", optionPrice: 0}, {optionName: "Extra Ice", optionPrice: 0},
+                {optionName: "2x Extra Ice", optionPrice: 1}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Whipped Cream", optionPrice: 0}, {optionName: "Extra Whipped Cream", optionPrice: 0.5},
+                {optionName: "2x Extra Whipped Cream", optionPrice: 1}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Chocolate Drizzle", optionPrice: 0}, {optionName: "Extra Chocolate Drizzle", optionPrice: 0.5},
+                {optionName: "2x Extra Chocolate Drizzle", optionPrice: 1}
+              ]
+            },
+            //Add ons
+            {
+              optionList: 
+              [
+                {optionName: "Add 1 Crushed Oreo", optionPrice: 0.5}, {optionName: "Add 2 Crushed Oreo", optionPrice: 1},
+                {optionName: "Add 3 Crushed Oreo", optionPrice: 1.5}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Egg McMuffin"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Butter", optionPrice: 0}, {optionName: "Extra Butter", optionPrice: 0.25}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: [{optionName: "No Round Egg", optionPrice: 0}, {optionName: "Extra Round Egg", optionPrice: 2}]
+            },
+            {
+              optionList: [{optionName: "No Canadian Bacon", optionPrice: 0}, {optionName: "Extra Canadian Bacon", optionPrice: 1.5}]
+            },
+            {
+              optionList: [{optionName: "No English McMuffin", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+          ]
+        }
+      ],
+      [//"Ice Cream cone"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Happy Meal"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "4 Piece", optionPrice: 0}, {optionName: "6 Piece", optionPrice: 1}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: []
+        }
+      ]
     ],
     ubereatsMenuPrice: [
       5.11, 5.62, 3.87, 2.14, 3.35, 4.74, 3.89, 2.12, 1.12, 3.73,
@@ -106,6 +856,381 @@ const restaurantData = [
       "Ice Cream cone",
       "Happy Meal",
     ],
+    menuOptions: [
+      [//"Big Mac"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              options: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
+            },
+            {
+              optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Lettuce", optionPrice: 0}, {optionName: "Extra Lettuce", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Pickle", optionPrice: 0}, {optionName: "Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Patties", optionPrice: 0}, {optionName: "Remove 1 Patty", optionPrice: 0}, 
+                {optionName: "Add 1 Patty", optionPrice: 1.2}, {optionName: "Add 2 Patties", optionPrice: 2.4}
+              ]
+            },
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add Ons
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+            {
+              optionList: [{optionName: "Add Mayonnaise", optionPrice: 0.4}, {optionName: "Add Extra Mayonnaise", optionPrice: 0.8}]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Nuggets"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Piece", optionPrice: -1}, {optionName: "6 Piece", optionPrice: 0},
+                {optionName: "10 Piece", optionPrice: 2}, {optionName: "20 Piece", optionPrice: 5}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: []
+        }
+      ],
+      [//"Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Small", optionPrice: -3},{optionName: "Medium", optionPrice: 0},
+                {optionName: "Large", optionPrice: 4}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            }
+          ]
+        }
+      ],
+      [//"Coke"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Extra Small", optionPrice: -1}, {optionName: "Small", optionPrice: 0},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.5}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: [{optionName: "No Ice", optionPrice: 0}, {optionName: "Extra Ice", optionPrice: 0}]
+            }
+          ]
+        }
+      ],
+      [//"Cheeseburger"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Mustard", optionPrice: 0}, {optionName: "Extra Mustard", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Ketchup", optionPrice: 0}, {optionName: "Extra Ketchup", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Pickle", optionPrice: 0}, {optionName: "Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: [{optionName: "No Patty", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+            {
+              optionList: [{optionName: "Add Lettuce", optionPrice: 0.5}, {optionName: "Add Extra Lettuce", optionPrice: 1}]
+            },
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+            {
+              optionList: [{optionName: "Add Mayonnaise", optionPrice: 0.4}, {optionName: "Add Extra Mayonnaise", optionPrice: 0.8}]
+            },
+          ]
+        }
+      ],
+      [//"McChicken"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Lettuce", optionPrice: 0}, {optionName: "Extra Lettuce", optionPrice: 0.5}]
+            },
+            {
+              optionList: [{optionName: "No Mayonnaise", optionPrice: 0}, {optionName: "Extra Mayonnaise", optionPrice: 0.4}]
+            },
+            {
+              optionList: [{optionName: "No Patty", optionPrice: 0}, {optionName: "Extra Patty", optionPrice: 1.5}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Mustard", optionPrice: 0}, {optionName: "Add Extra Mustard", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Ketchup", optionPrice: 0}, {optionName: "Add Extra Ketchup", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Pickle", optionPrice: 0}, {optionName: "Add Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Cheese", optionPrice: 0.7}, {optionName: "Add Extra Cheese", optionPrice: 1.4}]
+            },
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+          ]
+        }
+      ],
+      [//"Mocha Frappe"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Small", optionPrice: 0}, {optionName: "Medium", optionPrice: 1},
+                {optionName: "Large", optionPrice: 1.5}
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "No Ice", optionPrice: 0}, {optionName: "Extra Ice", optionPrice: 0},
+                {optionName: "2x Extra Ice", optionPrice: 1}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Whipped Cream", optionPrice: 0}, {optionName: "Extra Whipped Cream", optionPrice: 0.5},
+                {optionName: "2x Extra Whipped Cream", optionPrice: 1}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Chocolate Drizzle", optionPrice: 0}, {optionName: "Extra Chocolate Drizzle", optionPrice: 0.5},
+                {optionName: "2x Extra Chocolate Drizzle", optionPrice: 1}
+              ]
+            },
+            //Add ons
+            {
+              optionList: 
+              [
+                {optionName: "Add 1 Crushed Oreo", optionPrice: 0.5}, {optionName: "Add 2 Crushed Oreo", optionPrice: 1},
+                {optionName: "Add 3 Crushed Oreo", optionPrice: 1.5}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Egg McMuffin"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Butter", optionPrice: 0}, {optionName: "Extra Butter", optionPrice: 0.25}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: [{optionName: "No Round Egg", optionPrice: 0}, {optionName: "Extra Round Egg", optionPrice: 2}]
+            },
+            {
+              optionList: [{optionName: "No Canadian Bacon", optionPrice: 0}, {optionName: "Extra Canadian Bacon", optionPrice: 1.5}]
+            },
+            {
+              optionList: [{optionName: "No English McMuffin", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+          ]
+        }
+      ],
+      [//"Ice Cream cone"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Happy Meal"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "4 Piece", optionPrice: 0}, {optionName: "6 Piece", optionPrice: 1}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: []
+        }
+      ]
+    ],
     ubereatsMenuPrice: [
       5.45, 5.55, 3.22, 2.99, 3.79, 4.79, 3.33, 2.67, 1.15, 3.25,
     ],
@@ -148,6 +1273,381 @@ const restaurantData = [
       "Egg McMuffin",
       "Ice Cream cone",
       "Happy Meal",
+    ],
+    menuOptions: [
+      [//"Big Mac"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              options: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
+            },
+            {
+              optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Lettuce", optionPrice: 0}, {optionName: "Extra Lettuce", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Pickle", optionPrice: 0}, {optionName: "Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Patties", optionPrice: 0}, {optionName: "Remove 1 Patty", optionPrice: 0}, 
+                {optionName: "Add 1 Patty", optionPrice: 1.2}, {optionName: "Add 2 Patties", optionPrice: 2.4}
+              ]
+            },
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add Ons
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+            {
+              optionList: [{optionName: "Add Mayonnaise", optionPrice: 0.4}, {optionName: "Add Extra Mayonnaise", optionPrice: 0.8}]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Nuggets"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Piece", optionPrice: -1}, {optionName: "6 Piece", optionPrice: 0},
+                {optionName: "10 Piece", optionPrice: 2}, {optionName: "20 Piece", optionPrice: 5}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: []
+        }
+      ],
+      [//"Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Small", optionPrice: -3},{optionName: "Medium", optionPrice: 0},
+                {optionName: "Large", optionPrice: 4}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            }
+          ]
+        }
+      ],
+      [//"Coke"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Extra Small", optionPrice: -1}, {optionName: "Small", optionPrice: 0},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.5}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: [{optionName: "No Ice", optionPrice: 0}, {optionName: "Extra Ice", optionPrice: 0}]
+            }
+          ]
+        }
+      ],
+      [//"Cheeseburger"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Mustard", optionPrice: 0}, {optionName: "Extra Mustard", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Ketchup", optionPrice: 0}, {optionName: "Extra Ketchup", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Pickle", optionPrice: 0}, {optionName: "Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: [{optionName: "No Patty", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Salt", optionPrice: 0}, {optionName: "Extra Salt", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+            {
+              optionList: [{optionName: "Add Lettuce", optionPrice: 0.5}, {optionName: "Add Extra Lettuce", optionPrice: 1}]
+            },
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+            {
+              optionList: [{optionName: "Add Mayonnaise", optionPrice: 0.4}, {optionName: "Add Extra Mayonnaise", optionPrice: 0.8}]
+            },
+          ]
+        }
+      ],
+      [//"McChicken"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Lettuce", optionPrice: 0}, {optionName: "Extra Lettuce", optionPrice: 0.5}]
+            },
+            {
+              optionList: [{optionName: "No Mayonnaise", optionPrice: 0}, {optionName: "Extra Mayonnaise", optionPrice: 0.4}]
+            },
+            {
+              optionList: [{optionName: "No Patty", optionPrice: 0}, {optionName: "Extra Patty", optionPrice: 1.5}]
+            },
+            {
+              optionList: [{optionName: "No Bun", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Mustard", optionPrice: 0}, {optionName: "Add Extra Mustard", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Ketchup", optionPrice: 0}, {optionName: "Add Extra Ketchup", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Pickle", optionPrice: 0}, {optionName: "Add Extra Pickle", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Add Cheese", optionPrice: 0.7}, {optionName: "Add Extra Cheese", optionPrice: 1.4}]
+            },
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+            {
+              optionList: [{optionName: "Add Tomato", optionPrice: 0.6}, {optionName: "Add Extra Tomato", optionPrice: 1.2}]
+            },
+          ]
+        }
+      ],
+      [//"Mocha Frappe"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Small", optionPrice: 0}, {optionName: "Medium", optionPrice: 1},
+                {optionName: "Large", optionPrice: 1.5}
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "No Ice", optionPrice: 0}, {optionName: "Extra Ice", optionPrice: 0},
+                {optionName: "2x Extra Ice", optionPrice: 1}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Whipped Cream", optionPrice: 0}, {optionName: "Extra Whipped Cream", optionPrice: 0.5},
+                {optionName: "2x Extra Whipped Cream", optionPrice: 1}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Chocolate Drizzle", optionPrice: 0}, {optionName: "Extra Chocolate Drizzle", optionPrice: 0.5},
+                {optionName: "2x Extra Chocolate Drizzle", optionPrice: 1}
+              ]
+            },
+            //Add ons
+            {
+              optionList: 
+              [
+                {optionName: "Add 1 Crushed Oreo", optionPrice: 0.5}, {optionName: "Add 2 Crushed Oreo", optionPrice: 1},
+                {optionName: "Add 3 Crushed Oreo", optionPrice: 1.5}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Egg McMuffin"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: [{optionName: "No Butter", optionPrice: 0}, {optionName: "Extra Butter", optionPrice: 0.25}]
+            },
+            {
+              optionList: [{optionName: "No Cheese", optionPrice: 0}, {optionName: "Extra Cheese", optionPrice: 0.7}]
+            },
+            {
+              optionList: [{optionName: "No Round Egg", optionPrice: 0}, {optionName: "Extra Round Egg", optionPrice: 2}]
+            },
+            {
+              optionList: [{optionName: "No Canadian Bacon", optionPrice: 0}, {optionName: "Extra Canadian Bacon", optionPrice: 1.5}]
+            },
+            {
+              optionList: [{optionName: "No English McMuffin", optionPrice: 0}]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.6}, {optionName: "Add Extra Bacon", optionPrice: 3.2}]
+            },
+          ]
+        }
+      ],
+      [//"Ice Cream cone"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Happy Meal"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "4 Piece", optionPrice: 0}, {optionName: "6 Piece", optionPrice: 1}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Sauce", optionPrice: 0}, {optionName: "Add Ketchup Packet", optionPrice: 0},
+                {optionName: "Add Tangy BBQ Sauce", optionPrice: 0}, {optionName: "Add Sweet N Sour Sauce", optionPrice: 0},
+                {optionName: "Add Honey Packet", optionPrice: 0}, {optionName: "Add Hot Mustard Dipping Sauce Sauce", optionPrice: 0},
+                {optionName: "Add Creamy Ranch Sauce", optionPrice: 0}, {optionName: "Add Hot Picante Sauce", optionPrice: 0},
+                {optionName: "Add Mild Picante Sauce", optionPrice: 0}, {optionName: "Add Honey Mustard", optionPrice: 0},
+                {optionName: "Add Spicy Buffalo Sauce", optionPrice: 0}
+              ]
+            }
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options: []
+        }
+      ]
     ],
     ubereatsMenuPrice: [
       5.35, 5.75, 3.67, 2.74, 3.43, 4.67, 3.42, 2.84, 1.22, 3.41,
@@ -194,6 +1694,230 @@ const restaurantData = [
       "Chocolate Chip Cookie",
       "Fountain Drink",
     ],
+    menuOptions: [
+      [//"Fried Chicken Bucket"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "8 pc", optionPrice: 0}, {optionName: "12 pc", optionPrice: 6},
+                {optionName: "16 pc", optionPrice: 15}
+              ]
+            },
+            {
+              optionList: [{optionName: "Chicken - Dark", optionPrice: 0}, {optionName: "Chicken - Variety", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Original", optionPrice: 0}, {optionName: "Extra Crispy", optionPrice: 0}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chicken Sandwich Deluxe"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Classic", optionPrice: 0}, {optionName: "Spicy", optionPrice: 0},
+                {optionName: "Honey BBQ", optionPrice: 0}, {optionName: "Korean BBQ", optionPrice: 0},
+                {optionName: "Honey Garlic", optionPrice: 0}, {optionName: "Mango Habanero", optionPrice: 0},
+                {optionName: "Chipotle Ranch", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Popcorn Chicken"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chicken Tenders"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "8 pc", optionPrice: 0}, {optionName: "12 pc", optionPrice: 6},
+                {optionName: "16 pc", optionPrice: 15}
+              ]
+            },
+            {
+              sectionCount: 4,
+              optionList: 
+              [
+                {optionName: "Comeback Sauce", optionPrice: 0}, {optionName: "Buffalo Ranch", optionPrice: 0},
+                {optionName: "KFC Sauce", optionPrice: 0}, {optionName: "Honey BBQ", optionPrice: 0},
+                {optionName: "Classic Ranch", optionPrice: 0}, {optionName: "Honey Mustard", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Mashed Potatoes"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Coleslaw"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Mac and Cheese"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Biscuit"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "1 Biscuit", optionPrice: 0}, {optionName: "2 Biscuits", optionPrice: 1},
+                {optionName: "4 Biscuits", optionPrice: 2.8}, {optionName: "12 Biscuits", optionPrice: 4.8}
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chocolate Chip Cookie"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Fountain Drink"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Cranberry Pepsi", optionPrice: 0}, {optionName: "Cranberry Lemonade", optionPrice: 0},
+                {optionName: "Cranberry Starry", optionPrice: 0}, {optionName: "Cranberry MTN DEW Sweet Lightning", optionPrice: 0},
+                {optionName: "Cranberry Sweet Tea", optionPrice: 0}, {optionName: "Pepsi", optionPrice: 0},
+                {optionName: "Pepsi Zero Sugar", optionPrice: 0}, {optionName: "Starry", optionPrice: 0},
+                {optionName: "MTN DEW", optionPrice: 0}, {optionName: "MTN DEW Sweet Lightning", optionPrice: 0},
+                {optionName: "Dr. Pepper", optionPrice: 0}, {optionName: "Lemonade", optionPrice: 0.5},
+                {optionName: "Sweet Tea", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Medium", optionPrice: 0}, {optionName: "Large", optionPrice: 0.2},
+                {optionName: "Beverage Bucket", optionPrice: 1.2},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ]
+    ],
     ubereatsMenuPrice: [
       21.5, 6.75, 4.25, 7.4, 2.99, 2.25, 3.49, 1.69, 1.5, 2.29,
     ],
@@ -239,6 +1963,230 @@ const restaurantData = [
       "Chocolate Chip Cookie",
       "Fountain Drink",
     ], //     ubereatsMenuPrice: [21.95, 6.55, 4.45, 7.20, 3.05, 2.15, 3.29, 1.59, 1.40, 2.35],
+    menuOptions: [
+      [//"Fried Chicken Bucket"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "8 pc", optionPrice: 0}, {optionName: "12 pc", optionPrice: 6},
+                {optionName: "16 pc", optionPrice: 15}
+              ]
+            },
+            {
+              optionList: [{optionName: "Chicken - Dark", optionPrice: 0}, {optionName: "Chicken - Variety", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Original", optionPrice: 0}, {optionName: "Extra Crispy", optionPrice: 0}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chicken Sandwich Deluxe"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Classic", optionPrice: 0}, {optionName: "Spicy", optionPrice: 0},
+                {optionName: "Honey BBQ", optionPrice: 0}, {optionName: "Korean BBQ", optionPrice: 0},
+                {optionName: "Honey Garlic", optionPrice: 0}, {optionName: "Mango Habanero", optionPrice: 0},
+                {optionName: "Chipotle Ranch", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Popcorn Chicken"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chicken Tenders"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "8 pc", optionPrice: 0}, {optionName: "12 pc", optionPrice: 6},
+                {optionName: "16 pc", optionPrice: 15}
+              ]
+            },
+            {
+              sectionCount: 4,
+              optionList: 
+              [
+                {optionName: "Comeback Sauce", optionPrice: 0}, {optionName: "Buffalo Ranch", optionPrice: 0},
+                {optionName: "KFC Sauce", optionPrice: 0}, {optionName: "Honey BBQ", optionPrice: 0},
+                {optionName: "Classic Ranch", optionPrice: 0}, {optionName: "Honey Mustard", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Mashed Potatoes"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Coleslaw"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Mac and Cheese"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Biscuit"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "1 Biscuit", optionPrice: 0}, {optionName: "2 Biscuits", optionPrice: 1},
+                {optionName: "4 Biscuits", optionPrice: 2.8}, {optionName: "12 Biscuits", optionPrice: 4.8}
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chocolate Chip Cookie"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Fountain Drink"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Cranberry Pepsi", optionPrice: 0}, {optionName: "Cranberry Lemonade", optionPrice: 0},
+                {optionName: "Cranberry Starry", optionPrice: 0}, {optionName: "Cranberry MTN DEW Sweet Lightning", optionPrice: 0},
+                {optionName: "Cranberry Sweet Tea", optionPrice: 0}, {optionName: "Pepsi", optionPrice: 0},
+                {optionName: "Pepsi Zero Sugar", optionPrice: 0}, {optionName: "Starry", optionPrice: 0},
+                {optionName: "MTN DEW", optionPrice: 0}, {optionName: "MTN DEW Sweet Lightning", optionPrice: 0},
+                {optionName: "Dr. Pepper", optionPrice: 0}, {optionName: "Lemonade", optionPrice: 0.5},
+                {optionName: "Sweet Tea", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Medium", optionPrice: 0}, {optionName: "Large", optionPrice: 0.2},
+                {optionName: "Beverage Bucket", optionPrice: 1.2},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ]
+    ],
     doordashMenuPrice: [22.1, 6.6, 4.5, 7.3, 2.95, 2.35, 3.15, 1.5, 1.55, 2.2],
     grubhubMenuPrice: [21.3, 6.8, 4.55, 7.45, 3.1, 2.2, 3.45, 1.62, 1.55, 2.3],
     ubereatsAvailable: true,
@@ -277,6 +2225,230 @@ const restaurantData = [
       "Chocolate Chip Cookie",
       "Fountain Drink",
     ], //     ubereatsMenuPrice: [22.25, 6.65, 4.30, 7.35, 2.99, 2.29, 3.49, 1.65, 1.45, 2.30],
+    menuOptions: [
+      [//"Fried Chicken Bucket"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "8 pc", optionPrice: 0}, {optionName: "12 pc", optionPrice: 6},
+                {optionName: "16 pc", optionPrice: 15}
+              ]
+            },
+            {
+              optionList: [{optionName: "Chicken - Dark", optionPrice: 0}, {optionName: "Chicken - Variety", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Original", optionPrice: 0}, {optionName: "Extra Crispy", optionPrice: 0}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chicken Sandwich Deluxe"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Classic", optionPrice: 0}, {optionName: "Spicy", optionPrice: 0},
+                {optionName: "Honey BBQ", optionPrice: 0}, {optionName: "Korean BBQ", optionPrice: 0},
+                {optionName: "Honey Garlic", optionPrice: 0}, {optionName: "Mango Habanero", optionPrice: 0},
+                {optionName: "Chipotle Ranch", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Popcorn Chicken"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chicken Tenders"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "8 pc", optionPrice: 0}, {optionName: "12 pc", optionPrice: 6},
+                {optionName: "16 pc", optionPrice: 15}
+              ]
+            },
+            {
+              sectionCount: 4,
+              optionList: 
+              [
+                {optionName: "Comeback Sauce", optionPrice: 0}, {optionName: "Buffalo Ranch", optionPrice: 0},
+                {optionName: "KFC Sauce", optionPrice: 0}, {optionName: "Honey BBQ", optionPrice: 0},
+                {optionName: "Classic Ranch", optionPrice: 0}, {optionName: "Honey Mustard", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Mashed Potatoes"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Coleslaw"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Mac and Cheese"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Biscuit"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "1 Biscuit", optionPrice: 0}, {optionName: "2 Biscuits", optionPrice: 1},
+                {optionName: "4 Biscuits", optionPrice: 2.8}, {optionName: "12 Biscuits", optionPrice: 4.8}
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chocolate Chip Cookie"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Fountain Drink"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Cranberry Pepsi", optionPrice: 0}, {optionName: "Cranberry Lemonade", optionPrice: 0},
+                {optionName: "Cranberry Starry", optionPrice: 0}, {optionName: "Cranberry MTN DEW Sweet Lightning", optionPrice: 0},
+                {optionName: "Cranberry Sweet Tea", optionPrice: 0}, {optionName: "Pepsi", optionPrice: 0},
+                {optionName: "Pepsi Zero Sugar", optionPrice: 0}, {optionName: "Starry", optionPrice: 0},
+                {optionName: "MTN DEW", optionPrice: 0}, {optionName: "MTN DEW Sweet Lightning", optionPrice: 0},
+                {optionName: "Dr. Pepper", optionPrice: 0}, {optionName: "Lemonade", optionPrice: 0.5},
+                {optionName: "Sweet Tea", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Medium", optionPrice: 0}, {optionName: "Large", optionPrice: 0.2},
+                {optionName: "Beverage Bucket", optionPrice: 1.2},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ]
+    ],
     doordashMenuPrice: [
       21.85, 6.4, 4.25, 7.15, 2.75, 2.2, 3.25, 1.5, 1.5, 2.15,
     ],
@@ -319,6 +2491,230 @@ const restaurantData = [
       "Chocolate Chip Cookie",
       "Fountain Drink",
     ],
+    menuOptions: [
+      [//"Fried Chicken Bucket"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "8 pc", optionPrice: 0}, {optionName: "12 pc", optionPrice: 6},
+                {optionName: "16 pc", optionPrice: 15}
+              ]
+            },
+            {
+              optionList: [{optionName: "Chicken - Dark", optionPrice: 0}, {optionName: "Chicken - Variety", optionPrice: 0}]
+            },
+            {
+              optionList: [{optionName: "Original", optionPrice: 0}, {optionName: "Extra Crispy", optionPrice: 0}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chicken Sandwich Deluxe"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Classic", optionPrice: 0}, {optionName: "Spicy", optionPrice: 0},
+                {optionName: "Honey BBQ", optionPrice: 0}, {optionName: "Korean BBQ", optionPrice: 0},
+                {optionName: "Honey Garlic", optionPrice: 0}, {optionName: "Mango Habanero", optionPrice: 0},
+                {optionName: "Chipotle Ranch", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Popcorn Chicken"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chicken Tenders"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "8 pc", optionPrice: 0}, {optionName: "12 pc", optionPrice: 6},
+                {optionName: "16 pc", optionPrice: 15}
+              ]
+            },
+            {
+              sectionCount: 4,
+              optionList: 
+              [
+                {optionName: "Comeback Sauce", optionPrice: 0}, {optionName: "Buffalo Ranch", optionPrice: 0},
+                {optionName: "KFC Sauce", optionPrice: 0}, {optionName: "Honey BBQ", optionPrice: 0},
+                {optionName: "Classic Ranch", optionPrice: 0}, {optionName: "Honey Mustard", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Mashed Potatoes"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Coleslaw"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Mac and Cheese"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: [{optionName: "Side Individual", optionPrice: 0}, {optionName: "Side Large", optionPrice: 2}]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Biscuit"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "1 Biscuit", optionPrice: 0}, {optionName: "2 Biscuits", optionPrice: 1},
+                {optionName: "4 Biscuits", optionPrice: 2.8}, {optionName: "12 Biscuits", optionPrice: 4.8}
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Chocolate Chip Cookie"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Fountain Drink"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Cranberry Pepsi", optionPrice: 0}, {optionName: "Cranberry Lemonade", optionPrice: 0},
+                {optionName: "Cranberry Starry", optionPrice: 0}, {optionName: "Cranberry MTN DEW Sweet Lightning", optionPrice: 0},
+                {optionName: "Cranberry Sweet Tea", optionPrice: 0}, {optionName: "Pepsi", optionPrice: 0},
+                {optionName: "Pepsi Zero Sugar", optionPrice: 0}, {optionName: "Starry", optionPrice: 0},
+                {optionName: "MTN DEW", optionPrice: 0}, {optionName: "MTN DEW Sweet Lightning", optionPrice: 0},
+                {optionName: "Dr. Pepper", optionPrice: 0}, {optionName: "Lemonade", optionPrice: 0.5},
+                {optionName: "Sweet Tea", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Medium", optionPrice: 0}, {optionName: "Large", optionPrice: 0.2},
+                {optionName: "Beverage Bucket", optionPrice: 1.2},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ]
+    ],
     ubereatsMenuPrice: [21.65, 6.50, 4.35, 7.50, 3.05, 2.35, 3.65, 1.55, 1.55, 2.20],
     doordashMenuPrice: [22.3, 6.55, 4.25, 7.2, 2.95, 2.4, 3.45, 1.5, 1.6, 2.1],
     grubhubMenuPrice: [
@@ -360,6 +2756,455 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
+    menuOptions: [
+      [//"Whopper"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Ketchup", optionPrice: 0}, {optionName: "Light Ketchup", optionPrice: 0},
+                {optionName: "Extra Ketchup", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Onion", optionPrice: 0}, {optionName: "Light Onion", optionPrice: 0},
+                {optionName: "Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Tomato", optionPrice: 0.0}, {optionName: "Light Tomato", optionPrice: 0},
+                {optionName: "Extra Tomato", optionPrice: 0.15}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Pickle", optionPrice: 0}, {optionName: "Light Pickle", optionPrice: 0},
+                {optionName: "Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Swiss Cheese", optionPrice: 0.6}]
+            },
+            {
+              optionList: [{optionName: "Add Onion Rings", optionPrice: 0.46}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "8 Pc", optionPrice: 1.5},
+                {optionName: "12 Pc", optionPrice: 3},
+              ]
+            },
+            {
+              sectionCount: 2,
+              optionList: 
+              [
+                {optionName: "BBQ Dipping Sauce", optionPrice: 0}, {optionName: "Buffalo Dipping Sauce", optionPrice: 0},
+                {optionName: "Honey Mustard Dipping Sauce", optionPrice: 0}, {optionName: "Hidden Valley Ranch Dipping Sauce", optionPrice: 0},
+                {optionName: "Sweet & Sour Dipping Sauce", optionPrice: 0}, {optionName: "Zesty Dipping Sauce", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Impossible Whopper"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Ketchup", optionPrice: 0}, {optionName: "Light Ketchup", optionPrice: 0},
+                {optionName: "Extra Ketchup", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Onion", optionPrice: 0}, {optionName: "Light Onion", optionPrice: 0},
+                {optionName: "Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Tomato", optionPrice: 0.0}, {optionName: "Light Tomato", optionPrice: 0},
+                {optionName: "Extra Tomato", optionPrice: 0.15}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Pickle", optionPrice: 0}, {optionName: "Light Pickle", optionPrice: 0},
+                {optionName: "Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Swiss Cheese", optionPrice: 0.6}]
+            },
+            {
+              optionList: [{optionName: "Add Onion Rings", optionPrice: 0.46}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Sandwich"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: 
+              [
+                {optionName: "Add Light American Cheese", optionPrice: 0}, {optionName: "Add Regular American Cheese", optionPrice: 0},
+                {optionName: "Add Extra American Cheese", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.2}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Onion", optionPrice: 0}, {optionName: "Add Regular Onion", optionPrice: 0},
+                {optionName: "Add Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Tomato", optionPrice: 0.15}, {optionName: "Add Regular Tomato", optionPrice: 0.3},
+                {optionName: "Extra Tomato", optionPrice: 0.45}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Pickle", optionPrice: 0}, {optionName: "Add Regular Pickle", optionPrice: 0},
+                {optionName: "Add Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Ketchup", optionPrice: 0}, {optionName: "Add Regular Ketchup", optionPrice: 0},
+                {optionName: "Add Extra Ketchup", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"French Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Onion Rings"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Zesty Dipping Sauce", optionPrice: 0}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Mozzarella Sticks"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "8 Pc", optionPrice: 1.9},
+                {optionName: "12 Pc", optionPrice: 3},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Marinara Sauce", optionPrice: 0}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chocolate Shake"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Soft Drink"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Coca-Cola", optionPrice: 0}, {optionName: "Diet Coke", optionPrice: 0},
+                {optionName: "Dr Pepper", optionPrice: 0}, {optionName: "Sprite", optionPrice: 0},
+                {optionName: "Water", optionPrice: -1}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
+                {optionName: "Unsweetened Iced Tea", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"King Jr.Meal"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "6 Pc", optionPrice: 0.5},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "BBQ Dipping Sauce", optionPrice: 0}, {optionName: "Buffalo Dipping Sauce", optionPrice: 0},
+                {optionName: "Honey Mustard Dipping Sauce", optionPrice: 0}, {optionName: "Hidden Valley Ranch Dipping Sauce", optionPrice: 0},
+                {optionName: "Sweet & Sour Dipping Sauce", optionPrice: 0}, {optionName: "Zesty Dipping Sauce", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Value French Fries", optionPrice: 0}, {optionName: "Value Onion Rings", optionPrice: 0.1},
+                {optionName: "Mott's Applesauce", optionPrice: 0}, {optionName: "Value Have-sies", optionPrice: 0.1},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Honest Kids Apple Juice", optionPrice: 0}, {optionName: "Fat Free Milk", optionPrice: 0.4},
+                {optionName: "Value Coca-Cola", optionPrice: 0}, {optionName: "Value Diet Coke", optionPrice: 0},
+                {optionName: "Value Sprite", optionPrice: 0}, {optionName: "Value Dr Pepper", optionPrice: 0},
+                {optionName: "Pure Life Purified Water", optionPrice: 0.3},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Toy", optionPrice: 0}, {optionName: "Chocolate Chip Cookie", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+    ],
     ubereatsMenuPrice: [6.49, 4.29, 6.99, 5.39, 2.99, 2.79, 3.29, 3.99, 2.29, 4.99],
     doordashMenuPrice: [6.79, 4.1, 6.79, 5.59, 2.89, 2.99, 3.39, 3.89, 2.19, 5.09],
     grubhubMenuPrice: [6.29, 4.45, 7.09, 5.19, 3.09, 2.69, 3.19, 3.79, 2.35, 4.79],
@@ -398,6 +3243,455 @@ const restaurantData = [
       "Chocolate Shake",
       "Soft Drink",
       "King Jr.Meal",
+    ],
+    menuOptions: [
+      [//"Whopper"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Ketchup", optionPrice: 0}, {optionName: "Light Ketchup", optionPrice: 0},
+                {optionName: "Extra Ketchup", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Onion", optionPrice: 0}, {optionName: "Light Onion", optionPrice: 0},
+                {optionName: "Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Tomato", optionPrice: 0.0}, {optionName: "Light Tomato", optionPrice: 0},
+                {optionName: "Extra Tomato", optionPrice: 0.15}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Pickle", optionPrice: 0}, {optionName: "Light Pickle", optionPrice: 0},
+                {optionName: "Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Swiss Cheese", optionPrice: 0.6}]
+            },
+            {
+              optionList: [{optionName: "Add Onion Rings", optionPrice: 0.46}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "8 Pc", optionPrice: 1.5},
+                {optionName: "12 Pc", optionPrice: 3},
+              ]
+            },
+            {
+              sectionCount: 2,
+              optionList: 
+              [
+                {optionName: "BBQ Dipping Sauce", optionPrice: 0}, {optionName: "Buffalo Dipping Sauce", optionPrice: 0},
+                {optionName: "Honey Mustard Dipping Sauce", optionPrice: 0}, {optionName: "Hidden Valley Ranch Dipping Sauce", optionPrice: 0},
+                {optionName: "Sweet & Sour Dipping Sauce", optionPrice: 0}, {optionName: "Zesty Dipping Sauce", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Impossible Whopper"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Ketchup", optionPrice: 0}, {optionName: "Light Ketchup", optionPrice: 0},
+                {optionName: "Extra Ketchup", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Onion", optionPrice: 0}, {optionName: "Light Onion", optionPrice: 0},
+                {optionName: "Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Tomato", optionPrice: 0.0}, {optionName: "Light Tomato", optionPrice: 0},
+                {optionName: "Extra Tomato", optionPrice: 0.15}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Pickle", optionPrice: 0}, {optionName: "Light Pickle", optionPrice: 0},
+                {optionName: "Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Swiss Cheese", optionPrice: 0.6}]
+            },
+            {
+              optionList: [{optionName: "Add Onion Rings", optionPrice: 0.46}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Sandwich"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: 
+              [
+                {optionName: "Add Light American Cheese", optionPrice: 0}, {optionName: "Add Regular American Cheese", optionPrice: 0},
+                {optionName: "Add Extra American Cheese", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.2}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Onion", optionPrice: 0}, {optionName: "Add Regular Onion", optionPrice: 0},
+                {optionName: "Add Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Tomato", optionPrice: 0.15}, {optionName: "Add Regular Tomato", optionPrice: 0.3},
+                {optionName: "Extra Tomato", optionPrice: 0.45}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Pickle", optionPrice: 0}, {optionName: "Add Regular Pickle", optionPrice: 0},
+                {optionName: "Add Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Ketchup", optionPrice: 0}, {optionName: "Add Regular Ketchup", optionPrice: 0},
+                {optionName: "Add Extra Ketchup", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"French Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Onion Rings"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Zesty Dipping Sauce", optionPrice: 0}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Mozzarella Sticks"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "8 Pc", optionPrice: 1.9},
+                {optionName: "12 Pc", optionPrice: 3},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Marinara Sauce", optionPrice: 0}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chocolate Shake"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Soft Drink"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Coca-Cola", optionPrice: 0}, {optionName: "Diet Coke", optionPrice: 0},
+                {optionName: "Dr Pepper", optionPrice: 0}, {optionName: "Sprite", optionPrice: 0},
+                {optionName: "Water", optionPrice: -1}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
+                {optionName: "Unsweetened Iced Tea", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"King Jr.Meal"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "6 Pc", optionPrice: 0.5},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "BBQ Dipping Sauce", optionPrice: 0}, {optionName: "Buffalo Dipping Sauce", optionPrice: 0},
+                {optionName: "Honey Mustard Dipping Sauce", optionPrice: 0}, {optionName: "Hidden Valley Ranch Dipping Sauce", optionPrice: 0},
+                {optionName: "Sweet & Sour Dipping Sauce", optionPrice: 0}, {optionName: "Zesty Dipping Sauce", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Value French Fries", optionPrice: 0}, {optionName: "Value Onion Rings", optionPrice: 0.1},
+                {optionName: "Mott's Applesauce", optionPrice: 0}, {optionName: "Value Have-sies", optionPrice: 0.1},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Honest Kids Apple Juice", optionPrice: 0}, {optionName: "Fat Free Milk", optionPrice: 0.4},
+                {optionName: "Value Coca-Cola", optionPrice: 0}, {optionName: "Value Diet Coke", optionPrice: 0},
+                {optionName: "Value Sprite", optionPrice: 0}, {optionName: "Value Dr Pepper", optionPrice: 0},
+                {optionName: "Pure Life Purified Water", optionPrice: 0.3},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Toy", optionPrice: 0}, {optionName: "Chocolate Chip Cookie", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
     ],
     ubereatsMenuPrice: [6.55, 4.19, 7.1, 5.49, 3.05, 2.69, 3.39, 3.89, 2.25, 5.19],
     doordashMenuPrice: [6.99, 4.25, 6.99, 5.69, 2.95, 2.89, 3.25, 3.79, 2.15, 4.99],
@@ -438,6 +3732,455 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
+    menuOptions: [
+      [//"Whopper"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Ketchup", optionPrice: 0}, {optionName: "Light Ketchup", optionPrice: 0},
+                {optionName: "Extra Ketchup", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Onion", optionPrice: 0}, {optionName: "Light Onion", optionPrice: 0},
+                {optionName: "Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Tomato", optionPrice: 0.0}, {optionName: "Light Tomato", optionPrice: 0},
+                {optionName: "Extra Tomato", optionPrice: 0.15}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Pickle", optionPrice: 0}, {optionName: "Light Pickle", optionPrice: 0},
+                {optionName: "Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Swiss Cheese", optionPrice: 0.6}]
+            },
+            {
+              optionList: [{optionName: "Add Onion Rings", optionPrice: 0.46}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "8 Pc", optionPrice: 1.5},
+                {optionName: "12 Pc", optionPrice: 3},
+              ]
+            },
+            {
+              sectionCount: 2,
+              optionList: 
+              [
+                {optionName: "BBQ Dipping Sauce", optionPrice: 0}, {optionName: "Buffalo Dipping Sauce", optionPrice: 0},
+                {optionName: "Honey Mustard Dipping Sauce", optionPrice: 0}, {optionName: "Hidden Valley Ranch Dipping Sauce", optionPrice: 0},
+                {optionName: "Sweet & Sour Dipping Sauce", optionPrice: 0}, {optionName: "Zesty Dipping Sauce", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Impossible Whopper"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Ketchup", optionPrice: 0}, {optionName: "Light Ketchup", optionPrice: 0},
+                {optionName: "Extra Ketchup", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Onion", optionPrice: 0}, {optionName: "Light Onion", optionPrice: 0},
+                {optionName: "Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Tomato", optionPrice: 0.0}, {optionName: "Light Tomato", optionPrice: 0},
+                {optionName: "Extra Tomato", optionPrice: 0.15}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Pickle", optionPrice: 0}, {optionName: "Light Pickle", optionPrice: 0},
+                {optionName: "Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Swiss Cheese", optionPrice: 0.6}]
+            },
+            {
+              optionList: [{optionName: "Add Onion Rings", optionPrice: 0.46}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Sandwich"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: 
+              [
+                {optionName: "Add Light American Cheese", optionPrice: 0}, {optionName: "Add Regular American Cheese", optionPrice: 0},
+                {optionName: "Add Extra American Cheese", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.2}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Onion", optionPrice: 0}, {optionName: "Add Regular Onion", optionPrice: 0},
+                {optionName: "Add Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Tomato", optionPrice: 0.15}, {optionName: "Add Regular Tomato", optionPrice: 0.3},
+                {optionName: "Extra Tomato", optionPrice: 0.45}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Pickle", optionPrice: 0}, {optionName: "Add Regular Pickle", optionPrice: 0},
+                {optionName: "Add Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Ketchup", optionPrice: 0}, {optionName: "Add Regular Ketchup", optionPrice: 0},
+                {optionName: "Add Extra Ketchup", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"French Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Onion Rings"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Zesty Dipping Sauce", optionPrice: 0}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Mozzarella Sticks"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "8 Pc", optionPrice: 1.9},
+                {optionName: "12 Pc", optionPrice: 3},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Marinara Sauce", optionPrice: 0}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chocolate Shake"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Soft Drink"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Coca-Cola", optionPrice: 0}, {optionName: "Diet Coke", optionPrice: 0},
+                {optionName: "Dr Pepper", optionPrice: 0}, {optionName: "Sprite", optionPrice: 0},
+                {optionName: "Water", optionPrice: -1}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
+                {optionName: "Unsweetened Iced Tea", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"King Jr.Meal"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "6 Pc", optionPrice: 0.5},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "BBQ Dipping Sauce", optionPrice: 0}, {optionName: "Buffalo Dipping Sauce", optionPrice: 0},
+                {optionName: "Honey Mustard Dipping Sauce", optionPrice: 0}, {optionName: "Hidden Valley Ranch Dipping Sauce", optionPrice: 0},
+                {optionName: "Sweet & Sour Dipping Sauce", optionPrice: 0}, {optionName: "Zesty Dipping Sauce", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Value French Fries", optionPrice: 0}, {optionName: "Value Onion Rings", optionPrice: 0.1},
+                {optionName: "Mott's Applesauce", optionPrice: 0}, {optionName: "Value Have-sies", optionPrice: 0.1},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Honest Kids Apple Juice", optionPrice: 0}, {optionName: "Fat Free Milk", optionPrice: 0.4},
+                {optionName: "Value Coca-Cola", optionPrice: 0}, {optionName: "Value Diet Coke", optionPrice: 0},
+                {optionName: "Value Sprite", optionPrice: 0}, {optionName: "Value Dr Pepper", optionPrice: 0},
+                {optionName: "Pure Life Purified Water", optionPrice: 0.3},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Toy", optionPrice: 0}, {optionName: "Chocolate Chip Cookie", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+    ],
     ubereatsMenuPrice: [6.39, 4.15, 7.05, 5.35, 3.19, 2.89, 3.19, 3.69, 2.29, 4.89],
     doordashMenuPrice: [6.59, 4.35, 6.95, 5.65, 3.05, 2.79, 3.25, 3.79, 2.39, 5.05],
     grubhubMenuPrice: [6.49, 4.55, 7.15, 5.45, 3.09, 2.95, 3.35, 3.99, 2.45, 4.95],
@@ -477,6 +4220,455 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
+    menuOptions: [
+      [//"Whopper"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Ketchup", optionPrice: 0}, {optionName: "Light Ketchup", optionPrice: 0},
+                {optionName: "Extra Ketchup", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Onion", optionPrice: 0}, {optionName: "Light Onion", optionPrice: 0},
+                {optionName: "Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Tomato", optionPrice: 0.0}, {optionName: "Light Tomato", optionPrice: 0},
+                {optionName: "Extra Tomato", optionPrice: 0.15}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Pickle", optionPrice: 0}, {optionName: "Light Pickle", optionPrice: 0},
+                {optionName: "Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Swiss Cheese", optionPrice: 0.6}]
+            },
+            {
+              optionList: [{optionName: "Add Onion Rings", optionPrice: 0.46}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "8 Pc", optionPrice: 1.5},
+                {optionName: "12 Pc", optionPrice: 3},
+              ]
+            },
+            {
+              sectionCount: 2,
+              optionList: 
+              [
+                {optionName: "BBQ Dipping Sauce", optionPrice: 0}, {optionName: "Buffalo Dipping Sauce", optionPrice: 0},
+                {optionName: "Honey Mustard Dipping Sauce", optionPrice: 0}, {optionName: "Hidden Valley Ranch Dipping Sauce", optionPrice: 0},
+                {optionName: "Sweet & Sour Dipping Sauce", optionPrice: 0}, {optionName: "Zesty Dipping Sauce", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Impossible Whopper"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Ketchup", optionPrice: 0}, {optionName: "Light Ketchup", optionPrice: 0},
+                {optionName: "Extra Ketchup", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Onion", optionPrice: 0}, {optionName: "Light Onion", optionPrice: 0},
+                {optionName: "Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Tomato", optionPrice: 0.0}, {optionName: "Light Tomato", optionPrice: 0},
+                {optionName: "Extra Tomato", optionPrice: 0.15}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Pickle", optionPrice: 0}, {optionName: "Light Pickle", optionPrice: 0},
+                {optionName: "Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: [{optionName: "Add Swiss Cheese", optionPrice: 0.6}]
+            },
+            {
+              optionList: [{optionName: "Add Onion Rings", optionPrice: 0.46}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chicken Sandwich"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Mayo", optionPrice: 0}, {optionName: "Light Mayo", optionPrice: 0},
+                {optionName: "Extra Mayo", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "No Lettuce", optionPrice: 0}, {optionName: "Light Lettuce", optionPrice: 0},
+                {optionName: "Extra Lettuce", optionPrice: 0.08}
+              ]
+            },
+            //Add ons
+            {
+              optionList: 
+              [
+                {optionName: "Add Light American Cheese", optionPrice: 0}, {optionName: "Add Regular American Cheese", optionPrice: 0},
+                {optionName: "Add Extra American Cheese", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: [{optionName: "Add Bacon", optionPrice: 1.2}]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Onion", optionPrice: 0}, {optionName: "Add Regular Onion", optionPrice: 0},
+                {optionName: "Add Extra Onion", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Tomato", optionPrice: 0.15}, {optionName: "Add Regular Tomato", optionPrice: 0.3},
+                {optionName: "Extra Tomato", optionPrice: 0.45}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Pickle", optionPrice: 0}, {optionName: "Add Regular Pickle", optionPrice: 0},
+                {optionName: "Add Extra Pickle", optionPrice: 0}
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Ketchup", optionPrice: 0}, {optionName: "Add Regular Ketchup", optionPrice: 0},
+                {optionName: "Add Extra Ketchup", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light Mustard", optionPrice: 0}, {optionName: "Add Regular Mustard", optionPrice: 0},
+                {optionName: "Add Extra Mustard", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Add Light BBQ Sauce", optionPrice: 0}, {optionName: "Add Regular BBQ Sauce", optionPrice: 0},
+                {optionName: "Add Extra BBQ Sauce", optionPrice: 0},
+              ]
+            },
+          ]
+        }
+      ],
+      [//"French Fries"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Onion Rings"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Zesty Dipping Sauce", optionPrice: 0}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Mozzarella Sticks"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "8 Pc", optionPrice: 1.9},
+                {optionName: "12 Pc", optionPrice: 3},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[
+            {
+              optionList: 
+              [
+                {optionName: "No Marinara Sauce", optionPrice: 0}
+              ]
+            },
+          ]
+        }
+      ],
+      [//"Chocolate Shake"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"Soft Drink"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "Coca-Cola", optionPrice: 0}, {optionName: "Diet Coke", optionPrice: 0},
+                {optionName: "Dr Pepper", optionPrice: 0}, {optionName: "Sprite", optionPrice: 0},
+                {optionName: "Water", optionPrice: -1}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
+                {optionName: "Unsweetened Iced Tea", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Value", optionPrice: 0}, {optionName: "Small", optionPrice: 0.6},
+                {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.4},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [//"King Jr.Meal"
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: [
+            {
+              optionList: 
+              [
+                {optionName: "4 Pc", optionPrice: 0}, {optionName: "6 Pc", optionPrice: 0.5},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "BBQ Dipping Sauce", optionPrice: 0}, {optionName: "Buffalo Dipping Sauce", optionPrice: 0},
+                {optionName: "Honey Mustard Dipping Sauce", optionPrice: 0}, {optionName: "Hidden Valley Ranch Dipping Sauce", optionPrice: 0},
+                {optionName: "Sweet & Sour Dipping Sauce", optionPrice: 0}, {optionName: "Zesty Dipping Sauce", optionPrice: 0},
+                {optionName: "No Sauce", optionPrice: 0},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Value French Fries", optionPrice: 0}, {optionName: "Value Onion Rings", optionPrice: 0.1},
+                {optionName: "Mott's Applesauce", optionPrice: 0}, {optionName: "Value Have-sies", optionPrice: 0.1},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Honest Kids Apple Juice", optionPrice: 0}, {optionName: "Fat Free Milk", optionPrice: 0.4},
+                {optionName: "Value Coca-Cola", optionPrice: 0}, {optionName: "Value Diet Coke", optionPrice: 0},
+                {optionName: "Value Sprite", optionPrice: 0}, {optionName: "Value Dr Pepper", optionPrice: 0},
+                {optionName: "Pure Life Purified Water", optionPrice: 0.3},
+              ]
+            },
+            {
+              optionList: 
+              [
+                {optionName: "Toy", optionPrice: 0}, {optionName: "Chocolate Chip Cookie", optionPrice: 0},
+              ]
+            },
+          ]
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+    ],
     ubereatsMenuPrice: [6.69, 4.2, 6.85, 5.29, 3.09, 2.79, 3.09, 3.79, 2.19, 5.09],
     doordashMenuPrice: [6.89, 4.39, 7.05, 5.59, 2.95, 2.95, 3.15, 3.89, 2.25, 5.29],
     grubhubMenuPrice: [6.55, 4.49, 7.0, 5.39, 3.29, 2.85, 3.35, 3.85, 2.35, 5.19],
@@ -515,6 +4707,49 @@ const restaurantData = [
       "Steak Bowl",
       "Barbacoa Burrito",
       "Chicken Burrito",
+    ],
+    menuOptions: [
+      [
+        {
+          optionName: 'Required Changes',
+          required: true,
+          multiSelect: false,
+          options: []
+        },
+        {
+          optionName: 'Optional Changes',
+          required: false,
+          multiSelect: true,
+          options:[]
+        }
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
+      ],
     ],
     ubereatsMenuPrice: [8.25, 8.15, 7.85, 7.5, 4.25, 8.95, 8.0, 9.45, 9.1, 8.5],
     doordashMenuPrice: [8.5, 8.25, 7.75, 7.35, 4.5, 9.1, 8.25, 9.65, 9.3, 8.4],
@@ -557,6 +4792,7 @@ const restaurantData = [
       "Barbacoa Burrito",
       "Chicken Burrito",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [8.45, 8.3, 7.75, 7.4, 4.35, 9.05, 8.1, 9.5, 9.15, 8.35],
     doordashMenuPrice: [8.6, 8.4, 7.65, 7.5, 4.55, 9.15, 8.2, 9.75, 9.35, 8.55],
     grubhubMenuPrice: [8.3, 8.2, 7.8, 7.45, 4.4, 9.0, 8.0, 9.55, 9.1, 8.45],
@@ -596,6 +4832,7 @@ const restaurantData = [
       "Barbacoa Burrito",
       "Chicken Burrito",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [8.3, 8.1, 7.95, 7.55, 4.4, 9.1, 8.25, 9.4, 9.05, 8.6],
     doordashMenuPrice: [8.65, 8.45, 7.8, 7.6, 4.6, 9.25, 8.3, 9.65, 9.45, 8.7],
     grubhubMenuPrice: [8.25, 8.0, 7.85, 7.5, 4.3, 9.05, 8.1, 9.5, 9.2, 8.5],
@@ -635,6 +4872,7 @@ const restaurantData = [
       "Barbacoa Burrito",
       "Chicken Burrito",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       8.55, 8.35, 7.85, 7.65, 4.45, 9.2, 8.35, 9.55, 9.25, 8.5,
     ],
@@ -678,6 +4916,7 @@ const restaurantData = [
       "Triple Chocolate Meltdown",
       "Classic Fries",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       16.99, 12.5, 11.25, 13.75, 7.49, 15.5, 12.99, 18.99, 7.25, 3.99,
     ],
@@ -723,6 +4962,7 @@ const restaurantData = [
       "Triple Chocolate Meltdown",
       "Classic Fries",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       17.15, 12.45, 11.55, 13.55, 7.29, 15.85, 13.05, 19.1, 7.15, 4.1,
     ],
@@ -768,6 +5008,7 @@ const restaurantData = [
       "Triple Chocolate Meltdown",
       "Classic Fries",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       17.05, 12.55, 11.4, 13.6, 7.35, 15.6, 12.8, 18.9, 7.05, 4.15,
     ],
@@ -814,6 +5055,7 @@ const restaurantData = [
       "Triple Chocolate Meltdown",
       "Classic Fries",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       16.85, 12.3, 11.65, 13.35, 7.3, 15.9, 13.0, 18.95, 7.25, 3.85,
     ],
@@ -859,6 +5101,7 @@ const restaurantData = [
       "French Fries",
       "Espresso",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       22.95, 16.5, 28.0, 11.25, 9.75, 7.95, 6.5, 8.25, 5.5, 3.0,
     ],
@@ -903,6 +5146,7 @@ const restaurantData = [
       "Vegan Brownie",
       "Iced Matcha Latte",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       12.95, 10.5, 9.75, 13.25, 14.0, 5.95, 7.5, 8.95, 4.25, 6.75,
     ],
@@ -949,6 +5193,7 @@ const restaurantData = [
       "Sweet Tea",
       "Lemonade",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       10.95, 17.5, 18.95, 4.5, 6.95, 7.25, 8.5, 5.75, 2.95, 3.5,
     ],
@@ -994,6 +5239,7 @@ const restaurantData = [
       "Cannoli",
       "Espresso",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       13.5, 12.25, 14.0, 11.75, 3.5, 6.95, 5.5, 7.25, 5.95, 3.25,
     ],
@@ -1037,6 +5283,7 @@ const restaurantData = [
       "Mexican Rice",
       "Horchata",
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [
       3.95, 8.25, 7.75, 6.5, 4.95, 3.25, 11.5, 5.95, 3.5, 2.75,
     ],
@@ -1080,6 +5327,7 @@ const restaurantData = [
       "Garden Salad",
       "Homestyle Chicken Sandwich"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [5.49, 5.99, 6.99, 4.49, 1.99, 2.19, 2.99, 3.49, 4.99, 5.59],
     doordashMenuPrice: [5.69, 5.89, 7.19, 4.39, 1.89, 2.29, 2.89, 3.39, 4.89, 5.49],
     grubhubMenuPrice: [5.59, 6.09, 7.09, 4.59, 1.79, 2.09, 2.79, 3.29, 4.79, 5.69],
@@ -1119,6 +5367,7 @@ const restaurantData = [
       "Garden Salad",
       "Homestyle Chicken Sandwich"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [5.59, 6.09, 7.09, 4.59, 2.09, 2.29, 3.09, 3.59, 5.09, 5.69],
     doordashMenuPrice: [5.79, 5.99, 7.29, 4.49, 1.99, 2.39, 2.99, 3.49, 4.99, 5.59],
     grubhubMenuPrice: [5.69, 6.19, 7.19, 4.69, 1.89, 2.19, 2.89, 3.39, 4.89, 5.79],
@@ -1158,6 +5407,7 @@ const restaurantData = [
       "Garden Salad",
       "Homestyle Chicken Sandwich"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [5.39, 5.89, 6.89, 4.39, 1.89, 2.09, 2.89, 3.39, 4.89, 5.49],
     doordashMenuPrice: [5.49, 5.79, 7.09, 4.29, 1.79, 2.19, 2.79, 3.29, 4.79, 5.39],
     grubhubMenuPrice: [5.29, 5.99, 6.99, 4.49, 1.69, 1.99, 2.69, 3.19, 4.69, 5.59],
@@ -1197,6 +5447,7 @@ const restaurantData = [
       "Garden Salad",
       "Homestyle Chicken Sandwich"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [5.69, 6.19, 7.19, 4.69, 2.19, 2.39, 3.19, 3.69, 5.19, 5.79],
     doordashMenuPrice: [5.59, 6.09, 7.29, 4.59, 2.09, 2.49, 3.09, 3.59, 5.09, 5.69],
     grubhubMenuPrice: [5.79, 6.29, 7.09, 4.79, 1.99, 2.29, 2.99, 3.49, 4.99, 5.89],
@@ -1236,6 +5487,7 @@ const restaurantData = [
       "Coleslaw",
       "Apple Pie"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [3.99, 4.19, 5.49, 6.99, 2.49, 2.69, 0.99, 2.99, 1.89, 1.59],
     doordashMenuPrice: [4.09, 4.29, 5.59, 7.09, 2.39, 2.79, 1.09, 2.89, 1.79, 1.69],
     grubhubMenuPrice: [3.89, 4.39, 5.69, 6.89, 2.29, 2.59, 0.89, 2.79, 1.99, 1.49],
@@ -1275,6 +5527,7 @@ const restaurantData = [
       "Coleslaw",
       "Apple Pie"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [4.09, 4.29, 5.69, 7.09, 2.59, 2.79, 1.09, 3.09, 1.99, 1.69],
     doordashMenuPrice: [3.99, 4.19, 5.49, 6.99, 2.49, 2.69, 0.99, 2.99, 1.89, 1.59],
     grubhubMenuPrice: [4.19, 4.39, 5.79, 7.19, 2.69, 2.89, 1.19, 3.19, 2.09, 1.79],
@@ -1314,6 +5567,7 @@ const restaurantData = [
       "Coleslaw",
       "Apple Pie"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [4.19, 4.39, 5.79, 7.19, 2.69, 2.89, 1.19, 3.19, 2.09, 1.79],
     doordashMenuPrice: [4.29, 4.49, 5.89, 7.29, 2.79, 2.99, 1.29, 3.29, 2.19, 1.89],
     grubhubMenuPrice: [4.09, 4.59, 5.99, 7.09, 2.59, 2.79, 1.09, 3.09, 1.99, 1.99],
@@ -1353,6 +5607,7 @@ const restaurantData = [
       "Coleslaw",
       "Apple Pie"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [4.29, 4.49, 5.89, 7.29, 2.79, 2.99, 1.29, 3.29, 2.19, 1.89],
     doordashMenuPrice: [4.19, 4.39, 5.79, 7.19, 2.69, 2.89, 1.19, 3.19, 2.09, 1.79],
     grubhubMenuPrice: [4.39, 4.59, 5.99, 7.39, 2.89, 3.09, 1.39, 3.39, 2.29, 1.99],
@@ -1392,6 +5647,7 @@ const restaurantData = [
       "Salad",
       "Cinnamon Sticks"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [12.99, 11.99, 14.99, 15.99, 13.99, 5.99, 8.99, 9.99, 4.99, 5.49],
     doordashMenuPrice: [13.49, 12.49, 15.49, 16.49, 14.49, 6.49, 9.49, 10.49, 5.49, 5.99],
     grubhubMenuPrice: [12.49, 11.49, 14.49, 15.49, 13.49, 5.49, 8.49, 9.49, 4.49, 4.99],
@@ -1431,6 +5687,7 @@ const restaurantData = [
       "Salad",
       "Cinnamon Sticks"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [13.09, 12.09, 15.09, 16.09, 14.09, 6.09, 9.09, 10.09, 5.09, 5.59],
     doordashMenuPrice: [12.99, 11.99, 14.99, 15.99, 13.99, 5.99, 8.99, 9.99, 4.99, 5.49],
     grubhubMenuPrice: [13.19, 12.19, 15.19, 16.19, 14.19, 6.19, 9.19, 10.19, 5.19, 5.69],
@@ -1470,6 +5727,7 @@ const restaurantData = [
       "Salad",
       "Cinnamon Sticks"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [12.89, 11.89, 14.89, 15.89, 13.89, 5.89, 8.89, 9.89, 4.89, 5.39],
     doordashMenuPrice: [13.09, 12.09, 15.09, 16.09, 14.09, 6.09, 9.09, 10.09, 5.09, 5.59],
     grubhubMenuPrice: [12.79, 11.79, 14.79, 15.79, 13.79, 5.79, 8.79, 9.79, 4.79, 5.29],
@@ -1509,6 +5767,7 @@ const restaurantData = [
       "Salad",
       "Cinnamon Sticks"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [13.19, 12.19, 15.19, 16.19, 14.19, 6.19, 9.19, 10.19, 5.19, 5.69],
     doordashMenuPrice: [13.29, 12.29, 15.29, 16.29, 14.29, 6.29, 9.29, 10.29, 5.29, 5.79],
     grubhubMenuPrice: [13.09, 12.09, 15.09, 16.09, 14.09, 6.09, 9.09, 10.09, 5.09, 5.59],
@@ -1548,6 +5807,7 @@ const restaurantData = [
       "Roasted Chicken",
       "Subway Club"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [5.99, 5.49, 4.99, 6.49, 5.99, 5.49, 5.29, 6.99, 6.49, 6.19],
     doordashMenuPrice: [6.19, 5.69, 5.19, 6.69, 6.19, 5.69, 5.49, 7.19, 6.69, 6.39],
     grubhubMenuPrice: [5.89, 5.39, 4.89, 6.29, 5.89, 5.39, 5.19, 6.89, 6.29, 6.09],
@@ -1587,6 +5847,7 @@ const restaurantData = [
       "Roasted Chicken",
       "Subway Club"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [6.09, 5.59, 5.09, 6.59, 6.09, 5.59, 5.39, 7.09, 6.59, 6.29],
     doordashMenuPrice: [5.99, 5.49, 4.99, 6.49, 5.99, 5.49, 5.29, 6.99, 6.49, 6.19],
     grubhubMenuPrice: [6.19, 5.69, 5.19, 6.69, 6.19, 5.69, 5.49, 7.19, 6.69, 6.39],
@@ -1626,6 +5887,7 @@ const restaurantData = [
       "Roasted Chicken",
       "Subway Club"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [5.89, 5.39, 4.89, 6.29, 5.89, 5.39, 5.19, 6.89, 6.29, 6.09],
     doordashMenuPrice: [6.09, 5.59, 5.09, 6.59, 6.09, 5.59, 5.39, 7.09, 6.59, 6.29],
     grubhubMenuPrice: [5.79, 5.29, 4.79, 6.19, 5.79, 5.29, 5.09, 6.79, 6.19, 5.99],
@@ -1665,6 +5927,7 @@ const restaurantData = [
       "Roasted Chicken",
       "Subway Club"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [6.19, 5.69, 5.19, 6.69, 6.19, 5.69, 5.49, 7.19, 6.69, 6.39],
     doordashMenuPrice: [6.29, 5.79, 5.29, 6.79, 6.29, 5.79, 5.59, 7.29, 6.79, 6.49],
     grubhubMenuPrice: [6.09, 5.59, 5.09, 6.59, 6.09, 5.59, 5.39, 7.09, 6.59, 6.29],
@@ -1704,6 +5967,7 @@ const restaurantData = [
       "Cheesy Gordita Crunch",
       "Chalupa Supreme"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [1.29, 1.39, 3.49, 3.99, 3.69, 3.29, 1.99, 4.49, 3.59, 3.29],
     doordashMenuPrice: [1.19, 1.29, 3.39, 3.89, 3.59, 3.19, 1.89, 4.39, 3.49, 3.19],
     grubhubMenuPrice: [1.39, 1.49, 3.59, 4.09, 3.79, 3.39, 2.09, 4.59, 3.69, 3.39],
@@ -1743,6 +6007,7 @@ const restaurantData = [
       "Cheesy Gordita Crunch",
       "Chalupa Supreme"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [1.39, 1.49, 3.59, 4.09, 3.79, 3.39, 2.09, 4.59, 3.69, 3.39],
     doordashMenuPrice: [1.29, 1.39, 3.49, 3.99, 3.69, 3.29, 1.99, 4.49, 3.59, 3.29],
     grubhubMenuPrice: [1.49, 1.59, 3.69, 4.19, 3.89, 3.49, 2.19, 4.69, 3.79, 3.49],
@@ -1782,6 +6047,7 @@ const restaurantData = [
       "Cheesy Gordita Crunch",
       "Chalupa Supreme"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [1.19, 1.29, 3.39, 3.89, 3.59, 3.19, 1.89, 4.39, 3.49, 3.19],
     doordashMenuPrice: [1.39, 1.49, 3.59, 4.09, 3.79, 3.39, 2.09, 4.59, 3.69, 3.39],
     grubhubMenuPrice: [1.29, 1.39, 3.49, 3.99, 3.69, 3.29, 1.99, 4.49, 3.59, 3.29],
@@ -1821,6 +6087,7 @@ const restaurantData = [
       "Cheesy Gordita Crunch",
       "Chalupa Supreme"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [1.49, 1.59, 3.69, 4.19, 3.89, 3.49, 2.19, 4.69, 3.79, 3.49],
     doordashMenuPrice: [1.39, 1.49, 3.59, 4.09, 3.79, 3.39, 2.09, 4.59, 3.69, 3.39],
     grubhubMenuPrice: [1.59, 1.69, 3.79, 4.29, 3.99, 3.59, 2.29, 4.79, 3.89, 3.59],
@@ -1860,6 +6127,7 @@ const restaurantData = [
       "Chicken Strips",
       "Chocolate Milkshake"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [3.75, 3.99, 4.49, 1.99, 4.29, 2.89, 1.89, 2.99, 4.59, 3.29],
     doordashMenuPrice: [3.85, 4.09, 4.59, 2.09, 4.39, 2.99, 1.99, 3.09, 4.69, 3.39],
     grubhubMenuPrice: [3.65, 3.89, 4.39, 1.89, 4.19, 2.79, 1.79, 2.89, 4.49, 3.19],
@@ -1899,6 +6167,7 @@ const restaurantData = [
       "Chicken Strips",
       "Chocolate Milkshake"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [3.85, 4.09, 4.59, 2.09, 4.39, 2.99, 1.99, 3.09, 4.69, 3.39],
     doordashMenuPrice: [3.75, 3.99, 4.49, 1.99, 4.29, 2.89, 1.89, 2.99, 4.59, 3.29],
     grubhubMenuPrice: [3.95, 4.19, 4.69, 2.19, 4.49, 3.09, 2.09, 3.19, 4.79, 3.49],
@@ -1938,6 +6207,7 @@ const restaurantData = [
       "Chicken Strips",
       "Chocolate Milkshake"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [3.65, 3.89, 4.39, 1.89, 4.19, 2.79, 1.79, 2.89, 4.49, 3.19],
     doordashMenuPrice: [3.85, 4.09, 4.59, 2.09, 4.39, 2.99, 1.99, 3.09, 4.69, 3.39],
     grubhubMenuPrice: [3.75, 3.99, 4.49, 1.99, 4.29, 2.89, 1.89, 2.99, 4.59, 3.29],
@@ -1977,6 +6247,7 @@ const restaurantData = [
       "Chicken Strips",
       "Chocolate Milkshake"
     ],
+    menuOptions: [],
     ubereatsMenuPrice: [3.95, 4.19, 4.69, 2.19, 4.49, 3.09, 2.09, 3.19, 4.79, 3.49],
     doordashMenuPrice: [3.75, 3.99, 4.49, 1.99, 4.29, 2.89, 1.89, 2.99, 4.59, 3.29],
     grubhubMenuPrice: [4.05, 4.29, 4.79, 2.29, 4.59, 3.19, 2.19, 3.29, 4.89, 3.59],

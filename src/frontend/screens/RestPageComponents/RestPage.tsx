@@ -12,6 +12,7 @@ interface MenuItemProps {
   price: number;
   quantity: number;
   image: string;
+  menuOptions: [];
 
   onAdd: () => void;
   onRemove: () => void;
@@ -19,7 +20,7 @@ interface MenuItemProps {
   deal: number | null;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, onAdd, onRemove, deal }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, menuOptions, onAdd, onRemove, deal }) => {
   // useEffect(() => {
   //   console.log("Deal: ", deal);
   // }, [deal]);
@@ -394,6 +395,7 @@ export default function RestPage() {
                   price={prices[actualIndex]}
                   quantity={quantities[actualIndex]}
                   image={restaurant.menuItemImages[actualIndex]}
+                  menuOptions={restaurant.menuOptions[actualIndex]}
                   onAdd={() => handleAdd(actualIndex)}
                   onRemove={() => handleRemove(actualIndex)}
                   deal={deal}
