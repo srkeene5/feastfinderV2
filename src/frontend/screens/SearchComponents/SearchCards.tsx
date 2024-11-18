@@ -9,6 +9,7 @@ import {
   View,
   TextInput, // Add TextInput
 } from "react-native";
+import { API_BASE_URL } from '../../../config.js';
 
 import { useAuth } from "../UserComponents/Authorizer.tsx";
 import { ffColors } from "../CoreComponents/CoreStyles.tsx";
@@ -70,30 +71,7 @@ export default function SearchCards() {
   const [hoveredRating, setHoveredRating] = React.useState<number>(0);
   const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]);
 
-  // Dummy data for initial reviews
-  const dummyReviews = [
-    {
-      reviewId: 1,
-      username: "JohnDoe",
-      rating: 4,
-      reviewText: "Great food and atmosphere! Would definitely come back.",
-      createdAt: "2024-03-15T10:30:00",
-    },
-    {
-      reviewId: 2,
-      username: "JaneSmith",
-      rating: 5,
-      reviewText: "Best restaurant in town. The service was exceptional.",
-      createdAt: "2024-03-14T15:45:00",
-    },
-    {
-      reviewId: 3,
-      username: "MikeJohnson",
-      rating: 3,
-      reviewText: "Decent food but a bit pricey. Service was okay.",
-      createdAt: "2024-03-13T18:20:00",
-    },
-  ];
+
 
   // Initialize restaurants state when results change
   React.useEffect(() => {
@@ -141,7 +119,7 @@ export default function SearchCards() {
 
     try {
       let response;
-      var fetchAddr = "http://localhost:5001/api/auth/app-login";
+      var fetchAddr = `${API_BASE_URL}/api/auth/app-login`;
       response = await fetch(fetchAddr, {
         method: "POST",
         headers: {
@@ -187,7 +165,7 @@ export default function SearchCards() {
   };
 
   const checkLogin = async (service: string, item) => {
-    let fetchAddr = "http://localhost:5001/api/auth/app-status";
+    let fetchAddr = `${API_BASE_URL}/api/auth/app-status`;
     
     try {
       const res = await fetch(fetchAddr, {
@@ -334,7 +312,7 @@ export default function SearchCards() {
   
     try {
       console.log('Sending POST request to /api/reviews');
-      const response = await fetch('http://localhost:5001/api/reviews', {
+      const response = await fetch(`${API_BASE_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -380,7 +358,7 @@ export default function SearchCards() {
   const fetchReviews = async (restaurantID) => {
     setIsLoadingReviews(true);
     try {
-      const response = await fetch(`http://localhost:5001/api/reviews/restaurant/${restaurantID}`);
+      const response = await fetch(`${API_BASE_URL}/api/reviews/restaurant/${restaurantID}`);
       if (response.ok) {
         const reviews = await response.json();
         // Update restaurants state with fetched reviews
@@ -479,7 +457,7 @@ export default function SearchCards() {
   const goToDishRestaurants = async (dishName) => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/searchRestaurant?dish=${encodeURIComponent(
+        `${API_BASE_URL}/api/searchRestaurant?dish=${encodeURIComponent(
           dishName
         )}`
       );

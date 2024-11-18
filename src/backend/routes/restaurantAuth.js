@@ -62,37 +62,7 @@ router.get('/searchRestaurant', async (req, res) => {
     }
 });
 
-// router.get('/searchRestaurant', async (req, res) => {
-//     const { name, dish } = req.query;
 
-//     try {
-//         let restaurants;
-
-//         if (name) {
-//             // Search for restaurants by name
-//             restaurants = await Restaurant.find({ restaurantName: new RegExp(name, 'i') });
-//         } else if (dish) {
-//             // Search for restaurants offering the dish
-//             const searchTerm = dish.toLowerCase();
-//             restaurants = await Restaurant.find({
-//                 menu: { $elemMatch: { $regex: new RegExp(searchTerm, 'i') } }
-//             });
-//         } else {
-//             return res.status(400).json({ message: 'Please provide a restaurant name or dish to search' });
-//         }
-
-//         if (!restaurants.length) {
-//             return res.status(404).json({ message: 'No restaurants found' });
-//         }
-
-//         res.json(restaurants);
-//     } catch (error) {
-//         console.error('Error fetching restaurants:', error.message);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// });
-
-// In restaurantAuth.js or a similar route file
 router.get('/popularRestaurants', async (req, res) => {
     try {
         const restaurants = await Restaurant.find();  // Query your database for popular restaurants
