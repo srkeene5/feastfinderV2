@@ -65,6 +65,14 @@ const restaurantSchema = new mongoose.Schema({
     type: String,
     required: true
   }],
+  websiteURL: {
+    type: String,
+    required: false, // This field is optional
+    match: [
+      /^(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w\-.?=&%]*)*\/?$/,
+      'Please fill a valid URL'
+    ]
+  },
   
 });
 
