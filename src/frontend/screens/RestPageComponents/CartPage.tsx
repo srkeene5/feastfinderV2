@@ -2,18 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from './CartContext.tsx'; // Corrected path
 import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useNavigate } from 'react-router-dom';
-import { CartItem } from '../../../types/Cart'; // Adjusted path
+import { CartEntry, CartItem, Option } from '../../../types/Cart'; // Adjusted path
 import { useAuth } from '../UserComponents/Authorizer.tsx'; // Authentication hook
 import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for login
 import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
+import { divIcon } from 'leaflet';
+import { Button, styled, Tooltip, tooltipClasses, TooltipProps, Typography } from '@mui/material';
+import CoreButton from '../CoreComponents/CoreButton.tsx';
 
 const CartPage: React.FC = () => {
-  const { cart, clearCart } = useCart(); // Destructure clearCart from useCart
+  const { cart, updateCart, clearCart } = useCart(); // Destructure clearCart from useCart
   const navigate = useNavigate();
   const { user } = useAuth(); // Authentication context
 
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedService, setSelectedService] = useState<string | null>(null);
+  //const [showSuccessModal, setShowSuccessModal] = useState(false);
+  //const [selectedService, setSelectedService] = useState<string | null>(null);
+  
+  const [cartPop, setCartPop] = useState<boolean>(false);
+  const [popIndex, setPopIndex] =  useState<number>(-1);
   const [errPop, setErrPop] = useState(false);
   const [errText, setErrText] = useState('Error Undefined');
   const [loginPop, setLoginPop] = useState(false);
@@ -33,8 +39,8 @@ const CartPage: React.FC = () => {
   const calculateServiceTotal = (service: string) => {
     return cart?.items.reduce((total: number, item: CartItem) => {
       console.log(service, cart.service)
-      const discount = cart.discount ?? 0;
-      const price = item.prices[service.toLowerCase()]; // We still lower-case the key lookup here since the backend data uses lowercase keys
+      //const discount = cart.discount ?? 0;
+      const price = item.prices[service.toLowerCase()] + item.priceChange; // We still lower-case the key lookup here since the backend data uses lowercase keys
       return total + (price * item.quantity);
     }, 0);
   };
@@ -42,10 +48,10 @@ const CartPage: React.FC = () => {
   // Function to calculate total for a specific service
   // use cart.service to see if the discount should be applied to this service or not.
   const calculateAfterDiscountTotal = (service: string) => {
-    if (service.toLowerCase() != cart?.service.toLowerCase()) return calculateServiceTotal(service);
+    if (service.toLowerCase() !== cart?.service.toLowerCase()) return calculateServiceTotal(service);
     return cart?.items.reduce((total: number, item: CartItem) => {
       const discount = cart.discount ?? 0;
-      const price = item.prices[service.toLowerCase()]; // We still lower-case the key lookup here since the backend data uses lowercase keys
+      const price = item.prices[service.toLowerCase()] + item.priceChange; // We still lower-case the key lookup here since the backend data uses lowercase keys
       return total + (price * item.quantity * (100 - discount) / 100);
     }, 0);
   };
@@ -233,6 +239,34 @@ const CartPage: React.FC = () => {
     return null;
   }
 
+  const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: '#f5f5f9',
+      color: 'rgba(0, 0, 0, 0.87)',
+      maxWidth: 220,
+      fontSize: theme.typography.pxToRem(12),
+      border: '1px solid #dadde9',
+    },
+  }));
+
+  const handleRemove = (index: number) => {
+    const newItems = [...cart.items];
+    newItems.splice(index,1);
+    const newCart: CartEntry = {
+      restaurant: cart.restaurant,
+      items: newItems,
+      service: cart.service,
+      total: cart.total,
+    }
+    updateCart(newCart);
+  }
+
+  const handleEditSubmit = () => {
+
+  }
+
   return (
     <div
       style={{backgroundColor: ffColors.ffBackground, height: '100vh'}}
@@ -274,17 +308,78 @@ const CartPage: React.FC = () => {
                       >
                         <span>
                           <p
-                            style={{color: ffColors.ffBody}}
+                            style={{color: ffColors.ffText}}
                           >
-                            {item.item} x {item.quantity}
+                            <HtmlTooltip
+                              title={
+                                <React.Fragment>
+                                  <button onClick={()=>{}}>Edit</button>
+                                  <br/>
+                                  <button onClick={(e) => {handleRemove(index)}}>Remove</button>
+                                </React.Fragment>
+                              }
+                            >
+                              <Button
+                                style={{textTransform: 'none', color: ffColors.ffText, font: 'inherit', fontSize: 16}}
+                              >
+                                {item.item} x {item.quantity}
+                              </Button>
+                            </HtmlTooltip>
                           </p>
+                          <div
+                            style={{paddingLeft: 16}}
+                          >
+                            {item.options.map((option: Option, index: number) => (
+                              <div
+                                key={index}
+                                style={{color: ffColors.ffBody, fontSize: 12}}
+                              >
+                                {option.optionName}
+                              </div>
+                            ))}
+                            {item.options.length > 0 ? 
+                            <div
+                              style={{color: ffColors.ffText, fontSize: 14}}
+                            >
+                              Subtotal:
+                            </div>
+                            :<></>}
+                          </div>
                         </span>
-                        <span>
-                          <p
-                            style={{color: ffColors.ffBody}}
+                        <span
+                          style={{justifyItems: 'right', marginBottom: 8}}
+                        >
+                          <div
+                            style={item.options.length > 0 ? {color: ffColors.ffBody} : {color: ffColors.ffText}}
                           >
                             ${(item.prices[service.toLowerCase()] * item.quantity).toFixed(2)}
-                          </p>
+                          </div>
+                          <div
+                            style={{justifyItems: 'right'}}
+                          >
+                            {item.options.map((option: Option, index: number) => (
+                              option.optionPrice !==0 ? <div
+                                key={index}
+                                style={{color: ffColors.ffBody, fontSize: 12}}
+                              >
+                                +${(option.optionPrice * item.quantity).toFixed(2)}
+                              </div> 
+                              :
+                              <div
+                                key={index}
+                                style={{color: ffColors.ffBody, fontSize: 12}}
+                              >
+                                Free
+                              </div>
+                            ))}
+                            {item.options.length > 0 ? 
+                            <div
+                              style={{color: ffColors.ffText}}
+                            >
+                              ${((item.prices[service.toLowerCase()] + item.options.reduce((sum, option) => sum + option.optionPrice, 0)) * item.quantity).toFixed(2)}
+                            </div>
+                            :<></>}
+                          </div>
                         </span>
                       </li>
                     ))}

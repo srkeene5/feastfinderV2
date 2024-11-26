@@ -30,7 +30,7 @@ const restaurantData = [
           multiSelect: true,
           options:[
             {
-              options: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
+              optionList: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
             },
             {
               optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
@@ -76,8 +76,8 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "4 Piece", optionPrice: -1}, {optionName: "6 Piece", optionPrice: 0},
-                {optionName: "10 Piece", optionPrice: 2}, {optionName: "20 Piece", optionPrice: 5}
+                {optionName: "4 Piece", optionPrice: 0}, {optionName: "6 Piece", optionPrice: 1},
+                {optionName: "10 Piece", optionPrice: 3}, {optionName: "20 Piece", optionPrice: 6}
               ]
             },
             {
@@ -109,8 +109,8 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "Small", optionPrice: -3},{optionName: "Medium", optionPrice: 0},
-                {optionName: "Large", optionPrice: 4}
+                {optionName: "Small", optionPrice: 0},{optionName: "Medium", optionPrice: 0.8},
+                {optionName: "Large", optionPrice: 1.5}
               ]
             },
             {
@@ -146,7 +146,7 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "Extra Small", optionPrice: -1}, {optionName: "Small", optionPrice: 0},
+                {optionName: "Extra Small", optionPrice: 0}, {optionName: "Small", optionPrice: 0},
                 {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.5}
               ]
             }
@@ -450,7 +450,7 @@ const restaurantData = [
           multiSelect: true,
           options:[
             {
-              options: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
+              optionList: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
             },
             {
               optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
@@ -496,8 +496,8 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "4 Piece", optionPrice: -1}, {optionName: "6 Piece", optionPrice: 0},
-                {optionName: "10 Piece", optionPrice: 2}, {optionName: "20 Piece", optionPrice: 5}
+                {optionName: "4 Piece", optionPrice: 0}, {optionName: "6 Piece", optionPrice: 1},
+                {optionName: "10 Piece", optionPrice: 3}, {optionName: "20 Piece", optionPrice: 6}
               ]
             },
             {
@@ -529,8 +529,8 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "Small", optionPrice: -3},{optionName: "Medium", optionPrice: 0},
-                {optionName: "Large", optionPrice: 4}
+                {optionName: "Small", optionPrice: 0},{optionName: "Medium", optionPrice: 0.8},
+                {optionName: "Large", optionPrice: 1.5}
               ]
             },
             {
@@ -566,7 +566,7 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "Extra Small", optionPrice: -1}, {optionName: "Small", optionPrice: 0},
+                {optionName: "Extra Small", optionPrice: 0}, {optionName: "Small", optionPrice: 0},
                 {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.5}
               ]
             }
@@ -870,7 +870,7 @@ const restaurantData = [
           multiSelect: true,
           options:[
             {
-              options: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
+              optionList: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
             },
             {
               optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
@@ -916,8 +916,8 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "4 Piece", optionPrice: -1}, {optionName: "6 Piece", optionPrice: 0},
-                {optionName: "10 Piece", optionPrice: 2}, {optionName: "20 Piece", optionPrice: 5}
+                {optionName: "4 Piece", optionPrice: 0}, {optionName: "6 Piece", optionPrice: 1},
+                {optionName: "10 Piece", optionPrice: 3}, {optionName: "20 Piece", optionPrice: 6}
               ]
             },
             {
@@ -949,8 +949,8 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "Small", optionPrice: -3},{optionName: "Medium", optionPrice: 0},
-                {optionName: "Large", optionPrice: 4}
+                {optionName: "Small", optionPrice: 0},{optionName: "Medium", optionPrice: 0.8},
+                {optionName: "Large", optionPrice: 1.5}
               ]
             },
             {
@@ -986,7 +986,7 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "Extra Small", optionPrice: -1}, {optionName: "Small", optionPrice: 0},
+                {optionName: "Extra Small", optionPrice: 0}, {optionName: "Small", optionPrice: 0},
                 {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.5}
               ]
             }
@@ -1288,7 +1288,7 @@ const restaurantData = [
           multiSelect: true,
           options:[
             {
-              options: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
+              optionList: [{optionName: "No Sauce", optionPrice: 0}, {optionName: "Extra Sauce", optionPrice: 0.4}]
             },
             {
               optionList: [{optionName: "No Onion", optionPrice: 0}, {optionName: "Extra Onion", optionPrice: 0}]
@@ -1334,8 +1334,8 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "4 Piece", optionPrice: -1}, {optionName: "6 Piece", optionPrice: 0},
-                {optionName: "10 Piece", optionPrice: 2}, {optionName: "20 Piece", optionPrice: 5}
+                {optionName: "4 Piece", optionPrice: 0}, {optionName: "6 Piece", optionPrice: 1},
+                {optionName: "10 Piece", optionPrice: 3}, {optionName: "20 Piece", optionPrice: 6}
               ]
             },
             {
@@ -1367,8 +1367,8 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "Small", optionPrice: -3},{optionName: "Medium", optionPrice: 0},
-                {optionName: "Large", optionPrice: 4}
+                {optionName: "Small", optionPrice: 0},{optionName: "Medium", optionPrice: 0.8},
+                {optionName: "Large", optionPrice: 1.5}
               ]
             },
             {
@@ -1404,7 +1404,7 @@ const restaurantData = [
             {
               optionList: 
               [
-                {optionName: "Extra Small", optionPrice: -1}, {optionName: "Small", optionPrice: 0},
+                {optionName: "Extra Small", optionPrice: 0}, {optionName: "Small", optionPrice: 0},
                 {optionName: "Medium", optionPrice: 1}, {optionName: "Large", optionPrice: 1.5}
               ]
             }
@@ -3132,7 +3132,7 @@ const restaurantData = [
               [
                 {optionName: "Coca-Cola", optionPrice: 0}, {optionName: "Diet Coke", optionPrice: 0},
                 {optionName: "Dr Pepper", optionPrice: 0}, {optionName: "Sprite", optionPrice: 0},
-                {optionName: "Water", optionPrice: -1}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
+                {optionName: "Water", optionPrice: 0}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
                 {optionName: "Unsweetened Iced Tea", optionPrice: 0},
               ]
             },
@@ -3620,7 +3620,7 @@ const restaurantData = [
               [
                 {optionName: "Coca-Cola", optionPrice: 0}, {optionName: "Diet Coke", optionPrice: 0},
                 {optionName: "Dr Pepper", optionPrice: 0}, {optionName: "Sprite", optionPrice: 0},
-                {optionName: "Water", optionPrice: -1}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
+                {optionName: "Water", optionPrice: 0}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
                 {optionName: "Unsweetened Iced Tea", optionPrice: 0},
               ]
             },
@@ -4108,7 +4108,7 @@ const restaurantData = [
               [
                 {optionName: "Coca-Cola", optionPrice: 0}, {optionName: "Diet Coke", optionPrice: 0},
                 {optionName: "Dr Pepper", optionPrice: 0}, {optionName: "Sprite", optionPrice: 0},
-                {optionName: "Water", optionPrice: -1}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
+                {optionName: "Water", optionPrice: 0}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
                 {optionName: "Unsweetened Iced Tea", optionPrice: 0},
               ]
             },
@@ -4596,7 +4596,7 @@ const restaurantData = [
               [
                 {optionName: "Coca-Cola", optionPrice: 0}, {optionName: "Diet Coke", optionPrice: 0},
                 {optionName: "Dr Pepper", optionPrice: 0}, {optionName: "Sprite", optionPrice: 0},
-                {optionName: "Water", optionPrice: -1}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
+                {optionName: "Water", optionPrice: 0}, {optionName: "Sweetened Iced Tea", optionPrice: 0},
                 {optionName: "Unsweetened Iced Tea", optionPrice: 0},
               ]
             },

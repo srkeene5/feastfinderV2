@@ -4,23 +4,20 @@ import { useCart } from './CartContext.tsx';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ConfirmModal from './ConfirmModal.tsx';
-import { CartItem, CartEntry } from '../../../types/Cart';
-import { ffColors } from '../CoreComponents/CoreStyles.tsx';
+import { CartItem, CartEntry, Option } from '../../../types/Cart';
+import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx';
+import CoreButton from '../CoreComponents/CoreButton.tsx';
+import CorePopup from '../CoreComponents/CorePopup.tsx';
 
 interface MenuItemProps {
   item: string;
   price: number;
-  quantity: number;
   image: string;
-  menuOptions: [];
-
-  onAdd: () => void;
-  onRemove: () => void;
-
+  setCartPop: () => void;
   deal: number | null;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, menuOptions, onAdd, onRemove, deal }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, image, setCartPop, deal }) => {
   // useEffect(() => {
   //   console.log("Deal: ", deal);
   // }, [deal]);
@@ -40,7 +37,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, menuO
       <div>
         <img
           src={image}
-          alt="Dish image"
+          alt="Dish"
           style={{
             height: 100,
             width: 150,
@@ -75,7 +72,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, menuO
         </div>
       </div>
       <div className="flex items-center space-x-2 mt-4">
-        <button
+        {/*<button
           onClick={onRemove}
           disabled={quantity <= 0}
           className="w-8 h-8 flex items-center justify-center text-white rounded-full disabled:opacity-50 hover:bg-red-600 transition duration-200 ease-in-out"
@@ -90,7 +87,12 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, menuO
           style={{backgroundColor: ffColors.ffGreenL}}
         >
           +
-        </button>
+        </button>*/}
+        <CoreButton
+        pressFunc={setCartPop}
+        bText={'Add To Cart'}
+        buttonColor={ffColors.ffGreenL}
+        />
       </div>
     </li>
   );
@@ -102,7 +104,7 @@ export default function RestPage() {
   const { restaurant, service } = location.state || {};
   const { cart, updateCart, clearCart } = useCart();
 
-  const [quantities, setQuantities] = useState<number[]>([]);
+  //const [quantities, setQuantities] = useState<number[]>([]);
   const [cartTotal, setCartTotal] = useState<number>(0);
   const [showModal, setShowModal] = useState(false);
 
@@ -113,6 +115,249 @@ export default function RestPage() {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const [deal, setDeal] = useState<number>(0);
+
+  const [cartPop, setCartPop] = useState<boolean>(false);
+  const [popIndex, setPopIndex] =  useState<number>(-1);
+  const [menuOptions, setMenuOptions] = useState<Option[]>([]);
+  const [checkboxesState, setCheckboxesState] = useState<{[key: number]: boolean}>({});
+  const [requiredState, setRequiredState] = useState<{[key: number]: number}>({});
+  const [optionalState, setOptionalState] = useState<{[key: number]: number}>({});
+  const [options, setOptions] = useState<Set<Option>>(new Set());
+  const [priceChange, setPriceChange] = useState<number>(0);
+
+  const optionMap = (item, index) => {
+    if (item.options && item.options.length > 0) {
+      if (item.required) {
+        return (
+          <div 
+          key={index}
+          style={coreForm.formItem}
+          >
+            <div
+            style={coreForm.subheader}
+            >
+              Required:
+            </div>
+            {item.options.map((subItem, subIndex)=>(
+              <div 
+              key = {subIndex}
+              style={{display: 'flex', flexDirection:'row', maxWidth: '80vh', flexWrap: 'wrap'}}
+              >
+                {subItem.optionList ? requiredSet(subItem.optionList, subIndex): <div></div>}
+              </div>
+            ))}
+          </div>
+        )
+      } else {
+        return (
+          <div 
+          key={index}
+          style={coreForm.formItem}
+          >
+            <div
+            style={coreForm.subheader}
+            >
+              Optional:
+            </div>
+            {item.options.map((subItem, subIndex)=>(
+              <div 
+              key = {subIndex}
+              style={{display: 'flex', flexDirection:'row', maxWidth: '80vh', flexWrap: 'wrap'}}
+              >
+                <input 
+                type="checkbox" 
+                checked={checkboxesState[subIndex] || false}
+                onChange={(e)=>handleCheckboxChange(subIndex, -1, e.target.checked, subItem.optionList)}
+                />
+                {subItem.optionList ? optionalSet(subItem.optionList, subIndex): <div></div>}
+              </div>
+            ))}
+          </div>
+        )
+      }
+    }
+    return (
+      <div key={index}>
+  
+      </div>
+    )
+  }
+
+  const requiredSet = (optionList, subIndex) => {
+    return (
+      <div
+      style={{}}
+      >
+        {optionList.map((option, i)=>(
+          <div 
+          key = {i}
+          style={{marginLeft: 10, float: 'left'}}
+          >
+            <CoreButton
+            bText={option.optionName}
+            buttonColor={i === requiredState[subIndex] ? ffColors.ffGreenL : ffColors.ffGreyL}
+            pressFunc={()=>{handleButtonChange(subIndex, i, true, optionList)}}
+            />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  const optionalSet = (optionList, subIndex) => {
+    return (
+      <div
+      style={{}}
+      >
+        {optionList.map((option, i)=>(
+          <div 
+          key = {i}
+          style={{marginLeft: 10, float: 'left'}}
+          >
+            {checkboxesState[subIndex] ? 
+            <CoreButton
+            bText={option.optionName}
+            buttonColor={i === optionalState[subIndex] ? ffColors.ffGreenL: ffColors.ffGreyL}
+            pressFunc={()=>{handleButtonChange(subIndex, i, false, optionList)}}
+            />: 
+            <CoreButton
+            bText={option.optionName}
+            buttonColor={ffColors.ffGreyXL}
+            pressFunc={()=>{handleCheckboxChange(subIndex, i, true, optionList); handleButtonChange(subIndex, i, false, optionList)}}
+            />
+            }
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  const handleButtonChange = (index: number, value: number, required: boolean, optionList) => {
+    if (required) {
+      if (typeof value === 'number' && value !== -1) {
+        optionChange(true, optionList[value]);
+      }
+      if (typeof requiredState[index] === 'number' && requiredState[index] !== -1) {
+        optionChange(false, optionList[requiredState[index]]);
+      }
+      setRequiredState((prevState)=>({
+        ...prevState,
+        [index]: value,
+      }));
+    } else {
+      if (typeof value === 'number' && value !== -1) {
+        optionChange(true, optionList[value]);
+      }
+      if (typeof optionalState[index] === 'number' && optionalState[index] !== -1) {
+        optionChange(false, optionList[optionalState[index]]);
+      }
+      setOptionalState((prevState)=>({
+        ...prevState,
+        [index]: value,
+      }));
+    }
+  }
+
+  const handleCheckboxChange = (index: number, value: number, selected: boolean, optionList) => {
+    setCheckboxesState((prevState)=>({
+      ...prevState,
+      [index]: selected,
+    }));
+    if (!selected) {
+      if (typeof value === 'number' && value !== -1) {
+        optionChange(true, optionList[value]);
+      }
+      if (typeof optionalState[index] === 'number' && optionalState[index] !== -1) {
+        optionChange(false, optionList[optionalState[index]]);
+      }
+      setOptionalState((prevState)=>({
+        ...prevState,
+        [index]: -1,
+      }));
+    }
+  }
+
+  const optionChange = (add: boolean, option: Option) => {
+    if (add) {
+      setOptions(prevOptions => new Set(prevOptions).add(option));
+      setPriceChange((prevPrice) => Math.round((prevPrice + option.optionPrice)* 100)/100);
+    } else {
+      setOptions(prevOptions => {
+        const updatedOptions = new Set(prevOptions);
+        updatedOptions.delete(option);
+        return updatedOptions;
+      });
+      setPriceChange((prevPrice) => Math.round((prevPrice - option.optionPrice)* 100)/100);
+    }
+  }
+
+  const handleClosePop = () => {
+    setCartPop(false); 
+    setPopIndex(-1);
+    setCheckboxesState({});
+    setRequiredState({});
+    setOptionalState({});
+    setPriceChange(0);
+    setOptions(new Set());
+  }
+
+  const handleDishConfirm = (index: number, quantity: number) => {
+    const addedAmount = prices[index] + priceChange;
+
+    var newCartEntry: CartEntry;
+
+    if (cart) {
+      newCartEntry = cart
+      newCartEntry.total = cartTotal + prices[index] + priceChange;
+    } else {
+      newCartEntry = {
+        restaurant: restaurant,
+        service: service,
+        items: [],
+        total: prices[index] + priceChange,
+        discount: deal
+      };
+    }
+    setCartTotal((prevTotal) => prevTotal + addedAmount);
+
+    const newCartItem: CartItem = {
+      item: restaurant.menu[index],
+      quantity: quantity,
+      options: [...options],
+      priceChange: priceChange,
+      prices: {
+        doordash: restaurant.doordashMenuPrice[index],
+        ubereats: restaurant.ubereatsMenuPrice[index],
+        grubhub: restaurant.grubhubMenuPrice[index],
+      },
+    }
+
+    var found = false
+    newCartEntry.items.map((item) => {
+      if (item === newCartItem) {
+        item.quantity += newCartItem.quantity;
+        found = true;
+      }
+    });
+
+    if (!found) {
+      newCartEntry.items.push(newCartItem);
+    }
+
+    console.log('newCartEntry.total: '+ newCartEntry.total)
+
+    updateCart(newCartEntry);
+    handleClosePop();
+  }
+
+  const calculateServiceTotal = (service: string) => {
+    return cart?.items.reduce((total: number, item: CartItem) => {
+      console.log(service, cart.service)
+      //const discount = cart.discount ?? 0;
+      const price = item.prices[service.toLowerCase()] + item.priceChange; // We still lower-case the key lookup here since the backend data uses lowercase keys
+      return total + (price * item.quantity);
+    }, 0);
+  };
 
   // Prices setup based on service
   let prices: number[] = [];
@@ -159,17 +404,17 @@ export default function RestPage() {
 
   useEffect(() => {
     getDeals();
-  }, []);
+  });
 
   useEffect(() => {
     if (restaurant && restaurant.menu) {
       if (cart && cart.restaurant.restaurantID === restaurant.restaurantID) {
-        setQuantities(cart.quantities);
-        setCartTotal(cart.total || 0);
+        //setQuantities(cart.quantities);
+        setCartTotal(calculateServiceTotal(service) || 0);
       } else if (cart && cart.restaurant.restaurantID !== restaurant.restaurantID) {
         setShowModal(true);
       } else {
-        setQuantities(Array(restaurant.menu.length).fill(0));
+        //setQuantities(Array(restaurant.menu.length).fill(0));
         setCartTotal(0);
       }
     }
@@ -216,7 +461,7 @@ export default function RestPage() {
   const paginatedMenuItems = restaurant.menu.slice(startIndex, startIndex + itemsPerPage);
 
   // Cart logic
-  const handleAdd = (index: number) => {
+  /*const handleAdd = (index: number) => {
     if (typeof prices[index] !== 'number') {
       console.error(`Price at index ${index} is undefined or not a number`);
       return;
@@ -252,7 +497,7 @@ export default function RestPage() {
       service: service,
       items: selectedItems,
       total: total,
-      quantities: newQuantities,
+      //quantities: newQuantities,
       discount: deal
     };
 
@@ -292,7 +537,7 @@ export default function RestPage() {
         service: service,
         items: selectedItems,
         total: total,
-        quantities: newQuantities,
+        //quantities: newQuantities,
         discount: deal
       };
 
@@ -300,13 +545,13 @@ export default function RestPage() {
     } else {
       console.error(`Cannot remove item at index ${index}`);
     }
-  };
+  };*/
 
   const handleViewCart = () => {
-    const selectedItems: CartItem[] = restaurant.menu
+    /*const selectedItems: CartItem[] = restaurant.menu
       .map((item: string, index: number) => ({
         item,
-        quantity: quantities[index],
+        //quantity: quantities[index],
         prices: {
           doordash: restaurant.doordashMenuPrice[index],
           ubereats: restaurant.ubereatsMenuPrice[index],
@@ -325,11 +570,11 @@ export default function RestPage() {
       service: service,
       items: selectedItems,
       total: total,
-      quantities: quantities,
+      //quantities: quantities,
       discount: deal
-    };
+    };*/
 
-    updateCart(newCartEntry);
+    //updateCart(newCartEntry);
     navigate('/cart');
   };
 
@@ -340,7 +585,7 @@ export default function RestPage() {
 
   const handleConfirm = () => {
     clearCart();
-    setQuantities(Array(restaurant.menu.length).fill(0));
+    //setQuantities(Array(restaurant.menu.length).fill(0));
     setCartTotal(0);
     setShowModal(false);
   };
@@ -393,11 +638,8 @@ export default function RestPage() {
                   key={actualIndex}
                   item={item}
                   price={prices[actualIndex]}
-                  quantity={quantities[actualIndex]}
                   image={restaurant.menuItemImages[actualIndex]}
-                  menuOptions={restaurant.menuOptions[actualIndex]}
-                  onAdd={() => handleAdd(actualIndex)}
-                  onRemove={() => handleRemove(actualIndex)}
+                  setCartPop={()=>{setCartPop(true); setPopIndex(actualIndex); setMenuOptions(restaurant.menuOptions[actualIndex])}}
                   deal={deal}
                 />
               );
@@ -418,7 +660,7 @@ export default function RestPage() {
             </h3>
             <button
               onClick={handleViewCart}
-              disabled={quantities.every((quantity) => quantity === 0)}
+              disabled={cartTotal === 0}
               className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50 hover:bg-blue-600 transition duration-200 ease-in-out"
               style={{backgroundColor: ffColors.ffGreenL}}
             >
@@ -467,6 +709,40 @@ export default function RestPage() {
           </button>
         </div>
       </div>
+
+      {/* Add To Cart Popup */}
+      <CorePopup
+      pop={cartPop}
+      popTitle={'Add ' + restaurant.menu[popIndex] + ' to cart'}
+      popText={''}
+      closeFunc={handleClosePop}
+      titleColor={ffColors.ffGreenL}
+      buttons={
+        [
+          {
+            bFunc: ()=>{handleDishConfirm(popIndex, 1)},
+            bText: 'Confirm',
+            bColor: ffColors.ffGreenL
+          },
+          {
+            bFunc: handleClosePop,
+            bText: 'Cancel',
+            bColor: ffColors.ffRedL
+          }
+        ]
+      }
+      >
+        <div
+        style={{flexDirection: 'column', overflowY: 'scroll', maxHeight: '80vh'}}
+        >
+          <div>
+            {priceChange !== 0 ? <div>
+              + {priceChange}
+            </div> : <></> }
+          </div>
+          {menuOptions.map((item, index) => optionMap(item, index))}
+        </div>
+      </CorePopup>
 
       {/* Include the ConfirmModal */}
       <ConfirmModal
