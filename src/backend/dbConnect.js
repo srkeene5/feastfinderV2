@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/your_database_name?replicaSet=rs0';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/feastfinder';
 
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) {
