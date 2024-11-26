@@ -10,13 +10,14 @@ import {
   TextInput, // Add TextInput
 } from "react-native";
 import { API_BASE_URL } from '../../../config.js';
-
+import { TouchableOpacity } from 'react-native';
 import { useAuth } from "../UserComponents/Authorizer.tsx";
 import { ffColors } from "../CoreComponents/CoreStyles.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import CorePopup from "../CoreComponents/CorePopup.tsx";
 import CoreButton from "../CoreComponents/CoreButton.tsx";
 import { Star } from "lucide-react";
+
 interface Review {
   reviewId: number;
   username: string;
@@ -70,8 +71,8 @@ export default function SearchCards() {
   const [rating, setRating] = React.useState<number>(0);
   const [hoveredRating, setHoveredRating] = React.useState<number>(0);
   const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]);
-
-
+  type SortOption = 'distance-asc' | 'distance-desc' | 'rating-asc' | 'rating-desc';
+  const [sortOption, setSortOption] = React.useState<SortOption>('distance-asc');
 
   // Initialize restaurants state when results change
   React.useEffect(() => {
@@ -86,6 +87,8 @@ export default function SearchCards() {
     });
   }, [results]);
 
+  
+  
   const calculateAverageRating = (reviews) => {
     if (!reviews || reviews.length === 0) return 0;
     const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
@@ -99,8 +102,28 @@ export default function SearchCards() {
     return true;
   };
 
-  const filteredResults = results.filter(filterBySelectedService);
+  const filteredResults = restaurants.filter(filterBySelectedService);
 
+  // Sorting function
+  const sortRestaurants = (restaurantsList: Restaurant[]) => {
+    return [...restaurantsList].sort((a, b) => {
+      switch (sortOption) {
+        case 'distance-asc':
+          return a.distance - b.distance;
+        case 'distance-desc':
+          return b.distance - a.distance;
+        case 'rating-asc':
+          return a.averageRating - b.averageRating;
+        case 'rating-desc':
+          return b.averageRating - a.averageRating;
+        default:
+          return 0;
+      }
+    });
+  };
+
+  //const sortedResults = sortRestaurants(filteredResults);
+  const sortedResults = React.useMemo(() => sortRestaurants(filteredResults), [filteredResults, sortOption]);
   const resetUserPass = () => {
     setuserValue("");
     setPassValue("");
@@ -355,7 +378,7 @@ export default function SearchCards() {
     }
   };
 
-  const fetchReviews = async (restaurantID) => {
+  const fetchReviews = async (restaurantID: string) => {
     setIsLoadingReviews(true);
     try {
       const response = await fetch(`${API_BASE_URL}/api/reviews/restaurant/${restaurantID}`);
@@ -365,15 +388,18 @@ export default function SearchCards() {
         setRestaurants((prevRestaurants) => {
           return prevRestaurants.map((restaurant) => {
             if (restaurant.restaurantID === restaurantID) {
+              const averageRating = calculateAverageRating(reviews);
               return {
                 ...restaurant,
                 reviews: reviews,
-                averageRating: calculateAverageRating(reviews),
+                averageRating: averageRating,
               };
             }
             return restaurant;
           });
         });
+      } else {
+        console.error(`Failed to fetch reviews for restaurantID: ${restaurantID}`);
       }
     } catch (error) {
       console.error('Error fetching reviews:', error);
@@ -529,11 +555,60 @@ export default function SearchCards() {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        {filteredResults.length > 0 ? (
+        {/* Sorting Controls */}
+        {searchType === 'restaurant' && (
+          <>
+            <View style={styles.sortingContainer}>
+              <Text style={styles.sortingLabel}>Sort by Distance:</Text>
+              <TouchableOpacity
+                style={[
+                  styles.sortButton,
+                  sortOption === 'distance-asc' && styles.sortButtonActive,
+                ]}
+                onPress={() => setSortOption('distance-asc')}
+              >
+                <Text style={styles.sortButtonText}>Closest First</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.sortButton,
+                  sortOption === 'distance-desc' && styles.sortButtonActive,
+                ]}
+                onPress={() => setSortOption('distance-desc')}
+              >
+                <Text style={styles.sortButtonText}>Furthest First</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.sortingContainer}>
+              <Text style={styles.sortingLabel}>Sort by Rating:</Text>
+              <TouchableOpacity
+                style={[
+                  styles.sortButton,
+                  sortOption === 'rating-desc' && styles.sortButtonActive,
+                ]}
+                onPress={() => setSortOption('rating-desc')}
+              >
+                <Text style={styles.sortButtonText}>Highest First</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.sortButton,
+                  sortOption === 'rating-asc' && styles.sortButtonActive,
+                ]}
+                onPress={() => setSortOption('rating-asc')}
+              >
+                <Text style={styles.sortButtonText}>Lowest First</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+
+        {sortedResults.length > 0 ? (
           searchType === "restaurant" ? (
-            filteredResults.map((item, index) => restItem(item, index))
+            sortedResults.map((item, index) => restItem(item, index))
           ) : (
-            filteredResults.map((item, index) => dishItem(item, index))
+            sortedResults.map((item, index) => dishItem(item, index))
           )
         ) : (
           <View style={styles.errorPage}>
@@ -892,5 +967,30 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: ffColors.ffBody,
     lineHeight: 20,
+  },
+  sortingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  sortingLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: ffColors.ffHeading,
+    marginRight: 10,
+  },
+  sortButton: {
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: ffColors.ffEdge,
+    marginRight: 5,
+  },
+  sortButtonActive: {
+    backgroundColor: ffColors.ffGreenL,
+  },
+  sortButtonText: {
+    fontSize: 14,
+    color: ffColors.ffText,
   },
 });
