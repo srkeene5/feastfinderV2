@@ -43,6 +43,7 @@ const restaurantData = [
       "/images/mcd/icecream-cone.jpeg",
       "/images/mcd/happymeal.jpg",
     ],
+    websiteURL: "https://www.mcdonalds.com/us/en-us.html",
   },
   {
     restaurantID: "13c821c",
@@ -88,6 +89,7 @@ const restaurantData = [
       "/images/mcd/icecream-cone.jpeg",
       "/images/mcd/happymeal.jpg",
     ],
+    websiteURL: "https://www.mcdonalds.com/us/en-us.html",
   },
   {
     restaurantID: "21e7b6f",
@@ -131,6 +133,7 @@ const restaurantData = [
       "/images/mcd/icecream-cone.jpeg",
       "/images/mcd/happymeal.jpg",
     ],
+    websiteURL: "https://www.mcdonalds.com/us/en-us.html",
   },
   {
     restaurantID: "89d3c1b",
@@ -176,6 +179,7 @@ const restaurantData = [
       "/images/mcd/icecream-cone.jpeg",
       "/images/mcd/happymeal.jpg",
     ],
+    websiteURL: "https://www.mcdonalds.com/us/en-us.html",
   },
   {
     restaurantID: "35ab42f",
@@ -221,6 +225,7 @@ const restaurantData = [
       "/images/kfc/cookie.jpg",
       "/images/kfc/drink.jpg",
     ],
+    websiteURL: "https://www.kfc.com/",
   },
   {
     restaurantID: "54cd31e",
@@ -259,6 +264,7 @@ const restaurantData = [
       "/images/kfc/cookie.jpg",
       "/images/kfc/drink.jpg",
     ],
+    websiteURL: "https://www.kfc.com/",
   },
   {
     restaurantID: "23df67b",
@@ -301,6 +307,7 @@ const restaurantData = [
       "/images/kfc/cookie.jpg",
       "/images/kfc/drink.jpg",
     ],
+    websiteURL: "https://www.kfc.com/",
   },
   {
     restaurantID: "91ae82d",
@@ -342,6 +349,7 @@ const restaurantData = [
       "/images/kfc/cookie.jpg",
       "/images/kfc/drink.jpg",
     ],
+    websiteURL: "https://www.kfc.com/",
   },
   {
     restaurantID: "12ab36c",
@@ -381,6 +389,7 @@ const restaurantData = [
       "/images/burger_king/drink.jpg",
       "/images/burger_king/jr_meal.jpg",
     ],
+    websiteURL: "https://www.bk.com/",
   },
   {
     restaurantID: "56cd78e",
@@ -420,6 +429,7 @@ const restaurantData = [
       "/images/burger_king/drink.jpg",
       "/images/burger_king/jr_meal.jpg",
     ],
+    websiteURL: "https://www.bk.com/",
   },
   {
     restaurantID: "34ab90d",
@@ -459,6 +469,7 @@ const restaurantData = [
       "/images/burger_king/drink.jpg",
       "/images/burger_king/jr_meal.jpg",
     ],
+    websiteURL: "https://www.bk.com/",
   },
   {
     restaurantID: "78ef44g",
@@ -498,6 +509,7 @@ const restaurantData = [
       "/images/burger_king/drink.jpg",
       "/images/burger_king/jr_meal.jpg",
     ],
+    websiteURL: "https://www.bk.com/",
   },
   {
     restaurantID: "17cd32x",
@@ -537,6 +549,7 @@ const restaurantData = [
       "/images/chipotle/burrito.jpg",
       "/images/chipotle/burrito.jpg",
     ],
+    websiteURL: "https://www.chipotle.com/",
   },
 
   ,
@@ -578,6 +591,7 @@ const restaurantData = [
       "/images/chipotle/burrito.jpg",
       "/images/chipotle/burrito.jpg",
     ],
+    websiteURL: "https://www.chipotle.com/",
   },
   {
     restaurantID: "37fg89z",
@@ -617,6 +631,7 @@ const restaurantData = [
       "/images/chipotle/burrito.jpg",
       "/images/chipotle/burrito.jpg",
     ],
+    websiteURL: "https://www.chipotle.com/",
   },
   {
     restaurantID: "45hi12w",
@@ -660,6 +675,7 @@ const restaurantData = [
       "/images/chipotle/burrito.jpg",
       "/images/chipotle/burrito.jpg",
     ],
+    websiteURL: "https://www.chipotle.com/",
   },
   {
     restaurantID: "99bc12x",
@@ -705,6 +721,7 @@ const restaurantData = [
       "/images/applebees/chocolate_meltdown.jpg",
       "/images/applebees/fries.jpg",
     ],
+    websiteURL: "https://www.applebees.com/en",
   },
   {
     restaurantID: "12de45z",
@@ -750,6 +767,7 @@ const restaurantData = [
       "/images/applebees/chocolate_meltdown.jpg",
       "/images/applebees/fries.jpg",
     ],
+    websiteURL: "https://www.applebees.com/en",
   },
   {
     restaurantID: "45ef67y",
@@ -795,6 +813,7 @@ const restaurantData = [
       "/images/applebees/chocolate_meltdown.jpg",
       "/images/applebees/fries.jpg",
     ],
+    websiteURL: "https://www.applebees.com/en",
   },
 
   {
@@ -841,6 +860,7 @@ const restaurantData = [
       "/images/applebees/chocolate_meltdown.jpg",
       "/images/applebees/fries.jpg",
     ],
+    websiteURL: "https://www.applebees.com/en",
   },
   {
     restaurantID: "87ab12x",
@@ -884,6 +904,7 @@ const restaurantData = [
       "/images/bistro_bella/fries.png",
       "/images/bistro_bella/espresso.jpg",
     ],
+    websiteURL: "https://bistrobellavita.com/",
   },
 
   {
@@ -930,6 +951,7 @@ const restaurantData = [
       "/images/rippleAndCompany/vegan brownie.jpg",
       "/images/rippleAndCompany/iced-matcha-latte-hero.webp",
     ],
+    websiteURL: "https://www.rippleandcompany.com/",
   },
 
   {
@@ -976,6 +998,7 @@ const restaurantData = [
       "/images/revolution_bbq/sweet-tea.webp",
       "/images/revolution_bbq/lemonade.jpg",
     ],
+    websiteURL: "https://www.revolution-bbq.com/",
   },
   {
     restaurantID: "54gh78b",
@@ -1019,6 +1042,7 @@ const restaurantData = [
       "/images/olive_garden/cannoli.jpg",
       "/images/olive_garden/espresso-pastahouse.webp",
     ],
+    websiteURL: "https://www.olivegarden.com/home",
   },
   {
     restaurantID: "39kl91q",
@@ -1060,6 +1084,7 @@ const restaurantData = [
       "/images/nom_nom/mexican_rice.jpg",
       "/images/nom_nom/horchata-6.jpg",
     ],
+    websiteURL: "https://nomnomtacosandtequila.com/",
   },
 
   //NEW DATA
@@ -1100,7 +1125,8 @@ const restaurantData = [
       "/images/wendys/baked_potato.jpg",
       "/images/wendys/garden_salad.jpg",
       "/images/wendys/homestyle_chicken_sandwich.jpg"
-    ]
+    ],
+    websiteURL: "https://www.wendys.com/",
   },
   {
     restaurantID: "e4f5g6h",
@@ -1139,7 +1165,8 @@ const restaurantData = [
       "/images/wendys/baked_potato.jpg",
       "/images/wendys/garden_salad.jpg",
       "/images/wendys/homestyle_chicken_sandwich.jpg"
-    ]
+    ],
+    websiteURL: "https://www.wendys.com/",
   },
   {
     restaurantID: "i7j8k9l",
@@ -1178,7 +1205,8 @@ const restaurantData = [
       "/images/wendys/baked_potato.jpg",
       "/images/wendys/garden_salad.jpg",
       "/images/wendys/homestyle_chicken_sandwich.jpg"
-    ]
+    ],
+    websiteURL: "https://www.wendys.com/",
   },
   {
     restaurantID: "m0n1o2p",
@@ -1217,7 +1245,8 @@ const restaurantData = [
       "/images/wendys/baked_potato.jpg",
       "/images/wendys/garden_salad.jpg",
       "/images/wendys/homestyle_chicken_sandwich.jpg"
-    ]
+    ],
+    websiteURL: "https://www.wendys.com/",
   },
   {
     restaurantID: "q3r4s5t",
@@ -1256,7 +1285,8 @@ const restaurantData = [
       "/images/popeyes/mashed_potatoes.jpg",
       "/images/popeyes/coleslaw.jpg",
       "/images/popeyes/apple_pie.jpg"
-    ]
+    ],
+    websiteURL: "https://www.popeyes.com/",
   },
   {
     restaurantID: "u6v7w8x",
@@ -1295,7 +1325,8 @@ const restaurantData = [
       "/images/popeyes/mashed_potatoes.jpg",
       "/images/popeyes/coleslaw.jpg",
       "/images/popeyes/apple_pie.jpg"
-    ]
+    ],
+    websiteURL: "https://www.popeyes.com/",
   },
   {
     restaurantID: "y9z0a1b",
@@ -1334,7 +1365,8 @@ const restaurantData = [
       "/images/popeyes/mashed_potatoes.jpg",
       "/images/popeyes/coleslaw.jpg",
       "/images/popeyes/apple_pie.jpg"
-    ]
+    ],
+    websiteURL: "https://www.popeyes.com/",
   },
   {
     restaurantID: "c2d3e4f",
@@ -1373,7 +1405,8 @@ const restaurantData = [
       "/images/popeyes/mashed_potatoes.jpg",
       "/images/popeyes/coleslaw.jpg",
       "/images/popeyes/apple_pie.jpg"
-    ]
+    ],
+    websiteURL: "https://www.popeyes.com/",
   },
   {
     restaurantID: "g5h6i7j",
@@ -1412,7 +1445,8 @@ const restaurantData = [
       "/images/pizzahut/pasta.jpg",
       "/images/pizzahut/salad.jpg",
       "/images/pizzahut/cinnamon_sticks.jpg"
-    ]
+    ],
+    websiteURL: "https://www.pizzahut.com/",
   },
   {
     restaurantID: "k8l9m0n",
@@ -1451,7 +1485,8 @@ const restaurantData = [
       "/images/pizzahut/pasta.jpg",
       "/images/pizzahut/salad.jpg",
       "/images/pizzahut/cinnamon_sticks.jpg"
-    ]
+    ],
+    websiteURL: "https://www.pizzahut.com/",
   },
   {
     restaurantID: "o1p2q3r",
@@ -1490,7 +1525,8 @@ const restaurantData = [
       "/images/pizzahut/pasta.jpg",
       "/images/pizzahut/salad.jpg",
       "/images/pizzahut/cinnamon_sticks.jpg"
-    ]
+    ],
+    websiteURL: "https://www.pizzahut.com/",
   },
   {
     restaurantID: "s4t5u6v",
@@ -1529,7 +1565,8 @@ const restaurantData = [
       "/images/pizzahut/pasta.jpg",
       "/images/pizzahut/salad.jpg",
       "/images/pizzahut/cinnamon_sticks.jpg"
-    ]
+    ],
+    websiteURL: "https://www.pizzahut.com/",
   },
   {
     restaurantID: "d8e9f0g",
@@ -1568,7 +1605,8 @@ const restaurantData = [
       "/images/subway/steak_cheese.jpg",
       "/images/subway/roasted_chicken.jpg",
       "/images/subway/subway_club.jpg"
-    ]
+    ],
+    websiteURL: "https://www.subway.com/en-us",
   },
   {
     restaurantID: "h1i2j3k",
@@ -1607,7 +1645,8 @@ const restaurantData = [
       "/images/subway/steak_cheese.jpg",
       "/images/subway/roasted_chicken.jpg",
       "/images/subway/subway_club.jpg"
-    ]
+    ],
+    websiteURL: "https://www.subway.com/en-us",
   },
   {
     restaurantID: "l4m5n6o",
@@ -1646,7 +1685,8 @@ const restaurantData = [
       "/images/subway/steak_cheese.jpg",
       "/images/subway/roasted_chicken.jpg",
       "/images/subway/subway_club.jpg"
-    ]
+    ],
+    websiteURL: "https://www.subway.com/en-us",
   },
   {
     restaurantID: "p7q8r9s",
@@ -1685,7 +1725,8 @@ const restaurantData = [
       "/images/subway/steak_cheese.jpg",
       "/images/subway/roasted_chicken.jpg",
       "/images/subway/subway_club.jpg"
-    ]
+    ],
+    websiteURL: "https://www.subway.com/en-us",
   },
   {
     restaurantID: "t0u1v2w",
@@ -1724,7 +1765,8 @@ const restaurantData = [
       "/images/tacobell/mexican_pizza.jpg",
       "/images/tacobell/cheesy_gordita_crunch.jpg",
       "/images/tacobell/chalupa_supreme.jpg"
-    ]
+    ],
+    websiteURL: "https://www.tacobell.com/",
   },
   {
     restaurantID: "x3y4z5a",
@@ -1763,7 +1805,8 @@ const restaurantData = [
       "/images/tacobell/mexican_pizza.jpg",
       "/images/tacobell/cheesy_gordita_crunch.jpg",
       "/images/tacobell/chalupa_supreme.jpg"
-    ]
+    ],
+    websiteURL: "https://www.tacobell.com/",
   },
   {
     restaurantID: "b6c7d8e",
@@ -1802,7 +1845,8 @@ const restaurantData = [
       "/images/tacobell/mexican_pizza.jpg",
       "/images/tacobell/cheesy_gordita_crunch.jpg",
       "/images/tacobell/chalupa_supreme.jpg"
-    ]
+    ],
+    websiteURL: "https://www.tacobell.com/",
   },
   {
     restaurantID: "e9f0g1h",
@@ -1841,7 +1885,8 @@ const restaurantData = [
       "/images/tacobell/mexican_pizza.jpg",
       "/images/tacobell/cheesy_gordita_crunch.jpg",
       "/images/tacobell/chalupa_supreme.jpg"
-    ]
+    ],
+    websiteURL: "https://www.tacobell.com/",
   },
   {
     restaurantID: "i2j3k4l",
@@ -1880,7 +1925,8 @@ const restaurantData = [
       "/images/chickfila/mac_cheese.jpg",
       "/images/chickfila/chicken_strips.jpg",
       "/images/chickfila/chocolate_milkshake.jpg"
-    ]
+    ],
+    websiteURL: "https://www.chick-fil-a.com/",
   },
   {
     restaurantID: "m5n6o7p",
@@ -1919,7 +1965,8 @@ const restaurantData = [
       "/images/chickfila/mac_cheese.jpg",
       "/images/chickfila/chicken_strips.jpg",
       "/images/chickfila/chocolate_milkshake.jpg"
-    ]
+    ],
+    websiteURL: "https://www.chick-fil-a.com/",
   },
   {
     restaurantID: "q8r9s0t",
@@ -1958,7 +2005,8 @@ const restaurantData = [
       "/images/chickfila/mac_cheese.jpg",
       "/images/chickfila/chicken_strips.jpg",
       "/images/chickfila/chocolate_milkshake.jpg"
-    ]
+    ],
+    websiteURL: "https://www.chick-fil-a.com/",
   },
   {
     restaurantID: "u1v2w3x",
@@ -1997,7 +2045,8 @@ const restaurantData = [
       "/images/chickfila/mac_cheese.jpg",
       "/images/chickfila/chicken_strips.jpg",
       "/images/chickfila/chocolate_milkshake.jpg"
-    ]
+    ],
+    websiteURL: "https://www.chick-fil-a.com/",
   }
   
 ];

@@ -82,7 +82,7 @@ const DishRecommendations = () => {
     navigate('/cart');
   };
 
-  if (loading) return <div className="p-4">Loading reccomendations...</div>;
+  if (loading) return <div className="p-4">Loading recommendations...</div>;
   if (error) return <div className="p-4 text-red-500">{error}</div>;
   if (!dishes.length) return <div className="p-4">No dishes found</div>;
 
