@@ -1,6 +1,6 @@
 const restaurantData = [
   {
-    restaurantID: "66f5ara",
+    restaurantID: "66f5arc",
     restaurantName: "McDonalds",
     restaurantAddress: "McDonalds, 124 E State St, West Lafayette, IN 47906",
     distance: 0.5,
@@ -63,7 +63,7 @@ const restaurantData = [
       "Happy Meal",
     ],
     ubereatsMenuPrice: [
-      5.11, 5.62, 3.87, 2.14, 3.35, 4.74, 3.89, 2.12, 1.12, 3.73,
+      30.00, 5.62, 3.87, 2.14, 3.35, 4.74, 3.89, 2.12, 1.12, 3.73,
     ],
     doordashMenuPrice: [
       5.85, 5.68, 3.18, 2.81, 3.38, 4.22, 3.2, 2.77, 1.11, 3.59,
