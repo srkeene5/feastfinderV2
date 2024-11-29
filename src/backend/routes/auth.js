@@ -184,23 +184,27 @@ router.post('/app-login', async (req, res) => {
     let service = '';
     let deal = 0;
     let loginField = '';
+    let tokenField = '';
 
     if (email.endsWith('@doordash.com')) {
       service = 'DoorDash';
       deal = appLogin.doorDashDeal;
       loginField = 'doordash_logged_in';
+      tokenField = 'doordash_token';
     } else if (email.endsWith('@ubereats.com')) {
       service = 'UberEats';
       deal = appLogin.uberEatsDeal;
       loginField = 'uber_logged_in';
+      tokenField = 'uber_token';
     } else if (email.endsWith('@grubhub.com')) {
       service = 'Grubhub';
       deal = appLogin.grubHubDeal;
       loginField = 'grubhub_logged_in';
+      tokenField = 'grubhub_token';
     } else {
       return res.status(400).json({ msg: 'Invalid app account domain' });
     }
-
+  
 
     // Update the User's Login Status
     const user = await User.findById(appLogin.userID);
@@ -217,7 +221,14 @@ router.post('/app-login', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
-
+    const user2 = await User.findById(appLogin.userID);
+    if (user2) {
+      user[tokenField] = token;
+      await user.save();
+    } else {
+      return res.status(400).json({ msg: 'Associated user not found' });
+    }
+    
     res.json({ 
       msg: `Logged into ${service} successfully`,
       service: service,
@@ -281,21 +292,28 @@ router.post('/app-logout', appAuth, async (req, res) => {
 
     // Update the User's Login Status
     let loginField = '';
+    let tokenField = '';
+    
     if (decoded.service === 'DoorDash') {
       loginField = 'doordash_logged_in';
+      tokenField = 'doordash_token';
     } else if (decoded.service === 'UberEats') {
       loginField = 'uber_logged_in';
+      tokenField = 'uber_token';
     } else if (decoded.service === 'Grubhub') {
       loginField = 'grubhub_logged_in';
+      tokenField = 'grubhub_token';
     } else {
       return res.status(400).json({ msg: 'Invalid service in token' });
     }
+
     // Find the AppLogin document using appEmail
     const appLogin = await AppLogin.findOne({ logins: decoded.appEmail });
     if (appLogin) {
       const user = await User.findById(appLogin.userID);
       if (user) {
         user[loginField] = false;
+        user[tokenField] = null;
         await user.save();
       } else {
         return res.status(400).json({ msg: 'Associated user not found' });
