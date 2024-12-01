@@ -149,15 +149,7 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
-/* logs in to uber/doordash/login account. example of response:
 
-{
-  "msg": "Logged into DoorDash successfully",
-  "service": "DoorDash",
-  "deal": 15,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
-}
-*/
 router.post('/app-login', async (req, res) => {
   const { email, password } = req.body;
   // Basic validation
@@ -329,15 +321,7 @@ router.post('/app-logout', appAuth, async (req, res) => {
   }
 });
 
-/*
-provide Bearer token. get token from feastfinder login
-example response:
-{
-    "uber_logged_in": false,
-    "doordash_logged_in": true,
-    "grubhub_logged_in": true
-}
-*/
+
 router.get('/app-status', auth, async (req, res) => {
   try {
     const userId = req.user; // Assuming the main auth middleware sets req.user to the user's ID
@@ -359,14 +343,7 @@ router.get('/app-status', auth, async (req, res) => {
   }
 });
 
-/* gets the app name and deal amount given a Bearer token
-example of response:
-{
-  "service": "DoorDash",
-  "deal": 15
-}
 
-*/
 router.get('/app-deal', appAuth, async (req, res) => {
   const { appEmail, service } = req;
 

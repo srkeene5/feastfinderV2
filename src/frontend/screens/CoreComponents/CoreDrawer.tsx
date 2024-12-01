@@ -43,6 +43,11 @@ const CoreDrawer = ({open, setOpen}) => {
             navImg: require('../images/reportBug.png'),
             navText: 'Report Bugs',
         },
+        {
+            navFunc: () => { navigate('/PastOrdersPage') },
+            navImg: require('../images/pastOrders.png'), // Ensure you have this image
+            navText: 'Past Orders',
+        },
     ];
 
     return (
