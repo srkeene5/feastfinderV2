@@ -93,15 +93,67 @@ router.post('/cart/create', auth, async (req, res) => {
 });
 
 // Optional: Route to get all carts for a user
+// router.get('/mycarts', auth, async (req, res) => {
+//   try {
+//     const user = await User.findById(req.user).populate('cartIDs');
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     res.json({ carts: user.cartIDs });
+//   } catch (error) {
+//     console.error('Error fetching user carts:', error);
+//     res.status(500).json({ message: 'Failed to fetch user carts', error });
+//   }
+// });
+
+// router.get('/mycarts', auth, async (req, res) => {
+//   try {
+//     const carts = await Cart.find({ user: req.user })
+//       .sort({ createdAt: -1 })
+//       .exec();
+
+//     res.json({ carts });
+//   } catch (error) {
+//     console.error('Error fetching user carts:', error);
+//     res.status(500).json({ message: 'Failed to fetch user carts', error });
+//   }
+// });
+
 router.get('/mycarts', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user).populate('cartIDs');
+    const carts = await Cart.find({ user: req.user })
+      .sort({ createdAt: -1 })
+      .lean() // Use lean for better performance
+      .exec();
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    // Get unique restaurantIDs from carts
+    const restaurantIDs = [...new Set(carts.map(cart => cart.restaurant.restaurantID))];
 
-    res.json({ carts: user.cartIDs });
+    // Fetch restaurant details
+    const restaurants = await Restaurant.find({ restaurantID: { $in: restaurantIDs } }).lean();
+
+    // Create a map from restaurantID to restaurant details
+    const restMap = {};
+    restaurants.forEach(restaurant => {
+      restMap[restaurant.restaurantID] = restaurant;
+    });
+
+    // Merge restaurant details into carts
+    const cartsWithRestaurantDetails = carts.map(cart => {
+      const restaurantDetails = restMap[cart.restaurant.restaurantID] || {};
+      return {
+        ...cart,
+        restaurant: {
+          ...cart.restaurant,
+          address: restaurantDetails.restaurantAddress || 'Address not available',
+          // Include any other details you need
+        },
+      };
+    });
+
+    res.json({ carts: cartsWithRestaurantDetails });
   } catch (error) {
     console.error('Error fetching user carts:', error);
     res.status(500).json({ message: 'Failed to fetch user carts', error });

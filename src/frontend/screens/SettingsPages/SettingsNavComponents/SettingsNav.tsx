@@ -48,6 +48,14 @@ export default function SettingsNav() {
                     >
                         <Text>FAQ</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => { navigate('/PastOrdersPage', { state: { uid: 86 } }) }}
+                    >
+                        <Text>Past Orders</Text>
+                    </TouchableOpacity>
+                    
                 </View>
             </SafeAreaView>
         </SafeAreaProvider>

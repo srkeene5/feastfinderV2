@@ -20,6 +20,7 @@ import Signup from '../UserComponents/SignUp.tsx';
 import FollowUp from '../UserComponents/FollowUp.tsx';
 import CartPage from '../RestPageComponents/CartPage.tsx';  // Import the CartPage
 import ChatSupport from '../SettingsPages/ChatComponents/ChatSupport.tsx';
+import PastOrdersPage from '../SettingsPages/PastOrdersPage.tsx';
 
 import useRequireAuth from '../UserComponents/RequireAuth.tsx';
 
@@ -42,6 +43,7 @@ export default function FeastRoutes() {
           <Route path="/Search" element={<SearchPage />}/>
           <Route path="/FAQPage" element={<FAQPage />}/>
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/PastOrdersPage" element={<PastOrdersPage />} />
         </Routes>
     )
 }
