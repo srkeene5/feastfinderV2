@@ -7,53 +7,6 @@ import Restaurant from '../models/Restaurant.js';
 
 const router = express.Router();
 
-// Route to save the cart during checkout
-/*
-router.post('/checkout', auth, async (req, res) => {
-  const { restaurants, cartTotal } = req.body;
-
-  try {
-    // Fetch the user data using the user ID from the auth middleware
-    const user = await User.findById(req.user).select('username cartIDs');
-
-    if (!user) {
-
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Ensure cartIDs is initialized as an array
-    if (!Array.isArray(user.cartIDs)) {
-      user.cartIDs = [];
-    }
-
-    const newCart = new Cart({
-      username: user.username, // Use the fetched username
-      restaurants,
-      cartTotal,
-    });
-
-    // Save the cart document to the database
-    const savedCart = await newCart.save();
-
-    // Atomically push the new cart's ID to the user's 'cartIDs' array
-    await User.findByIdAndUpdate(
-      req.user,
-      { $push: { cartIDs: savedCart._id } },
-      { new: true } // Return the updated document
-    );
-
-    res.status(201).json({ 
-      message: 'Cart saved successfully', 
-      cartID: savedCart._id 
-      // Optionally, you can fetch and return updated 'cartIDs' if needed
-    });
-  } catch (error) {
-    console.error('Error saving cart:', error);
-    res.status(500).json({ message: 'Failed to save cart', error: error.message });
-  }
-});
-*/
-
 router.post('/cart/create', auth, async (req, res) => {
   try {
     const { restaurant, items, service, total, quantities } = req.body;
@@ -91,35 +44,6 @@ router.post('/cart/create', auth, async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
-
-// Optional: Route to get all carts for a user
-// router.get('/mycarts', auth, async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user).populate('cartIDs');
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     res.json({ carts: user.cartIDs });
-//   } catch (error) {
-//     console.error('Error fetching user carts:', error);
-//     res.status(500).json({ message: 'Failed to fetch user carts', error });
-//   }
-// });
-
-// router.get('/mycarts', auth, async (req, res) => {
-//   try {
-//     const carts = await Cart.find({ user: req.user })
-//       .sort({ createdAt: -1 })
-//       .exec();
-
-//     res.json({ carts });
-//   } catch (error) {
-//     console.error('Error fetching user carts:', error);
-//     res.status(500).json({ message: 'Failed to fetch user carts', error });
-//   }
-// });
 
 router.get('/mycarts', auth, async (req, res) => {
   try {
