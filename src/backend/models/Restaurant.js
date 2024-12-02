@@ -22,6 +22,14 @@ const restaurantSchema = new mongoose.Schema({
     type: String,
     required: true
   }],
+  menuDietaryViolations: [
+    [
+      {
+        type: String,
+        enum: ['vegetarian', 'vegan', 'gluten-free', 'dairy-free', 'nut-free'],
+      },
+    ],
+  ],
   ubereatsMenuPrice: [{
     type: Number,
     required: true
