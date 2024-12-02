@@ -16,6 +16,18 @@ const restaurantData = [
       "Ice Cream cone",
       "Happy Meal",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Big Mac
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Nuggets
+      [], // Fries
+      [], // Coke
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Cheeseburger
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // McChicken
+      ["vegan", "dairy-free"], // Mocha Frappe
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Egg McMuffin
+      ["vegan", "dairy-free", "gluten-free"], // Ice Cream cone
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Happy Meal
+    ],
     ubereatsMenuPrice: [
       5.53, 5.67, 3.07, 2.89, 3.69, 4.89, 3.29, 2.79, 1.07, 3.29,
     ],
@@ -61,6 +73,18 @@ const restaurantData = [
       "Egg McMuff in",
       "Ice Cream cone",
       "Happy Meal",
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Big Mac
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Nuggets
+      [], // Fries
+      [], // Coke
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Cheeseburger
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // McChicken
+      ["vegan", "dairy-free"], // Mocha Frappe
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Egg McMuffin
+      ["vegan", "dairy-free", "gluten-free"], // Ice Cream cone
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Happy Meal
     ],
     ubereatsMenuPrice: [
       30.00, 5.62, 3.87, 2.14, 3.35, 4.74, 3.89, 2.12, 1.12, 3.73,
@@ -108,6 +132,18 @@ const restaurantData = [
       "Ice Cream cone",
       "Happy Meal",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Big Mac
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Nuggets
+      [], // Fries
+      [], // Coke
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Cheeseburger
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // McChicken
+      ["vegan", "dairy-free"], // Mocha Frappe
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Egg McMuffin
+      ["vegan", "dairy-free", "gluten-free"], // Ice Cream cone
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Happy Meal
+    ],
     ubereatsMenuPrice: [
       5.45, 5.55, 3.22, 2.99, 3.79, 4.79, 3.33, 2.67, 1.15, 3.25,
     ],
@@ -151,6 +187,18 @@ const restaurantData = [
       "Egg McMuffin",
       "Ice Cream cone",
       "Happy Meal",
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Big Mac
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Nuggets
+      [], // Fries
+      [], // Coke
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Cheeseburger
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // McChicken
+      ["vegan", "dairy-free"], // Mocha Frappe
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Egg McMuffin
+      ["vegan", "dairy-free", "gluten-free"], // Ice Cream cone
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Happy Meal
     ],
     ubereatsMenuPrice: [
       5.35, 5.75, 3.67, 2.74, 3.43, 4.67, 3.42, 2.84, 1.22, 3.41,
@@ -198,6 +246,18 @@ const restaurantData = [
       "Chocolate Chip Cookie",
       "Fountain Drink",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fried Chicken Bucket
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich Deluxe
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Popcorn Chicken
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegan", "dairy-free"], // Mashed Potatoes (may contain dairy)
+      [], // Coleslaw (check for dairy if applicable)
+      ["vegan", "dairy-free", "gluten-free"], // Mac and Cheese
+      ["vegan", "dairy-free"], // Biscuit (may contain dairy)
+      ["vegan", "dairy-free", "nut-free"], // Chocolate Chip Cookie (may contain nuts)
+      [], // Fountain Drink
+    ],
     ubereatsMenuPrice: [
       21.5, 6.75, 4.25, 7.4, 2.99, 2.25, 3.49, 1.69, 1.5, 2.29,
     ],
@@ -243,7 +303,20 @@ const restaurantData = [
       "Biscuit",
       "Chocolate Chip Cookie",
       "Fountain Drink",
-    ], //     ubereatsMenuPrice: [21.95, 6.55, 4.45, 7.20, 3.05, 2.15, 3.29, 1.59, 1.40, 2.35],
+    ], 
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fried Chicken Bucket
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich Deluxe
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Popcorn Chicken
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegan", "dairy-free"], // Mashed Potatoes (may contain dairy)
+      [], // Coleslaw (check for dairy if applicable)
+      ["vegan", "dairy-free", "gluten-free"], // Mac and Cheese
+      ["vegan", "dairy-free"], // Biscuit (may contain dairy)
+      ["vegan", "dairy-free", "nut-free"], // Chocolate Chip Cookie (may contain nuts)
+      [], // Fountain Drink
+    ],
+    ubereatsMenuPrice: [21.95, 6.55, 4.45, 7.20, 3.05, 2.15, 3.29, 1.59, 1.40, 2.35],
     doordashMenuPrice: [22.1, 6.6, 4.5, 7.3, 2.95, 2.35, 3.15, 1.5, 1.55, 2.2],
     grubhubMenuPrice: [21.3, 6.8, 4.55, 7.45, 3.1, 2.2, 3.45, 1.62, 1.55, 2.3],
     ubereatsAvailable: true,
@@ -282,7 +355,20 @@ const restaurantData = [
       "Biscuit",
       "Chocolate Chip Cookie",
       "Fountain Drink",
-    ], //     ubereatsMenuPrice: [22.25, 6.65, 4.30, 7.35, 2.99, 2.29, 3.49, 1.65, 1.45, 2.30],
+    ], 
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fried Chicken Bucket
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich Deluxe
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Popcorn Chicken
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegan", "dairy-free"], // Mashed Potatoes (may contain dairy)
+      [], // Coleslaw (check for dairy if applicable)
+      ["vegan", "dairy-free", "gluten-free"], // Mac and Cheese
+      ["vegan", "dairy-free"], // Biscuit (may contain dairy)
+      ["vegan", "dairy-free", "nut-free"], // Chocolate Chip Cookie (may contain nuts)
+      [], // Fountain Drink
+    ],
+    ubereatsMenuPrice: [22.25, 6.65, 4.30, 7.35, 2.99, 2.29, 3.49, 1.65, 1.45, 2.30],
     doordashMenuPrice: [
       21.85, 6.4, 4.25, 7.15, 2.75, 2.2, 3.25, 1.5, 1.5, 2.15,
     ],
@@ -326,6 +412,18 @@ const restaurantData = [
       "Chocolate Chip Cookie",
       "Fountain Drink",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fried Chicken Bucket
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich Deluxe
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Popcorn Chicken
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegan", "dairy-free"], // Mashed Potatoes (may contain dairy)
+      [], // Coleslaw (check for dairy if applicable)
+      ["vegan", "dairy-free", "gluten-free"], // Mac and Cheese
+      ["vegan", "dairy-free"], // Biscuit (may contain dairy)
+      ["vegan", "dairy-free", "nut-free"], // Chocolate Chip Cookie (may contain nuts)
+      [], // Fountain Drink
+    ],
     ubereatsMenuPrice: [21.65, 6.50, 4.35, 7.50, 3.05, 2.35, 3.65, 1.55, 1.55, 2.20],
     doordashMenuPrice: [22.3, 6.55, 4.25, 7.2, 2.95, 2.4, 3.45, 1.5, 1.6, 2.1],
     grubhubMenuPrice: [
@@ -368,6 +466,18 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Whopper
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Fries
+      ["vegan", "gluten-free", "dairy-free"], // Impossible Whopper
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      [], // French Fries
+      ["vegan", "gluten-free"], // Onion Rings
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mozzarella Sticks
+      ["vegan", "dairy-free"], // Chocolate Shake
+      [], // Soft Drink
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // King Jr.Meal
+    ],
     ubereatsMenuPrice: [6.49, 4.29, 6.99, 5.39, 2.99, 2.79, 3.29, 3.99, 2.29, 4.99],
     doordashMenuPrice: [6.79, 4.1, 6.79, 5.59, 2.89, 2.99, 3.39, 3.89, 2.19, 5.09],
     grubhubMenuPrice: [6.29, 4.45, 7.09, 5.19, 3.09, 2.69, 3.19, 3.79, 2.35, 4.79],
@@ -407,6 +517,18 @@ const restaurantData = [
       "Chocolate Shake",
       "Soft Drink",
       "King Jr.Meal",
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Whopper
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Fries
+      ["vegan", "gluten-free", "dairy-free"], // Impossible Whopper
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      [], // French Fries
+      ["vegan", "gluten-free"], // Onion Rings
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mozzarella Sticks
+      ["vegan", "dairy-free"], // Chocolate Shake
+      [], // Soft Drink
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // King Jr.Meal
     ],
     ubereatsMenuPrice: [6.55, 4.19, 7.1, 5.49, 3.05, 2.69, 3.39, 3.89, 2.25, 5.19],
     doordashMenuPrice: [6.99, 4.25, 6.99, 5.69, 2.95, 2.89, 3.25, 3.79, 2.15, 4.99],
@@ -448,6 +570,18 @@ const restaurantData = [
       "Soft Drink",
       "King Jr.Meal",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Whopper
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Fries
+      ["vegan", "gluten-free", "dairy-free"], // Impossible Whopper
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      [], // French Fries
+      ["vegan", "gluten-free"], // Onion Rings
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mozzarella Sticks
+      ["vegan", "dairy-free"], // Chocolate Shake
+      [], // Soft Drink
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // King Jr.Meal
+    ],
     ubereatsMenuPrice: [6.39, 4.15, 7.05, 5.35, 3.19, 2.89, 3.19, 3.69, 2.29, 4.89],
     doordashMenuPrice: [6.59, 4.35, 6.95, 5.65, 3.05, 2.79, 3.25, 3.79, 2.39, 5.05],
     grubhubMenuPrice: [6.49, 4.55, 7.15, 5.45, 3.09, 2.95, 3.35, 3.99, 2.45, 4.95],
@@ -487,6 +621,18 @@ const restaurantData = [
       "Chocolate Shake",
       "Soft Drink",
       "King Jr.Meal",
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Whopper
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Fries
+      ["vegan", "gluten-free", "dairy-free"], // Impossible Whopper
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      [], // French Fries
+      ["vegan", "gluten-free"], // Onion Rings
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mozzarella Sticks
+      ["vegan", "dairy-free"], // Chocolate Shake
+      [], // Soft Drink
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // King Jr.Meal
     ],
     ubereatsMenuPrice: [6.69, 4.2, 6.85, 5.29, 3.09, 2.79, 3.09, 3.79, 2.19, 5.09],
     doordashMenuPrice: [6.89, 4.39, 7.05, 5.59, 2.95, 2.95, 3.15, 3.89, 2.25, 5.29],
@@ -528,6 +674,18 @@ const restaurantData = [
       "Barbacoa Burrito",
       "Chicken Burrito",
     ],
+    menuDietaryViolations: [
+      ["gluten-free"], // Burrito (flour tortilla)
+      [], // Burrito Bowl (can be customized)
+      ["gluten-free"], // Tacos (if using flour tortillas)
+      [], // Salad
+      [], // Chips & Guacamole
+      ["gluten-free"], // Quesadilla (flour tortilla, cheese)
+      [], // Sofritas Bowl (vegan)
+      ["vegetarian", "vegan"], // Steak Bowl
+      ["vegetarian", "vegan"], // Barbacoa Burrito
+      ["vegetarian", "vegan"], // Chicken Burrito
+    ],
     ubereatsMenuPrice: [8.25, 8.15, 7.85, 7.5, 4.25, 8.95, 8.0, 9.45, 9.1, 8.5],
     doordashMenuPrice: [8.5, 8.25, 7.75, 7.35, 4.5, 9.1, 8.25, 9.65, 9.3, 8.4],
     grubhubMenuPrice: [8.4, 8.2, 7.95, 7.6, 4.35, 9.0, 8.15, 9.55, 9.2, 8.6],
@@ -551,8 +709,6 @@ const restaurantData = [
     ],
     websiteURL: "https://www.chipotle.com/",
   },
-
-  ,
   {
     restaurantID: "23ef67y",
     restaurantName: "Chipotle",
@@ -569,6 +725,18 @@ const restaurantData = [
       "Steak Bowl",
       "Barbacoa Burrito",
       "Chicken Burrito",
+    ],
+    menuDietaryViolations: [
+      ["gluten-free"], // Burrito (flour tortilla)
+      [], // Burrito Bowl (can be customized)
+      ["gluten-free"], // Tacos (if using flour tortillas)
+      [], // Salad
+      [], // Chips & Guacamole
+      ["gluten-free"], // Quesadilla (flour tortilla, cheese)
+      [], // Sofritas Bowl (vegan)
+      ["vegetarian", "vegan"], // Steak Bowl
+      ["vegetarian", "vegan"], // Barbacoa Burrito
+      ["vegetarian", "vegan"], // Chicken Burrito
     ],
     ubereatsMenuPrice: [8.45, 8.3, 7.75, 7.4, 4.35, 9.05, 8.1, 9.5, 9.15, 8.35],
     doordashMenuPrice: [8.6, 8.4, 7.65, 7.5, 4.55, 9.15, 8.2, 9.75, 9.35, 8.55],
@@ -610,6 +778,18 @@ const restaurantData = [
       "Barbacoa Burrito",
       "Chicken Burrito",
     ],
+    menuDietaryViolations: [
+      ["gluten-free"], // Burrito (flour tortilla)
+      [], // Burrito Bowl (can be customized)
+      ["gluten-free"], // Tacos (if using flour tortillas)
+      [], // Salad
+      [], // Chips & Guacamole
+      ["gluten-free"], // Quesadilla (flour tortilla, cheese)
+      [], // Sofritas Bowl (vegan)
+      ["vegetarian", "vegan"], // Steak Bowl
+      ["vegetarian", "vegan"], // Barbacoa Burrito
+      ["vegetarian", "vegan"], // Chicken Burrito
+    ],
     ubereatsMenuPrice: [8.3, 8.1, 7.95, 7.55, 4.4, 9.1, 8.25, 9.4, 9.05, 8.6],
     doordashMenuPrice: [8.65, 8.45, 7.8, 7.6, 4.6, 9.25, 8.3, 9.65, 9.45, 8.7],
     grubhubMenuPrice: [8.25, 8.0, 7.85, 7.5, 4.3, 9.05, 8.1, 9.5, 9.2, 8.5],
@@ -649,6 +829,18 @@ const restaurantData = [
       "Steak Bowl",
       "Barbacoa Burrito",
       "Chicken Burrito",
+    ],
+    menuDietaryViolations: [
+      ["gluten-free"], // Burrito (flour tortilla)
+      [], // Burrito Bowl (can be customized)
+      ["gluten-free"], // Tacos (if using flour tortillas)
+      [], // Salad
+      [], // Chips & Guacamole
+      ["gluten-free"], // Quesadilla (flour tortilla, cheese)
+      [], // Sofritas Bowl (vegan)
+      ["vegetarian", "vegan"], // Steak Bowl
+      ["vegetarian", "vegan"], // Barbacoa Burrito
+      ["vegetarian", "vegan"], // Chicken Burrito
     ],
     ubereatsMenuPrice: [
       8.55, 8.35, 7.85, 7.65, 4.45, 9.2, 8.35, 9.55, 9.25, 8.5,
@@ -693,6 +885,18 @@ const restaurantData = [
       "Double - Glazed Baby Back Ribs",
       "Triple Chocolate Meltdown",
       "Classic Fries",
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Bourbon Street Chicken & Shrimp
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Bacon Cheeseburger
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fiesta Lime Chicken
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mozzarella Sticks
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mac & Cheese with Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Oriental Chicken Salad
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Baby Back Ribs
+      ["vegan", "dairy-free", "gluten-free"], // Triple Chocolate Meltdown
+      [], // Classic Fries
     ],
     ubereatsMenuPrice: [
       16.99, 12.5, 11.25, 13.75, 7.49, 15.5, 12.99, 18.99, 7.25, 3.99,
@@ -740,6 +944,18 @@ const restaurantData = [
       "Triple Chocolate Meltdown",
       "Classic Fries",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Bourbon Street Chicken & Shrimp
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Bacon Cheeseburger
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fiesta Lime Chicken
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mozzarella Sticks
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mac & Cheese with Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Oriental Chicken Salad
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Baby Back Ribs
+      ["vegan", "dairy-free", "gluten-free"], // Triple Chocolate Meltdown
+      [], // Classic Fries
+    ],
     ubereatsMenuPrice: [
       17.15, 12.45, 11.55, 13.55, 7.29, 15.85, 13.05, 19.1, 7.15, 4.1,
     ],
@@ -785,6 +1001,18 @@ const restaurantData = [
       "Double - Glazed Baby Back Ribs",
       "Triple Chocolate Meltdown",
       "Classic Fries",
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Bourbon Street Chicken & Shrimp
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Bacon Cheeseburger
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fiesta Lime Chicken
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mozzarella Sticks
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mac & Cheese with Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Oriental Chicken Salad
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Baby Back Ribs
+      ["vegan", "dairy-free", "gluten-free"], // Triple Chocolate Meltdown
+      [], // Classic Fries
     ],
     ubereatsMenuPrice: [
       17.05, 12.55, 11.4, 13.6, 7.35, 15.6, 12.8, 18.9, 7.05, 4.15,
@@ -833,6 +1061,18 @@ const restaurantData = [
       "Triple Chocolate Meltdown",
       "Classic Fries",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Bourbon Street Chicken & Shrimp
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Bacon Cheeseburger
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fiesta Lime Chicken
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mozzarella Sticks
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mac & Cheese with Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Oriental Chicken Salad
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Baby Back Ribs
+      ["vegan", "dairy-free", "gluten-free"], // Triple Chocolate Meltdown
+      [], // Classic Fries
+    ],
     ubereatsMenuPrice: [
       16.85, 12.3, 11.65, 13.35, 7.3, 15.9, 13.0, 18.95, 7.25, 3.85,
     ],
@@ -879,6 +1119,18 @@ const restaurantData = [
       "French Fries",
       "Espresso",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan"], // Grilled Salmon
+      ["vegan", "gluten-free", "dairy-free"], // Pasta Primavera
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Beef Wellington
+      ["vegan", "gluten-free", "dairy-free"], // Caesar Salad
+      ["vegan", "gluten-free", "dairy-free"], // Bruschetta
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Clam Chowder
+      ["vegan", "gluten-free", "dairy-free"], // Tiramisu
+      ["vegan", "gluten-free", "dairy-free"], // Chocolate Fondant
+      [], // French Fries
+      [], // Espresso
+    ],
     ubereatsMenuPrice: [
       22.95, 16.5, 28.0, 11.25, 9.75, 7.95, 6.5, 8.25, 5.5, 3.0,
     ],
@@ -923,6 +1175,18 @@ const restaurantData = [
       "Avocado Toast",
       "Vegan Brownie",
       "Iced Matcha Latte",
+    ],
+    menuDietaryViolations: [
+      ["gluten-free"], // Vegan Burger
+      [], // Quinoa Salad
+      [], // Vegan Nachos
+      [], // Tofu Stir-Fry
+      ["gluten-free"], // Vegan Pizza
+      [], // Sweet Potato Fries
+      [], // Lentil Soup
+      ["gluten-free"], // Avocado Toast
+      ["gluten-free", "nut-free"], // Vegan Brownie
+      [], // Iced Matcha Latte
     ],
     ubereatsMenuPrice: [
       12.95, 10.5, 9.75, 13.25, 14.0, 5.95, 7.5, 8.95, 4.25, 6.75,
@@ -971,6 +1235,18 @@ const restaurantData = [
       "Sweet Tea",
       "Lemonade",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free"], // BBQ Pulled Pork Sandwich
+      ["vegetarian", "vegan"], // Roast Chicken
+      ["vegetarian", "vegan"], // Beef Brisket
+      ["gluten-free", "dairy-free"], // Cornbread
+      [], // House Salad
+      ["gluten-free"], // Fried Green Tomatoes
+      ["vegan", "gluten-free", "dairy-free"], // Mac and Cheese
+      ["vegan", "gluten-free", "dairy-free"], // Apple Pie
+      [], // Sweet Tea
+      [], // Lemonade
+    ],
     ubereatsMenuPrice: [
       10.95, 17.5, 18.95, 4.5, 6.95, 7.25, 8.5, 5.75, 2.95, 3.5,
     ],
@@ -1017,6 +1293,18 @@ const restaurantData = [
       "Cannoli",
       "Espresso",
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spaghetti Bolognese
+      ["vegan", "gluten-free", "dairy-free"], // Fettuccine Alfredo
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Lasagna
+      ["vegan", "gluten-free", "dairy-free"], // Penne Arrabbiata
+      ["vegan", "gluten-free", "dairy-free"], // Garlic Bread
+      ["vegan", "gluten-free", "dairy-free"], // Caesar Salad
+      [], // Minestrone Soup
+      ["vegan", "gluten-free", "dairy-free"], // Tiramisu
+      ["vegan", "gluten-free", "dairy-free"], // Cannoli
+      [], // Espresso
+    ],
     ubereatsMenuPrice: [
       13.5, 12.25, 14.0, 11.75, 3.5, 6.95, 5.5, 7.25, 5.95, 3.25,
     ],
@@ -1060,6 +1348,18 @@ const restaurantData = [
       "Tortilla Soup",
       "Mexican Rice",
       "Horchata",
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Taco
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Burrito
+      ["vegan", "gluten-free", "dairy-free"], // Quesadilla
+      ["vegetarian", "vegan", "dairy-free"], // Nachos
+      [], // Guacamole
+      ["vegan", "gluten-free", "dairy-free"], // Churros
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Fajitas
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Tortilla Soup
+      [], // Mexican Rice
+      ["vegan", "dairy-free"], // Horchata
     ],
     ubereatsMenuPrice: [
       3.95, 8.25, 7.75, 6.5, 4.95, 3.25, 11.5, 5.95, 3.5, 2.75,
@@ -1105,6 +1405,18 @@ const restaurantData = [
       "Garden Salad",
       "Homestyle Chicken Sandwich"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Dave's Single
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Baconator
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Nuggets
+      ["vegan", "dairy-free"], // Frosty
+      [], // Fries
+      ["vegetarian", "vegan"], // Chili (contains meat)
+      [], // Baked Potato (can be customized)
+      [], // Garden Salad (depends on dressing)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Homestyle Chicken Sandwich
+    ],
     ubereatsMenuPrice: [5.49, 5.99, 6.99, 4.49, 1.99, 2.19, 2.99, 3.49, 4.99, 5.59],
     doordashMenuPrice: [5.69, 5.89, 7.19, 4.39, 1.89, 2.29, 2.89, 3.39, 4.89, 5.49],
     grubhubMenuPrice: [5.59, 6.09, 7.09, 4.59, 1.79, 2.09, 2.79, 3.29, 4.79, 5.69],
@@ -1144,6 +1456,18 @@ const restaurantData = [
       "Baked Potato",
       "Garden Salad",
       "Homestyle Chicken Sandwich"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Dave's Single
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Baconator
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Nuggets
+      ["vegan", "dairy-free"], // Frosty
+      [], // Fries
+      ["vegetarian", "vegan"], // Chili (contains meat)
+      [], // Baked Potato (can be customized)
+      [], // Garden Salad (depends on dressing)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Homestyle Chicken Sandwich
     ],
     ubereatsMenuPrice: [5.59, 6.09, 7.09, 4.59, 2.09, 2.29, 3.09, 3.59, 5.09, 5.69],
     doordashMenuPrice: [5.79, 5.99, 7.29, 4.49, 1.99, 2.39, 2.99, 3.49, 4.99, 5.59],
@@ -1185,6 +1509,18 @@ const restaurantData = [
       "Garden Salad",
       "Homestyle Chicken Sandwich"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Dave's Single
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Baconator
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Nuggets
+      ["vegan", "dairy-free"], // Frosty
+      [], // Fries
+      ["vegetarian", "vegan"], // Chili (contains meat)
+      [], // Baked Potato (can be customized)
+      [], // Garden Salad (depends on dressing)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Homestyle Chicken Sandwich
+    ],
     ubereatsMenuPrice: [5.39, 5.89, 6.89, 4.39, 1.89, 2.09, 2.89, 3.39, 4.89, 5.49],
     doordashMenuPrice: [5.49, 5.79, 7.09, 4.29, 1.79, 2.19, 2.79, 3.29, 4.79, 5.39],
     grubhubMenuPrice: [5.29, 5.99, 6.99, 4.49, 1.69, 1.99, 2.69, 3.19, 4.69, 5.59],
@@ -1224,6 +1560,18 @@ const restaurantData = [
       "Baked Potato",
       "Garden Salad",
       "Homestyle Chicken Sandwich"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Dave's Single
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Baconator
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Nuggets
+      ["vegan", "dairy-free"], // Frosty
+      [], // Fries
+      ["vegetarian", "vegan"], // Chili (contains meat)
+      [], // Baked Potato (can be customized)
+      [], // Garden Salad (depends on dressing)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Homestyle Chicken Sandwich
     ],
     ubereatsMenuPrice: [5.69, 6.19, 7.19, 4.69, 2.19, 2.39, 3.19, 3.69, 5.19, 5.79],
     doordashMenuPrice: [5.59, 6.09, 7.29, 4.59, 2.09, 2.49, 3.09, 3.59, 5.09, 5.69],
@@ -1265,6 +1613,18 @@ const restaurantData = [
       "Coleslaw",
       "Apple Pie"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Popcorn Shrimp
+      [], // Cajun Fries
+      ["vegetarian", "vegan"], // Red Beans & Rice (may contain pork)
+      ["vegan", "dairy-free"], // Biscuits (contain dairy)
+      ["vegan", "dairy-free"], // Mashed Potatoes with Gravy
+      [], // Coleslaw (check for dairy)
+      ["vegan", "dairy-free", "gluten-free"], // Apple Pie
+    ],
     ubereatsMenuPrice: [3.99, 4.19, 5.49, 6.99, 2.49, 2.69, 0.99, 2.99, 1.89, 1.59],
     doordashMenuPrice: [4.09, 4.29, 5.59, 7.09, 2.39, 2.79, 1.09, 2.89, 1.79, 1.69],
     grubhubMenuPrice: [3.89, 4.39, 5.69, 6.89, 2.29, 2.59, 0.89, 2.79, 1.99, 1.49],
@@ -1304,6 +1664,18 @@ const restaurantData = [
       "Mashed Potatoes with Gravy",
       "Coleslaw",
       "Apple Pie"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Popcorn Shrimp
+      [], // Cajun Fries
+      ["vegetarian", "vegan"], // Red Beans & Rice (may contain pork)
+      ["vegan", "dairy-free"], // Biscuits (contain dairy)
+      ["vegan", "dairy-free"], // Mashed Potatoes with Gravy
+      [], // Coleslaw (check for dairy)
+      ["vegan", "dairy-free", "gluten-free"], // Apple Pie
     ],
     ubereatsMenuPrice: [4.09, 4.29, 5.69, 7.09, 2.59, 2.79, 1.09, 3.09, 1.99, 1.69],
     doordashMenuPrice: [3.99, 4.19, 5.49, 6.99, 2.49, 2.69, 0.99, 2.99, 1.89, 1.59],
@@ -1345,6 +1717,18 @@ const restaurantData = [
       "Coleslaw",
       "Apple Pie"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Popcorn Shrimp
+      [], // Cajun Fries
+      ["vegetarian", "vegan"], // Red Beans & Rice (may contain pork)
+      ["vegan", "dairy-free"], // Biscuits (contain dairy)
+      ["vegan", "dairy-free"], // Mashed Potatoes with Gravy
+      [], // Coleslaw (check for dairy)
+      ["vegan", "dairy-free", "gluten-free"], // Apple Pie
+    ],
     ubereatsMenuPrice: [4.19, 4.39, 5.79, 7.19, 2.69, 2.89, 1.19, 3.19, 2.09, 1.79],
     doordashMenuPrice: [4.29, 4.49, 5.89, 7.29, 2.79, 2.99, 1.29, 3.29, 2.19, 1.89],
     grubhubMenuPrice: [4.09, 4.59, 5.99, 7.09, 2.59, 2.79, 1.09, 3.09, 1.99, 1.99],
@@ -1384,6 +1768,18 @@ const restaurantData = [
       "Mashed Potatoes with Gravy",
       "Coleslaw",
       "Apple Pie"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Tenders
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Popcorn Shrimp
+      [], // Cajun Fries
+      ["vegetarian", "vegan"], // Red Beans & Rice (may contain pork)
+      ["vegan", "dairy-free"], // Biscuits (contain dairy)
+      ["vegan", "dairy-free"], // Mashed Potatoes with Gravy
+      [], // Coleslaw (check for dairy)
+      ["vegan", "dairy-free", "gluten-free"], // Apple Pie
     ],
     ubereatsMenuPrice: [4.29, 4.49, 5.89, 7.29, 2.79, 2.99, 1.29, 3.29, 2.19, 1.89],
     doordashMenuPrice: [4.19, 4.39, 5.79, 7.19, 2.69, 2.89, 1.19, 3.19, 2.09, 1.79],
@@ -1425,6 +1821,18 @@ const restaurantData = [
       "Salad",
       "Cinnamon Sticks"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Pepperoni Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Cheese Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Supreme Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Meat Lover's Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Veggie Lover's Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Breadsticks
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Wings
+      ["vegan", "gluten-free", "dairy-free"], // Pasta
+      [], // Salad (depends on dressing and toppings)
+      ["vegan", "gluten-free", "dairy-free"], // Cinnamon Sticks
+    ],
     ubereatsMenuPrice: [12.99, 11.99, 14.99, 15.99, 13.99, 5.99, 8.99, 9.99, 4.99, 5.49],
     doordashMenuPrice: [13.49, 12.49, 15.49, 16.49, 14.49, 6.49, 9.49, 10.49, 5.49, 5.99],
     grubhubMenuPrice: [12.49, 11.49, 14.49, 15.49, 13.49, 5.49, 8.49, 9.49, 4.49, 4.99],
@@ -1464,6 +1872,18 @@ const restaurantData = [
       "Pasta",
       "Salad",
       "Cinnamon Sticks"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Pepperoni Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Cheese Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Supreme Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Meat Lover's Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Veggie Lover's Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Breadsticks
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Wings
+      ["vegan", "gluten-free", "dairy-free"], // Pasta
+      [], // Salad (depends on dressing and toppings)
+      ["vegan", "gluten-free", "dairy-free"], // Cinnamon Sticks
     ],
     ubereatsMenuPrice: [13.09, 12.09, 15.09, 16.09, 14.09, 6.09, 9.09, 10.09, 5.09, 5.59],
     doordashMenuPrice: [12.99, 11.99, 14.99, 15.99, 13.99, 5.99, 8.99, 9.99, 4.99, 5.49],
@@ -1505,6 +1925,18 @@ const restaurantData = [
       "Salad",
       "Cinnamon Sticks"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Pepperoni Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Cheese Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Supreme Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Meat Lover's Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Veggie Lover's Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Breadsticks
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Wings
+      ["vegan", "gluten-free", "dairy-free"], // Pasta
+      [], // Salad (depends on dressing and toppings)
+      ["vegan", "gluten-free", "dairy-free"], // Cinnamon Sticks
+    ],
     ubereatsMenuPrice: [12.89, 11.89, 14.89, 15.89, 13.89, 5.89, 8.89, 9.89, 4.89, 5.39],
     doordashMenuPrice: [13.09, 12.09, 15.09, 16.09, 14.09, 6.09, 9.09, 10.09, 5.09, 5.59],
     grubhubMenuPrice: [12.79, 11.79, 14.79, 15.79, 13.79, 5.79, 8.79, 9.79, 4.79, 5.29],
@@ -1544,6 +1976,18 @@ const restaurantData = [
       "Pasta",
       "Salad",
       "Cinnamon Sticks"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Pepperoni Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Cheese Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Supreme Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Meat Lover's Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Veggie Lover's Pizza
+      ["vegan", "gluten-free", "dairy-free"], // Breadsticks
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Wings
+      ["vegan", "gluten-free", "dairy-free"], // Pasta
+      [], // Salad (depends on dressing and toppings)
+      ["vegan", "gluten-free", "dairy-free"], // Cinnamon Sticks
     ],
     ubereatsMenuPrice: [13.19, 12.19, 15.19, 16.19, 14.19, 6.19, 9.19, 10.19, 5.19, 5.69],
     doordashMenuPrice: [13.29, 12.29, 15.29, 16.29, 14.29, 6.29, 9.29, 10.29, 5.29, 5.79],
@@ -1585,6 +2029,18 @@ const restaurantData = [
       "Roasted Chicken",
       "Subway Club"
     ],
+    menuDietaryViolations: [
+      ["vegan", "gluten-free", "dairy-free"], // Italian B.M.T. (contains meat and gluten)
+      ["vegan", "gluten-free", "dairy-free"], // Turkey Breast
+      ["gluten-free", "dairy-free"], // Veggie Delite (bread contains gluten)
+      ["vegan", "gluten-free", "dairy-free"], // Chicken Teriyaki
+      ["vegan", "gluten-free", "dairy-free"], // Meatball Marinara
+      ["vegan", "gluten-free", "dairy-free"], // Tuna
+      ["vegan", "gluten-free", "dairy-free"], // Black Forest Ham
+      ["vegan", "gluten-free", "dairy-free"], // Steak & Cheese
+      ["vegan", "gluten-free", "dairy-free"], // Roasted Chicken
+      ["vegan", "gluten-free", "dairy-free"], // Subway Club
+    ],
     ubereatsMenuPrice: [5.99, 5.49, 4.99, 6.49, 5.99, 5.49, 5.29, 6.99, 6.49, 6.19],
     doordashMenuPrice: [6.19, 5.69, 5.19, 6.69, 6.19, 5.69, 5.49, 7.19, 6.69, 6.39],
     grubhubMenuPrice: [5.89, 5.39, 4.89, 6.29, 5.89, 5.39, 5.19, 6.89, 6.29, 6.09],
@@ -1624,6 +2080,18 @@ const restaurantData = [
       "Steak & Cheese",
       "Roasted Chicken",
       "Subway Club"
+    ],
+    menuDietaryViolations: [
+      ["vegan", "gluten-free", "dairy-free"], // Italian B.M.T. (contains meat and gluten)
+      ["vegan", "gluten-free", "dairy-free"], // Turkey Breast
+      ["gluten-free", "dairy-free"], // Veggie Delite (bread contains gluten)
+      ["vegan", "gluten-free", "dairy-free"], // Chicken Teriyaki
+      ["vegan", "gluten-free", "dairy-free"], // Meatball Marinara
+      ["vegan", "gluten-free", "dairy-free"], // Tuna
+      ["vegan", "gluten-free", "dairy-free"], // Black Forest Ham
+      ["vegan", "gluten-free", "dairy-free"], // Steak & Cheese
+      ["vegan", "gluten-free", "dairy-free"], // Roasted Chicken
+      ["vegan", "gluten-free", "dairy-free"], // Subway Club
     ],
     ubereatsMenuPrice: [6.09, 5.59, 5.09, 6.59, 6.09, 5.59, 5.39, 7.09, 6.59, 6.29],
     doordashMenuPrice: [5.99, 5.49, 4.99, 6.49, 5.99, 5.49, 5.29, 6.99, 6.49, 6.19],
@@ -1665,6 +2133,18 @@ const restaurantData = [
       "Roasted Chicken",
       "Subway Club"
     ],
+    menuDietaryViolations: [
+      ["vegan", "gluten-free", "dairy-free"], // Italian B.M.T. (contains meat and gluten)
+      ["vegan", "gluten-free", "dairy-free"], // Turkey Breast
+      ["gluten-free", "dairy-free"], // Veggie Delite (bread contains gluten)
+      ["vegan", "gluten-free", "dairy-free"], // Chicken Teriyaki
+      ["vegan", "gluten-free", "dairy-free"], // Meatball Marinara
+      ["vegan", "gluten-free", "dairy-free"], // Tuna
+      ["vegan", "gluten-free", "dairy-free"], // Black Forest Ham
+      ["vegan", "gluten-free", "dairy-free"], // Steak & Cheese
+      ["vegan", "gluten-free", "dairy-free"], // Roasted Chicken
+      ["vegan", "gluten-free", "dairy-free"], // Subway Club
+    ],
     ubereatsMenuPrice: [5.89, 5.39, 4.89, 6.29, 5.89, 5.39, 5.19, 6.89, 6.29, 6.09],
     doordashMenuPrice: [6.09, 5.59, 5.09, 6.59, 6.09, 5.59, 5.39, 7.09, 6.59, 6.29],
     grubhubMenuPrice: [5.79, 5.29, 4.79, 6.19, 5.79, 5.29, 5.09, 6.79, 6.19, 5.99],
@@ -1704,6 +2184,18 @@ const restaurantData = [
       "Steak & Cheese",
       "Roasted Chicken",
       "Subway Club"
+    ],
+    menuDietaryViolations: [
+      ["vegan", "gluten-free", "dairy-free"], // Italian B.M.T. (contains meat and gluten)
+      ["vegan", "gluten-free", "dairy-free"], // Turkey Breast
+      ["gluten-free", "dairy-free"], // Veggie Delite (bread contains gluten)
+      ["vegan", "gluten-free", "dairy-free"], // Chicken Teriyaki
+      ["vegan", "gluten-free", "dairy-free"], // Meatball Marinara
+      ["vegan", "gluten-free", "dairy-free"], // Tuna
+      ["vegan", "gluten-free", "dairy-free"], // Black Forest Ham
+      ["vegan", "gluten-free", "dairy-free"], // Steak & Cheese
+      ["vegan", "gluten-free", "dairy-free"], // Roasted Chicken
+      ["vegan", "gluten-free", "dairy-free"], // Subway Club
     ],
     ubereatsMenuPrice: [6.19, 5.69, 5.19, 6.69, 6.19, 5.69, 5.49, 7.19, 6.69, 6.39],
     doordashMenuPrice: [6.29, 5.79, 5.29, 6.79, 6.29, 5.79, 5.59, 7.29, 6.79, 6.49],
@@ -1745,6 +2237,18 @@ const restaurantData = [
       "Cheesy Gordita Crunch",
       "Chalupa Supreme"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Crunchy Taco (contains meat)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Soft Taco (contains meat)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Burrito Supreme (contains meat, dairy)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Nachos BellGrande (contains meat, dairy)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Crunchwrap Supreme
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Quesadilla
+      ["gluten-free", "dairy-free"], // Bean Burrito (contains cheese, flour tortilla)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mexican Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Cheesy Gordita Crunch
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chalupa Supreme
+    ],
     ubereatsMenuPrice: [1.29, 1.39, 3.49, 3.99, 3.69, 3.29, 1.99, 4.49, 3.59, 3.29],
     doordashMenuPrice: [1.19, 1.29, 3.39, 3.89, 3.59, 3.19, 1.89, 4.39, 3.49, 3.19],
     grubhubMenuPrice: [1.39, 1.49, 3.59, 4.09, 3.79, 3.39, 2.09, 4.59, 3.69, 3.39],
@@ -1784,6 +2288,18 @@ const restaurantData = [
       "Mexican Pizza",
       "Cheesy Gordita Crunch",
       "Chalupa Supreme"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Crunchy Taco (contains meat)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Soft Taco (contains meat)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Burrito Supreme (contains meat, dairy)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Nachos BellGrande (contains meat, dairy)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Crunchwrap Supreme
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Quesadilla
+      ["gluten-free", "dairy-free"], // Bean Burrito (contains cheese, flour tortilla)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mexican Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Cheesy Gordita Crunch
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chalupa Supreme
     ],
     ubereatsMenuPrice: [1.39, 1.49, 3.59, 4.09, 3.79, 3.39, 2.09, 4.59, 3.69, 3.39],
     doordashMenuPrice: [1.29, 1.39, 3.49, 3.99, 3.69, 3.29, 1.99, 4.49, 3.59, 3.29],
@@ -1825,6 +2341,18 @@ const restaurantData = [
       "Cheesy Gordita Crunch",
       "Chalupa Supreme"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Crunchy Taco (contains meat)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Soft Taco (contains meat)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Burrito Supreme (contains meat, dairy)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Nachos BellGrande (contains meat, dairy)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Crunchwrap Supreme
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Quesadilla
+      ["gluten-free", "dairy-free"], // Bean Burrito (contains cheese, flour tortilla)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mexican Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Cheesy Gordita Crunch
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chalupa Supreme
+    ],
     ubereatsMenuPrice: [1.19, 1.29, 3.39, 3.89, 3.59, 3.19, 1.89, 4.39, 3.49, 3.19],
     doordashMenuPrice: [1.39, 1.49, 3.59, 4.09, 3.79, 3.39, 2.09, 4.59, 3.69, 3.39],
     grubhubMenuPrice: [1.29, 1.39, 3.49, 3.99, 3.69, 3.29, 1.99, 4.49, 3.59, 3.29],
@@ -1864,6 +2392,18 @@ const restaurantData = [
       "Mexican Pizza",
       "Cheesy Gordita Crunch",
       "Chalupa Supreme"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Crunchy Taco (contains meat)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Soft Taco (contains meat)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Burrito Supreme (contains meat, dairy)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Nachos BellGrande (contains meat, dairy)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Crunchwrap Supreme
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Quesadilla
+      ["gluten-free", "dairy-free"], // Bean Burrito (contains cheese, flour tortilla)
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Mexican Pizza
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Cheesy Gordita Crunch
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chalupa Supreme
     ],
     ubereatsMenuPrice: [1.49, 1.59, 3.69, 4.19, 3.89, 3.49, 2.19, 4.69, 3.79, 3.49],
     doordashMenuPrice: [1.39, 1.49, 3.59, 4.09, 3.79, 3.39, 2.09, 4.59, 3.69, 3.39],
@@ -1905,6 +2445,18 @@ const restaurantData = [
       "Chicken Strips",
       "Chocolate Milkshake"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Nuggets
+      [], // Waffle Fries
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Grilled Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Biscuit
+      [], // Lemonade
+      ["vegan", "dairy-free", "gluten-free"], // Mac & Cheese
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Strips
+      ["vegan", "dairy-free"], // Chocolate Milkshake
+    ],
     ubereatsMenuPrice: [3.75, 3.99, 4.49, 1.99, 4.29, 2.89, 1.89, 2.99, 4.59, 3.29],
     doordashMenuPrice: [3.85, 4.09, 4.59, 2.09, 4.39, 2.99, 1.99, 3.09, 4.69, 3.39],
     grubhubMenuPrice: [3.65, 3.89, 4.39, 1.89, 4.19, 2.79, 1.79, 2.89, 4.49, 3.19],
@@ -1944,6 +2496,18 @@ const restaurantData = [
       "Mac & Cheese",
       "Chicken Strips",
       "Chocolate Milkshake"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Nuggets
+      [], // Waffle Fries
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Grilled Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Biscuit
+      [], // Lemonade
+      ["vegan", "dairy-free", "gluten-free"], // Mac & Cheese
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Strips
+      ["vegan", "dairy-free"], // Chocolate Milkshake
     ],
     ubereatsMenuPrice: [3.85, 4.09, 4.59, 2.09, 4.39, 2.99, 1.99, 3.09, 4.69, 3.39],
     doordashMenuPrice: [3.75, 3.99, 4.49, 1.99, 4.29, 2.89, 1.89, 2.99, 4.59, 3.29],
@@ -1985,6 +2549,18 @@ const restaurantData = [
       "Chicken Strips",
       "Chocolate Milkshake"
     ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Nuggets
+      [], // Waffle Fries
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Grilled Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Biscuit
+      [], // Lemonade
+      ["vegan", "dairy-free", "gluten-free"], // Mac & Cheese
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Strips
+      ["vegan", "dairy-free"], // Chocolate Milkshake
+    ],
     ubereatsMenuPrice: [3.65, 3.89, 4.39, 1.89, 4.19, 2.79, 1.79, 2.89, 4.49, 3.19],
     doordashMenuPrice: [3.85, 4.09, 4.59, 2.09, 4.39, 2.99, 1.99, 3.09, 4.69, 3.39],
     grubhubMenuPrice: [3.75, 3.99, 4.49, 1.99, 4.29, 2.89, 1.89, 2.99, 4.59, 3.29],
@@ -2024,6 +2600,18 @@ const restaurantData = [
       "Mac & Cheese",
       "Chicken Strips",
       "Chocolate Milkshake"
+    ],
+    menuDietaryViolations: [
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Spicy Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Nuggets
+      [], // Waffle Fries
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Grilled Chicken Sandwich
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Biscuit
+      [], // Lemonade
+      ["vegan", "dairy-free", "gluten-free"], // Mac & Cheese
+      ["vegetarian", "vegan", "gluten-free", "dairy-free"], // Chicken Strips
+      ["vegan", "dairy-free"], // Chocolate Milkshake
     ],
     ubereatsMenuPrice: [3.95, 4.19, 4.69, 2.19, 4.49, 3.09, 2.09, 3.19, 4.79, 3.49],
     doordashMenuPrice: [3.75, 3.99, 4.49, 1.99, 4.29, 2.89, 1.89, 2.99, 4.59, 3.29],
