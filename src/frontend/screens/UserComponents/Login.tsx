@@ -27,7 +27,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsError(false);  // Reset error state
-
+    localStorage.removeItem('cart');
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
