@@ -455,8 +455,9 @@ export default function RestPage() {
             Switch Restaurant
           </button>
         </div>
+        
       </div>
-
+      
       {/* Include the ConfirmModal */}
       <ConfirmModal
         isOpen={showModal}
@@ -465,6 +466,8 @@ export default function RestPage() {
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
+
+      
     </div>
   );
 }

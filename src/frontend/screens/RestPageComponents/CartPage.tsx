@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from "react-native";
 import { useCart } from './CartContext.tsx'; // Corrected path
 import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { useAuth } from '../UserComponents/Authorizer.tsx'; // Authentication ho
 import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for login
 import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
 import { API_BASE_URL } from '../../../config.js';
+import CoreButton from "../CoreComponents/CoreButton.tsx";
 
 const CartPage: React.FC = () => {
   const { cart, clearCart } = useCart(); // Destructure clearCart from useCart
@@ -238,13 +240,21 @@ const CartPage: React.FC = () => {
     >
       <CoreBanner />
       <div className="container mx-auto p-4">
-        <h1 
-          className="text-2xl font-bold mb-4"
-          style={{color: ffColors.ffText}}
-        >
-          Your Cart
-        </h1>
-
+        
+        <View style={moreStyles.buttonAndTextContainer}>
+          <h1 
+            className="text-2xl font-bold mb-4"
+            style={{color: ffColors.ffText}}
+          >
+            Your Cart for {cart.restaurant.restaurantName}
+          </h1>
+          <CoreButton
+            pressFunc={() => window.open(cart.restaurant.websiteURL, '_blank')}
+            bText="Restaurant Website"
+            buttonColor={ffColors.ffBlueD}
+          />
+        
+        </View>
         {['DoorDash', 'UberEats', 'Grubhub'].map((service) => {
           const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
           const serviceTotal = calculateServiceTotal(service);
@@ -322,6 +332,8 @@ const CartPage: React.FC = () => {
             </div>
           );
         })}
+
+     
       </div>
 
       <CorePopup
@@ -402,6 +414,15 @@ const styles = {
     padding: 10,
     width: '100%',
   },
+  
 };
+
+const moreStyles = StyleSheet.create( {
+  buttonAndTextContainer: {
+    flexDirection: "row",
+    alignItems: "center", // Aligns text and button vertically
+    gap: 5, // Adds space between the text and button
+  }
+})
 
 export default CartPage;

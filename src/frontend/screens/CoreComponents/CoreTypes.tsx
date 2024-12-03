@@ -16,5 +16,7 @@ interface Restaurant {
     menuItemImages: String[];
 
     mapUrl?: string; // Added as optional
+
+    websiteURL?: string;
 }
 export type {Restaurant as Restaurant}
