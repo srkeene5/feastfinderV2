@@ -3,14 +3,16 @@
 import mongoose from 'mongoose';
 import User from './User.js'; // Make sure to import the User model
 
+const optionSchema = new mongoose.Schema({
+  optionName: { type: String, required: true},
+  optionPrice: { type: Number, required: true } 
+}, { _id: false });
+
 // Define the schema for individual cart items
 const cartItemSchema = new mongoose.Schema({
   item: { type: String, required: true },
   quantity: { type: Number, required: true },
-  options: {
-    optionName: { type: String, required: true},
-    optionPrice: { type: Number, required: true } 
-  },
+  options: [optionSchema],
   priceChange: { type: Number, required: true },
   prices: {
     doordash: { type: Number, required: true },
