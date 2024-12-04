@@ -415,7 +415,7 @@ export default function SearchCards() {
   const restItem = (item: Restaurant, index: number) => {
     const restaurantData =
       restaurants.find((r) => r.restaurantID === item.restaurantID) || item;
-
+  
     return (
       <View key={restaurantData.restaurantID} style={styles.card}>
         <Image
@@ -430,7 +430,7 @@ export default function SearchCards() {
         <View style={styles.cardContent}>
         <View style={styles.buttonAndTextContainer}>
           <Text numberOfLines={1} style={styles.restaurantName}>
-            {restaurantData.restaurantName}
+            {restaurantData.restaurantName || "Unknown Restaurant"}
           </Text>
           {restaurantData.websiteURL && (
             <CoreButton
@@ -442,10 +442,10 @@ export default function SearchCards() {
           </View>
           <StarRating rating={restaurantData.averageRating || 0} />
           <Text numberOfLines={1} style={styles.cardDetails}>
-            Distance: {restaurantData.distance.toString()} Miles
+            Distance: {restaurantData.distance?.toString() || "N/A"} Miles
           </Text>
           <Text numberOfLines={1} style={styles.cardDetails}>
-            Address: {restaurantData.restaurantAddress}
+            Address: {restaurantData.restaurantAddress || "Address not available"}
           </Text>
           <Text numberOfLines={5} style={styles.cardDetails}>
             Description: {restaurantData.restaurantName + " Description..."}
@@ -462,7 +462,7 @@ export default function SearchCards() {
             <CoreButton
               pressFunc={() => {
                 setSelectedRestaurant(restaurantData);
-                setSelectedRestaurantReviews(restaurantData.reviews);
+                setSelectedRestaurantReviews(restaurantData.reviews || []);
                 setReviewsViewPop(true);
               }}
               bText="View Reviews"
@@ -473,17 +473,17 @@ export default function SearchCards() {
         <View style={styles.buttonContent}>
           {APIButton(
             "DoorDash",
-            restaurantData.doordashAvailable,
+            restaurantData.doordashAvailable ?? false,
             restaurantData
           )}
           {APIButton(
             "GrubHub",
-            restaurantData.grubhubAvailable,
+            restaurantData.grubhubAvailable ?? false,
             restaurantData
           )}
           {APIButton(
             "UberEats",
-            restaurantData.ubereatsAvailable,
+            restaurantData.ubereatsAvailable ?? false,
             restaurantData
           )}
         </View>
