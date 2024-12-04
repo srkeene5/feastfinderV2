@@ -1,5 +1,35 @@
 import mongoose from 'mongoose';
 
+const optionListSchema = new mongoose.Schema({
+  optionName: {
+    type: String,
+    required: true,
+  },
+  optionPrice: {
+    type: Number,
+    required: true,
+  },
+}, {_id: false});
+
+const optionSchema = new mongoose.Schema({
+  optionName: {
+    type: String,
+    enum: ['Required Changes', 'Optional Changes'],
+    required: true
+  },
+  required: {
+    type: Boolean,
+    required: true
+  },
+  multiSelect: {
+    type: Boolean,
+    required: true,
+  },
+  options: [{
+    optionList: [optionListSchema],
+  }]
+}, {_id: false});
+
 const restaurantSchema = new mongoose.Schema({
   restaurantID: {
     type: String,
@@ -22,7 +52,7 @@ const restaurantSchema = new mongoose.Schema({
     type: String,
     required: true
   }],
-  menuOptions: [],
+  menuOptions: [[optionSchema]],
   menuDietaryViolations: [
     [
       {

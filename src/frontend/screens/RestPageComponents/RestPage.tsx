@@ -468,11 +468,12 @@ export default function RestPage() {
   const popUp = (actualIndex: number)=>{
     setCartPop(true);
     setPopIndex(actualIndex);
-    const itemOptions = restaurant.menuOptions[actualIndex];
+    const itemOptions = restaurant.menuOptions?.[actualIndex] || [[],[]];
     setPopPrice(prices[actualIndex]);
     var reqLen = 0;
     var optLen = 0;
     if (itemOptions[0] && itemOptions[0].options) {
+
       reqLen = itemOptions[0].options.length;
     }
     if (itemOptions[0] && itemOptions[1].options) {
