@@ -7,6 +7,11 @@ import User from './User.js'; // Make sure to import the User model
 const cartItemSchema = new mongoose.Schema({
   item: { type: String, required: true },
   quantity: { type: Number, required: true },
+  options: {
+    optionName: { type: String, required: true},
+    optionPrice: { type: Number, required: true } 
+  },
+  priceChange: { type: Number, required: true },
   prices: {
     doordash: { type: Number, required: true },
     ubereats: { type: Number, required: true },
@@ -27,7 +32,7 @@ const cartSchema = new mongoose.Schema(
     items: [cartItemSchema],
     service: { type: String, required: true },
     total: { type: Number, required: true },
-    quantities: { type: [Number], required: true },
+    //quantities: { type: [Number], required: true },
   },
   { timestamps: true }
 );

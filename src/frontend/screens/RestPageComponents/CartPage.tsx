@@ -3,17 +3,28 @@ import { View, StyleSheet } from "react-native";
 import { useCart } from './CartContext.tsx'; // Corrected path
 import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useNavigate } from 'react-router-dom';
-import { CartItem } from '../../../types/Cart'; // Adjusted path
+import { CartEntry, CartItem, Option, OptionIndex } from '../../../types/Cart'; // Adjusted path
 import { useAuth } from '../UserComponents/Authorizer.tsx'; // Authentication hook
 import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for login
 import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
+import { Button, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
+import OptionsPopup from './OptionsPopup.tsx';
 import { API_BASE_URL } from '../../../config.js';
 import CoreButton from "../CoreComponents/CoreButton.tsx";
 
 const CartPage: React.FC = () => {
-  const { cart, clearCart } = useCart(); // Destructure clearCart from useCart
+  const { cart, updateCart, clearCart } = useCart(); // Destructure clearCart from useCart
   const navigate = useNavigate();
   const { user } = useAuth(); // Authentication context
+
+  //const [showSuccessModal, setShowSuccessModal] = useState(false);
+  //const [selectedService, setSelectedService] = useState<string | null>(null);
+  
+  const [cartPop, setCartPop] = useState<boolean>(false);
+  const [popIndex, setPopIndex] =  useState<number>(-1);
+  const [checkIndex, setCheckIndex] = useState<number>(-1);
+  const [optionIndex, setOptionIndex] = useState<OptionIndex>({required: [], optional: []})
+  const [priceChange, setPriceChange] = useState<number>(0);
 
   const [errPop, setErrPop] = useState(false);
   const [errText, setErrText] = useState('Error Undefined');
@@ -22,8 +33,11 @@ const CartPage: React.FC = () => {
   const [holdCartData, setHoldCartData] = useState<any | null>(null); // Store cart data for later processing
   const [userValue, setUserValue] = useState(''); // Store username input
   const [passValue, setPassValue] = useState(''); // Store password input
+  const [serviceTotal, setServiceTotal] = useState<{[key: string]: number|undefined}>({});
+  const [discountTotal, setDiscountTotal] = useState<{[key: string]: number|undefined}>({});
 
   useEffect(() => {
+    calcTotals();
     if (!cart || !cart.items || cart.items.length === 0) {
       navigate('/home');
     }
@@ -31,7 +45,9 @@ const CartPage: React.FC = () => {
 
   const calculateServiceTotal = (service: string) => {
     return cart?.items.reduce((total: number, item: CartItem) => {
-      const price = item.prices[service.toLowerCase()];
+      console.log(service, cart.service)
+      //const discount = cart.discount ?? 0;
+      const price = item.prices[service.toLowerCase()] + item.priceChange;
       return total + (price * item.quantity);
     }, 0);
   };
@@ -40,9 +56,23 @@ const CartPage: React.FC = () => {
     if (service.toLowerCase() !== cart?.service.toLowerCase()) return calculateServiceTotal(service);
     return cart?.items.reduce((total: number, item: CartItem) => {
       const discount = cart.discount ?? 0;
-      const price = item.prices[service.toLowerCase()];
+      const price = item.prices[service.toLowerCase()] + item.priceChange;
       return total + (price * item.quantity * (100 - discount) / 100);
     }, 0);
+  };
+
+  const calcTotals = () => {
+    const newServiceTotal: { [key: string]: number | undefined } = {};
+    const newDiscountTotal: { [key: string]: number | undefined } = {};
+  
+    ['DoorDash', 'UberEats', 'Grubhub'].forEach((service) => {
+      newServiceTotal[service] = calculateServiceTotal(service);
+      newDiscountTotal[service] = calculateAfterDiscountTotal(service);
+    });
+  
+    // Update state once with the full result
+    setServiceTotal(newServiceTotal);
+    setDiscountTotal(newDiscountTotal);
   };
 
   const resetUserPass = () => {
@@ -225,6 +255,80 @@ const CartPage: React.FC = () => {
     return null;
   }
 
+  const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: '#f5f5f9',
+      color: 'rgba(0, 0, 0, 0.87)',
+      maxWidth: 220,
+      fontSize: theme.typography.pxToRem(12),
+      border: '1px solid #dadde9',
+    },
+  }));
+
+  const handleRemove = (index: number) => {
+    const newItems = [...cart.items];
+    newItems.splice(index,1);
+    const newCart: CartEntry = {
+      restaurant: cart.restaurant,
+      items: newItems,
+      service: cart.service,
+      total: cart.total,
+    }
+    updateCart(newCart);
+  }
+
+  const handleEdit = (index: number) => {
+    setCartPop(true);
+    setCheckIndex(index);
+    var actualIndex
+    cart.restaurant.menu.forEach((item: string, i: number) => {
+      if (item === cart.items[index].item) {
+        actualIndex = i;
+      }
+    });
+    setPopIndex(actualIndex);
+    setOptionIndex(cart.items[index].optionIndex);
+  }
+
+  const handleClosePop = () => {
+    setCartPop(false); 
+    setPopIndex(-1);
+    setOptionIndex({required: [], optional: []});
+  }
+
+  const handleEditSubmit = (index: number, quantity: number) => {
+    const newItems = [...cart.items];
+
+    var options: Option[] = []
+    optionIndex.required.forEach((value: number, i: number) => {
+      if (value !== -1) {
+        const option = cart.restaurant.menuOptions[index][0].options[i].optionList[value]
+        options.push({optionName: option.optionName, optionPrice: option.optionPrice});
+      }
+    });
+    optionIndex.optional.forEach((value: number, i: number) => {
+      if (value !== -1) {
+        const option = cart.restaurant.menuOptions[index][1].options[i].optionList[value]
+        options.push({optionName: option.optionName, optionPrice: option.optionPrice});
+      }
+    });
+    newItems[checkIndex].quantity = quantity
+    newItems[checkIndex].options = options
+    newItems[checkIndex].optionIndex = optionIndex
+    newItems[checkIndex].priceChange = priceChange
+    const newCart: CartEntry = {
+      restaurant: cart.restaurant,
+      items: newItems,
+      service: cart.service,
+      total: cart.total,
+    }
+    updateCart(newCart);
+    calcTotals()
+    handleClosePop();
+  }
+
   return (
     <div style={{ backgroundColor: ffColors.ffBackground, height: '100vh' }}>
       <CoreBanner />
@@ -284,27 +388,97 @@ const CartPage: React.FC = () => {
                       {cart.items.map((item: CartItem, index: number) => (
                         <li key={index} className="flex justify-between mb-2">
                           <span>
-                            <p style={{ color: ffColors.ffBody }}>
-                              {item.item} x {item.quantity}
-                            </p>
-                          </span>
-                          <span>
-                            <p style={{ color: ffColors.ffBody }}>
-                              ${(item.prices[service.toLowerCase().replace(" ", "")] * item.quantity).toFixed(2)}
-                            </p>
-                          </span>
+                          <p
+                            style={{color: ffColors.ffText}}
+                          >
+                            <HtmlTooltip
+                              title={
+                                <React.Fragment>
+                                  <button onClick={(e)=>{handleEdit(index)}}>Edit</button>
+                                  <br/>
+                                  <button onClick={(e) => {handleRemove(index)}}>Remove</button>
+                                </React.Fragment>
+                              }
+                            >
+                              <Button
+                                style={{textTransform: 'none', color: ffColors.ffText, font: 'inherit', fontSize: 16}}
+                              >
+                                {item.item} x {item.quantity}
+                              </Button>
+                            </HtmlTooltip>
+                          </p>
+                          <div
+                            style={{paddingLeft: 16}}
+                          >
+                            {item.options.map((option: Option, index: number) => (
+                              <div
+                                key={index}
+                                style={{color: ffColors.ffBody, fontSize: 12}}
+                              >
+                                {option.optionName}
+                              </div>
+                            ))}
+                            {item.options.length > 0 ? 
+                            <div
+                              style={{color: ffColors.ffText, fontSize: 14}}
+                            >
+                              Subtotal:
+                            </div>
+                            :<></>}
+                          </div>
+                        </span>
+                        <span
+                          style={{justifyItems: 'right', marginBottom: 8}}
+                        >
+                          <div
+                            style={item.options.length > 0 ? {color: ffColors.ffBody} : {color: ffColors.ffText}}
+                          >
+                            ${(item.prices[service.toLowerCase().replace(" ","")] * item.quantity).toFixed(2)}
+                          </div>
+                          <div
+                            style={{justifyItems: 'right'}}
+                          >
+                            {item.options.map((option: Option, index: number) => (
+                              option.optionPrice !==0 ? <div
+                                key={index}
+                                style={{color: ffColors.ffBody, fontSize: 12}}
+                              >
+                                +${(option.optionPrice * item.quantity).toFixed(2)}
+                              </div> 
+                              :
+                              <div
+                                key={index}
+                                style={{color: ffColors.ffBody, fontSize: 12}}
+                              >
+                                Free
+                              </div>
+                            ))}
+                            {item.options.length > 0 ? 
+                            <div
+                              style={{color: ffColors.ffText}}
+                            >
+                              ${((item.prices[service.toLowerCase().replace(" ","")] + item.options.reduce((sum, option) => sum + option.optionPrice, 0)) * item.quantity).toFixed(2)}
+                            </div>
+                            :<></>}
+                          </div>
+                        </span>
                         </li>
                       ))}
                     </ul>
                     <div className="flex justify-between font-bold mt-4">
                       <p style={{ color: ffColors.ffHeading }}>Total:</p>
                       <div className="flex items-center">
-                        {calculateServiceTotal(service.replace(" ", "")) !== total && (
-                          <p className="text-gray-500 line-through mr-2">
-                            ${calculateServiceTotal(service.replace(" ", ""))?.toFixed(2)}
+                        {serviceTotal[service.toLowerCase().replace(" ","")]?.toFixed(2) !== discountTotal[service.toLowerCase().replace(" ","")]?.toFixed(2) && (
+                          <p 
+                            className="text-gray-500 line-through mr-2"
+                            style={{ color: ffColors.ffText }}
+                          >
+                            ${serviceTotal[service.toLowerCase().replace(" ","")]?.toFixed(2)}
                           </p>
                         )}
-                        <p className="font-bold text-lg">${total?.toFixed(2)}</p>
+                        <p style={{ color: ffColors.ffHeading }}>
+                          ${discountTotal[service.toLowerCase().replace(" ","")]?.toFixed(2)}
+                        </p>
                       </div>
                     </div>
                     <button
@@ -327,6 +501,21 @@ const CartPage: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Edit Popup */}
+      <OptionsPopup
+      cartPop={cartPop}
+      restaurant={cart.restaurant}
+      popIndex={popIndex}
+      handleClosePop={handleClosePop}
+      handleDishConfirm={handleEditSubmit}
+      optionIndex={optionIndex}
+      setOptionIndex={setOptionIndex}
+      add={true}
+      priceChange={priceChange}
+      setPriceChange={setPriceChange}
+      />
+
       <CorePopup
         pop={errPop}
         popTitle={"Error:"}

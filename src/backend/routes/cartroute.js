@@ -9,10 +9,14 @@ const router = express.Router();
 
 router.post('/cart/create', auth, async (req, res) => {
   try {
-    const { restaurant, items, service, total, quantities } = req.body;
+    const { restaurant, items, service, total } = req.body;
 
-    if (!restaurant || !items || !service || !total || !quantities) {
-      return res.status(400).json({ message: 'Missing required fields' });
+    if (!restaurant || !items || !service || !total) {
+      return res.status(400).json({ message: 'Missing required field(s)\n'
+        + 'Rest: ' + !!restaurant 
+        + '\nItems: ' + !!items 
+        + '\nService: ' + !!service 
+        + '\nTotal: ' + !total });
     }
 
     const newCart = new Cart({
@@ -21,7 +25,6 @@ router.post('/cart/create', auth, async (req, res) => {
       items,
       service,
       total,
-      quantities,
     });
 
     await newCart.save();

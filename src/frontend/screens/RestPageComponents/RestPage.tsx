@@ -4,27 +4,34 @@ import { useCart } from './CartContext.tsx';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ConfirmModal from './ConfirmModal.tsx';
-import { CartItem, CartEntry } from '../../../types/Cart';
+import { CartItem, CartEntry, Option, OptionIndex } from '../../../types/Cart';
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
+import CoreButton from '../CoreComponents/CoreButton.tsx';
+import OptionsPopup from './OptionsPopup.tsx';
 import { API_BASE_URL } from '../../../config.js';
 import { useAuth } from '../UserComponents/Authorizer.tsx';
 
 interface MenuItemProps {
   item: string;
   price: number;
-  quantity: number;
   image: string;
   dietaryViolations: string[]
   userPreferences: string[]
-  onAdd: () => void;
-  onRemove: () => void;
-
+  setCartPop: () => void;
   deal: number | null;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, dietaryViolations, userPreferences, onAdd, onRemove, deal }) => {
-  
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, image, dietaryViolations, userPreferences, setCartPop, deal }) => {
+  // useEffect(() => {
+  //   console.log("Deal: ", deal);
+  // }, [deal]);
 
+  // let currPrice = Number(price);
+  // let oldPrice = Number(price);
+
+  // if (deal !== undefined && deal !== null && deal > 0) {
+  //   currPrice = currPrice * (100 - deal) / 100;
+  // }
   
   return (
     <li 
@@ -34,7 +41,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, dieta
       <div>
         <img
           src={image}
-          alt="Dish image"
+          alt="Dish"
           style={{
             height: 100,
             width: 150,
@@ -82,7 +89,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, dieta
         </ul>
       </div>
       <div className="flex items-center space-x-2 mt-4">
-        <button
+        {/*<button
           onClick={onRemove}
           disabled={quantity <= 0}
           className="w-8 h-8 flex items-center justify-center text-white rounded-full disabled:opacity-50 hover:bg-red-600 transition duration-200 ease-in-out"
@@ -97,7 +104,12 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, quantity, image, dieta
           style={{backgroundColor: ffColors.ffGreenL}}
         >
           +
-        </button>
+        </button>*/}
+        <CoreButton
+        pressFunc={setCartPop}
+        bText={'Add To Cart'}
+        buttonColor={ffColors.ffGreenL}
+        />
       </div>
     </li>
   );
@@ -109,7 +121,7 @@ export default function RestPage() {
   const { restaurant, service } = location.state || {};
   const { cart, updateCart, clearCart } = useCart();
 
-  const [quantities, setQuantities] = useState<number[]>([]);
+  //const [quantities, setQuantities] = useState<number[]>([]);
   const [cartTotal, setCartTotal] = useState<number>(0);
   const [showModal, setShowModal] = useState(false);
 
@@ -124,6 +136,90 @@ export default function RestPage() {
 
   const { user } = useAuth();
 
+
+  const [cartPop, setCartPop] = useState<boolean>(false);
+  const [popIndex, setPopIndex] =  useState<number>(-1);
+  const [optionIndex, setOptionIndex] = useState<OptionIndex>({required: [], optional: []})
+  const [priceChange, setPriceChange] = useState<number>(0);
+
+  const handleClosePop = () => {
+    setCartPop(false); 
+    setPopIndex(-1);
+    setOptionIndex({required: [], optional: []});
+  }
+
+  const handleDishConfirm = (index: number, quantity: number) => {
+    var options: Option[] = []
+    optionIndex.required.forEach((value: number, i: number) => {
+      if (value !== -1) {
+        const option = restaurant.menuOptions[index][0].options[i].optionList[value]
+        options.push({optionName: option.optionName, optionPrice: option.optionPrice});
+      }
+    });
+    optionIndex.optional.forEach((value: number, i: number) => {
+      if (value !== -1) {
+        const option = restaurant.menuOptions[index][1].options[i].optionList[value]
+        options.push({optionName: option.optionName, optionPrice: option.optionPrice});
+      }
+    });
+
+    const addedAmount = prices[index] + priceChange;
+
+    var newCartEntry: CartEntry;
+
+    if (cart) {
+      newCartEntry = cart
+      newCartEntry.total = cartTotal + prices[index] + priceChange;
+    } else {
+      newCartEntry = {
+        restaurant: restaurant,
+        service: service,
+        items: [],
+        total: prices[index] + priceChange,
+        discount: deal
+      };
+    }
+    setCartTotal((prevTotal) => prevTotal + addedAmount);
+
+    const newCartItem: CartItem = {
+      item: restaurant.menu[index],
+      quantity: quantity,
+      options: options,
+      optionIndex: optionIndex,
+      priceChange: priceChange,
+      prices: {
+        doordash: restaurant.doordashMenuPrice[index],
+        ubereats: restaurant.ubereatsMenuPrice[index],
+        grubhub: restaurant.grubhubMenuPrice[index],
+      },
+    }
+
+    var found = false
+    newCartEntry.items.map((item) => {
+      if (item === newCartItem) {
+        item.quantity += newCartItem.quantity;
+        found = true;
+      }
+    });
+
+    if (!found) {
+      newCartEntry.items.push(newCartItem);
+    }
+
+    console.log('newCartEntry.total: '+ newCartEntry.total)
+
+    updateCart(newCartEntry);
+    handleClosePop();
+  }
+
+  const calculateServiceTotal = (service: string) => {
+    return cart?.items.reduce((total: number, item: CartItem) => {
+      console.log(service, cart.service)
+      //const discount = cart.discount ?? 0;
+      const price = item.prices[service.toLowerCase()] + item.priceChange; // We still lower-case the key lookup here since the backend data uses lowercase keys
+      return total + (price * item.quantity);
+    }, 0);
+  };
 
   // Prices setup based on service
   let prices: number[] = [];
@@ -197,12 +293,12 @@ export default function RestPage() {
   useEffect(() => {
     if (restaurant && restaurant.menu) {
       if (cart && cart.restaurant.restaurantID === restaurant.restaurantID) {
-        setQuantities(cart.quantities);
-        setCartTotal(cart.total || 0);
+        //setQuantities(cart.quantities);
+        setCartTotal(calculateServiceTotal(service) || 0);
       } else if (cart && cart.restaurant.restaurantID !== restaurant.restaurantID) {
         setShowModal(true);
       } else {
-        setQuantities(Array(restaurant.menu.length).fill(0));
+        //setQuantities(Array(restaurant.menu.length).fill(0));
         setCartTotal(0);
       }
     }
@@ -249,7 +345,7 @@ export default function RestPage() {
   const paginatedMenuItems = restaurant.menu.slice(startIndex, startIndex + itemsPerPage);
 
   // Cart logic
-  const handleAdd = (index: number) => {
+  /*const handleAdd = (index: number) => {
     if (typeof prices[index] !== 'number') {
       console.error(`Price at index ${index} is undefined or not a number`);
       return;
@@ -285,7 +381,7 @@ export default function RestPage() {
       service: service,
       items: selectedItems,
       total: total,
-      quantities: newQuantities,
+      //quantities: newQuantities,
       discount: deal
     };
 
@@ -325,7 +421,7 @@ export default function RestPage() {
         service: service,
         items: selectedItems,
         total: total,
-        quantities: newQuantities,
+        //quantities: newQuantities,
         discount: deal
       };
 
@@ -333,13 +429,13 @@ export default function RestPage() {
     } else {
       console.error(`Cannot remove item at index ${index}`);
     }
-  };
+  };*/
 
   const handleViewCart = () => {
-    const selectedItems: CartItem[] = restaurant.menu
+    /*const selectedItems: CartItem[] = restaurant.menu
       .map((item: string, index: number) => ({
         item,
-        quantity: quantities[index],
+        //quantity: quantities[index],
         prices: {
           doordash: restaurant.doordashMenuPrice[index],
           ubereats: restaurant.ubereatsMenuPrice[index],
@@ -358,13 +454,31 @@ export default function RestPage() {
       service: service,
       items: selectedItems,
       total: total,
-      quantities: quantities,
+      //quantities: quantities,
       discount: deal
-    };
+    };*/
 
-    updateCart(newCartEntry);
+    //updateCart(newCartEntry);
     navigate('/cart');
   };
+
+  const popUp = (actualIndex: number)=>{
+    setCartPop(true);
+    setPopIndex(actualIndex);
+    const itemOptions = restaurant.menuOptions[actualIndex];
+    var reqLen = 0;
+    var optLen = 0;
+    if (itemOptions[0].options) {
+      reqLen = itemOptions[0].options.length;
+    }
+    if (itemOptions[1].options) {
+      optLen = itemOptions[1].options.length;
+    }
+    setOptionIndex({
+      required: new Array(reqLen).fill(-1),
+      optional: new Array(optLen).fill(-1)
+    });
+  }
 
   const handleSwitchRestaurant = () => {
     clearCart();
@@ -373,7 +487,7 @@ export default function RestPage() {
 
   const handleConfirm = () => {
     clearCart();
-    setQuantities(Array(restaurant.menu.length).fill(0));
+    //setQuantities(Array(restaurant.menu.length).fill(0));
     setCartTotal(0);
     setShowModal(false);
   };
@@ -426,12 +540,10 @@ export default function RestPage() {
                   key={actualIndex}
                   item={item}
                   price={prices[actualIndex]}
-                  quantity={quantities[actualIndex]}
                   image={restaurant.menuItemImages[actualIndex]}
+                  setCartPop={()=>{popUp(actualIndex)}}
                   dietaryViolations={restaurant.menuDietaryViolations[actualIndex]}
                   userPreferences={preferences}
-                  onAdd={() => handleAdd(actualIndex)}
-                  onRemove={() => handleRemove(actualIndex)}
                   deal={deal}
                 />
               );
@@ -452,7 +564,7 @@ export default function RestPage() {
             </h3>
             <button
               onClick={handleViewCart}
-              disabled={quantities.every((quantity) => quantity === 0)}
+              disabled={cartTotal === 0}
               className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50 hover:bg-blue-600 transition duration-200 ease-in-out"
               style={{backgroundColor: ffColors.ffGreenL}}
             >
@@ -502,7 +614,53 @@ export default function RestPage() {
         </div>
         
       </div>
-      
+
+      {/* Add To Cart Popup */}
+      <OptionsPopup
+      cartPop={cartPop}
+      restaurant={restaurant}
+      popIndex={popIndex}
+      handleClosePop={handleClosePop}
+      handleDishConfirm={handleDishConfirm}
+      optionIndex={optionIndex}
+      setOptionIndex={setOptionIndex}
+      add={false}
+      priceChange={priceChange}
+      setPriceChange={setPriceChange}
+      />
+      {/*<CorePopup
+      pop={cartPop}
+      popTitle={'Add ' + restaurant.menu[popIndex] + ' to cart'}
+      popText={''}
+      closeFunc={handleClosePop}
+      titleColor={ffColors.ffGreenL}
+      buttons={
+        [
+          {
+            bFunc: ()=>{handleDishConfirm(popIndex, 1)},
+            bText: 'Confirm',
+            bColor: ffColors.ffGreenL
+          },
+          {
+            bFunc: handleClosePop,
+            bText: 'Cancel',
+            bColor: ffColors.ffRedL
+          }
+        ]
+      }
+      >
+        <div
+        style={{flexDirection: 'column', overflowY: 'scroll', maxHeight: '80vh'}}
+        >
+          <div>
+            {priceChange !== 0 ? <div>
+              + {priceChange}
+            </div> : <></> }
+          </div>
+          {menuOptions.map((item, index) => optionMap(item, index))}
+        </div>
+      </CorePopup>*/}
+
       {/* Include the ConfirmModal */}
       <ConfirmModal
         isOpen={showModal}
