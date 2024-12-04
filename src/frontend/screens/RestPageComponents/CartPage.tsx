@@ -321,11 +321,11 @@ const CartPage: React.FC = () => {
                         <p style={{ color: ffColors.ffHeading }}>Total:</p>
                         <div className="flex items-center">
                           {serviceTotal !== discountTotal && (
-                            <p className="text-gray-500 line-through mr-2" style={{ color: ffColors.ffText }}>
+                            <p className="text-gray-500 line-through mr-2" >
                               ${serviceTotal?.toFixed(2)}
                             </p>
                           )}
-                          <p style={{ color: ffColors.ffHeading }}>${discountTotal?.toFixed(2)}</p>
+                          <p className ="font-bold text-lg" >${discountTotal?.toFixed(2)}</p>
                         </div>
                       </div>
   
