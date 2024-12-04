@@ -3,6 +3,7 @@ import { Image, View } from 'react-native'
 import { useAuth } from "./Authorizer.tsx";
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../../config.js';
+import { useCart } from '../RestPageComponents/CartContext.tsx';
 
 // import { coreForm } from '../CoreComponents/CoreStyles.tsx';
 
@@ -12,7 +13,7 @@ function Login() {
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Internal Issue");
   const {user, setUserToken} = useAuth();
-
+  const { clearCart } = useCart();
   const navigate = useNavigate();
 
   const goToFeed = () => {
@@ -27,7 +28,6 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsError(false);  // Reset error state
-    localStorage.removeItem('cart');
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
@@ -44,6 +44,7 @@ function Login() {
         const data = await res.json();
         console.log('User logged in:', data);
         setUserToken(data.token, email);
+        clearCart();
         console.log('Received token:', data.token);
         console.log(user);
         goToFeed()
