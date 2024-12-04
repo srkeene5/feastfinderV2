@@ -212,8 +212,8 @@ const CartPage: React.FC = () => {
   const sortedServices = services
     .map((service) => ({
       name: service,
-      available: cart.restaurant[`${service.toLowerCase()}Available`],
-      total: calculateAfterDiscountTotal(service),
+      available: cart.restaurant[`${(service.toLowerCase()).replace(" ", "")}Available`],
+      total: calculateAfterDiscountTotal(service.replace(" ", "")),
     }))
     .sort((a, b) => {
       if (a.available && !b.available) return -1;
@@ -290,7 +290,7 @@ const CartPage: React.FC = () => {
                           </span>
                           <span>
                             <p style={{ color: ffColors.ffBody }}>
-                              ${(item.prices[service.toLowerCase()] * item.quantity).toFixed(2)}
+                              ${(item.prices[service.toLowerCase().replace(" ", "")] * item.quantity).toFixed(2)}
                             </p>
                           </span>
                         </li>
@@ -299,16 +299,16 @@ const CartPage: React.FC = () => {
                     <div className="flex justify-between font-bold mt-4">
                       <p style={{ color: ffColors.ffHeading }}>Total:</p>
                       <div className="flex items-center">
-                        {calculateServiceTotal(service) !== total && (
+                        {calculateServiceTotal(service.replace(" ", "")) !== total && (
                           <p className="text-gray-500 line-through mr-2">
-                            ${calculateServiceTotal(service)?.toFixed(2)}
+                            ${calculateServiceTotal(service.replace(" ", ""))?.toFixed(2)}
                           </p>
                         )}
                         <p className="font-bold text-lg">${total?.toFixed(2)}</p>
                       </div>
                     </div>
                     <button
-                      onClick={() => handleCheckout(service.toLowerCase())}
+                      onClick={() => handleCheckout(service.toLowerCase().replace(" ", ""))}
                       className="mt-4 px-6 py-2 text-white rounded-lg hover:bg-blue-600 transition duration-200"
                       style={{
                         backgroundColor: ffColors.ffGreenL,
