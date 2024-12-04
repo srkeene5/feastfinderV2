@@ -242,13 +242,13 @@ const CartPage: React.FC = () => {
   const sortedServices = services
     .map((service) => ({
       name: service,
-      available: cart.restaurant[`${(service.toLowerCase()).replace(" ", "")}Available`],
+      available: cart?.restaurant[`${(service.toLowerCase()).replace(" ", "")}Available`],
       total: calculateAfterDiscountTotal(service.replace(" ", "")),
     }))
     .sort((a, b) => {
       if (a.available && !b.available) return -1;
       if (!a.available && b.available) return 1;
-      return a.total - b.total;
+      return (a.total || 0) - (b.total || 0);
     });
 
   if (!cart || !cart.items || cart.items.length === 0) {
