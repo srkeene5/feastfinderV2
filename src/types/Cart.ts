@@ -4,10 +4,16 @@ export interface Option {
   optionPrice: number,
 }
 
+export interface OptionIndex {
+  required: number[],
+  optional: number[],
+}
+
 export interface CartItem {
   item: string;
   quantity: number;
   options: Option[];
+  optionIndex: OptionIndex
   priceChange: number;
   prices: {
     doordash: number;

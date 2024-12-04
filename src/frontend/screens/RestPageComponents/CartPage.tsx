@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from './CartContext.tsx'; // Corrected path
 import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useNavigate } from 'react-router-dom';
-import { CartEntry, CartItem, Option } from '../../../types/Cart'; // Adjusted path
+import { CartEntry, CartItem, Option, OptionIndex } from '../../../types/Cart'; // Adjusted path
 import { useAuth } from '../UserComponents/Authorizer.tsx'; // Authentication hook
 import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for login
 import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
-import { divIcon } from 'leaflet';
-import { Button, styled, Tooltip, tooltipClasses, TooltipProps, Typography } from '@mui/material';
-import CoreButton from '../CoreComponents/CoreButton.tsx';
+import { Button, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
+import OptionsPopup from './OptionsPopup.tsx';
 
 const CartPage: React.FC = () => {
   const { cart, updateCart, clearCart } = useCart(); // Destructure clearCart from useCart
@@ -20,6 +19,10 @@ const CartPage: React.FC = () => {
   
   const [cartPop, setCartPop] = useState<boolean>(false);
   const [popIndex, setPopIndex] =  useState<number>(-1);
+  const [checkIndex, setCheckIndex] = useState<number>(-1);
+  const [optionIndex, setOptionIndex] = useState<OptionIndex>({required: [], optional: []})
+  const [priceChange, setPriceChange] = useState<number>(0);
+
   const [errPop, setErrPop] = useState(false);
   const [errText, setErrText] = useState('Error Undefined');
   const [loginPop, setLoginPop] = useState(false);
@@ -27,9 +30,12 @@ const CartPage: React.FC = () => {
   const [holdCartData, setHoldCartData] = useState<any | null>(null); // Store cart data for later processing
   const [userValue, setUserValue] = useState(''); // Store username input
   const [passValue, setPassValue] = useState(''); // Store password input
+  const [serviceTotal, setServiceTotal] = useState<{[key: string]: number|undefined}>({});
+  const [discountTotal, setDiscountTotal] = useState<{[key: string]: number|undefined}>({});
 
   // Redirect to home if cart is empty
   useEffect(() => {
+    calcTotals();
     if (!cart || !cart.items || cart.items.length === 0) {
       navigate('/home');
     }
@@ -54,6 +60,20 @@ const CartPage: React.FC = () => {
       const price = item.prices[service.toLowerCase()] + item.priceChange; // We still lower-case the key lookup here since the backend data uses lowercase keys
       return total + (price * item.quantity * (100 - discount) / 100);
     }, 0);
+  };
+
+  const calcTotals = () => {
+    const newServiceTotal: { [key: string]: number | undefined } = {};
+    const newDiscountTotal: { [key: string]: number | undefined } = {};
+  
+    ['DoorDash', 'UberEats', 'Grubhub'].forEach((service) => {
+      newServiceTotal[service] = calculateServiceTotal(service);
+      newDiscountTotal[service] = calculateAfterDiscountTotal(service);
+    });
+  
+    // Update state once with the full result
+    setServiceTotal(newServiceTotal);
+    setDiscountTotal(newDiscountTotal);
   };
 
   const resetUserPass = () => {
@@ -263,8 +283,54 @@ const CartPage: React.FC = () => {
     updateCart(newCart);
   }
 
-  const handleEditSubmit = () => {
+  const handleEdit = (index: number) => {
+    setCartPop(true);
+    setCheckIndex(index);
+    var actualIndex
+    cart.restaurant.menu.forEach((item: string, i: number) => {
+      if (item === cart.items[index].item) {
+        actualIndex = i;
+      }
+    });
+    setPopIndex(actualIndex);
+    setOptionIndex(cart.items[index].optionIndex);
+  }
 
+  const handleClosePop = () => {
+    setCartPop(false); 
+    setPopIndex(-1);
+    setOptionIndex({required: [], optional: []});
+  }
+
+  const handleEditSubmit = (index: number, quantity: number) => {
+    const newItems = [...cart.items];
+
+    var options: Option[] = []
+    optionIndex.required.forEach((value: number, i: number) => {
+      if (value !== -1) {
+        const option = cart.restaurant.menuOptions[index][0].options[i].optionList[value]
+        options.push({optionName: option.optionName, optionPrice: option.optionPrice});
+      }
+    });
+    optionIndex.optional.forEach((value: number, i: number) => {
+      if (value !== -1) {
+        const option = cart.restaurant.menuOptions[index][1].options[i].optionList[value]
+        options.push({optionName: option.optionName, optionPrice: option.optionPrice});
+      }
+    });
+    newItems[checkIndex].quantity = quantity
+    newItems[checkIndex].options = options
+    newItems[checkIndex].optionIndex = optionIndex
+    newItems[checkIndex].priceChange = priceChange
+    const newCart: CartEntry = {
+      restaurant: cart.restaurant,
+      items: newItems,
+      service: cart.service,
+      total: cart.total,
+    }
+    updateCart(newCart);
+    calcTotals()
+    handleClosePop();
   }
 
   return (
@@ -282,8 +348,6 @@ const CartPage: React.FC = () => {
 
         {['DoorDash', 'UberEats', 'Grubhub'].map((service) => {
           const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
-          const serviceTotal = calculateServiceTotal(service);
-          const discountTotal = calculateAfterDiscountTotal(service);
           return (
             <div 
               key={service} 
@@ -313,7 +377,7 @@ const CartPage: React.FC = () => {
                             <HtmlTooltip
                               title={
                                 <React.Fragment>
-                                  <button onClick={()=>{}}>Edit</button>
+                                  <button onClick={(e)=>{handleEdit(index)}}>Edit</button>
                                   <br/>
                                   <button onClick={(e) => {handleRemove(index)}}>Remove</button>
                                 </React.Fragment>
@@ -387,16 +451,16 @@ const CartPage: React.FC = () => {
                   <div className="flex justify-between font-bold mt-2">
                     <p style={{ color: ffColors.ffHeading }}>Total:</p>
                       <div className="flex items-center">
-                        {serviceTotal !== discountTotal && (
+                        {serviceTotal[service]?.toFixed(2) !== discountTotal[service]?.toFixed(2) && (
                           <p 
                             className="text-gray-500 line-through mr-2"
                             style={{ color: ffColors.ffText }}
                           >
-                            ${serviceTotal?.toFixed(2)}
+                            ${serviceTotal[service]?.toFixed(2)}
                           </p>
                         )}
                         <p style={{ color: ffColors.ffHeading }}>
-                          ${discountTotal?.toFixed(2)}
+                          ${discountTotal[service]?.toFixed(2)}
                         </p>
                       </div>
                   </div>
@@ -419,6 +483,20 @@ const CartPage: React.FC = () => {
           );
         })}
       </div>
+
+      {/* Edit Popup */}
+      <OptionsPopup
+      cartPop={cartPop}
+      restaurant={cart.restaurant}
+      popIndex={popIndex}
+      handleClosePop={handleClosePop}
+      handleDishConfirm={handleEditSubmit}
+      optionIndex={optionIndex}
+      setOptionIndex={setOptionIndex}
+      add={true}
+      priceChange={priceChange}
+      setPriceChange={setPriceChange}
+      />
 
       <CorePopup
         pop={errPop}

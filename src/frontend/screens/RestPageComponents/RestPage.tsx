@@ -4,10 +4,10 @@ import { useCart } from './CartContext.tsx';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ConfirmModal from './ConfirmModal.tsx';
-import { CartItem, CartEntry, Option } from '../../../types/Cart';
-import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx';
+import { CartItem, CartEntry, Option, OptionIndex } from '../../../types/Cart';
+import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../CoreComponents/CoreButton.tsx';
-import CorePopup from '../CoreComponents/CorePopup.tsx';
+import OptionsPopup from './OptionsPopup.tsx';
 
 interface MenuItemProps {
   item: string;
@@ -118,190 +118,30 @@ export default function RestPage() {
 
   const [cartPop, setCartPop] = useState<boolean>(false);
   const [popIndex, setPopIndex] =  useState<number>(-1);
-  const [menuOptions, setMenuOptions] = useState<Option[]>([]);
-  const [checkboxesState, setCheckboxesState] = useState<{[key: number]: boolean}>({});
-  const [requiredState, setRequiredState] = useState<{[key: number]: number}>({});
-  const [optionalState, setOptionalState] = useState<{[key: number]: number}>({});
-  const [options, setOptions] = useState<Set<Option>>(new Set());
+  const [optionIndex, setOptionIndex] = useState<OptionIndex>({required: [], optional: []})
   const [priceChange, setPriceChange] = useState<number>(0);
-
-  const optionMap = (item, index) => {
-    if (item.options && item.options.length > 0) {
-      if (item.required) {
-        return (
-          <div 
-          key={index}
-          style={coreForm.formItem}
-          >
-            <div
-            style={coreForm.subheader}
-            >
-              Required:
-            </div>
-            {item.options.map((subItem, subIndex)=>(
-              <div 
-              key = {subIndex}
-              style={{display: 'flex', flexDirection:'row', maxWidth: '80vh', flexWrap: 'wrap'}}
-              >
-                {subItem.optionList ? requiredSet(subItem.optionList, subIndex): <div></div>}
-              </div>
-            ))}
-          </div>
-        )
-      } else {
-        return (
-          <div 
-          key={index}
-          style={coreForm.formItem}
-          >
-            <div
-            style={coreForm.subheader}
-            >
-              Optional:
-            </div>
-            {item.options.map((subItem, subIndex)=>(
-              <div 
-              key = {subIndex}
-              style={{display: 'flex', flexDirection:'row', maxWidth: '80vh', flexWrap: 'wrap'}}
-              >
-                <input 
-                type="checkbox" 
-                checked={checkboxesState[subIndex] || false}
-                onChange={(e)=>handleCheckboxChange(subIndex, -1, e.target.checked, subItem.optionList)}
-                />
-                {subItem.optionList ? optionalSet(subItem.optionList, subIndex): <div></div>}
-              </div>
-            ))}
-          </div>
-        )
-      }
-    }
-    return (
-      <div key={index}>
-  
-      </div>
-    )
-  }
-
-  const requiredSet = (optionList, subIndex) => {
-    return (
-      <div
-      style={{}}
-      >
-        {optionList.map((option, i)=>(
-          <div 
-          key = {i}
-          style={{marginLeft: 10, float: 'left'}}
-          >
-            <CoreButton
-            bText={option.optionName}
-            buttonColor={i === requiredState[subIndex] ? ffColors.ffGreenL : ffColors.ffGreyL}
-            pressFunc={()=>{handleButtonChange(subIndex, i, true, optionList)}}
-            />
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  const optionalSet = (optionList, subIndex) => {
-    return (
-      <div
-      style={{}}
-      >
-        {optionList.map((option, i)=>(
-          <div 
-          key = {i}
-          style={{marginLeft: 10, float: 'left'}}
-          >
-            {checkboxesState[subIndex] ? 
-            <CoreButton
-            bText={option.optionName}
-            buttonColor={i === optionalState[subIndex] ? ffColors.ffGreenL: ffColors.ffGreyL}
-            pressFunc={()=>{handleButtonChange(subIndex, i, false, optionList)}}
-            />: 
-            <CoreButton
-            bText={option.optionName}
-            buttonColor={ffColors.ffGreyXL}
-            pressFunc={()=>{handleCheckboxChange(subIndex, i, true, optionList); handleButtonChange(subIndex, i, false, optionList)}}
-            />
-            }
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  const handleButtonChange = (index: number, value: number, required: boolean, optionList) => {
-    if (required) {
-      if (typeof value === 'number' && value !== -1) {
-        optionChange(true, optionList[value]);
-      }
-      if (typeof requiredState[index] === 'number' && requiredState[index] !== -1) {
-        optionChange(false, optionList[requiredState[index]]);
-      }
-      setRequiredState((prevState)=>({
-        ...prevState,
-        [index]: value,
-      }));
-    } else {
-      if (typeof value === 'number' && value !== -1) {
-        optionChange(true, optionList[value]);
-      }
-      if (typeof optionalState[index] === 'number' && optionalState[index] !== -1) {
-        optionChange(false, optionList[optionalState[index]]);
-      }
-      setOptionalState((prevState)=>({
-        ...prevState,
-        [index]: value,
-      }));
-    }
-  }
-
-  const handleCheckboxChange = (index: number, value: number, selected: boolean, optionList) => {
-    setCheckboxesState((prevState)=>({
-      ...prevState,
-      [index]: selected,
-    }));
-    if (!selected) {
-      if (typeof value === 'number' && value !== -1) {
-        optionChange(true, optionList[value]);
-      }
-      if (typeof optionalState[index] === 'number' && optionalState[index] !== -1) {
-        optionChange(false, optionList[optionalState[index]]);
-      }
-      setOptionalState((prevState)=>({
-        ...prevState,
-        [index]: -1,
-      }));
-    }
-  }
-
-  const optionChange = (add: boolean, option: Option) => {
-    if (add) {
-      setOptions(prevOptions => new Set(prevOptions).add(option));
-      setPriceChange((prevPrice) => Math.round((prevPrice + option.optionPrice)* 100)/100);
-    } else {
-      setOptions(prevOptions => {
-        const updatedOptions = new Set(prevOptions);
-        updatedOptions.delete(option);
-        return updatedOptions;
-      });
-      setPriceChange((prevPrice) => Math.round((prevPrice - option.optionPrice)* 100)/100);
-    }
-  }
 
   const handleClosePop = () => {
     setCartPop(false); 
     setPopIndex(-1);
-    setCheckboxesState({});
-    setRequiredState({});
-    setOptionalState({});
-    setPriceChange(0);
-    setOptions(new Set());
+    setOptionIndex({required: [], optional: []});
   }
 
   const handleDishConfirm = (index: number, quantity: number) => {
+    var options: Option[] = []
+    optionIndex.required.forEach((value: number, i: number) => {
+      if (value !== -1) {
+        const option = restaurant.menuOptions[index][0].options[i].optionList[value]
+        options.push({optionName: option.optionName, optionPrice: option.optionPrice});
+      }
+    });
+    optionIndex.optional.forEach((value: number, i: number) => {
+      if (value !== -1) {
+        const option = restaurant.menuOptions[index][1].options[i].optionList[value]
+        options.push({optionName: option.optionName, optionPrice: option.optionPrice});
+      }
+    });
+
     const addedAmount = prices[index] + priceChange;
 
     var newCartEntry: CartEntry;
@@ -323,7 +163,8 @@ export default function RestPage() {
     const newCartItem: CartItem = {
       item: restaurant.menu[index],
       quantity: quantity,
-      options: [...options],
+      options: options,
+      optionIndex: optionIndex,
       priceChange: priceChange,
       prices: {
         doordash: restaurant.doordashMenuPrice[index],
@@ -578,6 +419,24 @@ export default function RestPage() {
     navigate('/cart');
   };
 
+  const popUp = (actualIndex: number)=>{
+    setCartPop(true);
+    setPopIndex(actualIndex);
+    const itemOptions = restaurant.menuOptions[actualIndex];
+    var reqLen = 0;
+    var optLen = 0;
+    if (itemOptions[0].options) {
+      reqLen = itemOptions[0].options.length;
+    }
+    if (itemOptions[1].options) {
+      optLen = itemOptions[1].options.length;
+    }
+    setOptionIndex({
+      required: new Array(reqLen).fill(-1),
+      optional: new Array(optLen).fill(-1)
+    });
+  }
+
   const handleSwitchRestaurant = () => {
     clearCart();
     navigate('/home');
@@ -639,7 +498,7 @@ export default function RestPage() {
                   item={item}
                   price={prices[actualIndex]}
                   image={restaurant.menuItemImages[actualIndex]}
-                  setCartPop={()=>{setCartPop(true); setPopIndex(actualIndex); setMenuOptions(restaurant.menuOptions[actualIndex])}}
+                  setCartPop={()=>{popUp(actualIndex)}}
                   deal={deal}
                 />
               );
@@ -711,7 +570,19 @@ export default function RestPage() {
       </div>
 
       {/* Add To Cart Popup */}
-      <CorePopup
+      <OptionsPopup
+      cartPop={cartPop}
+      restaurant={restaurant}
+      popIndex={popIndex}
+      handleClosePop={handleClosePop}
+      handleDishConfirm={handleDishConfirm}
+      optionIndex={optionIndex}
+      setOptionIndex={setOptionIndex}
+      add={false}
+      priceChange={priceChange}
+      setPriceChange={setPriceChange}
+      />
+      {/*<CorePopup
       pop={cartPop}
       popTitle={'Add ' + restaurant.menu[popIndex] + ' to cart'}
       popText={''}
@@ -742,7 +613,7 @@ export default function RestPage() {
           </div>
           {menuOptions.map((item, index) => optionMap(item, index))}
         </div>
-      </CorePopup>
+      </CorePopup>*/}
 
       {/* Include the ConfirmModal */}
       <ConfirmModal
