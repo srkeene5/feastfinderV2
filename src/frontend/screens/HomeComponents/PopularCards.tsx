@@ -8,6 +8,7 @@ import {
     View,
     Image,
     Pressable, 
+    FlatList
 } from 'react-native'
 import tw from 'twrnc';
 import { API_BASE_URL } from '../../../config.js';
@@ -188,7 +189,7 @@ export default function PopularCards({fetchType}) {
             ) 
         }
     }
-
+    
     //-----Popular Cards Exported-----
     return (
         <SafeAreaView>
@@ -203,6 +204,7 @@ export default function PopularCards({fetchType}) {
             >
                 {restDishItems(fetchedData)}
             </ScrollView>
+            
         </SafeAreaView>
     )
 }

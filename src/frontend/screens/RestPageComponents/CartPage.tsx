@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from "react-native";
 import { useCart } from './CartContext.tsx'; // Corrected path
 import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { useAuth } from '../UserComponents/Authorizer.tsx'; // Authentication ho
 import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for login
 import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
 import { API_BASE_URL } from '../../../config.js';
+import CoreButton from "../CoreComponents/CoreButton.tsx";
 
 const CartPage: React.FC = () => {
   const { cart, clearCart } = useCart(); // Destructure clearCart from useCart
@@ -233,97 +235,119 @@ const CartPage: React.FC = () => {
   }
 
   return (
-    <div
-      style={{backgroundColor: ffColors.ffBackground, height: '100vh'}}
-    >
+    <div style={{ backgroundColor: ffColors.ffBackground, height: '100vh' }}>
       <CoreBanner />
-      <div className="container mx-auto p-4">
-        <h1 
-          className="text-2xl font-bold mb-4"
-          style={{color: ffColors.ffText}}
-        >
-          Your Cart
-        </h1>
-
-        {['DoorDash', 'UberEats', 'Grubhub'].map((service) => {
-          const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
-          const serviceTotal = calculateServiceTotal(service);
-          const discountTotal = calculateAfterDiscountTotal(service);
-          return (
-            <div 
-              key={service} 
-              className="border p-4 mb-4"
-              style={coreForm.card}
-            >
-              <h2 
-                className="text-xl font-semibold mb-2"
-                style={coreForm.header}
+      <div className="w-full max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-6">
+        <View style={moreStyles.buttonAndTextContainer}>
+          <h1
+            className="text-2xl font-bold mb-4 text-center"
+            style={{ color: ffColors.ffText }}
+          >
+            Your Cart for {cart.restaurant.restaurantName}
+          </h1>
+          <CoreButton
+            pressFunc={() => window.open(cart.restaurant.websiteURL, '_blank')}
+            bText="Restaurant Website"
+            buttonColor={ffColors.ffBlueD}
+          />
+        </View>
+  
+        <div className = "flex flex-col items-center">
+          {['DoorDash', 'Uber Eats', 'Grubhub'].map((service) => {
+            const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
+            const serviceTotal = calculateServiceTotal(service);
+            const discountTotal = calculateAfterDiscountTotal(service);
+            return (
+              <div
+                key={service}
+                className="border rounded-lg shadow-lg mb-4 max-w-lg"
+                style={{
+                  backgroundColor: '#fff',
+                  padding: '16px',
+                  border: '1px solid #ddd',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  flexDirection: 'row', // Layout side by side
+                  alignItems: 'flex-start', // Align items to the top of the card
+                  width: '100%',  // Ensure full width within the parent container
+                  minWidth: '350px',  // Limit max width
+                  height: 'auto',  // Auto height based on content
+                }}
               >
-                {service}
-              </h2>
-              {serviceAvailable ? (
-                <div
-                  style={coreForm.body}
-                >
-                  <ul>
-                    {cart.items.map((item: CartItem, index: number) => (
-                      <li 
-                        key={index} 
-                        className="flex justify-between"
-                      >
-                        <span>
-                          <p
-                            style={{color: ffColors.ffBody}}
-                          >
-                            {item.item} x {item.quantity}
-                          </p>
-                        </span>
-                        <span>
-                          <p
-                            style={{color: ffColors.ffBody}}
-                          >
-                            ${(item.prices[service.toLowerCase()] * item.quantity).toFixed(2)}
-                          </p>
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex justify-between font-bold mt-2">
-                    <p style={{ color: ffColors.ffHeading }}>Total:</p>
-                      <div className="flex items-center">
-                        {serviceTotal !== discountTotal && (
-                          <p 
-                            className="text-gray-500 line-through mr-2"
-                            style={{ color: ffColors.ffText }}
-                          >
-                            ${serviceTotal?.toFixed(2)}
-                          </p>
-                        )}
-                        <p style={{ color: ffColors.ffHeading }}>
-                          ${discountTotal?.toFixed(2)}
-                        </p>
-                      </div>
-                  </div>
-                  <button
-                    onClick={() => handleCheckout(service.toLowerCase())}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
-                    style={{backgroundColor: ffColors.ffGreenL}}
-                  >
-                    Checkout with {service}
-                  </button>
+                {/* Image on the Left Side */}
+                <div style={{ flexShrink: 0 }}>
+                  <img
+                    src={`/images/services/${service.toLowerCase()}.png`} // replace with actual logos
+                    alt={service}
+                    style={{
+                      width: '120px', // Adjust width of the image
+                      height: 'auto', // Let height scale automatically
+                      objectFit: 'contain', // Ensures image is fully contained
+                    }}
+                  />
                 </div>
-              ) : (
-                <p
-                  style={{color: ffColors.ffBody}}
-                >
-                  Not Available
-                </p>
-              )}
-            </div>
-          );
-        })}
+  
+                {/* Service Header with Icon */}
+                <div className="flex items-center mb-4 pl-4">
+                  <h2 className="text-xl font-semibold" style={{ color: ffColors.ffHeading }}>
+                    {service}
+                  </h2>
+                </div>
+  
+                <div className="flex flex-col items-center">
+                  {serviceAvailable ? (
+                    <div className="pl-8">
+                      {/* Cart Items List */}
+                      <ul className="mb-4">
+                        {cart.items.map((item: CartItem, index: number) => (
+                          <li key={index} className="flex justify-between mb-2">
+                            <span>
+                              <p style={{ color: ffColors.ffBody }}>
+                                {item.item} x {item.quantity}
+                              </p>
+                            </span>
+                            <span>
+                              <p style={{ color: ffColors.ffBody }}>
+                                ${(item.prices[service.toLowerCase()] * item.quantity).toFixed(2)}
+                              </p>
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+  
+                      {/* Price Details Section */}
+                      <div className="flex justify-between font-bold mt-4">
+                        <p style={{ color: ffColors.ffHeading }}>Total:</p>
+                        <div className="flex items-center">
+                          {serviceTotal !== discountTotal && (
+                            <p className="text-gray-500 line-through mr-2" >
+                              ${serviceTotal?.toFixed(2)}
+                            </p>
+                          )}
+                          <p className ="font-bold text-lg" >${discountTotal?.toFixed(2)}</p>
+                        </div>
+                      </div>
+  
+                      {/* Checkout Button */}
+                      <button
+                        onClick={() => handleCheckout(service.toLowerCase())}
+                        className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
+                        style={{ backgroundColor: ffColors.ffGreenL }}
+                      >
+                        Checkout with {service}
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="pl-8" style={{ color: ffColors.ffBody }}>Not Available</p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-
+  
       <CorePopup
         pop={errPop}
         popTitle={"Error:"}
@@ -338,7 +362,7 @@ const CartPage: React.FC = () => {
           },
         ]}
       />
-
+  
       <CorePopup
         pop={loginPop}
         popTitle={`Not logged into ${buttonService}:`}
@@ -381,7 +405,7 @@ const CartPage: React.FC = () => {
       </CorePopup>
     </div>
   );
-};
+};  
 
 // Adding styles for the CartPage login popup from SearchCards
 const styles = {
@@ -402,6 +426,16 @@ const styles = {
     padding: 10,
     width: '100%',
   },
+  
 };
+
+const moreStyles = StyleSheet.create( {
+  buttonAndTextContainer: {
+    flexDirection: "row",
+    alignItems: "center", // Aligns text and button vertically
+    gap: 5, // Adds space between the text and button
+    
+  }
+})
 
 export default CartPage;

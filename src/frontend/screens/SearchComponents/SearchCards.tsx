@@ -17,6 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CorePopup from "../CoreComponents/CorePopup.tsx";
 import CoreButton from "../CoreComponents/CoreButton.tsx";
 import { Star } from "lucide-react";
+// import { Restaurant } from "../CoreComponents/CoreTypes.tsx";
 
 interface Review {
   reviewId: number;
@@ -37,6 +38,7 @@ interface Restaurant {
   ubereatsAvailable: boolean;
   reviews: Review[];
   averageRating: number;
+  websiteURL?: string;
 }
 
 export default function SearchCards() {
@@ -426,9 +428,18 @@ export default function SearchCards() {
           resizeMode="contain"
         />
         <View style={styles.cardContent}>
+        <View style={styles.buttonAndTextContainer}>
           <Text numberOfLines={1} style={styles.restaurantName}>
             {restaurantData.restaurantName}
           </Text>
+          {restaurantData.websiteURL && (
+            <CoreButton
+              pressFunc={() => window.open(restaurantData.websiteURL, '_blank')}
+              bText="Website"
+              buttonColor={ffColors.ffBlueD}
+            />
+          )}
+          </View>
           <StarRating rating={restaurantData.averageRating || 0} />
           <Text numberOfLines={1} style={styles.cardDetails}>
             Distance: {restaurantData.distance.toString()} Miles
@@ -920,6 +931,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     marginTop: 10,
+  },
+  buttonAndTextContainer: {
+    flexDirection: "row",
+    alignItems: "center", // Aligns text and button vertically
+    gap: 5, // Adds space between the text and button
   },
   reviewsContainer: {
     maxHeight: 400,
