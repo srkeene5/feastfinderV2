@@ -153,7 +153,7 @@ const MapComponent: React.FC<{ restaurants: Restaurant[] }> = ({ restaurants }) 
 
   return (
     <View style={{ flex: 1 }}>
-      {error && <p>{error}</p>}
+      {/* {error && <p>{error}</p>} */}
       {userLocation ? (
         <MapContainer
           center={[userLocation.lat, userLocation.lng]}
@@ -208,7 +208,12 @@ const MapComponent: React.FC<{ restaurants: Restaurant[] }> = ({ restaurants }) 
           ))}
         </MapContainer>
       ) : (
-        <p>Loading location...</p>
+        <div className="flex items-center justify-center p-4 bg-yellow-100 border border-yellow-300 rounded-lg shadow-md text-yellow-700">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-96 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9V7a2 2 0 114 0v2m-4 4v6m0 0h4m-4 0H6a2 2 0 01-2-2V4a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
+          </svg>
+          <span className="text-lg font-medium">Unable to retrieve location for map</span>
+      </div>
       )}
     </View>
   );

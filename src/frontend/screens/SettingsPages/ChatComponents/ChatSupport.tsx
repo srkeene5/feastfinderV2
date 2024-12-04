@@ -1,150 +1,129 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx'
+// src/frontend/screens/SettingsPages/ChatComponents/ChatSupport.tsx
+import React, { useEffect, useRef, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx';
 import { Drawer } from '@mui/material';
 import tw from 'twrnc';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { API_BASE_URL } from '../../../../config.js';
 
-
-
-const ChatSupport = ({open, setOpen}) => {
-  //-----Original Code-----
-  const responses = {
-    'help with an order': {
-      text: 'Which service are you using? DoorDash, Uber Eats, or GrubHub?',
-      nextStep: 'order_service'
-    },
-    'help with my account': {
-      text: 'You can manage your account settings here:\n',
-      internalLink: '/AccountPage' // Internal link to AccountPage
-    },
-    'doordash': {
-      text: 'You can get help with your DoorDash order here:\n',
-      link: 'https://help.doordash.com/consumers/s/consumer-support?language=en_US'
-    },
-    'uber eats': {
-      text: 'You can get help with your Uber Eats order here:\n',
-      link: 'https://help.uber.com/en/ubereats/restaurants'
-    },
-    'grubhub': {
-      text: 'You can get help with GrubHub here:\n',
-      link: 'https://about.grubhub.com/media/contact-us/'
-    },
-    'login': {
-      text: 'You can reset your login or password on the account recovery page.\n',
-      link: 'https://your-login-reset-page-url.com' // Replace with actual reset URL
-    },
-    'talk to human support': {
-      text: 'Please contact our support team at support@company.com or call 1-800-123-4567.'
-    }
-  };
-  const [nextStep, setNextStep] = useState<string | null>(null);
-  
-  const submitQuery = (query: string) => {
-    const lowerCaseQuery = query.toLowerCase();
-  
-    // "Talk to human support" can be triggered at any time
-    if (lowerCaseQuery.includes('talk to human support')) {
-      return responses['talk to human support'];
-    }
-  
-    // If there's a current step (e.g., user has already selected something like 'order_service')
-    if (nextStep) {
-      if (
-        nextStep === 'order_service' &&
-        (lowerCaseQuery === 'doordash' || lowerCaseQuery === 'uber eats' || lowerCaseQuery === 'grubhub')
-      ) {
-        setNextStep(null);  // Reset after handling the follow-up step
-        return responses[lowerCaseQuery];
-      } else {
-        return { text: 'Sorry, I didn’t recognize that. Please try again.' };
-      }
-    } else {
-      // Handle the initial query
-      const replyData = responses[lowerCaseQuery];
-      if (replyData) {
-        setNextStep(replyData.nextStep || null);  // If there’s a next step, track it
-        return replyData;
-      } else {
-        return {text: "Sorry, I couldn't understand you. Please try: 'help with an order', 'help with my account', or 'talk to human support'" };
-      }
-    }
-  };
-  //-----Original Code-----
-
-  const [messageNID, setMessageNID] = React.useState(1);
-  const [messages, setMessages] = React.useState<{ messageID; message: string; sender: boolean; link?: string; internalLink?: string }[]>([{messageID: 0, message: "Hello! How can I help you today? You can say 'help with an order', 'help with my account', or 'talk to human support'.", sender: false}])
-  const [message, setMessage] = React.useState('')
+const ChatSupport = ({ open, setOpen }) => {
+  const [messages, setMessages] = useState([
+    { role: 'assistant', content: "Hello! How can I assist you today?" },
+  ]);
+  const [message, setMessage] = useState('');
+  const [messageNID, setMessageNID] = useState(1);
   const chatScrollView = useRef<ScrollView>(null);
 
-  useEffect(()=>{
-    if (chatScrollView.current){
-      chatScrollView.current.scrollToEnd({animated: true});
+  useEffect(() => {
+    if (chatScrollView.current) {
+      chatScrollView.current.scrollToEnd({ animated: true });
     }
   }, [messages]);
 
-  const keyHandler = async (event) => {
-    if (event.key === 'Enter' && message !== '') {
-      setMessages([...messages, {messageID: messageNID, message: message, sender: true}]);
-      setMessageNID(messageNID+1);
-      var response = submitQuery(message);
-      setMessage('');
-      setTimeout(()=>{
-        setMessages([...messages, {messageID: messageNID, message: message, sender: true}, {messageID: messageNID+1, message: response.text, sender: false, link: response.link, internalLink: response.internalLink}]);
-        setMessageNID(messageNID+2);
-      },1000);
+  const sendMessage = async (userMessageContent: string) => {
+    const userMessage = { role: 'user', content: userMessageContent };
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
+
+
+  
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/chat`, {
+        messages: updatedMessages,
+      });
+  
+      const assistantMessage = {
+        role: 'assistant',
+        content: response.data.reply,
+      };
+  
+      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+      setMessageNID((prevID) => prevID + 2);
+    } catch (error) {
+      console.error('Error communicating with chatbot:', error);
+      const errorMessage = {
+        role: 'assistant',
+        content: "I'm sorry, something went wrong on our end.",
+      };
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
     }
   };
-  
+
+  const keyHandler = async (event) => {
+    if (event.key === 'Enter' && message.trim() !== '') {
+      const userMessageContent = message.trim();
+      setMessage('');
+      await sendMessage(userMessageContent);
+    }
+  };
+
+  const renderMessageContent = (content: string) => {
+    const regex = /\[([^\]]+)]\(([^)]+)\)/g;
+    const parts: React.ReactNode[] = []; // Explicitly type the array
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = regex.exec(content)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push(content.substring(lastIndex, match.index));
+      }
+      parts.push(
+        <Link key={match[2]} to={match[2]} style={styles.link}>
+          {match[1]}
+        </Link>
+      );
+      lastIndex = regex.lastIndex;
+    }
+
+    if (lastIndex < content.length) {
+      parts.push(content.substring(lastIndex));
+    }
+
+    return parts;
+  };
+
   return (
-    <Drawer anchor='right' open={open} onClose={()=>setOpen(false)}>
-      <View
-      style={styles.chatContainer}
-      >
-        <View
-        style={styles.header}
-        >
-          <Text style={[tw.style(coreForm.subtitle), {marginTop: 10}]}>Chat Support</Text>
+    <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
+      <View style={styles.chatContainer}>
+        <View style={styles.header}>
+          <Text style={[tw.style(coreForm.subtitle), { marginTop: 10 }]}>Chat Support</Text>
         </View>
         <ScrollView
-        contentContainerStyle={styles.scroll}
-        showsVerticalScrollIndicator={false}
-        ref={chatScrollView}
+          contentContainerStyle={styles.scroll}
+          showsVerticalScrollIndicator={false}
+          ref={chatScrollView}
         >
-          {messages.map((item)=>(
+          {messages.map((item, index) => (
             <Text
-            key={item.messageID}
-            style={[styles.chatBubble, item.sender ? styles.userBubble : styles.otherBubble]}
+              key={index}
+              style={[
+                styles.chatBubble,
+                item.role === 'user' ? styles.userBubble : styles.otherBubble,
+              ]}
             >
-              {item.message}
-              {item.link && (
-                <a href={item.link} target="_blank" rel="noopener noreferrer" style={styles.link}>
-                  Click here for more details
-                </a>
-              )}
-              {item.internalLink && (
-                <Link to={item.internalLink} style={styles.link}>
-                  Go to Account Settings
-                </Link>
-              )}
+              {renderMessageContent(item.content)}
             </Text>
           ))}
         </ScrollView>
         <View style={styles.textInput}>
           <input
-          style={coreForm.textInputSingle}
-          onChange={(event)=>{setMessage(event.target.value)}}
-          value = {message}
-          placeholder='Message...'
-          onKeyDown={keyHandler}
+            style={coreForm.textInputSingle}
+            onChange={(event) => {
+              setMessage(event.target.value);
+            }}
+            value={message}
+            placeholder="Message..."
+            onKeyDown={keyHandler}
           />
         </View>
       </View>
     </Drawer>
-  )
-}
+  );
+};
 
-export default ChatSupport
+export default ChatSupport;
 
 const styles = StyleSheet.create({
   chatBubble: {
@@ -172,12 +151,12 @@ const styles = StyleSheet.create({
   header: {
     borderBottomColor: ffColors.ffEdge,
     borderBottomWidth: 1,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   textInput: {
     backgroundColor: ffColors.ffGreyL,
     padding: 10,
-    paddingBottom:15,
+    paddingBottom: 15,
   },
   scroll: {
     flex: 1,
@@ -185,6 +164,6 @@ const styles = StyleSheet.create({
   },
   link: {
     color: 'blue',
-    textDecorationLine: 'underline'
-  }
-})
+    textDecorationLine: 'underline',
+  },
+});

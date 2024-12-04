@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../RestPageComponents/CartContext.tsx';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../../config.js';
 
 interface Dish {
     dishName: string;
@@ -22,7 +23,7 @@ const DishRecommendations = () => {
     const fetchDishes = async () => {
       try {
         const randomLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
-        const response = await fetch(`http://localhost:5001/api/searchDish?name=${randomLetter}`, {
+        const response = await fetch(`${API_BASE_URL}/api/searchDish?name=${randomLetter}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ const DishRecommendations = () => {
     navigate('/cart');
   };
 
-  if (loading) return <div className="p-4">Loading reccomendations...</div>;
+  if (loading) return <div className="p-4">Loading recommendations...</div>;
   if (error) return <div className="p-4 text-red-500">{error}</div>;
   if (!dishes.length) return <div className="p-4">No dishes found</div>;
 

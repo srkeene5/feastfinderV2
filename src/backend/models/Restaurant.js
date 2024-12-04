@@ -23,6 +23,14 @@ const restaurantSchema = new mongoose.Schema({
     required: true
   }],
   menuOptions: [],
+  menuDietaryViolations: [
+    [
+      {
+        type: String,
+        enum: ['vegetarian', 'vegan', 'gluten-free', 'dairy-free', 'nut-free'],
+      },
+    ],
+  ],
   ubereatsMenuPrice: [{
     type: Number,
     required: true
@@ -66,6 +74,14 @@ const restaurantSchema = new mongoose.Schema({
     type: String,
     required: true
   }],
+  websiteURL: {
+    type: String,
+    required: false, // This field is optional
+    match: [
+      /^(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w\-.?=&%]*)*\/?$/,
+      'Please fill a valid URL'
+    ]
+  },
   
 });
 

@@ -5,6 +5,7 @@ import { useAuth } from '../../UserComponents/Authorizer.tsx';
 import AccountLinkedAPIs from './AccountLinkedAPIs.tsx';
 import tw from 'twrnc';
 import { coreForm } from '../../CoreComponents/CoreStyles.tsx';
+import { API_BASE_URL } from '../../../../config.js';
 
 export default function Account() {
   const { user } = useAuth();
@@ -24,7 +25,7 @@ export default function Account() {
     const fetchProfileData = async () => {
      
       try {
-        const addressResponse = await fetch('http://localhost:5001/api/address/recent', {
+        const addressResponse = await fetch(`${API_BASE_URL}/api/address/recent`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -34,7 +35,7 @@ export default function Account() {
         const addressData = await addressResponse.json();
         setCurrentAddress(`${addressData.street}, ${addressData.city}, ${addressData.state}, ${addressData.postalCode}, ${addressData.country}`);
 
-        const preferencesResponse = await fetch('http://localhost:5001/api/preferences', {
+        const preferencesResponse = await fetch(`${API_BASE_URL}/api/preferences`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -45,9 +46,9 @@ export default function Account() {
         setDietaryPreferences({
           vegetarian: preferencesData.dietaryPreferences.includes('vegetarian'),
           vegan: preferencesData.dietaryPreferences.includes('vegan'),
-          glutenFree: preferencesData.dietaryPreferences.includes('glutenFree'),
-          dairyFree: preferencesData.dietaryPreferences.includes('dairyFree'),
-          nutFree: preferencesData.dietaryPreferences.includes('nutFree'),
+          glutenFree: preferencesData.dietaryPreferences.includes('gluten-free'),
+          dairyFree: preferencesData.dietaryPreferences.includes('dairy-free'),
+          nutFree: preferencesData.dietaryPreferences.includes('nut-free'),
         });
       } catch (error) {
         console.error('Error fetching profile data:', error);
@@ -74,7 +75,7 @@ export default function Account() {
 
     try {
       const address = newAddress.split(','); // Split address into components
-      const response = await fetch('http://localhost:5001/api/address', {
+      const response = await fetch(`${API_BASE_URL}/api/address`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -104,23 +105,31 @@ export default function Account() {
   // Handle dietary preferences save
   const handleSavePreferences = async () => {
     const selectedPreferences = Object.keys(dietaryPreferences).filter(key => dietaryPreferences[key]);
-
+    let preferenceList: string[] = [];
+    //lmao
+    if (dietaryPreferences["vegetarian"]) preferenceList.push("vegetarian");
+    if (dietaryPreferences["vegan"]) preferenceList.push("vegan");
+    if (dietaryPreferences["glutenFree"]) preferenceList.push("gluten-free");
+    if (dietaryPreferences["dairyFree"]) preferenceList.push("dairy-free");
+    if (dietaryPreferences["nutFree"]) preferenceList.push("nut-free");
+    console.log(preferenceList)
     try {
-      const response = await fetch('http://localhost:5001/api/preferences/update', {
+      const response = await fetch(`${API_BASE_URL}/api/preferences/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + user.token,
         },
         body: JSON.stringify({
-          preferences: selectedPreferences,
+          preferences: preferenceList,
         }),
       });
 
       if (response.ok) {
         //alert('Dietary preferences updated successfully.');
       } else {
-        setErrorMessage('Failed to update dietary preferences.');
+        const msg = await response.text();
+        setErrorMessage('Failed to update dietary preferences.' + msg);
       }
     } catch (error) {
       console.error('Error updating dietary preferences:', error);
@@ -130,10 +139,21 @@ export default function Account() {
 
   // Handle checkbox change for dietary preferences
   const handleCheckboxChange = (preference) => {
+    const camelCasePreference = preference
+    .split('-')  // Split on dashes
+    .map((word, index) => {
+      // Capitalize the first letter of each word except the first one
+      if (index > 0) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+      return word.toLowerCase(); // Make sure the first word is lowercase
+    })
+    .join(''); // Join the words back into a single string
     setDietaryPreferences((prevPreferences) => ({
       ...prevPreferences,
-      [preference]: !prevPreferences[preference],
+      [camelCasePreference]: !prevPreferences[camelCasePreference],
     }));
+    console.log(preference)
   };
 
   return (
@@ -198,7 +218,7 @@ export default function Account() {
                   <View style={tw.style(coreForm.checkboxItem)}>
                     <CheckBox
                       value={dietaryPreferences.glutenFree}
-                      onValueChange={() => handleCheckboxChange('glutenFree')}
+                      onValueChange={() => handleCheckboxChange('gluten-free')}
                     />
                     <Text style={tw.style(coreForm.checkboxLabel)}>Gluten-Free</Text>
                   </View>
@@ -206,7 +226,7 @@ export default function Account() {
                   <View style={tw.style(coreForm.checkboxItem)}>
                     <CheckBox
                       value={dietaryPreferences.dairyFree}
-                      onValueChange={() => handleCheckboxChange('dairyFree')}
+                      onValueChange={() => handleCheckboxChange('dairy-free')}
                     />
                     <Text style={tw.style(coreForm.checkboxLabel)}>Dairy-Free</Text>
                   </View>
@@ -214,7 +234,7 @@ export default function Account() {
                   <View style={tw.style(coreForm.checkboxItem)}>
                     <CheckBox
                       value={dietaryPreferences.nutFree}
-                      onValueChange={() => handleCheckboxChange('nutFree')}
+                      onValueChange={() => handleCheckboxChange('nut-free')}
                     />
                     <Text style={tw.style(coreForm.checkboxLabel)}>Nut-Free</Text>
                   </View>

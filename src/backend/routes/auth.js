@@ -17,33 +17,6 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
-// router.post('/register', async (req, res) => {
-//   const { username, email, password } = req.body;
-
-//   try {
-//     let user = await User.findOne({ email });
-//     if (user) {
-//       return res.status(400).json({ msg: 'User already exists' });
-//     }
-
-//     user = new User({
-//       username,
-//       email,
-//       password: await bcrypt.hash(password, 10)
-//     });
-
-//     await user.save();
-
-//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: '24h'
-//     });
-
-//     res.status(201).json({ token });
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send('Server error');
-//   }
-// });
 
 // Helper function to generate random integers between min and max (inclusive)
 function getRandomIntInclusive(min, max) {
@@ -176,15 +149,7 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
-/* logs in to uber/doordash/login account. example of response:
 
-{
-  "msg": "Logged into DoorDash successfully",
-  "service": "DoorDash",
-  "deal": 15,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
-}
-*/
 router.post('/app-login', async (req, res) => {
   const { email, password } = req.body;
   // Basic validation
@@ -211,23 +176,27 @@ router.post('/app-login', async (req, res) => {
     let service = '';
     let deal = 0;
     let loginField = '';
+    let tokenField = '';
 
     if (email.endsWith('@doordash.com')) {
       service = 'DoorDash';
       deal = appLogin.doorDashDeal;
       loginField = 'doordash_logged_in';
+      tokenField = 'doordash_token';
     } else if (email.endsWith('@ubereats.com')) {
       service = 'UberEats';
       deal = appLogin.uberEatsDeal;
       loginField = 'uber_logged_in';
+      tokenField = 'uber_token';
     } else if (email.endsWith('@grubhub.com')) {
       service = 'Grubhub';
       deal = appLogin.grubHubDeal;
       loginField = 'grubhub_logged_in';
+      tokenField = 'grubhub_token';
     } else {
       return res.status(400).json({ msg: 'Invalid app account domain' });
     }
-
+  
 
     // Update the User's Login Status
     const user = await User.findById(appLogin.userID);
@@ -244,7 +213,14 @@ router.post('/app-login', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
-
+    const user2 = await User.findById(appLogin.userID);
+    if (user2) {
+      user[tokenField] = token;
+      await user.save();
+    } else {
+      return res.status(400).json({ msg: 'Associated user not found' });
+    }
+    
     res.json({ 
       msg: `Logged into ${service} successfully`,
       service: service,
@@ -308,21 +284,28 @@ router.post('/app-logout', appAuth, async (req, res) => {
 
     // Update the User's Login Status
     let loginField = '';
+    let tokenField = '';
+    
     if (decoded.service === 'DoorDash') {
       loginField = 'doordash_logged_in';
+      tokenField = 'doordash_token';
     } else if (decoded.service === 'UberEats') {
       loginField = 'uber_logged_in';
+      tokenField = 'uber_token';
     } else if (decoded.service === 'Grubhub') {
       loginField = 'grubhub_logged_in';
+      tokenField = 'grubhub_token';
     } else {
       return res.status(400).json({ msg: 'Invalid service in token' });
     }
+
     // Find the AppLogin document using appEmail
     const appLogin = await AppLogin.findOne({ logins: decoded.appEmail });
     if (appLogin) {
       const user = await User.findById(appLogin.userID);
       if (user) {
         user[loginField] = false;
+        user[tokenField] = null;
         await user.save();
       } else {
         return res.status(400).json({ msg: 'Associated user not found' });
@@ -338,15 +321,7 @@ router.post('/app-logout', appAuth, async (req, res) => {
   }
 });
 
-/*
-provide Bearer token. get token from feastfinder login
-example response:
-{
-    "uber_logged_in": false,
-    "doordash_logged_in": true,
-    "grubhub_logged_in": true
-}
-*/
+
 router.get('/app-status', auth, async (req, res) => {
   try {
     const userId = req.user; // Assuming the main auth middleware sets req.user to the user's ID
@@ -368,14 +343,7 @@ router.get('/app-status', auth, async (req, res) => {
   }
 });
 
-/* gets the app name and deal amount given a Bearer token
-example of response:
-{
-  "service": "DoorDash",
-  "deal": 15
-}
 
-*/
 router.get('/app-deal', appAuth, async (req, res) => {
   const { appEmail, service } = req;
 

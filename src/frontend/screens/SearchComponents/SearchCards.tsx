@@ -9,13 +9,16 @@ import {
   View,
   TextInput, // Add TextInput
 } from "react-native";
-
+import { API_BASE_URL } from '../../../config.js';
+import { TouchableOpacity } from 'react-native';
 import { useAuth } from "../UserComponents/Authorizer.tsx";
 import { ffColors } from "../CoreComponents/CoreStyles.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import CorePopup from "../CoreComponents/CorePopup.tsx";
 import CoreButton from "../CoreComponents/CoreButton.tsx";
 import { Star } from "lucide-react";
+// import { Restaurant } from "../CoreComponents/CoreTypes.tsx";
+
 interface Review {
   reviewId: number;
   username: string;
@@ -35,6 +38,7 @@ interface Restaurant {
   ubereatsAvailable: boolean;
   reviews: Review[];
   averageRating: number;
+  websiteURL?: string;
 }
 
 export default function SearchCards() {
@@ -69,31 +73,8 @@ export default function SearchCards() {
   const [rating, setRating] = React.useState<number>(0);
   const [hoveredRating, setHoveredRating] = React.useState<number>(0);
   const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]);
-
-  // Dummy data for initial reviews
-  const dummyReviews = [
-    {
-      reviewId: 1,
-      username: "JohnDoe",
-      rating: 4,
-      reviewText: "Great food and atmosphere! Would definitely come back.",
-      createdAt: "2024-03-15T10:30:00",
-    },
-    {
-      reviewId: 2,
-      username: "JaneSmith",
-      rating: 5,
-      reviewText: "Best restaurant in town. The service was exceptional.",
-      createdAt: "2024-03-14T15:45:00",
-    },
-    {
-      reviewId: 3,
-      username: "MikeJohnson",
-      rating: 3,
-      reviewText: "Decent food but a bit pricey. Service was okay.",
-      createdAt: "2024-03-13T18:20:00",
-    },
-  ];
+  type SortOption = 'distance-asc' | 'distance-desc' | 'rating-asc' | 'rating-desc';
+  const [sortOption, setSortOption] = React.useState<SortOption>('distance-asc');
 
   // Initialize restaurants state when results change
   React.useEffect(() => {
@@ -108,6 +89,8 @@ export default function SearchCards() {
     });
   }, [results]);
 
+  
+  
   const calculateAverageRating = (reviews) => {
     if (!reviews || reviews.length === 0) return 0;
     const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
@@ -121,8 +104,28 @@ export default function SearchCards() {
     return true;
   };
 
-  const filteredResults = results.filter(filterBySelectedService);
+  const filteredResults = restaurants.filter(filterBySelectedService);
 
+  // Sorting function
+  const sortRestaurants = (restaurantsList: Restaurant[]) => {
+    return [...restaurantsList].sort((a, b) => {
+      switch (sortOption) {
+        case 'distance-asc':
+          return a.distance - b.distance;
+        case 'distance-desc':
+          return b.distance - a.distance;
+        case 'rating-asc':
+          return a.averageRating - b.averageRating;
+        case 'rating-desc':
+          return b.averageRating - a.averageRating;
+        default:
+          return 0;
+      }
+    });
+  };
+
+  //const sortedResults = sortRestaurants(filteredResults);
+  const sortedResults = React.useMemo(() => sortRestaurants(filteredResults), [filteredResults, sortOption]);
   const resetUserPass = () => {
     setuserValue("");
     setPassValue("");
@@ -141,7 +144,7 @@ export default function SearchCards() {
 
     try {
       let response;
-      var fetchAddr = "http://localhost:5001/api/auth/app-login";
+      var fetchAddr = `${API_BASE_URL}/api/auth/app-login`;
       response = await fetch(fetchAddr, {
         method: "POST",
         headers: {
@@ -187,7 +190,7 @@ export default function SearchCards() {
   };
 
   const checkLogin = async (service: string, item) => {
-    let fetchAddr = "http://localhost:5001/api/auth/app-status";
+    let fetchAddr = `${API_BASE_URL}/api/auth/app-status`;
     
     try {
       const res = await fetch(fetchAddr, {
@@ -334,7 +337,7 @@ export default function SearchCards() {
   
     try {
       console.log('Sending POST request to /api/reviews');
-      const response = await fetch('http://localhost:5001/api/reviews', {
+      const response = await fetch(`${API_BASE_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -377,25 +380,28 @@ export default function SearchCards() {
     }
   };
 
-  const fetchReviews = async (restaurantID) => {
+  const fetchReviews = async (restaurantID: string) => {
     setIsLoadingReviews(true);
     try {
-      const response = await fetch(`http://localhost:5001/api/reviews/restaurant/${restaurantID}`);
+      const response = await fetch(`${API_BASE_URL}/api/reviews/restaurant/${restaurantID}`);
       if (response.ok) {
         const reviews = await response.json();
         // Update restaurants state with fetched reviews
         setRestaurants((prevRestaurants) => {
           return prevRestaurants.map((restaurant) => {
             if (restaurant.restaurantID === restaurantID) {
+              const averageRating = calculateAverageRating(reviews);
               return {
                 ...restaurant,
                 reviews: reviews,
-                averageRating: calculateAverageRating(reviews),
+                averageRating: averageRating,
               };
             }
             return restaurant;
           });
         });
+      } else {
+        console.error(`Failed to fetch reviews for restaurantID: ${restaurantID}`);
       }
     } catch (error) {
       console.error('Error fetching reviews:', error);
@@ -409,7 +415,7 @@ export default function SearchCards() {
   const restItem = (item: Restaurant, index: number) => {
     const restaurantData =
       restaurants.find((r) => r.restaurantID === item.restaurantID) || item;
-
+  
     return (
       <View key={restaurantData.restaurantID} style={styles.card}>
         <Image
@@ -422,15 +428,24 @@ export default function SearchCards() {
           resizeMode="contain"
         />
         <View style={styles.cardContent}>
+        <View style={styles.buttonAndTextContainer}>
           <Text numberOfLines={1} style={styles.restaurantName}>
-            {restaurantData.restaurantName}
+            {restaurantData.restaurantName || "Unknown Restaurant"}
           </Text>
+          {restaurantData.websiteURL && (
+            <CoreButton
+              pressFunc={() => window.open(restaurantData.websiteURL, '_blank')}
+              bText="Website"
+              buttonColor={ffColors.ffBlueD}
+            />
+          )}
+          </View>
           <StarRating rating={restaurantData.averageRating || 0} />
           <Text numberOfLines={1} style={styles.cardDetails}>
-            Distance: {restaurantData.distance.toString()} Miles
+            Distance: {restaurantData.distance?.toString() || "N/A"} Miles
           </Text>
           <Text numberOfLines={1} style={styles.cardDetails}>
-            Address: {restaurantData.restaurantAddress}
+            Address: {restaurantData.restaurantAddress || "Address not available"}
           </Text>
           <Text numberOfLines={5} style={styles.cardDetails}>
             Description: {restaurantData.restaurantName + " Description..."}
@@ -447,7 +462,7 @@ export default function SearchCards() {
             <CoreButton
               pressFunc={() => {
                 setSelectedRestaurant(restaurantData);
-                setSelectedRestaurantReviews(restaurantData.reviews);
+                setSelectedRestaurantReviews(restaurantData.reviews || []);
                 setReviewsViewPop(true);
               }}
               bText="View Reviews"
@@ -458,17 +473,17 @@ export default function SearchCards() {
         <View style={styles.buttonContent}>
           {APIButton(
             "DoorDash",
-            restaurantData.doordashAvailable,
+            restaurantData.doordashAvailable ?? false,
             restaurantData
           )}
           {APIButton(
             "GrubHub",
-            restaurantData.grubhubAvailable,
+            restaurantData.grubhubAvailable ?? false,
             restaurantData
           )}
           {APIButton(
             "UberEats",
-            restaurantData.ubereatsAvailable,
+            restaurantData.ubereatsAvailable ?? false,
             restaurantData
           )}
         </View>
@@ -479,7 +494,7 @@ export default function SearchCards() {
   const goToDishRestaurants = async (dishName) => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/searchRestaurant?dish=${encodeURIComponent(
+        `${API_BASE_URL}/api/searchRestaurant?dish=${encodeURIComponent(
           dishName
         )}`
       );
@@ -551,11 +566,60 @@ export default function SearchCards() {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        {filteredResults.length > 0 ? (
+        {/* Sorting Controls */}
+        {searchType === 'restaurant' && (
+          <>
+            <View style={styles.sortingContainer}>
+              <Text style={styles.sortingLabel}>Sort by Distance:</Text>
+              <TouchableOpacity
+                style={[
+                  styles.sortButton,
+                  sortOption === 'distance-asc' && styles.sortButtonActive,
+                ]}
+                onPress={() => setSortOption('distance-asc')}
+              >
+                <Text style={styles.sortButtonText}>Closest First</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.sortButton,
+                  sortOption === 'distance-desc' && styles.sortButtonActive,
+                ]}
+                onPress={() => setSortOption('distance-desc')}
+              >
+                <Text style={styles.sortButtonText}>Furthest First</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.sortingContainer}>
+              <Text style={styles.sortingLabel}>Sort by Rating:</Text>
+              <TouchableOpacity
+                style={[
+                  styles.sortButton,
+                  sortOption === 'rating-desc' && styles.sortButtonActive,
+                ]}
+                onPress={() => setSortOption('rating-desc')}
+              >
+                <Text style={styles.sortButtonText}>Highest First</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.sortButton,
+                  sortOption === 'rating-asc' && styles.sortButtonActive,
+                ]}
+                onPress={() => setSortOption('rating-asc')}
+              >
+                <Text style={styles.sortButtonText}>Lowest First</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+
+        {sortedResults.length > 0 ? (
           searchType === "restaurant" ? (
-            filteredResults.map((item, index) => restItem(item, index))
+            sortedResults.map((item, index) => restItem(item, index))
           ) : (
-            filteredResults.map((item, index) => dishItem(item, index))
+            sortedResults.map((item, index) => dishItem(item, index))
           )
         ) : (
           <View style={styles.errorPage}>
@@ -868,6 +932,11 @@ const styles = StyleSheet.create({
     gap: 5,
     marginTop: 10,
   },
+  buttonAndTextContainer: {
+    flexDirection: "row",
+    alignItems: "center", // Aligns text and button vertically
+    gap: 5, // Adds space between the text and button
+  },
   reviewsContainer: {
     maxHeight: 400,
     padding: 10,
@@ -914,5 +983,30 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: ffColors.ffBody,
     lineHeight: 20,
+  },
+  sortingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  sortingLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: ffColors.ffHeading,
+    marginRight: 10,
+  },
+  sortButton: {
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: ffColors.ffEdge,
+    marginRight: 5,
+  },
+  sortButtonActive: {
+    backgroundColor: ffColors.ffGreenL,
+  },
+  sortButtonText: {
+    fontSize: 14,
+    color: ffColors.ffText,
   },
 });

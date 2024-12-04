@@ -15,6 +15,7 @@ export const ffColors = {
   ffGreenD: '#184941',
   ffGreyD: '#41545b',
   ffBlueL: '#CCCCFF', //new
+  ffBlueD: '#6666FF',
   ffPurpleL: '#E0BBE4',
 }
 

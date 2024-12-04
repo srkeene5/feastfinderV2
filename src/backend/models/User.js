@@ -61,7 +61,19 @@ const UserSchema = new mongoose.Schema({
   cartIDs: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cart' }],
     default: []
-  }
+  },
+  uber_token: {
+    type: String,
+    default: null
+  },
+  doordash_token: {
+    type: String,
+    default: null
+  },
+  grubhub_token: {
+    type: String,
+    default: null
+  },
 });
 
 

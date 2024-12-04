@@ -8,16 +8,20 @@ import { CartItem, CartEntry, Option, OptionIndex } from '../../../types/Cart';
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../CoreComponents/CoreButton.tsx';
 import OptionsPopup from './OptionsPopup.tsx';
+import { API_BASE_URL } from '../../../config.js';
+import { useAuth } from '../UserComponents/Authorizer.tsx';
 
 interface MenuItemProps {
   item: string;
   price: number;
   image: string;
+  dietaryViolations: string[]
+  userPreferences: string[]
   setCartPop: () => void;
   deal: number | null;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, price, image, setCartPop, deal }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, price, image, dietaryViolations, userPreferences, setCartPop, deal }) => {
   // useEffect(() => {
   //   console.log("Deal: ", deal);
   // }, [deal]);
@@ -28,7 +32,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, image, setCartPop, dea
   // if (deal !== undefined && deal !== null && deal > 0) {
   //   currPrice = currPrice * (100 - deal) / 100;
   // }
-
+  
   return (
     <li 
       className="flex items-center justify-between p-4 mb-4 rounded-lg shadow-sm transition-shadow duration-300 hover:shadow-md"
@@ -54,7 +58,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, image, setCartPop, dea
         >
           {item}
         </h3>
-        <div className="flex items-center space-x-2 mt-1">
+        <div className="flex items-center space-x-1 mt-1">
           {/* {(deal !== null && Number(deal) > 0) && (
             <p 
               className="text-sm font-medium text-gray-500 line-through"
@@ -70,6 +74,19 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, image, setCartPop, dea
             ${price.toFixed(2)}
           </p>
         </div>
+        
+      </div>
+      <div className="flex items-left ml-2 mr-5">
+        <ul>
+          {dietaryViolations.map((violation, index) => (
+            <li 
+              key={index} 
+              className={`text-md font-bold ${userPreferences.includes(violation) ? 'text-red-500' : 'text-gray-400'}`}
+            >
+              {`Not ${violation}`}
+            </li>
+          ))}
+        </ul>
       </div>
       <div className="flex items-center space-x-2 mt-4">
         {/*<button
@@ -115,6 +132,10 @@ export default function RestPage() {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const [deal, setDeal] = useState<number>(0);
+  const [preferences, setPreferences] = useState<string[]>([]);
+
+  const { user } = useAuth();
+
 
   const [cartPop, setCartPop] = useState<boolean>(false);
   const [popIndex, setPopIndex] =  useState<number>(-1);
@@ -202,6 +223,27 @@ export default function RestPage() {
 
   // Prices setup based on service
   let prices: number[] = [];
+  const getPreferences = async () => {
+    try {
+      const preferenceResponse = await fetch(`${API_BASE_URL}/api/preferences/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + user.token, // Add auth token
+      },
+      });
+      if (!preferenceResponse.ok) {
+        console.error('Failed to fetch deals:', preferenceResponse.statusText);
+        return;
+      }
+      const preferenceData = await preferenceResponse.json()
+      console.log(preferenceData)
+      setPreferences(preferenceData.dietaryPreferences || [])
+    }
+    catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  }
 
   const getDeals = async () => {
     let app_token;
@@ -221,7 +263,7 @@ export default function RestPage() {
     }
 
     try {
-      const fetchAddr = 'http://localhost:5001/api/auth/app-deal';
+      const fetchAddr = `${API_BASE_URL}/api/auth/app-deal`;
       const response = await fetch(fetchAddr, {
         method: 'GET',
         headers: {
@@ -245,7 +287,8 @@ export default function RestPage() {
 
   useEffect(() => {
     getDeals();
-  });
+    getPreferences();
+  }, []);
 
   useEffect(() => {
     if (restaurant && restaurant.menu) {
@@ -499,6 +542,8 @@ export default function RestPage() {
                   price={prices[actualIndex]}
                   image={restaurant.menuItemImages[actualIndex]}
                   setCartPop={()=>{popUp(actualIndex)}}
+                  dietaryViolations={restaurant.menuDietaryViolations[actualIndex]}
+                  userPreferences={preferences}
                   deal={deal}
                 />
               );
@@ -567,6 +612,7 @@ export default function RestPage() {
             Switch Restaurant
           </button>
         </div>
+        
       </div>
 
       {/* Add To Cart Popup */}
@@ -623,6 +669,8 @@ export default function RestPage() {
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
+
+      
     </div>
   );
 }

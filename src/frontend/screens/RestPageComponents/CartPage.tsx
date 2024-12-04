@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from "react-native";
 import { useCart } from './CartContext.tsx'; // Corrected path
 import CoreBanner from '../CoreComponents/CoreBanner.tsx'; // Corrected path
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,8 @@ import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for 
 import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
 import { Button, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import OptionsPopup from './OptionsPopup.tsx';
+import { API_BASE_URL } from '../../../config.js';
+import CoreButton from "../CoreComponents/CoreButton.tsx";
 
 const CartPage: React.FC = () => {
   const { cart, updateCart, clearCart } = useCart(); // Destructure clearCart from useCart
@@ -33,7 +36,6 @@ const CartPage: React.FC = () => {
   const [serviceTotal, setServiceTotal] = useState<{[key: string]: number|undefined}>({});
   const [discountTotal, setDiscountTotal] = useState<{[key: string]: number|undefined}>({});
 
-  // Redirect to home if cart is empty
   useEffect(() => {
     calcTotals();
     if (!cart || !cart.items || cart.items.length === 0) {
@@ -41,23 +43,20 @@ const CartPage: React.FC = () => {
     }
   }, [cart, navigate]);
 
-  // Function to calculate total for a specific service
   const calculateServiceTotal = (service: string) => {
     return cart?.items.reduce((total: number, item: CartItem) => {
       console.log(service, cart.service)
       //const discount = cart.discount ?? 0;
-      const price = item.prices[service.toLowerCase()] + item.priceChange; // We still lower-case the key lookup here since the backend data uses lowercase keys
+      const price = item.prices[service.toLowerCase()] + item.priceChange;
       return total + (price * item.quantity);
     }, 0);
   };
 
-  // Function to calculate total for a specific service
-  // use cart.service to see if the discount should be applied to this service or not.
   const calculateAfterDiscountTotal = (service: string) => {
     if (service.toLowerCase() !== cart?.service.toLowerCase()) return calculateServiceTotal(service);
     return cart?.items.reduce((total: number, item: CartItem) => {
       const discount = cart.discount ?? 0;
-      const price = item.prices[service.toLowerCase()] + item.priceChange; // We still lower-case the key lookup here since the backend data uses lowercase keys
+      const price = item.prices[service.toLowerCase()] + item.priceChange;
       return total + (price * item.quantity * (100 - discount) / 100);
     }, 0);
   };
@@ -82,8 +81,7 @@ const CartPage: React.FC = () => {
   };
 
   const checkLogin = async (service: string) => {
-    let fetchAddr = "http://localhost:5001/api/auth/app-status";
-    
+    let fetchAddr = `${API_BASE_URL}/api/auth/app-status`;
     try {
       const res = await fetch(fetchAddr, {
         method: "GET",
@@ -95,26 +93,22 @@ const CartPage: React.FC = () => {
       if (res.ok) {
         const data = await res.json();
         let isStored;
-        console.log(service + "Hello")
         switch (service) {
           case "doordash":
-              isStored = data.doordash_logged_in;
-              break;
+            isStored = data.doordash_logged_in;
+            break;
           case "grubhub":
-              isStored = data.grubhub_logged_in;
-              break;
+            isStored = data.grubhub_logged_in;
+            break;
           case "ubereats":
-              isStored = data.uber_logged_in;
-              break;
+            isStored = data.uber_logged_in;
+            break;
           default:
             console.error("switchFailure");
-            setErrText(
-              "Internal Service Error\nDelivery Service not recognized"
-            );
+            setErrText("Internal Service Error\nDelivery Service not recognized");
             setErrPop(true);
             return false;
         }
-
         if (isStored) {
           return true;
         } else {
@@ -146,11 +140,9 @@ const CartPage: React.FC = () => {
       setErrPop(true);
       return;
     }
-
     try {
-      let response;
-      var fetchAddr = "http://localhost:5001/api/auth/app-login";
-      response = await fetch(fetchAddr, {
+      var fetchAddr = `${API_BASE_URL}/api/auth/app-login`;
+      const response = await fetch(fetchAddr, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -166,36 +158,30 @@ const CartPage: React.FC = () => {
       if (!response.ok) {
         throw new Error(data.msg || "Failed to register");
       }
-      console.log(buttonService)
+
       switch (buttonService) {
         case "doordash":
-            localStorage.setItem("doordash_token", data.token);
-            break;
+          localStorage.setItem("doordash_token", data.token);
+          break;
         case "grubhub":
-            localStorage.setItem("grubhub_token", data.token);
-            break;
+          localStorage.setItem("grubhub_token", data.token);
+          break;
         case "ubereats":
-            localStorage.setItem("ubereats_token", data.token);
-            break;
+          localStorage.setItem("ubereats_token", data.token);
+          break;
         default:
-            console.error('switchFailure');
-            return;
-    }
-
-      if (!response.ok) {
-        throw new Error(data.msg || 'Failed to login');
+          console.error('switchFailure');
+          return;
       }
 
       setLoginPop(false);
-      setButtonService('Error Undefined');
       resetUserPass();
-
       await proceedToCheckout(buttonService, holdCartData);
     } catch (err) {
       setErrText(err.message || 'Login failed');
       setErrPop(true);
     }
-  };  
+  };
 
   const proceedToCheckout = async (serviceName: string, cartData: any) => {
     try {
@@ -204,11 +190,10 @@ const CartPage: React.FC = () => {
         alert('You are not logged in. Please log in to proceed.');
         return;
       }
-
       const user = JSON.parse(userData);
       const token = user.token;
 
-      const response = await fetch('http://localhost:5001/api/cartroute/cart/create', {
+      const response = await fetch(`${API_BASE_URL}/api/cartroute/cart/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -220,7 +205,6 @@ const CartPage: React.FC = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        console.error('Error response from server:', data);
         alert(`Error: ${data.message}`);
         return;
       }
@@ -235,7 +219,6 @@ const CartPage: React.FC = () => {
 
   const handleCheckout = async (serviceName: string) => {
     const isLoggedIn = await checkLogin(serviceName);
-
     if (isLoggedIn) {
       window.open(getServiceURL(serviceName), '_blank');
       await proceedToCheckout(serviceName, cart);
@@ -254,6 +237,19 @@ const CartPage: React.FC = () => {
         return '#';
     }
   };
+
+  const services = ['DoorDash', 'Uber Eats', 'Grubhub'];
+  const sortedServices = services
+    .map((service) => ({
+      name: service,
+      available: cart.restaurant[`${(service.toLowerCase()).replace(" ", "")}Available`],
+      total: calculateAfterDiscountTotal(service.replace(" ", "")),
+    }))
+    .sort((a, b) => {
+      if (a.available && !b.available) return -1;
+      if (!a.available && b.available) return 1;
+      return a.total - b.total;
+    });
 
   if (!cart || !cart.items || cart.items.length === 0) {
     return null;
@@ -334,43 +330,64 @@ const CartPage: React.FC = () => {
   }
 
   return (
-    <div
-      style={{backgroundColor: ffColors.ffBackground, height: '100vh'}}
-    >
+    <div style={{ backgroundColor: ffColors.ffBackground, height: '100vh' }}>
       <CoreBanner />
-      <div className="container mx-auto p-4">
-        <h1 
-          className="text-2xl font-bold mb-4"
-          style={{color: ffColors.ffText}}
-        >
-          Your Cart
-        </h1>
-
-        {['DoorDash', 'UberEats', 'Grubhub'].map((service) => {
-          const serviceAvailable = cart.restaurant[`${service.toLowerCase()}Available`];
-          return (
-            <div 
-              key={service} 
-              className="border p-4 mb-4"
-              style={coreForm.card}
+      <div className="w-full max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-6">
+        <View style={moreStyles.buttonAndTextContainer}>
+          <h1
+            className="text-2xl font-bold mb-4 text-center"
+            style={{ color: ffColors.ffText }}
+          >
+            Your Cart for {cart.restaurant.restaurantName}
+          </h1>
+          <CoreButton
+            pressFunc={() => window.open(cart.restaurant.websiteURL, '_blank')}
+            bText="Restaurant Website"
+            buttonColor={ffColors.ffBlueD}
+          />
+        </View>
+        <div className="flex flex-col items-center">
+          {sortedServices.map(({ name: service, available, total }) => (
+            <div
+              key={service}
+              className="border rounded-lg shadow-lg mb-4 max-w-lg"
+              style={{
+                backgroundColor: '#fff',
+                padding: '16px',
+                border: '1px solid #ddd',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                borderRadius: '8px',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                width: '100%',
+                minWidth: '350px',
+                height: 'auto',
+              }}
             >
-              <h2 
-                className="text-xl font-semibold mb-2"
-                style={coreForm.header}
-              >
-                {service}
-              </h2>
-              {serviceAvailable ? (
-                <div
-                  style={coreForm.body}
-                >
-                  <ul>
-                    {cart.items.map((item: CartItem, index: number) => (
-                      <li 
-                        key={index} 
-                        className="flex justify-between"
-                      >
-                        <span>
+              <div style={{ flexShrink: 0 }}>
+                <img
+                  src={`/images/services/${service.toLowerCase()}.png`}
+                  alt={service}
+                  style={{
+                    width: '120px',
+                    height: 'auto',
+                    objectFit: 'contain',
+                  }}
+                />
+              </div>
+              <div className="flex items-center mb-4 pl-4">
+                <h2 className="text-xl font-semibold" style={{ color: ffColors.ffHeading }}>
+                  {service}
+                </h2>
+              </div>
+              <div className="flex flex-col items-center">
+                {available ? (
+                  <div className="pl-8">
+                    <ul className="mb-4">
+                      {cart.items.map((item: CartItem, index: number) => (
+                        <li key={index} className="flex justify-between mb-2">
+                          <span>
                           <p
                             style={{color: ffColors.ffText}}
                           >
@@ -416,7 +433,7 @@ const CartPage: React.FC = () => {
                           <div
                             style={item.options.length > 0 ? {color: ffColors.ffBody} : {color: ffColors.ffText}}
                           >
-                            ${(item.prices[service.toLowerCase()] * item.quantity).toFixed(2)}
+                            ${(item.prices[service.toLowerCase().replace(" ","")] * item.quantity).toFixed(2)}
                           </div>
                           <div
                             style={{justifyItems: 'right'}}
@@ -440,48 +457,49 @@ const CartPage: React.FC = () => {
                             <div
                               style={{color: ffColors.ffText}}
                             >
-                              ${((item.prices[service.toLowerCase()] + item.options.reduce((sum, option) => sum + option.optionPrice, 0)) * item.quantity).toFixed(2)}
+                              ${((item.prices[service.toLowerCase().replace(" ","")] + item.options.reduce((sum, option) => sum + option.optionPrice, 0)) * item.quantity).toFixed(2)}
                             </div>
                             :<></>}
                           </div>
                         </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex justify-between font-bold mt-2">
-                    <p style={{ color: ffColors.ffHeading }}>Total:</p>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="flex justify-between font-bold mt-4">
+                      <p style={{ color: ffColors.ffHeading }}>Total:</p>
                       <div className="flex items-center">
-                        {serviceTotal[service]?.toFixed(2) !== discountTotal[service]?.toFixed(2) && (
+                        {serviceTotal[service.toLowerCase().replace(" ","")]?.toFixed(2) !== discountTotal[service.toLowerCase().replace(" ","")]?.toFixed(2) && (
                           <p 
                             className="text-gray-500 line-through mr-2"
                             style={{ color: ffColors.ffText }}
                           >
-                            ${serviceTotal[service]?.toFixed(2)}
+                            ${serviceTotal[service.toLowerCase().replace(" ","")]?.toFixed(2)}
                           </p>
                         )}
                         <p style={{ color: ffColors.ffHeading }}>
-                          ${discountTotal[service]?.toFixed(2)}
+                          ${discountTotal[service.toLowerCase().replace(" ","")]?.toFixed(2)}
                         </p>
                       </div>
+                    </div>
+                    <button
+                      onClick={() => handleCheckout(service.toLowerCase().replace(" ", ""))}
+                      className="mt-4 px-6 py-2 text-white rounded-lg hover:bg-blue-600 transition duration-200"
+                      style={{
+                        backgroundColor: ffColors.ffGreenL,
+                        minWidth: '200px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      Checkout with {service}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => handleCheckout(service.toLowerCase())}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
-                    style={{backgroundColor: ffColors.ffGreenL}}
-                  >
-                    Checkout with {service}
-                  </button>
-                </div>
-              ) : (
-                <p
-                  style={{color: ffColors.ffBody}}
-                >
-                  Not Available
-                </p>
-              )}
+                ) : (
+                  <p className="pl-8" style={{ color: ffColors.ffBody }}>Not Available</p>
+                )}
+              </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
 
       {/* Edit Popup */}
@@ -512,7 +530,6 @@ const CartPage: React.FC = () => {
           },
         ]}
       />
-
       <CorePopup
         pop={loginPop}
         popTitle={`Not logged into ${buttonService}:`}
@@ -557,7 +574,6 @@ const CartPage: React.FC = () => {
   );
 };
 
-// Adding styles for the CartPage login popup from SearchCards
 const styles = {
   loginContainer: {
     marginTop: 0,
@@ -577,5 +593,13 @@ const styles = {
     width: '100%',
   },
 };
+
+const moreStyles = StyleSheet.create({
+  buttonAndTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+});
 
 export default CartPage;
