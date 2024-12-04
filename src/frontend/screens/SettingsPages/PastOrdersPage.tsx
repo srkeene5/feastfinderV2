@@ -1,9 +1,10 @@
-// // src/frontend/screens/SettingsPages/PastOrdersPage.tsx
+// src/frontend/screens/SettingsPages/PastOrdersPage.tsx
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../UserComponents/Authorizer.tsx';
 import { useNavigate } from 'react-router-dom';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
+import CoreButton from '../CoreComponents/CoreButton.tsx';
 import { API_BASE_URL } from '../../../config.js'; // Adjust the path as necessary
 
 const PastOrdersPage: React.FC = () => {
@@ -39,6 +40,54 @@ const PastOrdersPage: React.FC = () => {
     fetchCarts();
   }, [user, navigate]);
 
+  const handleSearchRestaurant = async (restaurantName: string) => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/searchRestaurant?name=${encodeURIComponent(restaurantName)}`
+      );
+
+      if (response.ok) {
+        const results = await response.json();
+        navigate('/Search', { 
+          state: { 
+            search: restaurantName, 
+            results, 
+            searchType: 'restaurant', 
+            deliveryService: '', 
+            cuisine: '', 
+            timeRanges: [] 
+          } 
+        });
+      } else {
+        console.log('No results found');
+        navigate('/Search', { 
+          state: { 
+            search: restaurantName, 
+            results: [], 
+            searchType: 'restaurant', 
+            deliveryService: '', 
+            cuisine: '', 
+            timeRanges: [], 
+            errorText: 'No results found' 
+          } 
+        });
+      }
+    } catch (error) {
+      console.error('Error searching for restaurant:', error);
+      navigate('/Search', { 
+        state: { 
+          search: restaurantName, 
+          results: [], 
+          searchType: 'restaurant', 
+          deliveryService: '', 
+          cuisine: '', 
+          timeRanges: [], 
+          errorText: 'Error fetching results' 
+        } 
+      });
+    }
+  };
+
   return (
     <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
       <CoreBanner />
@@ -70,6 +119,11 @@ const PastOrdersPage: React.FC = () => {
                 ))}
               </ul>
               <p>Total: ${cart.total.toFixed(2)}</p>
+              <CoreButton
+                pressFunc={() => handleSearchRestaurant(cart.restaurant.restaurantName)}
+                bText="View Restaurant"
+                buttonColor="#007bff"
+              />
             </div>
           ))
         )}
@@ -89,4 +143,3 @@ const styles = {
 };
 
 export default PastOrdersPage;
-
