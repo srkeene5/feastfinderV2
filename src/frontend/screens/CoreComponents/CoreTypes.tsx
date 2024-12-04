@@ -15,6 +15,10 @@ interface Restaurant {
     restaurantImage: String;
     menuItemImages: String[];
 
+    menuDietaryViolations: String[][];
+
     mapUrl?: string; // Added as optional
+
+    websiteURL?: string;
 }
 export type {Restaurant as Restaurant}
