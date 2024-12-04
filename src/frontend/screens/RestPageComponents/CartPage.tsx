@@ -25,6 +25,8 @@ const CartPage: React.FC = () => {
   const [checkIndex, setCheckIndex] = useState<number>(-1);
   const [optionIndex, setOptionIndex] = useState<OptionIndex>({required: [], optional: []})
   const [priceChange, setPriceChange] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [popPrice, setPopPrice] = useState<number>(-1);
 
   const [errPop, setErrPop] = useState(false);
   const [errText, setErrText] = useState('Error Undefined');
@@ -65,9 +67,12 @@ const CartPage: React.FC = () => {
     const newServiceTotal: { [key: string]: number | undefined } = {};
     const newDiscountTotal: { [key: string]: number | undefined } = {};
   
-    ['DoorDash', 'UberEats', 'Grubhub'].forEach((service) => {
+    ['doordash', 'ubereats', 'grubhub'].forEach((service) => {
       newServiceTotal[service] = calculateServiceTotal(service);
       newDiscountTotal[service] = calculateAfterDiscountTotal(service);
+    
+      console.log("serviceTotal: " + newServiceTotal[service])
+      console.log("discountTotal: " + newDiscountTotal[service])
     });
   
     // Update state once with the full result
@@ -279,7 +284,7 @@ const CartPage: React.FC = () => {
     updateCart(newCart);
   }
 
-  const handleEdit = (index: number) => {
+  const handleEdit = (index: number, price: number) => {
     setCartPop(true);
     setCheckIndex(index);
     var actualIndex
@@ -288,17 +293,20 @@ const CartPage: React.FC = () => {
         actualIndex = i;
       }
     });
+    setQuantity(cart.items[index].quantity)
     setPopIndex(actualIndex);
     setOptionIndex(cart.items[index].optionIndex);
+    setPopPrice(price);
   }
 
   const handleClosePop = () => {
     setCartPop(false); 
     setPopIndex(-1);
+    setPopPrice(-1);
     setOptionIndex({required: [], optional: []});
   }
 
-  const handleEditSubmit = (index: number, quantity: number) => {
+  const handleEditSubmit = (index: number) => {
     const newItems = [...cart.items];
 
     var options: Option[] = []
@@ -325,12 +333,12 @@ const CartPage: React.FC = () => {
       total: cart.total,
     }
     updateCart(newCart);
-    calcTotals()
+    calcTotals();
     handleClosePop();
   }
 
   return (
-    <div style={{ backgroundColor: ffColors.ffBackground, height: '100vh' }}>
+    <div style={{ backgroundColor: ffColors.ffBackground, minHeight: '100vh', height: 'auto' }}>
       <CoreBanner />
       <div className="w-full max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-6">
         <View style={moreStyles.buttonAndTextContainer}>
@@ -394,7 +402,7 @@ const CartPage: React.FC = () => {
                             <HtmlTooltip
                               title={
                                 <React.Fragment>
-                                  <button onClick={(e)=>{handleEdit(index)}}>Edit</button>
+                                  <button onClick={(e)=>{handleEdit(index, item.prices[service.toLowerCase().replace(" ","")])}}>Edit</button>
                                   <br/>
                                   <button onClick={(e) => {handleRemove(index)}}>Remove</button>
                                 </React.Fragment>
@@ -428,10 +436,10 @@ const CartPage: React.FC = () => {
                           </div>
                         </span>
                         <span
-                          style={{justifyItems: 'right', marginBottom: 8}}
+                          style={{justifyItems: 'right', marginBottom: 8, marginTop: 6}}
                         >
                           <div
-                            style={item.options.length > 0 ? {color: ffColors.ffBody} : {color: ffColors.ffText}}
+                            style={item.options.length > 0 ? {color: ffColors.ffBody, marginBottom: 6} : {color: ffColors.ffText}}
                           >
                             ${(item.prices[service.toLowerCase().replace(" ","")] * item.quantity).toFixed(2)}
                           </div>
@@ -514,6 +522,9 @@ const CartPage: React.FC = () => {
       add={true}
       priceChange={priceChange}
       setPriceChange={setPriceChange}
+      quantity={quantity}
+      setQuantity={setQuantity}
+      itemPrice={popPrice}
       />
 
       <CorePopup

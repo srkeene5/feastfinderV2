@@ -141,14 +141,17 @@ export default function RestPage() {
   const [popIndex, setPopIndex] =  useState<number>(-1);
   const [optionIndex, setOptionIndex] = useState<OptionIndex>({required: [], optional: []})
   const [priceChange, setPriceChange] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [popPrice, setPopPrice] = useState<number>(-1);
 
   const handleClosePop = () => {
     setCartPop(false); 
     setPopIndex(-1);
+    setPopPrice(-1);
     setOptionIndex({required: [], optional: []});
   }
 
-  const handleDishConfirm = (index: number, quantity: number) => {
+  const handleDishConfirm = (index: number) => {
     var options: Option[] = []
     optionIndex.required.forEach((value: number, i: number) => {
       if (value !== -1) {
@@ -465,15 +468,15 @@ export default function RestPage() {
   const popUp = (actualIndex: number)=>{
     setCartPop(true);
     setPopIndex(actualIndex);
-    console.log("actualIndex: "+restaurant.menuOptions)
     const itemOptions = restaurant.menuOptions?.[actualIndex] || [[],[]];
+    setPopPrice(prices[actualIndex]);
     var reqLen = 0;
     var optLen = 0;
-    console.log("itemOptions: " + restaurant.menuOptions[actualIndex])
-    if (itemOptions[0].options) {
+    if (itemOptions[0] && itemOptions[0].options) {
+
       reqLen = itemOptions[0].options.length;
     }
-    if (itemOptions[1].options) {
+    if (itemOptions[0] && itemOptions[1].options) {
       optLen = itemOptions[1].options.length;
     }
     setOptionIndex({
@@ -629,6 +632,9 @@ export default function RestPage() {
       add={false}
       priceChange={priceChange}
       setPriceChange={setPriceChange}
+      quantity={quantity}
+      setQuantity={setQuantity}
+      itemPrice={popPrice}
       />
       {/*<CorePopup
       pop={cartPop}
