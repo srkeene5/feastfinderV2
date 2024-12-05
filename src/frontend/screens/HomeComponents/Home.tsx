@@ -45,10 +45,10 @@ export default function Home() {
       <PopularCards
         fetchType={'cartroute/recent-dishes'}
       />
-      <PopularCards
+      {/*<PopularCards
         fetchType={`searchDish?name=${randomLetter}`}
-      />
-      {/*<DishRecommendations />*/}
+      />*/}
+      <DishRecommendations />
       
     </div>
   )
