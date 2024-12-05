@@ -15,10 +15,10 @@ import CoreBanner from "../CoreComponents/CoreBanner.tsx";
 import MapComponent from "../MapComponents/MapComponent.tsx"; // Adjust the path as necessary
 import { ffColors } from '../CoreComponents/CoreStyles.tsx';
 import DishRecommendations from "./DishRecommendations.tsx";
+import NotificationFooter from "../HomeComponents/NotificationFooter.tsx";
 
 export default function Home() {
-
-  const { loading } = useAuth()
+  const { loading } = useAuth();
   useRequireAuth();
 
   if (loading) {
@@ -29,22 +29,26 @@ export default function Home() {
     <div
       style={{
         backgroundColor: ffColors.ffBackground,
-        minHeight: '100vh', // '100vh' is valid in web CSS
-        height: 'auto'
+        minHeight: '100vh',
+        height: 'auto',
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
       <CoreBanner />
-      <PopularCards 
-        fetchType={'popularRestaurants'}
-      />
-      <PopularCards
-        fetchType={'cartroute/recent-restaurants'}
-      />
-      <PopularCards
-        fetchType={'cartroute/recent-dishes'}
-      />
-      <DishRecommendations />
-      
+      <div style={{ flex: 1 }}>
+        <PopularCards 
+          fetchType={'popularRestaurants'}
+        />
+        <PopularCards
+          fetchType={'cartroute/recent-restaurants'}
+        />
+        <PopularCards
+          fetchType={'cartroute/recent-dishes'}
+        />
+        <DishRecommendations />
+      </div>
+      <NotificationFooter />
     </div>
-  )
+  );
 }
