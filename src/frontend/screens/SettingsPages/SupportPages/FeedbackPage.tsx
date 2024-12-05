@@ -1,27 +1,28 @@
-import { Text, View } from 'react-native'
-import React from 'react'
-import 'reactjs-popup/dist/index.css'
+import React from 'react';
+import { Text, View } from 'react-native';
+import 'reactjs-popup/dist/index.css';
 import tw from 'twrnc';
 
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { sendEmail } from './Email.tsx';
 import { useNavigate } from 'react-router-dom';
 import CorePopup from '../../CoreComponents/CorePopup.tsx';
-import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../../CoreComponents/CoreButton.tsx';
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
 
 export default function FeedbackPage() {
   const navigate = useNavigate();
-  const {user} = useAuth();
+  const { user } = useAuth();
+  const { coreForm, ffColors } = CoreStyles();
 
-  const [feedbackText, setFeedbackText] = React.useState('')
-  const [emailValue, setEmail] = React.useState('')
-  const [rating, setRating] = React.useState('select')
-  const [feedbackType, setFeedbackType] = React.useState('select')
-  const [errPop, setErrPop] = React.useState(false)
-  const [errText, setErrText] = React.useState('Error Undefined')
-  const [sentPop, setSentPop] = React.useState(false)
+  const [feedbackText, setFeedbackText] = React.useState('');
+  const [emailValue, setEmail] = React.useState('');
+  const [rating, setRating] = React.useState('select');
+  const [feedbackType, setFeedbackType] = React.useState('select');
+  const [errPop, setErrPop] = React.useState(false);
+  const [errText, setErrText] = React.useState('Error Undefined');
+  const [sentPop, setSentPop] = React.useState(false);
 
   const validEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.(com|net|org|gov|edu)$");
 
@@ -33,7 +34,7 @@ export default function FeedbackPage() {
     setErrPop(false);
     setErrText('Error Undefined');
     setSentPop(false);
-  }
+  };
 
   const subButtonPress = async () => {
     if (feedbackText !== '') {
@@ -46,11 +47,11 @@ export default function FeedbackPage() {
               setErrPop(true);
               return;
             } else {
-              feedbackEmail += "\n\nUser Email: " + emailValue
+              feedbackEmail += "\n\nUser Email: " + emailValue;
             }
           }
-          try{
-            let subject = `FeastFinder Feedback - ${rating} - ${feedbackType} from User: ${user.email}`
+          try {
+            let subject = `FeastFinder Feedback - ${rating} - ${feedbackType} from User: ${user.email}`;
             let body = "Feedback: " + feedbackEmail;
             console.log(subject + "\n" + body);
             //sendEmail(body, subject)
@@ -60,22 +61,19 @@ export default function FeedbackPage() {
             setErrText("Failed to send feedback. Please try again later or email us at FeastFinderDev@gmail.com");
             setErrPop(true);
           }
-        }
-        else {
-          setErrText("Please select feedback type")
+        } else {
+          setErrText("Please select feedback type");
           setErrPop(true);
         }
-      }
-      else {
+      } else {
         setErrText("Please select a rating");
         setErrPop(true);
       }
-    }
-    else {
+    } else {
       setErrText('Please provide feedback text');
       setErrPop(true);
     }
-  }
+  };
 
   return (
     <div style={coreForm.container}>
@@ -91,7 +89,7 @@ export default function FeedbackPage() {
               <Text style={tw.style(coreForm.header)}>Feedback:</Text>
               <textarea
                 style={tw.style(coreForm.textInputBox)}
-                onChange={(event)=>{setFeedbackText(event.target.value)}}
+                onChange={(event) => { setFeedbackText(event.target.value) }}
                 value={feedbackText}
                 placeholder='Share your experience with FeastFinder...'
                 rows={8}
@@ -101,7 +99,7 @@ export default function FeedbackPage() {
               <Text style={tw.style(coreForm.subheader)}>Rating:</Text>
               <select
                 value={rating}
-                onChange={(event)=>{setRating(event.target.value)}}
+                onChange={(event) => { setRating(event.target.value) }}
                 style={coreForm.dropdown}
               >
                 <option value="select">Select Rating...</option>
@@ -115,7 +113,7 @@ export default function FeedbackPage() {
               <Text style={tw.style(coreForm.subheader)}>Feedback Type:</Text>
               <select
                 value={feedbackType}
-                onChange={(event)=>{setFeedbackType(event.target.value)}}
+                onChange={(event) => { setFeedbackType(event.target.value) }}
                 style={coreForm.dropdown}
               >
                 <option value="select">Select Type...</option>
@@ -133,14 +131,14 @@ export default function FeedbackPage() {
               </Text>
               <input
                 style={coreForm.textInputSingle}
-                onChange={(event)=>{setEmail(event.target.value)}}
+                onChange={(event) => { setEmail(event.target.value) }}
                 value={emailValue}
                 placeholder='Email...'
               />
             </View>
             <View style={tw.style(coreForm.buttonContainer)}>
-              <CoreButton 
-                pressFunc={()=>subButtonPress()}
+              <CoreButton
+                pressFunc={() => subButtonPress()}
                 bText={'Submit'}
                 buttonColor={ffColors.ffGreenL}
               />
@@ -149,35 +147,35 @@ export default function FeedbackPage() {
         </View>
       </div>
 
-      <CorePopup 
+      <CorePopup
         popTitle={"Error"}
         popText={errText}
-        closeFunc={()=>{setErrPop(false)}}
+        closeFunc={() => { setErrPop(false) }}
         pop={errPop}
         titleColor={ffColors.ffRedL}
         buttons={[
           {
             bText: 'Close',
             bColor: ffColors.ffRedL,
-            bFunc: ()=>{setErrPop(false)}
+            bFunc: () => { setErrPop(false) }
           }
         ]}
       />
 
-      <CorePopup 
+      <CorePopup
         popTitle={"Success"}
         popText={"Thank you for your feedback!"}
         pop={sentPop}
-        closeFunc={()=>{resetAll(); navigate('/Home');}}
+        closeFunc={() => { resetAll(); navigate('/Home'); }}
         titleColor={ffColors.ffGreenL}
         buttons={[
           {
             bText: 'Close',
             bColor: ffColors.ffGreenL,
-            bFunc: ()=>{resetAll(); navigate('/Home');}
+            bFunc: () => { resetAll(); navigate('/Home'); }
           }
         ]}
       />
     </div>
-  )
+  );
 }
