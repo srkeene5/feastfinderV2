@@ -17,6 +17,7 @@ import Cart from './models/Cart.js'; // Import the Cart model
 import cartRoutes from './routes/cartroute.js'; // Import the cart route
 import restaurantRoutes from './routes/restaurantAuth.js';
 import reviewRoutes from './routes/reviews.js';
+import DealRoutes from './routes/dealRoutes.js';
 import Review from './models/Review.js';
 
 
@@ -45,6 +46,9 @@ app.use('/api/reviews', reviewRoutes);
 // Use the restaurant routes
 app.use('/api', restaurantAuthRoutes);
 app.use('/api/cartroute', cartRoutes); // Use the cart routes for checkout
+app.use('/api/deals', DealRoutes);
+
+
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
@@ -152,6 +156,7 @@ const populateInitialReviews = async () => {
     console.error('Error populating initial reviews:', err);
   }
 };
+
 
 console.log(process.env.MONGO_URI); 
 

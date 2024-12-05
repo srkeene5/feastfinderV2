@@ -1,22 +1,17 @@
-// src/frontend/screens/HomeComponents/Home.tsx
-
 import React from "react";
-
 // Remove React Native imports
 // import { SafeAreaView } from "react-native";
-
 // Authentication
 import { useAuth } from '../UserComponents/Authorizer.tsx';
 import useRequireAuth from "../UserComponents/RequireAuth.tsx"
-
 // Components
 import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
 import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 import DishRecommendations from "./DishRecommendations.tsx";
+import NotificationFooter from "../HomeComponents/NotificationFooter.tsx";
 
 export default function Home() {
-
   const { loading } = useAuth();
   const { ffColors } = CoreStyles();
   useRequireAuth();
@@ -49,7 +44,7 @@ export default function Home() {
         fetchType={`searchDish?name=${randomLetter}`}
       />*/}
       <DishRecommendations />
-      
+      <NotificationFooter />
     </div>
-  )
+  );
 }

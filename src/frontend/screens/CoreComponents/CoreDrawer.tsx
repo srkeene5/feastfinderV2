@@ -23,6 +23,11 @@ const CoreDrawer = ({open, setOpen}) => {
             navText: 'Home',
         },
         {
+            navFunc: () => { navigate('/deals') },
+            navImg: require('../images/deals.png'), 
+            navText: 'Deals',
+        },
+        {
             navFunc: () => { navigate('/AccountPage') },
             navImg: darkMode? require('../images/accountDark.png') : require('../images/account.png'),
             navText: 'Account',
@@ -51,6 +56,11 @@ const CoreDrawer = ({open, setOpen}) => {
             navFunc: () => { navigate('/PastOrdersPage') },
             navImg: darkMode? require('../images/pastOrdersDark.png') : require('../images/pastOrders.png'), // Ensure you have this image
             navText: 'Past Orders',
+        },
+        {
+            navFunc: () => { navigate('/FeedbackPage')},
+            navImg: require('../images/feedback.png'),
+            navText: 'Feedback',
         },
     ];
 
