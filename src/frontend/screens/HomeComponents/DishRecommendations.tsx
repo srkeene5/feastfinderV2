@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '../RestPageComponents/CartContext.tsx';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../../config.js';
+import { useAuth } from '../UserComponents/Authorizer.tsx';
+
 
 interface Dish {
     dishName: string;
@@ -18,33 +20,73 @@ const DishRecommendations = () => {
   const [error, setError] = useState(null);
   const { cart, updateCart } = useCart();
   const navigate = useNavigate();
+  const {user} = useAuth();
 
   useEffect(() => {
     const fetchDishes = async () => {
       try {
+        // Step 1: Fetch recently ordered dishes
+        const recentDishesResponse = await fetch(`${API_BASE_URL}/api/cartroute/recent-dishes`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`, // Adjust token handling as needed
+          },
+        });
+  
+        if (recentDishesResponse.ok) {
+          const recentDishes = await recentDishesResponse.json();
+  
+          if (recentDishes.length > 0) {
+            // Step 2: Fetch recommendations based on recently ordered dishes
+            const recentDishNames = recentDishes.map((dish: any) => dish.dishName);
+            const recommendedDishes = [];
+  
+            for (const dishName of recentDishNames) {
+              const response = await fetch(`${API_BASE_URL}/api/searchDish?name=${encodeURIComponent(dishName)}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+  
+              if (response.ok) {
+                const data = await response.json();
+                recommendedDishes.push(...data); // Combine results from multiple queries
+              }
+            }
+  
+            setDishes(recommendedDishes.slice(0, 8)); // Limit to 8 recommendations
+            setError(null);
+            return; // Exit early since we found recommendations
+          }
+        }
+  
+        // Step 3: Fallback to random dishes if no recent dishes found or API call fails
+        console.log("step 3")
         const randomLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
-        const response = await fetch(`${API_BASE_URL}/api/searchDish?name=${randomLetter}`, {
+        const randomDishesResponse = await fetch(`${API_BASE_URL}/api/searchDish?name=${randomLetter}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setDishes(data.slice(0, 8));
+  
+        if (randomDishesResponse.ok) {
+          const randomDishes = await randomDishesResponse.json();
+          setDishes(randomDishes.slice(0, 8));
           setError(null);
         } else {
-          setError(null);
+          setError('Failed to fetch random dishes.');
         }
       } catch (error) {
         console.error('Error fetching dishes:', error);
-        setError(null);
+        setError('An error occurred while fetching dishes.');
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchDishes();
   }, []);
 
@@ -88,7 +130,7 @@ const DishRecommendations = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Reccomended for you</h2>
+      <h2 className="text-xl font-bold mb-4">Recommended for you</h2>
       <div className="overflow-x-auto">
         <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
           {dishes.map((dish, index) => (

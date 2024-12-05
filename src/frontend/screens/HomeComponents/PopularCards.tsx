@@ -45,16 +45,49 @@ export default function PopularCards({fetchType}) {
                     },
                 })
                 const data = await response.json();
-                setFetchedData(data);
+                //setFetchedData(data);
                 if (fetchType === 'popularRestaurants') {
+                    const cartsResponse = await fetch(`${API_BASE_URL}/api/cartroute/carts/all`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${user.token}`,
+                        },
+                    });
+                    const cartsData = await cartsResponse.json();
+    
+                    // Extract restaurant names (chain names) from the carts
+                    const cartChainNames = cartsData.carts.map((cart: any) => cart.restaurant.restaurantName);
+    
+                    // Consolidate order counts by chain name
+                    const chainOrderCounts = cartChainNames.reduce((acc: Record<string, number>, chainName: string) => {
+                        acc[chainName] = (acc[chainName] || 0) + 1;
+                        return acc;
+                    }, {});
+    
+                    // Log the consolidated order counts for debugging
+                    console.log('Chain order counts:', chainOrderCounts);
+    
+                    // Sort the popular restaurants based on consolidated order counts
+                    data.sort((a: any, b: any) => {
+                        const aCount = chainOrderCounts[a.restaurantName] || 0;
+                        const bCount = chainOrderCounts[b.restaurantName] || 0;
+                        // Sort by order count, descending
+                        return bCount - aCount;
+                    });
+    
+                    setFetchedData(data);
                     setTitle('Popular Near You:');
                 } else if (fetchType === 'cartroute/recent-restaurants') {
+                    setFetchedData(data)
                     setTitle('Recent Restaurants:');
                 } else if (fetchType === 'cartroute/recent-dishes') {
+                    setFetchedData(data)
                     setTitle('Recent Dishes:');
                 } else if (fetchType.includes('searchDish')){
                     setTitle('Recommended for You:');
                 } else {
+                    setFetchedData(data)
                     setTitle('Fetch Type Untitled');
                 }
             } catch(error) {
