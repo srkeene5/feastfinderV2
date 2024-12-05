@@ -479,7 +479,6 @@ const CartPage: React.FC = () => {
                         {serviceTotal[service.toLowerCase().replace(" ","")]?.toFixed(2) !== discountTotal[service.toLowerCase().replace(" ","")]?.toFixed(2) && (
                           <p 
                             className="text-gray-500 line-through mr-2"
-                            style={{ color: ffColors.ffText }}
                           >
                             ${serviceTotal[service.toLowerCase().replace(" ","")]?.toFixed(2)}
                           </p>
