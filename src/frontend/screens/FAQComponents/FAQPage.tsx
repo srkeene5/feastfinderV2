@@ -1,8 +1,9 @@
 import React from 'react';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
-import { coreForm } from '../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 
 export default function FAQ() {
+  const { coreForm } = CoreStyles();
   const faqList = [
     {
       question: 'What is FeastFinder?',

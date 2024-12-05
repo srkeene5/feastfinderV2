@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
-import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../../CoreComponents/CoreButton.tsx';
 import CorePopup from '../../CoreComponents/CorePopup.tsx';
 import tw from 'twrnc';
@@ -11,6 +11,10 @@ export default function AccountLinkedAPIs() {
     
     // User Token
     const { user } = useAuth();
+
+    // Styling
+    const { coreForm, ffColors, loginStyles } = CoreStyles();
+    const styles = CoreStyles().accountLinkedAPIsStyles;
 
     // Boolean Account Links
     const [doordashLink, setDoordashLink] = React.useState(false);
@@ -94,7 +98,7 @@ export default function AccountLinkedAPIs() {
                     <CoreButton
                     pressFunc={()=>{setButtonService(service); setLogoutPop(true)}}
                     bText={"Unlink Account"}
-                    buttonColor={ffColors.ffGreyL}
+                    buttonColor={ffColors.ffDeadButton}
                     />
                     <Text
                     style={[styles.serviceText, styles.text]}
@@ -103,7 +107,7 @@ export default function AccountLinkedAPIs() {
                     </Text>
                     <View>
                         <Text
-                        style={[styles.textLinked, styles.text]}
+                        style={styles.textLinked}
                         >
                         Linked!
                         </Text>
@@ -127,7 +131,7 @@ export default function AccountLinkedAPIs() {
                     </Text>
                     <View>
                         <Text
-                        style={[styles.textUnlinked, styles.text]}
+                        style={styles.textUnlinked}
                         >
                         Not Linked
                         </Text>
@@ -276,23 +280,23 @@ export default function AccountLinkedAPIs() {
             ]}
             >
                 <View
-                style={styles.loginContainer}
+                style={loginStyles.loginContainer}
                 >
                     <Text
-                    style={styles.popupText}
+                    style={loginStyles.popupText}
                     >
                         Login:
                     </Text>
                     <input
                     type='text'
-                    style={styles.popInput}
+                    style={loginStyles.popInput}
                     onChange={(event)=>{setuserValue(event.target.value)}}
                     value = {userValue}
                     placeholder='Username...'
                     />
                     <input
                     type='password'
-                    style={styles.popInput}
+                    style={loginStyles.popInput}
                     onChange={(event)=>{setPassValue(event.target.value)}}
                     value = {passValue}
                     placeholder='Password...'
@@ -337,39 +341,3 @@ export default function AccountLinkedAPIs() {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    //Linked Account Styles
-    textLinked: {
-        color: ffColors.ffGreenL,
-    },
-    textUnlinked: {
-        color: ffColors.ffRedL,
-    },
-    text: {
-        
-    },
-    linkedContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    serviceText: {
-        fontWeight: 'bold',
-    },
-    popupText: {
-        marginBottom: 10,
-        fontSize: 15,
-        fontWeight: 'bold',
-    },
-    popInput:{
-        height: 'auto',
-        marginBottom: 20,
-        borderWidth: 1,
-        borderRadius: 20,
-        padding: 10,
-    },
-    loginContainer: {
-        margin: 20,
-        marginTop:0,
-    },
-})

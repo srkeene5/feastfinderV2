@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { CartEntry, CartItem, Option, OptionIndex } from '../../../types/Cart'; // Adjusted path
 import { useAuth } from '../UserComponents/Authorizer.tsx'; // Authentication hook
 import CorePopup from '../CoreComponents/CorePopup.tsx'; // Popup component for login
-import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
+import CoreStyles from '../CoreComponents/CoreStyles.tsx'; // Import colors for consistent styling
 import { Button, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import OptionsPopup from './OptionsPopup.tsx';
 import { API_BASE_URL } from '../../../config.js';
@@ -14,6 +14,7 @@ import CoreButton from "../CoreComponents/CoreButton.tsx";
 
 const CartPage: React.FC = () => {
   const { cart, updateCart, clearCart } = useCart(); // Destructure clearCart from useCart
+  const { ffColors, loginStyles } = CoreStyles();
   const navigate = useNavigate();
   const { user } = useAuth(); // Authentication context
 
@@ -264,11 +265,11 @@ const CartPage: React.FC = () => {
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: '#f5f5f9',
+      backgroundColor: ffColors.ffCard,
       color: 'rgba(0, 0, 0, 0.87)',
       maxWidth: 220,
       fontSize: theme.typography.pxToRem(12),
-      border: '1px solid #dadde9',
+      border: `1px solid ${ffColors.ffEdge}`,
     },
   }));
 
@@ -340,11 +341,11 @@ const CartPage: React.FC = () => {
   return (
     <div style={{ backgroundColor: ffColors.ffBackground, minHeight: '100vh', height: 'auto' }}>
       <CoreBanner />
-      <div className="w-full max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-6">
+      <div className="w-full max-w-3xl mx-auto shadow-lg rounded-lg p-6 mt-6" style={{backgroundColor: ffColors.ffCard}}>
         <View style={moreStyles.buttonAndTextContainer}>
           <h1
             className="text-2xl font-bold mb-4 text-center"
-            style={{ color: ffColors.ffText }}
+            style={{ color: ffColors.ffHeading }}
           >
             Your Cart for {cart.restaurant.restaurantName}
           </h1>
@@ -360,9 +361,9 @@ const CartPage: React.FC = () => {
               key={service}
               className="border rounded-lg shadow-lg mb-4 max-w-lg"
               style={{
-                backgroundColor: '#fff',
+                backgroundColor: ffColors.ffBackground,
                 padding: '16px',
-                border: '1px solid #ddd',
+                border: `1px solid ${ffColors.ffEdge}`,
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 borderRadius: '8px',
                 display: 'flex',
@@ -378,38 +379,36 @@ const CartPage: React.FC = () => {
                   src={`/images/services/${service.toLowerCase()}.png`}
                   alt={service}
                   style={{
-                    width: '120px',
+                    width: '160px',
                     height: 'auto',
                     objectFit: 'contain',
                   }}
                 />
               </div>
               <div className="flex items-center mb-4 pl-4">
-                <h2 className="text-xl font-semibold" style={{ color: ffColors.ffHeading }}>
+              {/* <h2 className="text-xl font-semibold whitespace-nowrap" style={{ color: ffColors.ffHeading }}>
                   {service}
-                </h2>
+                </h2> */}
               </div>
               <div className="flex flex-col items-center">
                 {available ? (
-                  <div className="pl-8">
+                  <div className="pl-6">
                     <ul className="mb-4">
                       {cart.items.map((item: CartItem, index: number) => (
                         <li key={index} className="flex justify-between mb-2">
                           <span>
-                          <p
-                            style={{color: ffColors.ffText}}
-                          >
+                          <p>
                             <HtmlTooltip
                               title={
                                 <React.Fragment>
-                                  <button onClick={(e)=>{handleEdit(index, item.prices[service.toLowerCase().replace(" ","")])}}>Edit</button>
+                                  <button style={{color:ffColors.ffBody}} onClick={(e)=>{handleEdit(index, item.prices[service.toLowerCase().replace(" ","")])}}>Edit</button>
                                   <br/>
-                                  <button onClick={(e) => {handleRemove(index)}}>Remove</button>
+                                  <button style={{color:ffColors.ffBody}} onClick={(e) => {handleRemove(index)}}>Remove</button>
                                 </React.Fragment>
                               }
                             >
                               <Button
-                                style={{textTransform: 'none', color: ffColors.ffText, font: 'inherit', fontSize: 16}}
+                                style={{textTransform: 'none', color: ffColors.ffHeading, font: 'inherit', fontSize: 16}}
                               >
                                 {item.item} x {item.quantity}
                               </Button>
@@ -428,7 +427,7 @@ const CartPage: React.FC = () => {
                             ))}
                             {item.options.length > 0 ? 
                             <div
-                              style={{color: ffColors.ffText, fontSize: 14}}
+                              style={{color: ffColors.ffHeading, fontSize: 14}}
                             >
                               Subtotal:
                             </div>
@@ -439,7 +438,7 @@ const CartPage: React.FC = () => {
                           style={{justifyItems: 'right', marginBottom: 8, marginTop: 6}}
                         >
                           <div
-                            style={item.options.length > 0 ? {color: ffColors.ffBody, marginBottom: 6} : {color: ffColors.ffText}}
+                            style={item.options.length > 0 ? {color: ffColors.ffBody, marginBottom: 6} : {color: ffColors.ffHeading}}
                           >
                             ${(item.prices[service.toLowerCase().replace(" ","")] * item.quantity).toFixed(2)}
                           </div>
@@ -463,7 +462,7 @@ const CartPage: React.FC = () => {
                             ))}
                             {item.options.length > 0 ? 
                             <div
-                              style={{color: ffColors.ffText}}
+                              style={{color: ffColors.ffHeading}}
                             >
                               ${((item.prices[service.toLowerCase().replace(" ","")] + item.options.reduce((sum, option) => sum + option.optionPrice, 0)) * item.quantity).toFixed(2)}
                             </div>
@@ -479,7 +478,7 @@ const CartPage: React.FC = () => {
                         {serviceTotal[service.toLowerCase().replace(" ","")]?.toFixed(2) !== discountTotal[service.toLowerCase().replace(" ","")]?.toFixed(2) && (
                           <p 
                             className="text-gray-500 line-through mr-2"
-                            style={{ color: ffColors.ffText }}
+                            style={{ color: ffColors.ffHeading }}
                           >
                             ${serviceTotal[service.toLowerCase().replace(" ","")]?.toFixed(2)}
                           </p>
@@ -494,7 +493,7 @@ const CartPage: React.FC = () => {
                       className="mt-4 px-6 py-2 text-white rounded-lg hover:bg-blue-600 transition duration-200"
                       style={{
                         backgroundColor: ffColors.ffGreenL,
-                        minWidth: '200px',
+                        minWidth: '230px',
                         textAlign: 'center',
                       }}
                     >
@@ -563,18 +562,18 @@ const CartPage: React.FC = () => {
           },
         ]}
       >
-        <div style={styles.loginContainer}>
-          <div style={styles.popupText}>Login:</div>
+        <div style={loginStyles.loginContainer}>
+          <div style={loginStyles.popupText}>Login:</div>
           <input
             type="text"
-            style={styles.popInput}
+            style={loginStyles.popInput}
             value={userValue}
             onChange={(event) => setUserValue(event.target.value)}
             placeholder="Username..."
           />
           <input
             type="password"
-            style={styles.popInput}
+            style={loginStyles.popInput}
             value={passValue}
             onChange={(event) => setPassValue(event.target.value)}
             placeholder="Password..."
@@ -583,26 +582,6 @@ const CartPage: React.FC = () => {
       </CorePopup>
     </div>
   );
-};
-
-const styles = {
-  loginContainer: {
-    marginTop: 0,
-    margin: 20,
-  },
-  popupText: {
-    marginBottom: 10,
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  popInput: {
-    height: 'auto',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 10,
-    width: '100%',
-  },
 };
 
 const moreStyles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View } from 'react-native'
+import { Image } from 'react-native'
 import { API_BASE_URL } from '../../../config.js';
 
 export default function SignUp() {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react"
 
 
@@ -7,9 +7,9 @@ export default function FollowUp() {
   const [name, setName] = useState("");
   const [skills, setSkills] = useState("");
   const [hours, setHours] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [image, setimage] = useState(null);
-  const [url, setUrl] = useState(null);
+  //const [isLoading, setIsLoading] = useState(false);
+  //const [image, setimage] = useState(null);
+  //const [url, setUrl] = useState(null);
 
 
   const handleFollowUp = async (e) => {

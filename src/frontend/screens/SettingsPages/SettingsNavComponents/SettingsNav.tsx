@@ -3,12 +3,13 @@ import React from 'react';
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { coreStyles } from '../../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../../CoreComponents/CoreStyles.tsx';
 
 export default function SettingsNav() {
     const navigate = useNavigate();
     const location = useLocation();
     const { uid } = location.state;
+    const { coreStyles } = CoreStyles();
 
     return (
         <SafeAreaProvider>

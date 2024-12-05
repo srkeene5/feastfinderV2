@@ -1,14 +1,17 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, CheckBox } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, CheckBox } from 'react-native';
 import React, { useEffect } from 'react';
 import CoreBanner from '../../CoreComponents/CoreBanner.tsx';
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
 import AccountLinkedAPIs from './AccountLinkedAPIs.tsx';
 import tw from 'twrnc';
-import { coreForm } from '../../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../../CoreComponents/CoreStyles.tsx';
 import { API_BASE_URL } from '../../../../config.js';
+import { useDarkMode } from '../../CoreComponents/DarkModeContext.tsx';
+import CoreButton from '../../CoreComponents/CoreButton.tsx';
 
 export default function Account() {
   const { user } = useAuth();
+  const { coreForm, ffColors } = CoreStyles();
   const [currentAddress, setCurrentAddress] = React.useState(''); // This will be fetched from the backend
   const [newAddress, setNewAddress] = React.useState('');
   const [dietaryPreferences, setDietaryPreferences] = React.useState({
@@ -19,9 +22,56 @@ export default function Account() {
     nutFree: false,
   });
   const [errorMessage, setErrorMessage] = React.useState('');
+  const { darkMode, setDarkMode } = useDarkMode();
+  const styles = CoreStyles().accountStyles
+
+  const toggleDarkMode = async () => {
+    try {
+      const newDarkMode = !darkMode;
+      setDarkMode(newDarkMode);
+
+      const res = await fetch(`${API_BASE_URL}/api/auth/preferences`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + user.token,
+        },
+        body: JSON.stringify({ darkMode: newDarkMode }),
+      });
+
+      if (res.ok) {
+        console.log('Preferences updated successfully');
+      } else {
+        console.error('Failed to update dark mode');
+      }
+    } catch (err) {
+      console.error('Error updating dark mode', err);
+    }
+  }
 
   // Fetch the current address and dietary preferences from backend on component load
   useEffect(() => {
+    const fetchDarkMode = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/auth/preferences`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + user.token,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setDarkMode(data.darkMode);
+        } else {
+          console.error('Failed to fetch user preferences');
+        }
+      } catch (err) {
+        console.error('Error fetching user preferences', err);
+      }
+    };
+
     const fetchProfileData = async () => {
      
       try {
@@ -54,8 +104,10 @@ export default function Account() {
         console.error('Error fetching profile data:', error);
       }
     };
-    if (user)
+    if (user) {
       fetchProfileData();
+      fetchDarkMode();
+    }
   }, [user]);
 
   // Address format validation
@@ -247,6 +299,17 @@ export default function Account() {
               <AccountLinkedAPIs/>
             </View>
 
+            <View style={tw.style(coreForm.formItem)}>
+              <Text style={tw.style(coreForm.subheader)}>Display Mode:</Text>
+              <View style={tw.style({...coreForm.buttonContainer, justifyContent: 'flex-start'})}>
+                <CoreButton
+                pressFunc={toggleDarkMode}
+                bText={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                buttonColor={ffColors.ffGreenL}
+                />
+              </View>
+            </View>
+
             {/* Save Button */}
             <View style={tw.style(coreForm.buttonContainer)}>
               <TouchableOpacity style={styles.saveButton} onPress={handleSaveAddress}>
@@ -262,27 +325,3 @@ export default function Account() {
     </div>
   );
 }
-
-const styles = StyleSheet.create({
-  errorMessage: {
-    color: 'red',
-    fontSize: 16,
-  },
-  currentAddressText: {
-    fontSize: 16,
-    fontStyle: 'italic',
-  },
-  saveButton: {
-    backgroundColor: '#007BFF',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    flex: 1,
-    marginRight: 10,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});

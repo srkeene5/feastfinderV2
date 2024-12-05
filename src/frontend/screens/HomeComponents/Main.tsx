@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { View, SafeAreaView } from 'react-native';
 
 // Authentication
 import { useAuth } from '../UserComponents/Authorizer.tsx';

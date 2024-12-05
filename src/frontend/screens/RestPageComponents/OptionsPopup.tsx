@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CorePopup from '../CoreComponents/CorePopup.tsx'
-import { coreForm, ffColors } from '../CoreComponents/CoreStyles.tsx'
+import CoreStyles from '../CoreComponents/CoreStyles.tsx'
 import { OptionIndex } from '../../../types/Cart'
 import CoreButton from '../CoreComponents/CoreButton.tsx'
 import { Text, TouchableOpacity } from 'react-native';
@@ -26,6 +26,7 @@ const OptionsPopup: React.FC<OptionProps> = ({cartPop, restaurant, popIndex, han
   const [checkboxesState, setCheckboxesState] = useState<{[key: number]: boolean}>({});
   const [errPop, setErrPop] = useState(false);
   const [errText, setErrText] = useState('Error Undefined');
+  const { coreForm, ffColors, scrollableStyle } = CoreStyles();
 
   useEffect(()=>{
     const initialCheckboxesState: {[key: number]: boolean} = {};
@@ -115,7 +116,7 @@ const OptionsPopup: React.FC<OptionProps> = ({cartPop, restaurant, popIndex, han
           >
             <CoreButton
             bText={option.optionName}
-            buttonColor={i === optionIndex.required[subIndex] ? ffColors.ffGreenL : ffColors.ffGreyL}
+            buttonColor={i === optionIndex.required[subIndex] ? ffColors.ffGreenL : ffColors.ffDeadButton}
             pressFunc={()=>{handleButtonChange(subIndex, i, true)}}
             />
           </div>
@@ -137,13 +138,14 @@ const OptionsPopup: React.FC<OptionProps> = ({cartPop, restaurant, popIndex, han
             {checkboxesState[subIndex] ? 
             <CoreButton
             bText={option.optionName}
-            buttonColor={i === optionIndex.optional[subIndex] ? ffColors.ffGreenL: ffColors.ffGreyL}
+            buttonColor={i === optionIndex.optional[subIndex] ? ffColors.ffGreenL: ffColors.ffDeadButton}
             pressFunc={()=>{handleButtonChange(subIndex, i, false)}}
             />: 
             <CoreButton
             bText={option.optionName}
             buttonColor={ffColors.ffGreyXL}
             pressFunc={()=>{handleCheckboxChange(subIndex, true); handleButtonChange(subIndex, i, false)}}
+            textColor={ffColors.ffDeadButtonText}
             />
             }
           </div>
@@ -281,7 +283,7 @@ const OptionsPopup: React.FC<OptionProps> = ({cartPop, restaurant, popIndex, han
             <div style={{...coreForm.subheader, paddingRight: 16}}>
               Price:
             </div>
-            <div>
+            <div style={{color: ffColors.ffBody}}>
               {itemPrice} per {restaurant.menu[popIndex]}
             </div>
           </div>
@@ -290,7 +292,7 @@ const OptionsPopup: React.FC<OptionProps> = ({cartPop, restaurant, popIndex, han
             <div style={{...coreForm.subheader, paddingRight: 16}}>
               Optional Costs
             </div>
-            <div>
+            <div style={{color: ffColors.ffBody}}>
               + {priceChange.toFixed(2)} per {restaurant.menu[popIndex]}
             </div>
           </div> : <></> }      
@@ -300,8 +302,8 @@ const OptionsPopup: React.FC<OptionProps> = ({cartPop, restaurant, popIndex, han
             </div>
             <button
               style={{
-                backgroundColor: quantity === 1 ? ffColors.ffGreyL : ffColors.ffRedL,
-                color: 'white',
+                backgroundColor: quantity === 1 ? ffColors.ffDeadButton : ffColors.ffRedL,
+                color: quantity===1 ? ffColors.ffDeadButtonText : ffColors.ffActiveButtonText,
                 border: 'none',
                 borderRadius: '50%',
                 width: 30,
@@ -316,11 +318,11 @@ const OptionsPopup: React.FC<OptionProps> = ({cartPop, restaurant, popIndex, han
             >
               -
             </button>
-            <span>{quantity}</span>
+            <span style={{color: ffColors.ffBody}}>{quantity}</span>
             <button
               style={{
                 backgroundColor: ffColors.ffGreenL,
-                color: 'white',
+                color: ffColors.ffActiveButtonText,
                 border: 'none',
                 borderRadius: '50%',
                 width: 30,
@@ -338,7 +340,7 @@ const OptionsPopup: React.FC<OptionProps> = ({cartPop, restaurant, popIndex, han
           </div>
         </div>
         <div
-        style={{overflowY: 'scroll', maxHeight: '65vh', backgroundColor: ffColors.ffBackground, paddingRight: 12, paddingLeft: 24}}
+        style={{...scrollableStyle, maxHeight: '65vh', backgroundColor: ffColors.ffBackground, paddingRight: 12, paddingLeft: 24}}
         >
           {menuOptions.map((item, index) => optionMap(item, index))}
         </div>

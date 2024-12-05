@@ -1,7 +1,7 @@
 // src/frontend/screens/SettingsPages/ChatComponents/ChatSupport.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../../CoreComponents/CoreStyles.tsx';
 import { Drawer } from '@mui/material';
 import tw from 'twrnc';
 import { Link } from 'react-router-dom';
@@ -15,6 +15,8 @@ const ChatSupport = ({ open, setOpen }) => {
   const [message, setMessage] = useState('');
   const [messageNID, setMessageNID] = useState(1);
   const chatScrollView = useRef<ScrollView>(null);
+  const { coreForm } = CoreStyles();
+  const styles = CoreStyles().chatSupportStyles
 
   useEffect(() => {
     if (chatScrollView.current) {
@@ -124,46 +126,3 @@ const ChatSupport = ({ open, setOpen }) => {
 };
 
 export default ChatSupport;
-
-const styles = StyleSheet.create({
-  chatBubble: {
-    padding: 8,
-    paddingTop: 6,
-    borderRadius: 10,
-    marginBottom: 4,
-    maxWidth: 200,
-  },
-  userBubble: {
-    backgroundColor: ffColors.ffGreenL,
-    color: 'white',
-    alignSelf: 'flex-end',
-  },
-  otherBubble: {
-    backgroundColor: '#f0f0f0',
-    alignSelf: 'flex-start',
-  },
-  chatContainer: {
-    flex: 1,
-    width: 300,
-    height: '100%',
-    display: 'flex',
-  },
-  header: {
-    borderBottomColor: ffColors.ffEdge,
-    borderBottomWidth: 1,
-    paddingBottom: 10,
-  },
-  textInput: {
-    backgroundColor: ffColors.ffGreyL,
-    padding: 10,
-    paddingBottom: 15,
-  },
-  scroll: {
-    flex: 1,
-    padding: 10,
-  },
-  link: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-  },
-});
