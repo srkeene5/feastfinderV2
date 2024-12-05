@@ -85,6 +85,7 @@ export default function PopularCards({fetchType}) {
                     setFetchedData(data)
                     setTitle('Recent Dishes:');
                 } else if (fetchType.includes('searchDish')){
+                    setFetchedData(data)
                     setTitle('Recommended for You:');
                 } else {
                     setFetchedData(data)
