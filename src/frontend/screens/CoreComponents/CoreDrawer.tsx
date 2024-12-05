@@ -1,51 +1,55 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Image, Pressable, Text, View } from 'react-native'
 import React, { useState } from 'react'
 
 import Drawer from '@mui/material/Drawer'
 import { useNavigate } from 'react-router-dom';
-import { coreStyles, ffColors } from './CoreStyles.tsx';
+import CoreStyles from './CoreStyles.tsx';
 import { useAuth } from '../UserComponents/Authorizer.tsx';
 import ChatSupport from '../SettingsPages/ChatComponents/ChatSupport.tsx';
+import { useDarkMode } from "./DarkModeContext.tsx";
 
 const CoreDrawer = ({open, setOpen}) => {
     const [openChat, setOpenChat] = useState(false);
     const navigate = useNavigate();
     const {logout} = useAuth();
+    const { coreStyles } = CoreStyles();
+    const styles = CoreStyles().coreDrawerStyles
+    const { darkMode } = useDarkMode();
 
     const navPages = [
         {
             navFunc: () => { navigate('/Home') },
-            navImg: require('../images/home.png'),
+            navImg: darkMode? require('../images/homeDark.png') : require('../images/home.png'),
             navText: 'Home',
         },
         {
             navFunc: () => { navigate('/AccountPage') },
-            navImg: require('../images/account.png'),
+            navImg: darkMode? require('../images/accountDark.png') : require('../images/account.png'),
             navText: 'Account',
         },
         {
             navFunc: () => { navigate('/FAQPage')},
-            navImg: require('../images/faq.png'),
+            navImg: darkMode? require('../images/faqDark.png') : require('../images/faq.png'),
             navText: 'FAQ',
         },
         {
             navFunc: ()=>{setOpenChat(true)},
-            navImg: require('../images/chatSupport.png'),
+            navImg: darkMode? require('../images/chatSupportDark.png') : require('../images/chatSupport.png'),
             navText: 'Support',
         },
         {
             navFunc: () => { navigate('/SuggestionPage')},
-            navImg: require('../images/suggestion.png'),
+            navImg: darkMode? require('../images/suggestionDark.png') : require('../images/suggestion.png'),
             navText: 'Suggestions',
         },
         {
             navFunc: () => { navigate('/ReportBugPage')},
-            navImg: require('../images/reportBug.png'),
+            navImg: darkMode? require('../images/reportBugDark.png') : require('../images/reportBug.png'),
             navText: 'Report Bugs',
         },
         {
             navFunc: () => { navigate('/PastOrdersPage') },
-            navImg: require('../images/pastOrders.png'), // Ensure you have this image
+            navImg: darkMode? require('../images/pastOrdersDark.png') : require('../images/pastOrders.png'), // Ensure you have this image
             navText: 'Past Orders',
         },
     ];
@@ -56,7 +60,7 @@ const CoreDrawer = ({open, setOpen}) => {
             onPress={()=>setOpen(true)}
             >
                 <Image
-                source={require('../images/menu.png')}
+                source={darkMode? require('../images/menu.png') : require('../images/menuDark.png')}
                 style={styles.menuImage}
                 />
             </Pressable>
@@ -119,46 +123,3 @@ const CoreDrawer = ({open, setOpen}) => {
 }
 
 export default CoreDrawer
-
-const styles = StyleSheet.create({
-    menuHeader: {
-        paddingTop: 20,
-        paddingBottom: 20,
-        paddingLeft: 10,
-        borderBottomWidth: 1,
-        borderColor: 'lightgrey',
-    },
-    menuImage: {
-        height: 40,
-        width: 40,
-        marginRight: 15,
-    },
-    navImage: {
-        width:30,
-        height:30,
-        marginLeft: 20,
-        marginRight: 40,
-    },
-    navTextContainer: {
-        width: 180,
-        paddingRight: 20,
-    },
-    navText: {
-        fontSize: 20
-    },
-    card: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 15,
-        borderTopWidth: 0,
-        borderBottomWidth: 1,
-        borderColor: 'lightgrey',
-    },
-    navContainer: {
-        flex:1,
-        justifyContent: 'space-between'
-    },
-    logout: {
-        backgroundColor: ffColors.ffRedL
-    },
-})

@@ -12,24 +12,26 @@ import useRequireAuth from "../UserComponents/RequireAuth.tsx"
 // Components
 import PopularCards from "./PopularCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
-import MapComponent from "../MapComponents/MapComponent.tsx"; // Adjust the path as necessary
-import { ffColors } from '../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 import DishRecommendations from "./DishRecommendations.tsx";
 
 export default function Home() {
 
-  const { loading } = useAuth()
+  const { loading } = useAuth();
+  const { ffColors } = CoreStyles();
   useRequireAuth();
 
   if (loading) {
     return <div> Loading... </div>
   }
 
+  const randomLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+
   return (
     <div
       style={{
         backgroundColor: ffColors.ffBackground,
-        minHeight: '100vh', // '100vh' is valid in web CSS
+        minHeight: '100vh',
         height: 'auto'
       }}
     >
@@ -43,7 +45,10 @@ export default function Home() {
       <PopularCards
         fetchType={'cartroute/recent-dishes'}
       />
-      <DishRecommendations />
+      <PopularCards
+        fetchType={`searchDish?name=${randomLetter}`}
+      />
+      {/*<DishRecommendations />*/}
       
     </div>
   )

@@ -10,13 +10,14 @@ import { sendEmail } from './Email.tsx';
 //navigation
 import { useNavigate } from 'react-router-dom';
 import CorePopup from '../../CoreComponents/CorePopup.tsx';
-import { coreForm, ffColors } from '../../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../../CoreComponents/CoreButton.tsx';
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
 
 export default function RepBPage() {
   const navigate = useNavigate();
   const {user} = useAuth();
+  const { coreForm, ffColors } = CoreStyles();
 
   const [reportTextValue, setRepValue] = React.useState('')
   const [emailValue, setEmail] = React.useState('')

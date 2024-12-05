@@ -5,7 +5,7 @@ import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ConfirmModal from './ConfirmModal.tsx';
 import { CartItem, CartEntry, Option, OptionIndex } from '../../../types/Cart';
-import { ffColors } from '../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../CoreComponents/CoreButton.tsx';
 import OptionsPopup from './OptionsPopup.tsx';
 import { API_BASE_URL } from '../../../config.js';
@@ -32,6 +32,8 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, price, image, dietaryViolatio
   // if (deal !== undefined && deal !== null && deal > 0) {
   //   currPrice = currPrice * (100 - deal) / 100;
   // }
+
+  const { ffColors } = CoreStyles();
   
   return (
     <li 
@@ -135,6 +137,7 @@ export default function RestPage() {
   const [preferences, setPreferences] = useState<string[]>([]);
 
   const { user } = useAuth();
+  const { ffColors } = CoreStyles();
 
 
   const [cartPop, setCartPop] = useState<boolean>(false);
@@ -508,7 +511,7 @@ export default function RestPage() {
     <div style={{backgroundColor:ffColors.ffBackground}}>
       <CoreBanner />
       <div
-        style={styles.account}
+        style={{padding: '16px', backgroundColor: ffColors.ffCard}}
         className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-6 mt-6 mx-auto"
       >
         <h1 
@@ -557,7 +560,7 @@ export default function RestPage() {
         </div>
         <div 
           className="flex justify-between items-center sticky bottom-0 w-full bg-white p-4 mt-6 border-t border-gray-200"
-          style={{backgroundColor: ffColors.ffCard}}
+          style={{backgroundColor: ffColors.ffCard, borderColor: ffColors.ffEdge}}
         >
           {/* Checkout Button */}
           <div className="flex flex-col items-center">
@@ -682,10 +685,3 @@ export default function RestPage() {
     </div>
   );
 }
-
-const styles = {
-  account: {
-    padding: '16px',
-    backgroundColor: ffColors.ffCard
-  },
-};

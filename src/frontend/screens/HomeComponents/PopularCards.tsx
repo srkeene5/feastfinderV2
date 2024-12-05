@@ -2,18 +2,15 @@ import React, { useEffect } from 'react'
 
 import { 
     SafeAreaView,
-    ScrollView, 
-    StyleSheet,
     Text,
     View,
     Image,
     Pressable, 
-    FlatList
 } from 'react-native'
 import tw from 'twrnc';
 import { API_BASE_URL } from '../../../config.js';
 
-import { coreForm, coreStyles, ffColors } from '../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 
 // navigation
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +28,8 @@ export default function PopularCards({fetchType}) {
     const [title, setTitle] = React.useState('error: Failed to Fetch')
     const [fetchedData, setFetchedData] = React.useState<any[]>([]);
     const {user} = useAuth();
+    const { coreForm, coreStyles, scrollableStyleX } = CoreStyles();
+    const styles = CoreStyles().popularCardsStyles
 
     const navigate = useNavigate();
     
@@ -85,6 +84,8 @@ export default function PopularCards({fetchType}) {
                 } else if (fetchType === 'cartroute/recent-dishes') {
                     setFetchedData(data)
                     setTitle('Recent Dishes:');
+                } else if (fetchType.includes('searchDish')){
+                    setTitle('Recommended for You:');
                 } else {
                     setFetchedData(data)
                     setTitle('Fetch Type Untitled');
@@ -186,14 +187,15 @@ export default function PopularCards({fetchType}) {
             if (items[0].dishName) {
                 const dishNameSet = new Set();
                 items.forEach(dish => {
+                    console.log("dishRestName: " + dish.restaurantName)
                     if (!dishNameSet.has(dish.dishName)) {
                         dishNameSet.add(dish.dishName);
                         itemSub.push({
                             ID: dish.dishName,
                             name: dish.dishName,
-                            searchName: dish.restaurantName,
+                            searchName: dish.restaurantName || (Array.isArray(dish.restaurantNames) && dish.restaurantNames[0]) || undefined,
                             description: dish.dishName + ' Description',
-                            image: dish.dishImage || require('../images/testDish.png') // Adjust image as needed
+                            image: dish.dishImage || dish.image || require('../images/testDish.png') // Adjust image as needed
                         });
                     }
                 });
@@ -225,68 +227,18 @@ export default function PopularCards({fetchType}) {
     
     //-----Popular Cards Exported-----
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{paddingBottom: 16}}>
             <Text 
                 style={coreStyles.headingText}
             >
                 {title}
             </Text>
-            <ScrollView
-                style={styles.scrollCards}
-                horizontal={true}
+            <div
+                style={{...scrollableStyleX , ...styles.scrollCards}}
             >
                 {restDishItems(fetchedData)}
-            </ScrollView>
+            </div>
             
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    scrollCards: {
-        display: 'flex',
-        width: '100%',
-        padding: 5
-    },
-    container: {
-        display: 'flex',
-        marginStart: 10,
-        marginEnd: 10,
-    },
-    depcard: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 'auto',
-        padding: 10,
-        minWidth: 100,
-        height: 100,
-        borderRadius: 10,
-        margin: 8,
-        elevation: 5,
-        shadowOffset: {
-            width: 1,
-            height: 1
-        },
-        shadowColor: '#333',
-        shadowOpacity: .5,
-        shadowRadius: 2,
-        backgroundColor: '#dddddd',
-    },
-    card: {
-        backgroundColor: ffColors.ffCard,
-        borderRadius: 5,
-        padding: 20,
-        width: 200,
-        elevation: 4, 
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-    },
-    cardImage: {
-        width: '100%',
-        height: undefined, // To maintain aspect ratio
-        aspectRatio: 1, // Adjust as necessary for the desired aspect ratio
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
-    },
-})

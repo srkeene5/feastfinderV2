@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, View } from 'react-native'
+import { Image } from 'react-native'
 import { useAuth } from "./Authorizer.tsx";
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../../config.js';
@@ -20,10 +20,10 @@ function Login() {
       navigate('/');  // Replaces navigation.navigate("Profile")
   };
 
-  const example = async(e) => {
+  /*const example = async(e) => {
     e.preventDefault();
     setUserToken("emailToken", "email")
-  }
+  }*/
 
   const handleLogin = async (e) => {
     e.preventDefault();

@@ -11,13 +11,14 @@ import { sendEmail } from './Email.tsx';
 import { useNavigate } from 'react-router-dom';
 
 import CorePopup from '../../CoreComponents/CorePopup.tsx';
-import { coreStyles, ffColors, coreForm } from '../../CoreComponents/CoreStyles.tsx';
+import CoreStyles from '../../CoreComponents/CoreStyles.tsx';
 import CoreButton from '../../CoreComponents/CoreButton.tsx';
 import { useAuth } from '../../UserComponents/Authorizer.tsx';
 
 export default function SuggPage() {
   const navigate = useNavigate();
   const {user} = useAuth();
+  const { ffColors, coreForm } = CoreStyles()
 
   const [suggTextValue, setSuggValue] = React.useState('')
   const [emailValue, setEmail] = React.useState('')

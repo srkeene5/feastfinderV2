@@ -1,20 +1,24 @@
-import { Pressable, Text } from 'react-native'
+import { Pressable, Text, ViewStyle } from 'react-native'
 import React from 'react'
-import { buttonStyles, ffColors } from './CoreStyles.tsx'
+import CoreStyles from './CoreStyles.tsx'
 
-const CoreButton = ({pressFunc, bText, buttonColor}) => {
+interface ButtonProps {
+    pressFunc: ()=>void
+    bText: string
+    buttonColor: string
+    textColor?: string
+}
+
+const CoreButton: React.FC<ButtonProps> = ({pressFunc, bText, buttonColor, textColor}) => {
+    const { buttonStyles, ffColors } = CoreStyles();
     var darkB = false;
-    if (buttonColor === ffColors.ffGreyL 
-            || buttonColor === ffColors.ffGreyD){
-        darkB = true;
-    }
     return (
         <Pressable
         onPress={()=>pressFunc()}
         style={[buttonStyles.popupButton, {backgroundColor: buttonColor}]}
         >
             <Text
-            style={[buttonStyles.buttonText, darkB ? {color: 'black'} : {color: 'white'}]}
+            style={[buttonStyles.buttonText, textColor && {color: textColor}]}
             >
                 {bText}
             </Text>

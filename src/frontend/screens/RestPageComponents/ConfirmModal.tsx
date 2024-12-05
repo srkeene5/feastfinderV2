@@ -1,4 +1,5 @@
 import React from 'react';
+import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onCancel,
 }) => {
   if (!isOpen) return null;
+  const styles = CoreStyles().confirmModalStyles
 
   return (
     <div style={styles.overlay}>
@@ -33,55 +35,6 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       </div>
     </div>
   );
-};
-
-const styles = {
-  overlay: {
-    position: 'fixed' as 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000,
-  },
-  modal: {
-    backgroundColor: '#fff',
-    padding: '24px',
-    borderRadius: '8px',
-    width: '90%',
-    maxWidth: '400px',
-    textAlign: 'center' as 'center',
-  },
-  title: {
-    margin: '0 0 16px',
-  },
-  message: {
-    margin: '0 0 24px',
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    gap: '8px',
-  },
-  cancelButton: {
-    padding: '8px 16px',
-    backgroundColor: '#ccc',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  confirmButton: {
-    padding: '8px 16px',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
 };
 
 export default ConfirmModal;
