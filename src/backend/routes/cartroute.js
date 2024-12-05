@@ -331,6 +331,22 @@ router.get('/recent-dishes', auth, async (req, res) => {
   }
 });
 
+router.get('/carts/all', auth, async (req, res) => {
+  try {
+    // Fetch all carts from the database
+    const allCarts = await Cart.find().lean(); // Use `lean()` for performance optimization
+
+    if (!allCarts || allCarts.length === 0) {
+      return res.status(404).json({ message: 'No carts found in the database' });
+    }
+
+    res.status(200).json({ carts: allCarts });
+  } catch (error) {
+    console.error('Error retrieving all carts:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 
 
 export default router;
