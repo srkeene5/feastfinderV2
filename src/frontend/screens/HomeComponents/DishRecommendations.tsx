@@ -130,7 +130,7 @@ const DishRecommendations = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Reccomended for you</h2>
+      <h2 className="text-xl font-bold mb-4">Recommended for you</h2>
       <div className="overflow-x-auto">
         <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
           {dishes.map((dish, index) => (
