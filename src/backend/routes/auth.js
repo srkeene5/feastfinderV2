@@ -590,4 +590,35 @@ router.delete('/grubhublogin', auth, async (req, res) => {
   }
 });
 
+router.get('/preferences', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ darkMode: user.darkMode || false }); // Return the darkMode preference
+  } catch (err) {
+    res.status(500).json({ msg: 'get preferences Server error' });
+  }
+});
+
+router.put('/preferences', auth, async (req, res) => {
+  const { darkMode } = req.body;
+
+  try {
+    const user = await User.findById(req.user); // Assuming req.user is the logged-in user
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    user.darkMode = darkMode; // Update the darkMode preference
+    await user.save(); // Save the user with the updated darkMode value
+
+    res.status(200).json({ msg: 'Preferences updated successfully' });
+  } catch (err) {
+    res.status(500).json({ msg: 'put preferences Server error' });
+  }
+});
+
 export default router;

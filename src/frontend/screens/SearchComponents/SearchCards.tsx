@@ -12,7 +12,7 @@ import {
 import { API_BASE_URL } from '../../../config.js';
 import { TouchableOpacity } from 'react-native';
 import { useAuth } from "../UserComponents/Authorizer.tsx";
-import { ffColors } from "../CoreComponents/CoreStyles.tsx";
+import CoreStyles from "../CoreComponents/CoreStyles.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import CorePopup from "../CoreComponents/CorePopup.tsx";
 import CoreButton from "../CoreComponents/CoreButton.tsx";
@@ -42,6 +42,8 @@ interface Restaurant {
 }
 
 export default function SearchCards() {
+  const { ffColors, loginStyles } = CoreStyles();
+  const styles = CoreStyles().searchCardsStyles;
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -683,16 +685,16 @@ export default function SearchCards() {
           },
         ]}
       >
-        <View style={styles.loginContainer}>
-          <Text style={styles.popupText}>Login:</Text>
+        <View style={loginStyles.loginContainer}>
+          <Text style={loginStyles.popupText}>Login:</Text>
           <TextInput
-            style={styles.popInput}
+            style={loginStyles.popInput}
             onChangeText={setuserValue}
             value={userValue}
             placeholder="Username..."
           />
           <TextInput
-            style={styles.popInput}
+            style={loginStyles.popInput}
             onChangeText={setPassValue}
             value={passValue}
             placeholder="Password..."
@@ -736,14 +738,14 @@ export default function SearchCards() {
         ]}
       >
         <View style={styles.reviewContainer}>
-          <Text style={styles.popupText}>Rate your experience:</Text>
+          <Text style={loginStyles.popupText}>Rate your experience:</Text>
           <StarRating
             rating={rating}
             interactive={true}
             onRatingChange={setRating}
             hoverRating={hoveredRating}
           />
-          <Text style={styles.popupText}>Your review:</Text>
+          <Text style={loginStyles.popupText}>Your review:</Text>
           <TextInput
             style={styles.reviewInput}
             onChangeText={setReviewText}
@@ -802,211 +804,3 @@ export default function SearchCards() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
-  card: {
-    width: "100%",
-    height: 300,
-    borderRadius: 11,
-    marginBottom: 10,
-    elevation: 5,
-    backgroundColor: ffColors.ffCard,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    flexDirection: "row",
-  },
-  cardImage: {
-    aspectRatio: 1 / 1.2,
-    height: "100%",
-    borderBottomLeftRadius: 10,
-    borderTopLeftRadius: 10,
-  },
-  cardContent: {
-    flex: 1,
-    padding: 10,
-  },
-  restaurantName: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: ffColors.ffHeading,
-    overflow: "hidden",
-    minWidth: 100,
-    marginBottom: 8,
-  },
-  dishName: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: ffColors.ffHeading,
-    overflow: "hidden",
-    minWidth: 100,
-    marginBottom: 8,
-  },
-  cardDetails: {
-    fontSize: 18,
-    color: ffColors.ffBody,
-    overflow: "hidden",
-    minWidth: 100,
-    marginTop: 8,
-  },
-  buttonDeactive: {
-    backgroundColor: "#777777",
-    width: 100,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 5,
-  },
-  buttonTextDeactive: {
-    color: "#444",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  buttonContent: {
-    alignItems: "flex-end",
-    justifyContent: "space-evenly",
-    flexWrap: "wrap",
-    paddingRight: 20,
-  },
-  errorPage: {
-    width: "100%",
-    paddingTop: 50,
-    alignItems: "center",
-  },
-  errorMessage: {
-    fontSize: 24,
-    fontWeight: "bold",
-    paddingHorizontal: 8,
-    margin: 10,
-    color: "red",
-  },
-  popupText: {
-    marginBottom: 10,
-    fontSize: 15,
-    fontWeight: "bold",
-  },
-  popInput: {
-    height: 'auto',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 10,
-    width: '100%',
-    fontSize: 14,
-  },
-  loginContainer: {
-    marginTop: 0,
-    margin: 20,
-  },
-  starContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 5,
-  },
-  ratingText: {
-    marginLeft: 5,
-    fontSize: 16,
-    color: ffColors.ffBody,
-  },
-  reviewContainer: {
-    margin: 20,
-  },
-  reviewInput: {
-    marginBottom: 20,
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    width: '100%',
-    minHeight: 100,
-    borderColor: '#ccc',
-    fontSize: 14,
-    textAlignVertical: 'top', // Ensures text starts at the top
-  },
-  reviewButtonsContainer: {
-    flexDirection: "row",
-    gap: 5,
-    marginTop: 10,
-  },
-  buttonAndTextContainer: {
-    flexDirection: "row",
-    alignItems: "center", // Aligns text and button vertically
-    gap: 5, // Adds space between the text and button
-  },
-  reviewsContainer: {
-    maxHeight: 400,
-    padding: 10,
-  },
-  reviewsSummary: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    marginBottom: 15,
-  },
-  reviewsCount: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: ffColors.ffBody,
-  },
-  reviewItem: {
-    marginBottom: 20,
-    padding: 10,
-    backgroundColor: "#f8f8f8",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#eee",
-  },
-  reviewHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 8,
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  reviewUsername: {
-    fontWeight: "bold",
-    fontSize: 16,
-    color: ffColors.ffHeading,
-  },
-  reviewDate: {
-    fontSize: 14,
-    color: "#666",
-  },
-  reviewText: {
-    fontSize: 14,
-    color: ffColors.ffBody,
-    lineHeight: 20,
-  },
-  sortingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  sortingLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: ffColors.ffHeading,
-    marginRight: 10,
-  },
-  sortButton: {
-    padding: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: ffColors.ffEdge,
-    marginRight: 5,
-  },
-  sortButtonActive: {
-    backgroundColor: ffColors.ffGreenL,
-  },
-  sortButtonText: {
-    fontSize: 14,
-    color: ffColors.ffText,
-  },
-});

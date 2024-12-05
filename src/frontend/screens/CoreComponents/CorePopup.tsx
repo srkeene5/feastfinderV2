@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import Popup from 'reactjs-popup';
 import CoreButton from './CoreButton.tsx';
-import { popStyles } from './CoreStyles.tsx';
+import CoreStyles from './CoreStyles.tsx';
 
 interface Props {
     children?: React.ReactNode;
@@ -15,6 +15,7 @@ interface Props {
 }
 
 const CorePopup: React.FC<Props> = ({children, pop, popTitle, popText, buttons, closeFunc, titleColor}) => {
+    const { popStyles } = CoreStyles();
     return (
         <Popup 
         open={pop} 
@@ -43,8 +44,8 @@ const CorePopup: React.FC<Props> = ({children, pop, popTitle, popText, buttons, 
                     <CoreButton
                     key={index}
                     pressFunc={item.bFunc}
-                    bText={item.bText}
-                    buttonColor={item.bColor}
+                    bText={item.bText.toString()}
+                    buttonColor={item.bColor.toString()}
                     />   
                 ))}
             </View>

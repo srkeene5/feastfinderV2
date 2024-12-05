@@ -6,46 +6,28 @@ import SearchCards from "./SearchCards.tsx";
 import CoreBanner from "../CoreComponents/CoreBanner.tsx";
 import { useLocation } from "react-router-dom";
 import MapComponent from "../MapComponents/MapComponent.tsx";
-import { ffColors } from "../CoreComponents/CoreStyles.tsx";
+import CoreStyles from "../CoreComponents/CoreStyles.tsx";
+import tw from 'twrnc';
 
 export default function SearchPage() {
   const location = useLocation();
   const { search, results } = location.state;
+  const { scrollableStyle } = CoreStyles();
+  const styles = CoreStyles().searchPageStyles;
 
   return (
-    <View style={styles.container}>
+    <View style={tw.style(styles.container)}>
       <CoreBanner searchVal={search} />
-      <View style={styles.searchPageContainer}>
+      <View style={tw.style(styles.searchPageContainer)}>
         <View style={styles.mapContainer}>
           <MapComponent restaurants={results} />
         </View>
-        <View style={styles.cardsContainer}>
-          <ScrollView>
+        <View style={tw.style(styles.cardsContainer)}>
+          <div style={scrollableStyle}>
             <SearchCards />
-          </ScrollView>
+          </div>
         </View>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: ffColors.ffBackground,
-    height: '100vh',
-    flex: 1,
-  },
-  searchPageContainer: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  mapContainer: {
-    flex: 1,
-    margin: 10,
-    borderRadius: 20,
-  },
-  cardsContainer: {
-    flex: 1.75,
-    maxHeight: '100%',
-  },
-});

@@ -6,11 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import CoreButton from '../CoreComponents/CoreButton.tsx';
 import { API_BASE_URL } from '../../../config.js'; // Adjust the path as necessary
+import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 
 const PastOrdersPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [carts, setCarts] = useState([]);
+  const { ffColors } = CoreStyles();
+  const styles = CoreStyles().pastOrderPageStyles
 
   useEffect(() => {
     if (!user) {
@@ -89,40 +92,45 @@ const PastOrdersPage: React.FC = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: ffColors.ffBackground, minHeight: '100vh' }}>
       <CoreBanner />
       <div style={{ padding: 20 }}>
-        <h1 style={{ fontSize: 24, marginBottom: 20 }}>Past Orders</h1>
+        <h1 style={{ fontSize: 24, marginBottom: 20, color: ffColors.ffHeading }}>Past Orders</h1>
         {carts.length === 0 ? (
-          <p>No past orders found.</p>
+          <p style={{color: ffColors.ffBody}}>No past orders found.</p>
         ) : (
           carts.map((cart, index) => (
             <div key={cart._id || index} style={styles.orderCard}>
-              <h2 style={{ fontSize: 20, marginBottom: 5 }}>
+              <h2 style={{ fontSize: 20, marginBottom: 5, color: ffColors.ffHeading }}>
                 Order from {cart.restaurant.restaurantName}
               </h2>
-              <p style={{ margin: 0 }}>
+              <p style={{ margin: 0, color: ffColors.ffBody }}>
                 Address: {cart.restaurant.address || 'Address not available'}
               </p>
-              <p style={{ margin: '5px 0' }}>
+              <p style={{ margin: '5px 0', color: ffColors.ffBody }}>
                 Ordered on {new Date(cart.createdAt).toLocaleDateString()} at{' '}
                 {new Date(cart.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </p>
-              <p style={{ margin: '5px 0' }}>
+              <p style={{ margin: '5px 0', color: ffColors.ffBody }}>
                 Service used: {cart.service.charAt(0).toUpperCase() + cart.service.slice(1)}
               </p>
               <ul>
                 {cart.items.map((item, idx) => (
-                  <li key={idx}>
+                  <li key={idx} style={{color: ffColors.ffBody}}>
                     {item.item} x {item.quantity}
+                    {item.options.map((option, i) => (
+                      <li key={i} style={{color: ffColors.ffBody, marginLeft:8, fontSize: 12}}>
+                        {option.optionName}
+                      </li>
+                    ))}
                   </li>
                 ))}
               </ul>
-              <p>Total: ${cart.total.toFixed(2)}</p>
+              <p style={{color: ffColors.ffBody}}>Total: ${cart.total.toFixed(2)}</p>
               <CoreButton
                 pressFunc={() => handleSearchRestaurant(cart.restaurant.restaurantName)}
                 bText="View Restaurant"
-                buttonColor="#007bff"
+                buttonColor={ffColors.ffBlueD}
               />
             </div>
           ))
@@ -130,16 +138,6 @@ const PastOrdersPage: React.FC = () => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  orderCard: {
-    backgroundColor: 'white',
-    padding: 15,
-    marginBottom: 15,
-    borderRadius: 8,
-    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-  },
 };
 
 export default PastOrdersPage;

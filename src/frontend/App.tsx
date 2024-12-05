@@ -8,6 +8,7 @@ import { CartContextProvider } from './screens/RestPageComponents/CartContext.ts
 
 //screens
 import FeastRoutes from './screens/Routes/FeastRoutes.tsx'; 
+import { DarkModeProvider } from './screens/CoreComponents/DarkModeContext.tsx';
 
 function App(): JSX.Element {
 
@@ -15,10 +16,12 @@ function App(): JSX.Element {
     
     
       <AuthContextProvider>
-      <CartContextProvider>
-      <Router>
-        <FeastRoutes />
-        </Router>
+        <CartContextProvider>
+          <DarkModeProvider>
+            <Router>
+              <FeastRoutes />
+            </Router>
+          </DarkModeProvider>
         </CartContextProvider>
       </AuthContextProvider>
    

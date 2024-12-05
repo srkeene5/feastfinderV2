@@ -30,7 +30,7 @@ const useRequireAuth = () => {
          
       }
     }
-  }, [user, loading, navigate]); // Dependencies
+  }, [user, loading, navigate, location.pathname, validateToken]); // Dependencies
 };
 
 export default useRequireAuth;
