@@ -46,7 +46,7 @@ export default function PopularCards({fetchType}) {
                     },
                 })
                 const data = await response.json();
-                setFetchedData(data);
+                //setFetchedData(data);
                 if (fetchType === 'popularRestaurants') {
                     const cartsResponse = await fetch(`${API_BASE_URL}/api/cartroute/carts/all`, {
                         method: 'GET',
@@ -80,10 +80,13 @@ export default function PopularCards({fetchType}) {
                     setFetchedData(data);
                     setTitle('Popular Near You:');
                 } else if (fetchType === 'cartroute/recent-restaurants') {
+                    setFetchedData(data)
                     setTitle('Recent Restaurants:');
                 } else if (fetchType === 'cartroute/recent-dishes') {
+                    setFetchedData(data)
                     setTitle('Recent Dishes:');
                 } else {
+                    setFetchedData(data)
                     setTitle('Fetch Type Untitled');
                 }
             } catch(error) {
