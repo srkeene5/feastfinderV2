@@ -378,20 +378,20 @@ const CartPage: React.FC = () => {
                   src={`/images/services/${service.toLowerCase()}.png`}
                   alt={service}
                   style={{
-                    width: '120px',
+                    width: '160px',
                     height: 'auto',
                     objectFit: 'contain',
                   }}
                 />
               </div>
               <div className="flex items-center mb-4 pl-4">
-                <h2 className="text-xl font-semibold" style={{ color: ffColors.ffHeading }}>
+              {/* <h2 className="text-xl font-semibold whitespace-nowrap" style={{ color: ffColors.ffHeading }}>
                   {service}
-                </h2>
+                </h2> */}
               </div>
               <div className="flex flex-col items-center">
                 {available ? (
-                  <div className="pl-8">
+                  <div className="pl-6">
                     <ul className="mb-4">
                       {cart.items.map((item: CartItem, index: number) => (
                         <li key={index} className="flex justify-between mb-2">
@@ -493,7 +493,7 @@ const CartPage: React.FC = () => {
                       className="mt-4 px-6 py-2 text-white rounded-lg hover:bg-blue-600 transition duration-200"
                       style={{
                         backgroundColor: ffColors.ffGreenL,
-                        minWidth: '200px',
+                        minWidth: '230px',
                         textAlign: 'center',
                       }}
                     >
