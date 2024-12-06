@@ -1,8 +1,20 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { useDarkMode } from "./DarkModeContext.tsx";
+import { useEffect, useState } from "react";
 
 export default function CoreStyles() {
   const { darkMode } = useDarkMode();
+
+  const [width, setWidth] = useState<number>(Dimensions.get('window').width);
+
+  const marg = width * 0.01 - 2
+
+  useEffect(() => {
+    const onChange = ({ window }) => {
+      setWidth(window.width);
+    }
+    Dimensions.addEventListener('change', onChange);
+  }, []);
 
   const ffColors = darkMode ? {
     ffBackground: '#121212',  // Dark background for the overall page
@@ -245,6 +257,7 @@ export default function CoreStyles() {
       height: 90,
       width: 120,
       margin: 5,
+      marginRight: marg,
       borderRadius: 45,
     },
     cardImage: {
@@ -254,10 +267,10 @@ export default function CoreStyles() {
     searchInput: {
       backgroundColor: ffColors.ffInput,
       color: ffColors.ffBody,
-      borderColor:ffColors.ffEdge,
+      borderColor: ffColors.ffEdge,
       height: 60,
-      margin: 20,
-      marginRight: 25,
+      margin: marg,
+      marginLeft: 10 + marg,
       borderWidth: 1,
       flexGrow: 1,
       borderRadius: 20,
@@ -265,15 +278,16 @@ export default function CoreStyles() {
     },
     buttonGroup: {
       flexDirection: 'row',
-      margin: 20,
+      margin: marg,
     },
     searchTypeButton: {
       height: 40,
-      width: 120,
+      width: 'auto',
+      padding: 10,
       borderRadius: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 10,
+      marginLeft: 10,
     },
     selectedButton: {
       backgroundColor: ffColors.ffGreenL,
@@ -290,7 +304,7 @@ export default function CoreStyles() {
     filterButton: {
       backgroundColor: ffColors.ffGreenL,
       height: 60,
-      margin: 20,
+      margin: marg,
       padding: 10,
       borderRadius: 20,
       justifyContent: 'center',
@@ -306,6 +320,9 @@ export default function CoreStyles() {
     },
     filterButtonDisabled: {
       backgroundColor: ffColors.ffDeadButton, // Grey out the filter button when disabled
+    },
+    drawerContainer: {
+      margin: marg
     },
     popupOverlay: {
       flex: 1,
@@ -385,7 +402,7 @@ export default function CoreStyles() {
     menuImage: {
       height: 40,
       width: 40,
-      marginRight: 15,
+      marginRight: 10
     },
     navImage: {
       width: 30,
@@ -412,7 +429,7 @@ export default function CoreStyles() {
     navContainer: {
       flex: 1,
       justifyContent: 'space-between',
-      backgroundColor:ffColors.ffBackground
+      backgroundColor: ffColors.ffBackground,
     },
     logout: {
       backgroundColor: ffColors.ffRedL
@@ -540,28 +557,42 @@ export default function CoreStyles() {
       backgroundColor: ffColors.ffBackground,
       height: '100vh',
       flex: 1,
+      overflow: 'hidden'
     },
     searchPageContainer: {
       flex: 1,
       flexDirection: 'row',
+      maxHeight: '100vh'
     },
     mapContainer: {
       flex: 1,
       margin: 10,
       borderRadius: 20,
+      height: '80%'
+    },
+    mapContainerShrunk: {
+      flex: 1,
+      margin: 10,
+      borderRadius: 20,
+      height: '40%',
+      minHeight: 200
     },
     cardsContainer: {
       flex: 1.75,
       maxHeight: '100%',
+      minWidth: 520,
     },
   };
 
   const searchCardsStyles = StyleSheet.create({
     container: {
-      padding: 10,
+      padding: 0,
+    },
+    cardContainer: {
+      alignItems: 'center',
     },
     card: {
-      width: "100%",
+      width: "98%",
       height: 300,
       borderRadius: 11,
       marginBottom: 10,
@@ -572,16 +603,20 @@ export default function CoreStyles() {
       shadowOpacity: 0.1,
       shadowRadius: 6,
       flexDirection: "row",
+      paddingLeft: 4,
     },
     cardImage: {
+      marginLeft: 20,
       aspectRatio: 1 / 1.2,
       height: "100%",
-      borderBottomLeftRadius: 10,
-      borderTopLeftRadius: 10,
+    },
+    cardImageSrunk: {
+      aspectRatio: 1 / 1.2,
+      height: "90%",
     },
     cardContent: {
       flex: 1,
-      padding: 10,
+      padding: 16,
     },
     restaurantName: {
       fontSize: 28,
@@ -631,12 +666,19 @@ export default function CoreStyles() {
       paddingTop: 50,
       alignItems: "center",
     },
+    loadingMessage: {
+      fontSize: 24,
+      fontWeight: "bold",
+      paddingHorizontal: 8,
+      margin: 10,
+      color: ffColors.ffHeading,
+    },
     errorMessage: {
       fontSize: 24,
       fontWeight: "bold",
       paddingHorizontal: 8,
       margin: 10,
-      color: "red",
+      color: ffColors.ffRedL,
     },
     starContainer: {
       flexDirection: "row",
@@ -838,7 +880,7 @@ export default function CoreStyles() {
       boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
     },
   };
-  
+
   const dealsPageStyles = {
     dealsCard: {
       backgroundColor: ffColors.ffCard,

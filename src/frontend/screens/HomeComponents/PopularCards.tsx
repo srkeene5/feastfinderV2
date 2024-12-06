@@ -25,7 +25,8 @@ interface GenItem {
 }
 
 export default function PopularCards({fetchType}) {
-    const [title, setTitle] = React.useState('error: Failed to Fetch')
+    const [title, setTitle] = React.useState<string>('Loading...');
+    const [errorText, setErrorText] = React.useState<string>('Loading...');
     const [fetchedData, setFetchedData] = React.useState<any[]>([]);
     const {user} = useAuth();
     const { coreForm, coreStyles, scrollableStyleX } = CoreStyles();
@@ -78,22 +79,28 @@ export default function PopularCards({fetchType}) {
     
                     setFetchedData(data);
                     setTitle('Popular Near You:');
+                    setErrorText('No Restaurants Found');
                 } else if (fetchType === 'cartroute/recent-restaurants') {
                     setFetchedData(data)
                     setTitle('Recent Restaurants:');
+                    setErrorText('No Recent History Found');
                 } else if (fetchType === 'cartroute/recent-dishes') {
                     setFetchedData(data)
                     setTitle('Recent Dishes:');
+                    setErrorText('No Recent History Found');
                 } else if (fetchType.includes('searchDish')){
                     setFetchedData(data)
                     setTitle('Recommended for You:');
+                    setErrorText(fetchType === 'popularRestaurants' ? 'No Restaurants Found' : 'No Recent History Found');
                 } else {
                     setFetchedData(data)
-                    setTitle('Fetch Type Untitled');
+                    setTitle('error: Fetch Type Untitled');
+                    setErrorText(fetchType === 'popularRestaurants' ? 'No Restaurants Found' : 'No Recent History Found');
                 }
             } catch(error) {
                 console.error(`Error fetching ${fetchType}:`, error);
                 setTitle('error: Failed to Fetch');
+                setErrorText(fetchType === 'popularRestaurants' ? 'No Restaurants Found' : 'No Recent History Found');
             }
         }
         restReq();
@@ -217,7 +224,6 @@ export default function PopularCards({fetchType}) {
             }
             return itemSub.map((item) => restDishItem(item));
         } else {
-            var errorText = fetchType === 'popularRestaurants' ? 'No Restaurants Found' : 'No Recent History Found'
             return (
                 <div style={{marginLeft: 32}}>
                     <p style={coreForm.subheader}>{errorText}</p>

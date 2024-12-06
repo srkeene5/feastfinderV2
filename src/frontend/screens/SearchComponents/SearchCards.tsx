@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   SafeAreaView,
@@ -7,6 +7,7 @@ import {
   Image,
   View,
   TextInput, // Add TextInput
+  Dimensions,
 } from "react-native";
 import { API_BASE_URL } from '../../../config.js';
 import { TouchableOpacity } from 'react-native';
@@ -48,10 +49,10 @@ export default function SearchCards() {
   const {
     results = [],
     searchType,
-    search,
     deliveryService,
     errorText,
   } = location.state;
+  const [width, setWidth] = useState<number>(Dimensions.get('window').width);
 
   const [userValue, setuserValue] = React.useState("");
   const [passValue, setPassValue] = React.useState("");
@@ -62,6 +63,7 @@ export default function SearchCards() {
   const [holdItem, setHoldItem] = React.useState(null);
   const { user } = useAuth();
   const [isLoadingReviews, setIsLoadingReviews] = React.useState(false);
+  const [loadingPage, setLoadingPage] = React.useState(true);
 
   // Modified review states to include all reviews
   const [reviewPop, setReviewPop] = React.useState(false);
@@ -88,10 +90,11 @@ export default function SearchCards() {
     results.forEach((restaurant) => {
       fetchReviews(restaurant.restaurantID);
     });
+    setLoadingPage(false)
   }, [results]);
 
-  
-  
+
+
   const calculateAverageRating = (reviews) => {
     if (!reviews || reviews.length === 0) return 0;
     const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
@@ -165,18 +168,18 @@ export default function SearchCards() {
 
       switch (buttonService) {
         case "DoorDash":
-            localStorage.setItem("doordash_token", data.token);
-            break;
+          localStorage.setItem("doordash_token", data.token);
+          break;
         case "GrubHub":
-            localStorage.setItem("grubhub_token", data.token);
-            break;
+          localStorage.setItem("grubhub_token", data.token);
+          break;
         case "UberEats":
-            localStorage.setItem("ubereats_token", data.token);
-            break;
+          localStorage.setItem("ubereats_token", data.token);
+          break;
         default:
-            console.error('switchFailure');
-            return;
-    }
+          console.error('switchFailure');
+          return;
+      }
 
       setLoginPop(false);
       setButtonService("Error Undefined");
@@ -192,7 +195,7 @@ export default function SearchCards() {
 
   const checkLogin = async (service: string, item) => {
     let fetchAddr = `${API_BASE_URL}/api/auth/app-status`;
-    
+
     try {
       const res = await fetch(fetchAddr, {
         method: "GET",
@@ -207,14 +210,14 @@ export default function SearchCards() {
         // console.log(service)
         switch (service) {
           case "DoorDash":
-              isStored = data.doordash_logged_in;
-              break;
+            isStored = data.doordash_logged_in;
+            break;
           case "GrubHub":
-              isStored = data.grubhub_logged_in;
-              break;
+            isStored = data.grubhub_logged_in;
+            break;
           case "UberEats":
-              isStored = data.uber_logged_in;
-              break;
+            isStored = data.uber_logged_in;
+            break;
           default:
             console.error("switchFailure");
             setErrText(
@@ -267,7 +270,7 @@ export default function SearchCards() {
   const StarRating = ({
     rating,
     interactive = false,
-    onRatingChange = () => {},
+    onRatingChange = () => { },
     hoverRating = null,
   }: {
     rating: number;
@@ -314,28 +317,28 @@ export default function SearchCards() {
       reviewText,
       token: user?.token // Don't log full token in production!
     });
-  
+
     if (rating === 0) {
       console.log('Validation failed: No rating selected');
       setErrText("Please select a rating");
       setErrPop(true);
       return;
     }
-  
+
     if (!reviewText.trim()) {
       console.log('Validation failed: No review text');
       setErrText("Please write a review");
       setErrPop(true);
       return;
     }
-  
+
     if (!selectedRestaurant) {
       console.log('Validation failed: No restaurant selected');
       setErrText("No restaurant selected");
       setErrPop(true);
       return;
     }
-  
+
     try {
       console.log('Sending POST request to /api/reviews');
       const response = await fetch(`${API_BASE_URL}/api/reviews`, {
@@ -351,29 +354,29 @@ export default function SearchCards() {
           reviewText: reviewText,
         }),
       });
-  
+
       console.log('Response status:', response.status);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Server responded with error:', errorText);
         throw new Error(errorText);
       }
-  
+
       const savedReview = await response.json();
       console.log('Successfully saved review:', savedReview);
-  
+
       // Fetch updated reviews
       console.log('Fetching updated reviews for restaurant:', selectedRestaurant.restaurantID);
       await fetchReviews(selectedRestaurant.restaurantID);
-  
+
       // Reset form and close popup
       console.log('Resetting form and closing popup');
       setReviewText("");
       setRating(0);
       setReviewPop(false);
       setSelectedRestaurant(null);
-  
+
     } catch (error) {
       console.error('Error in handleReviewSubmit:', error);
       setErrText('Failed to submit review: ' + error.message);
@@ -413,13 +416,20 @@ export default function SearchCards() {
     }
   };
 
+  useEffect(() => {
+    const onChange = ({ window }) => {
+      setWidth(window.width);
+    }
+    Dimensions.addEventListener('change', onChange);
+  }, []);
+
   const restItem = (item: Restaurant, index: number) => {
     const restaurantData =
       restaurants.find((r) => r.restaurantID === item.restaurantID) || item;
-  
+
     return (
       <View key={restaurantData.restaurantID} style={styles.card}>
-        <Image
+        {width > 1200 && (<Image
           source={{
             uri: restaurantData.restaurantImage
               ? String(restaurantData.restaurantImage)
@@ -427,19 +437,28 @@ export default function SearchCards() {
           }}
           style={styles.cardImage}
           resizeMode="contain"
-        />
+        />)}
         <View style={styles.cardContent}>
-        <View style={styles.buttonAndTextContainer}>
-          <Text numberOfLines={1} style={styles.restaurantName}>
-            {restaurantData.restaurantName || "Unknown Restaurant"}
-          </Text>
-          {restaurantData.websiteURL && (
-            <CoreButton
-              pressFunc={() => window.open(restaurantData.websiteURL, '_blank')}
-              bText="Website"
-              buttonColor={ffColors.ffBlueD}
-            />
-          )}
+          <View style={styles.buttonAndTextContainer}>
+            {width <= 1200 && (<Image
+              source={{
+                uri: restaurantData.restaurantImage
+                  ? String(restaurantData.restaurantImage)
+                  : "/images/testRest.png",
+              }}
+              style={styles.cardImageSrunk}
+              resizeMode="contain"
+            />)}
+            <Text numberOfLines={1} style={styles.restaurantName}>
+              {restaurantData.restaurantName || "Unknown Restaurant"}
+            </Text>
+            {restaurantData.websiteURL && (
+              <CoreButton
+                pressFunc={() => window.open(restaurantData.websiteURL, '_blank')}
+                bText="Website"
+                buttonColor={ffColors.ffBlueD}
+              />
+            )}
           </View>
           <StarRating rating={restaurantData.averageRating || 0} />
           <Text numberOfLines={1} style={styles.cardDetails}>
@@ -579,7 +598,12 @@ export default function SearchCards() {
                 ]}
                 onPress={() => setSortOption('distance-asc')}
               >
-                <Text style={styles.sortButtonText}>Closest First</Text>
+                <Text
+                  style={[
+                    styles.sortButtonText,
+                    sortOption === 'distance-asc' && { color: ffColors.ffActiveButtonText }
+                  ]}
+                >Closest First</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
@@ -588,7 +612,11 @@ export default function SearchCards() {
                 ]}
                 onPress={() => setSortOption('distance-desc')}
               >
-                <Text style={styles.sortButtonText}>Furthest First</Text>
+                <Text style={[
+                  styles.sortButtonText,
+                  sortOption === 'distance-desc' && { color: ffColors.ffActiveButtonText }
+                ]}
+                >Furthest First</Text>
               </TouchableOpacity>
             </View>
 
@@ -601,7 +629,11 @@ export default function SearchCards() {
                 ]}
                 onPress={() => setSortOption('rating-desc')}
               >
-                <Text style={styles.sortButtonText}>Highest First</Text>
+                <Text style={[
+                  styles.sortButtonText,
+                  sortOption === 'rating-desc' && { color: ffColors.ffActiveButtonText }
+                ]}
+                >Highest First</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
@@ -610,26 +642,35 @@ export default function SearchCards() {
                 ]}
                 onPress={() => setSortOption('rating-asc')}
               >
-                <Text style={styles.sortButtonText}>Lowest First</Text>
+                <Text style={[
+                  styles.sortButtonText,
+                  sortOption === 'rating-asc' && { color: ffColors.ffActiveButtonText }
+                ]}
+                >Lowest First</Text>
               </TouchableOpacity>
             </View>
           </>
         )}
-
-        {sortedResults.length > 0 ? (
-          searchType === "restaurant" ? (
-            sortedResults.map((item, index) => restItem(item, index))
+        <View style={styles.cardContainer}>
+          {/* Loading */}
+          {loadingPage ? (
+            <View style={styles.errorPage}>
+              <Text style={styles.loadingMessage}>Loading...</Text>
+            </View>
+          ) : sortedResults.length > 0 ? (
+            searchType === "restaurant" ? (
+              sortedResults.map((item, index) => restItem(item, index))
+            ) : (
+              sortedResults.map((item, index) => dishItem(item, index))
+            )
           ) : (
-            sortedResults.map((item, index) => dishItem(item, index))
-          )
-        ) : (
-          <View style={styles.errorPage}>
-            <Text style={styles.errorMessage}>
-              {errorText ||
-                `No results found for ${deliveryService || "all services"}.`}
-            </Text>
-          </View>
-        )}
+            <View style={styles.errorPage}>
+              <Text style={styles.errorMessage}>
+                {errorText || `No results found for ${deliveryService || "all services"}.`}
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
 
       {/* Error Popup */}
@@ -704,9 +745,8 @@ export default function SearchCards() {
 
       {/* Review Popup */}
       <CorePopup
-        popTitle={`Leave a Review for ${
-          selectedRestaurant?.restaurantName || ""
-        }`}
+        popTitle={`Leave a Review for ${selectedRestaurant?.restaurantName || ""
+          }`}
         popText={""}
         closeFunc={() => {
           setReviewPop(false);
