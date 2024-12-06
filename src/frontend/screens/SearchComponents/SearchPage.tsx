@@ -1,5 +1,5 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Dimensions, View } from "react-native";
 
 // Components
 import SearchCards from "./SearchCards.tsx";
@@ -14,16 +14,27 @@ export default function SearchPage() {
   const { search, results } = location.state;
   const { scrollableStyle } = CoreStyles();
   const styles = CoreStyles().searchPageStyles;
+  const [width, setWidth] = useState<number>(Dimensions.get('window').width);
+
+  useEffect(()=>{
+    const onChange = ({window}) => {
+      setWidth(window.width);
+    }
+    Dimensions.addEventListener('change', onChange);
+  }, []);
 
   return (
     <View style={tw.style(styles.container)}>
       <CoreBanner searchVal={search} />
       <View style={tw.style(styles.searchPageContainer)}>
-        <View style={styles.mapContainer}>
+        {width > 750 && <View style={tw.style(styles.mapContainer)}>
           <MapComponent restaurants={results} />
-        </View>
+        </View>}
         <View style={tw.style(styles.cardsContainer)}>
-          <div style={scrollableStyle}>
+          <div style={{...scrollableStyle, padding: 8}}>
+            {width <= 750 && <View style={tw.style(styles.mapContainerShrunk)}>
+              <MapComponent restaurants={results} />
+            </View>}
             <SearchCards />
           </div>
         </View>

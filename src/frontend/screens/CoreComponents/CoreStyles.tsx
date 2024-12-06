@@ -540,28 +540,42 @@ export default function CoreStyles() {
       backgroundColor: ffColors.ffBackground,
       height: '100vh',
       flex: 1,
+      overflow: 'hidden'
     },
     searchPageContainer: {
       flex: 1,
       flexDirection: 'row',
+      maxHeight: '100vh'
     },
     mapContainer: {
       flex: 1,
       margin: 10,
       borderRadius: 20,
+      height: '80%'
+    },
+    mapContainerShrunk: {
+      flex: 1,
+      margin: 10,
+      borderRadius: 20,
+      height: '40%',
+      minHeight: 200
     },
     cardsContainer: {
       flex: 1.75,
       maxHeight: '100%',
+      minWidth: 520,
     },
   };
 
   const searchCardsStyles = StyleSheet.create({
     container: {
-      padding: 10,
+      padding: 0,
+    },
+    cardContainer: {
+      alignItems: 'center',
     },
     card: {
-      width: "100%",
+      width: "98%",
       height: 300,
       borderRadius: 11,
       marginBottom: 10,
@@ -572,16 +586,20 @@ export default function CoreStyles() {
       shadowOpacity: 0.1,
       shadowRadius: 6,
       flexDirection: "row",
+      paddingLeft: 4,
     },
     cardImage: {
+      marginLeft: 20,
       aspectRatio: 1 / 1.2,
       height: "100%",
-      borderBottomLeftRadius: 10,
-      borderTopLeftRadius: 10,
+    },
+    cardImageSrunk: {
+      aspectRatio: 1 / 1.2,
+      height: "90%",
     },
     cardContent: {
       flex: 1,
-      padding: 10,
+      padding: 16,
     },
     restaurantName: {
       fontSize: 28,

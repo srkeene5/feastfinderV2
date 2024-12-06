@@ -153,7 +153,7 @@ const MapComponent: React.FC<{ restaurants: Restaurant[] }> = ({ restaurants }) 
   }, [restaurants, GetRestLocations]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, height: '100%' }}>
       {/* {error && <p>{error}</p>} */}
       {userLocation ? (
         <MapContainer

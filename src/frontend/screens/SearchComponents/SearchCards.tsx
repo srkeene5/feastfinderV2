@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   SafeAreaView,
@@ -7,6 +7,7 @@ import {
   Image,
   View,
   TextInput, // Add TextInput
+  Dimensions,
 } from "react-native";
 import { API_BASE_URL } from '../../../config.js';
 import { TouchableOpacity } from 'react-native';
@@ -52,6 +53,7 @@ export default function SearchCards() {
     deliveryService,
     errorText,
   } = location.state;
+  const [width, setWidth] = useState<number>(Dimensions.get('window').width);
 
   const [userValue, setuserValue] = React.useState("");
   const [passValue, setPassValue] = React.useState("");
@@ -413,13 +415,20 @@ export default function SearchCards() {
     }
   };
 
+  useEffect(()=>{
+    const onChange = ({window}) => {
+      setWidth(window.width);
+    }
+    Dimensions.addEventListener('change', onChange);
+  }, []);
+
   const restItem = (item: Restaurant, index: number) => {
     const restaurantData =
       restaurants.find((r) => r.restaurantID === item.restaurantID) || item;
   
     return (
       <View key={restaurantData.restaurantID} style={styles.card}>
-        <Image
+        {width > 1200 && (<Image
           source={{
             uri: restaurantData.restaurantImage
               ? String(restaurantData.restaurantImage)
@@ -427,9 +436,18 @@ export default function SearchCards() {
           }}
           style={styles.cardImage}
           resizeMode="contain"
-        />
+        />)}
         <View style={styles.cardContent}>
         <View style={styles.buttonAndTextContainer}>
+          {width <= 1200 && (<Image
+            source={{
+              uri: restaurantData.restaurantImage
+                ? String(restaurantData.restaurantImage)
+                : "/images/testRest.png",
+            }}
+            style={styles.cardImageSrunk}
+            resizeMode="contain"
+          />)}
           <Text numberOfLines={1} style={styles.restaurantName}>
             {restaurantData.restaurantName || "Unknown Restaurant"}
           </Text>
@@ -615,21 +633,22 @@ export default function SearchCards() {
             </View>
           </>
         )}
-
-        {sortedResults.length > 0 ? (
-          searchType === "restaurant" ? (
-            sortedResults.map((item, index) => restItem(item, index))
+        <View style={styles.cardContainer}>
+          {sortedResults.length > 0 ? (
+            searchType === "restaurant" ? (
+              sortedResults.map((item, index) => restItem(item, index))
+            ) : (
+              sortedResults.map((item, index) => dishItem(item, index))
+            )
           ) : (
-            sortedResults.map((item, index) => dishItem(item, index))
-          )
-        ) : (
-          <View style={styles.errorPage}>
-            <Text style={styles.errorMessage}>
-              {errorText ||
-                `No results found for ${deliveryService || "all services"}.`}
-            </Text>
-          </View>
-        )}
+            <View style={styles.errorPage}>
+              <Text style={styles.errorMessage}>
+                {errorText ||
+                  `No results found for ${deliveryService || "all services"}.`}
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
 
       {/* Error Popup */}
