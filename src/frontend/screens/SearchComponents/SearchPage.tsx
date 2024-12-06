@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 // Components
 import SearchCards from "./SearchCards.tsx";

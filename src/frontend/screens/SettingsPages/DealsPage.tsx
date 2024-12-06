@@ -3,6 +3,7 @@ import { useAuth } from '../UserComponents/Authorizer.tsx';
 import { useNavigate } from 'react-router-dom';
 import CoreBanner from '../CoreComponents/CoreBanner.tsx';
 import { API_BASE_URL } from '../../../config.js';
+import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 
 interface Deals {
   uberEats: number;
@@ -16,6 +17,8 @@ const DealsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deals, setDeals] = useState<Deals | null>(null);
+  const { ffColors } = CoreStyles();
+  const styles = CoreStyles().dealsPageStyles
 
   useEffect(() => {
     if (!user) {
@@ -51,47 +54,31 @@ const DealsPage: React.FC = () => {
   }, [user, navigate]);
 
   return (
-    <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: ffColors.ffBackground, minHeight: '100vh' }}>
       <CoreBanner />
       <div style={{ padding: 20 }}>
-        <h1 style={{ fontSize: 24, marginBottom: 20 }}>Your Delivery Deals</h1>
-        {loading && <p>Loading...</p>}
+        <h1 style={{ fontSize: 24, marginBottom: 20, color: ffColors.ffHeading }}>Your Delivery Deals</h1>
+        {loading && <p style={{color: ffColors.ffHeading}}>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
         {deals && (
           <div style={styles.dealsCard}>
             <div style={styles.dealItem}>
-              <h2 style={{ fontSize: 20, marginBottom: 5 }}>UberEats Deal</h2>
-              <p style={{ fontSize: 18, color: '#2ecc71' }}>{deals.uberEats}% off</p>
+              <h2 style={{ fontSize: 20, marginBottom: 5, color: ffColors.ffHeading }}>UberEats Deal</h2>
+              <p style={{ fontSize: 18, color: ffColors.ffBody }}>{deals.uberEats}% off</p>
             </div>
             <div style={styles.dealItem}>
-              <h2 style={{ fontSize: 20, marginBottom: 5 }}>DoorDash Deal</h2>
-              <p style={{ fontSize: 18, color: '#2ecc71' }}>{deals.doorDash}% off</p>
+              <h2 style={{ fontSize: 20, marginBottom: 5, color: ffColors.ffHeading }}>DoorDash Deal</h2>
+              <p style={{ fontSize: 18, color: ffColors.ffBody }}>{deals.doorDash}% off</p>
             </div>
             <div style={styles.dealItem}>
-              <h2 style={{ fontSize: 20, marginBottom: 5 }}>GrubHub Deal</h2>
-              <p style={{ fontSize: 18, color: '#2ecc71' }}>{deals.grubHub}% off</p>
+              <h2 style={{ fontSize: 20, marginBottom: 5, color: ffColors.ffHeading }}>GrubHub Deal</h2>
+              <p style={{ fontSize: 18, color: ffColors.ffBody }}>{deals.grubHub}% off</p>
             </div>
           </div>
         )}
       </div>
     </div>
   );
-};
-
-const styles = {
-  dealsCard: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 8,
-    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-    maxWidth: 600,
-    margin: '0 auto'
-  },
-  dealItem: {
-    marginBottom: 20,
-    padding: 15,
-    borderBottom: '1px solid #eee'
-  }
 };
 
 export default DealsPage;

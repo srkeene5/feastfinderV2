@@ -59,7 +59,7 @@ export default function RepBPage() {
             let subject = severity +" "+ bugType + " Bug Report from User: " + user.email
             let body = "Bug Report: " + reportTextEmail;
             console.log(subject + "\n" + body);
-            //sendEmail(body, subject)
+            sendEmail(body, subject);
             console.log('Success!', 'Thank you for your feedback!');
             setSentPop(true);
           } catch (err) {

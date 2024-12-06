@@ -50,7 +50,7 @@ export default function SuggPage() {
         let subject = "Suggestion from User: " + user.email
         let body = "Suggestion: " + suggTextValue
         console.log(subject + "\n" + body);
-        //sendEmail(body, subject)
+        sendEmail(body, subject)
         console.log('Success!', 'Thank you for your feedback!');
         setSentPop(true);
       } catch (err) {
