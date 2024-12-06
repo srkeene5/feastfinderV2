@@ -1,8 +1,20 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { useDarkMode } from "./DarkModeContext.tsx";
+import { useEffect, useState } from "react";
 
 export default function CoreStyles() {
   const { darkMode } = useDarkMode();
+
+  const [width, setWidth] = useState<number>(Dimensions.get('window').width);
+
+  const marg = width * 0.01 - 2
+
+  useEffect(() => {
+    const onChange = ({ window }) => {
+      setWidth(window.width);
+    }
+    Dimensions.addEventListener('change', onChange);
+  }, []);
 
   const ffColors = darkMode ? {
     ffBackground: '#121212',  // Dark background for the overall page
@@ -245,6 +257,7 @@ export default function CoreStyles() {
       height: 90,
       width: 120,
       margin: 5,
+      marginRight: marg,
       borderRadius: 45,
     },
     cardImage: {
@@ -254,10 +267,10 @@ export default function CoreStyles() {
     searchInput: {
       backgroundColor: ffColors.ffInput,
       color: ffColors.ffBody,
-      borderColor:ffColors.ffEdge,
+      borderColor: ffColors.ffEdge,
       height: 60,
-      margin: 20,
-      marginRight: 25,
+      margin: marg,
+      marginLeft: 10 + marg,
       borderWidth: 1,
       flexGrow: 1,
       borderRadius: 20,
@@ -265,15 +278,16 @@ export default function CoreStyles() {
     },
     buttonGroup: {
       flexDirection: 'row',
-      margin: 20,
+      margin: marg,
     },
     searchTypeButton: {
       height: 40,
-      width: 120,
+      width: 'auto',
+      padding: 10,
       borderRadius: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 10,
+      marginLeft: 10,
     },
     selectedButton: {
       backgroundColor: ffColors.ffGreenL,
@@ -290,7 +304,7 @@ export default function CoreStyles() {
     filterButton: {
       backgroundColor: ffColors.ffGreenL,
       height: 60,
-      margin: 20,
+      margin: marg,
       padding: 10,
       borderRadius: 20,
       justifyContent: 'center',
@@ -306,6 +320,9 @@ export default function CoreStyles() {
     },
     filterButtonDisabled: {
       backgroundColor: ffColors.ffDeadButton, // Grey out the filter button when disabled
+    },
+    drawerContainer: {
+      margin: marg
     },
     popupOverlay: {
       flex: 1,
@@ -385,7 +402,7 @@ export default function CoreStyles() {
     menuImage: {
       height: 40,
       width: 40,
-      marginRight: 15,
+      marginRight: 10
     },
     navImage: {
       width: 30,
@@ -412,7 +429,7 @@ export default function CoreStyles() {
     navContainer: {
       flex: 1,
       justifyContent: 'space-between',
-      backgroundColor:ffColors.ffBackground
+      backgroundColor: ffColors.ffBackground,
     },
     logout: {
       backgroundColor: ffColors.ffRedL
@@ -649,12 +666,19 @@ export default function CoreStyles() {
       paddingTop: 50,
       alignItems: "center",
     },
+    loadingMessage: {
+      fontSize: 24,
+      fontWeight: "bold",
+      paddingHorizontal: 8,
+      margin: 10,
+      color: ffColors.ffHeading,
+    },
     errorMessage: {
       fontSize: 24,
       fontWeight: "bold",
       paddingHorizontal: 8,
       margin: 10,
-      color: "red",
+      color: ffColors.ffRedL,
     },
     starContainer: {
       flexDirection: "row",
@@ -856,7 +880,7 @@ export default function CoreStyles() {
       boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
     },
   };
-  
+
   const dealsPageStyles = {
     dealsCard: {
       backgroundColor: ffColors.ffCard,

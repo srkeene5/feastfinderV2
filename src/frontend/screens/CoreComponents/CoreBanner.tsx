@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, TouchableOpacity, View, Modal, Text } from 'react-native';
+import { Image, Pressable, TouchableOpacity, View, Modal, Text } from 'react-native';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CoreStyles from './CoreStyles.tsx';
@@ -75,38 +75,43 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
                 if (response.ok) {
                     const results = await response.json();
                     console.log('Results Found:', results);
-                    navigate('/Search', { 
-                        state: { 
-                            search: searchValue, 
-                            results, 
-                            searchType, 
-                            deliveryService, 
-                            cuisine, 
-                            timeRanges: selectedTimeRanges  
-                        } 
+                    navigate('/Search', {
+                        state: {
+                            search: searchValue,
+                            results,
+                            searchType,
+                            deliveryService,
+                            cuisine,
+                            timeRanges: selectedTimeRanges
+                        }
                     });
                 } else {
                     console.log('No results found');
-                    navigate('/Search', { state: { 
-                        search: searchValue, 
-                        results: [], 
-                        searchType, 
-                        deliveryService, 
-                        cuisine, 
-                        timeRanges: selectedTimeRanges, 
-                        errorText: 'No results found' } });
+                    navigate('/Search', {
+                        state: {
+                            search: searchValue,
+                            results: [],
+                            searchType,
+                            deliveryService,
+                            cuisine,
+                            timeRanges: selectedTimeRanges,
+                            errorText: 'No results found'
+                        }
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching results:', error);
-                navigate('/Search', { 
-                    state: { 
-                        search: searchValue, 
-                        results: [], 
-                        searchType, 
-                        deliveryService, 
-                        cuisine, 
-                        timeRanges: selectedTimeRanges, 
-                        errorText: 'Error fetching results' } });
+                navigate('/Search', {
+                    state: {
+                        search: searchValue,
+                        results: [],
+                        searchType,
+                        deliveryService,
+                        cuisine,
+                        timeRanges: selectedTimeRanges,
+                        errorText: 'Error fetching results'
+                    }
+                });
             }
         }
     };
@@ -208,7 +213,9 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
                         <Text style={[styles.filterButtonText, searchType === 'dish' && styles.filterButtonTextDisabled]}>Filter</Text>
                     </TouchableOpacity>
 
-                    <CoreDrawer open={open} setOpen={setOpen} />
+                    <View style={styles.drawerContainer}>
+                        <CoreDrawer open={open} setOpen={setOpen} />
+                    </View>
                 </View>
             </View>
 
@@ -241,28 +248,28 @@ const CoreBanner: React.FC<Props> = ({ searchVal }) => {
 
                         {/* Time Ranges Filter */}
                         <Text style={styles.popupLabel}>Operating Hours:</Text>
-<View style={styles.checkboxContainer}>
-    <View style={styles.checkboxItem}>
-        <input type="checkbox" checked={timeRanges.breakfast} onChange={() => handleTimeRangeChange('breakfast')} />
-        <Text style={styles.checkboxLabel}>Breakfast</Text>
-    </View>
-    <View style={styles.checkboxItem}>
-        <input type="checkbox" checked={timeRanges.brunch} onChange={() => handleTimeRangeChange('brunch')} />
-        <Text style={styles.checkboxLabel}>Brunch</Text>
-    </View>
-    <View style={styles.checkboxItem}>
-        <input type="checkbox" checked={timeRanges.lunch} onChange={() => handleTimeRangeChange('lunch')} />
-        <Text style={styles.checkboxLabel}>Lunch</Text>
-    </View>
-    <View style={styles.checkboxItem}>
-        <input type="checkbox" checked={timeRanges.dinner} onChange={() => handleTimeRangeChange('dinner')} />
-        <Text style={styles.checkboxLabel}>Dinner</Text>
-    </View>
-    <View style={styles.checkboxItem}>
-        <input type="checkbox" checked={timeRanges.allDay} onChange={() => handleTimeRangeChange('allDay')} />
-        <Text style={styles.checkboxLabel}>All Day</Text>
-    </View>
-</View>
+                        <View style={styles.checkboxContainer}>
+                            <View style={styles.checkboxItem}>
+                                <input type="checkbox" checked={timeRanges.breakfast} onChange={() => handleTimeRangeChange('breakfast')} />
+                                <Text style={styles.checkboxLabel}>Breakfast</Text>
+                            </View>
+                            <View style={styles.checkboxItem}>
+                                <input type="checkbox" checked={timeRanges.brunch} onChange={() => handleTimeRangeChange('brunch')} />
+                                <Text style={styles.checkboxLabel}>Brunch</Text>
+                            </View>
+                            <View style={styles.checkboxItem}>
+                                <input type="checkbox" checked={timeRanges.lunch} onChange={() => handleTimeRangeChange('lunch')} />
+                                <Text style={styles.checkboxLabel}>Lunch</Text>
+                            </View>
+                            <View style={styles.checkboxItem}>
+                                <input type="checkbox" checked={timeRanges.dinner} onChange={() => handleTimeRangeChange('dinner')} />
+                                <Text style={styles.checkboxLabel}>Dinner</Text>
+                            </View>
+                            <View style={styles.checkboxItem}>
+                                <input type="checkbox" checked={timeRanges.allDay} onChange={() => handleTimeRangeChange('allDay')} />
+                                <Text style={styles.checkboxLabel}>All Day</Text>
+                            </View>
+                        </View>
 
                         {/* Apply and Close Buttons */}
                         <View style={styles.popupButtonContainer}>
