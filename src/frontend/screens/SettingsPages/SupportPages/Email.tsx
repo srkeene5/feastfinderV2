@@ -3,7 +3,8 @@ import emailjs from 'emailjs-com'
 export const sendEmail = (body: string, subject: string): boolean => {
     var templateParams = {
         subject: subject,
-        body: body
+        body: body,
+        to_email: 'FeastFinderDev@gmail.com'
     }
     emailjs.send('service_oonflrq','template_nnlmodk',templateParams,'Ho_oAclYyi4QtI1o3')
         .then((result) => {

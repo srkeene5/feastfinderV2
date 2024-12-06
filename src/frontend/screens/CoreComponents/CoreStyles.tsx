@@ -838,6 +838,22 @@ export default function CoreStyles() {
       boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
     },
   };
+  
+  const dealsPageStyles = {
+    dealsCard: {
+      backgroundColor: ffColors.ffCard,
+      padding: 20,
+      borderRadius: 8,
+      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+      maxWidth: 600,
+      margin: '0 auto'
+    },
+    dealItem: {
+      marginBottom: 20,
+      padding: 15,
+      borderBottom: `1px solid ${ffColors.ffEdge}`
+    }
+  };
 
   const scrollableStyle: React.CSSProperties = {
     overflowY: 'auto',
@@ -877,6 +893,7 @@ export default function CoreStyles() {
     popularCardsStyles,
     confirmModalStyles,
     pastOrderPageStyles,
+    dealsPageStyles,
     scrollableStyle,
     scrollableStyleX,
     scrollableStyleHidden,

@@ -23,14 +23,19 @@ const CoreDrawer = ({open, setOpen}) => {
             navText: 'Home',
         },
         {
-            navFunc: () => { navigate('/deals') },
-            navImg: require('../images/deals.png'), 
-            navText: 'Deals',
-        },
-        {
             navFunc: () => { navigate('/AccountPage') },
             navImg: darkMode? require('../images/accountDark.png') : require('../images/account.png'),
             navText: 'Account',
+        },
+        {
+            navFunc: () => { navigate('/deals') },
+            navImg: darkMode? require('../images/dealsDark.png') : require('../images/deals.png'), 
+            navText: 'Deals',
+        },
+        {
+            navFunc: () => { navigate('/PastOrdersPage') },
+            navImg: darkMode? require('../images/pastOrdersDark.png') : require('../images/pastOrders.png'), // Ensure you have this image
+            navText: 'Past Orders',
         },
         {
             navFunc: () => { navigate('/FAQPage')},
@@ -53,13 +58,8 @@ const CoreDrawer = ({open, setOpen}) => {
             navText: 'Report Bugs',
         },
         {
-            navFunc: () => { navigate('/PastOrdersPage') },
-            navImg: darkMode? require('../images/pastOrdersDark.png') : require('../images/pastOrders.png'), // Ensure you have this image
-            navText: 'Past Orders',
-        },
-        {
             navFunc: () => { navigate('/FeedbackPage')},
-            navImg: require('../images/feedback.png'),
+            navImg: darkMode? require('../images/feedbackDark.png') : require('../images/feedback.png'),
             navText: 'Feedback',
         },
     ];

@@ -54,7 +54,7 @@ export default function FeedbackPage() {
             let subject = `FeastFinder Feedback - ${rating} - ${feedbackType} from User: ${user.email}`;
             let body = "Feedback: " + feedbackEmail;
             console.log(subject + "\n" + body);
-            //sendEmail(body, subject)
+            sendEmail(body, subject)
             setSentPop(true);
           } catch (err) {
             console.log(err);

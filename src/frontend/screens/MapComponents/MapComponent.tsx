@@ -9,9 +9,9 @@ import { Restaurant } from '../CoreComponents/CoreTypes.tsx';
 import { GAPIKEY } from '../../../config.js'; // Ensure this path is correct
 
 // Import your custom marker images
-import userMarkerIcon from './user-marker.png';
 import diningHallMarkerIcon from './dining-hall-marker.png';
-import restaurantMarkerIcon from './restaurant-marker.png';
+import { useDarkMode } from '../CoreComponents/DarkModeContext.tsx';
+import CoreStyles from '../CoreComponents/CoreStyles.tsx';
 
 // Purdue Dining Halls Coordinates with Google Maps links
 const diningHalls = [
@@ -47,25 +47,9 @@ const diningHalls = [
   },
 ];
 
-// Custom icon for user's location
-const userIcon = new L.Icon({
-  iconUrl: userMarkerIcon,
-  iconSize: [35, 45],
-  iconAnchor: [17, 42],
-  popupAnchor: [0, -40],
-});
-
 // Custom icon for dining halls
 const diningHallIcon = new L.Icon({
   iconUrl: diningHallMarkerIcon,
-  iconSize: [35, 45],
-  iconAnchor: [17, 42],
-  popupAnchor: [0, -40],
-});
-
-// Custom icon for restaurants
-const restaurantIcon = new L.Icon({
-  iconUrl: restaurantMarkerIcon,
   iconSize: [35, 45],
   iconAnchor: [17, 42],
   popupAnchor: [0, -40],
@@ -119,6 +103,23 @@ const MapComponent: React.FC<{ restaurants: Restaurant[] }> = ({ restaurants }) 
   const [restLocations, setRestLocations] = useState<{ lat: number; lng: number; restaurant: Restaurant }[]>([]);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { darkMode } = useDarkMode();
+
+  // Custom icon for user's location
+  const userIcon = new L.Icon({
+    iconUrl: darkMode ? require('./user-markerDark.png') : require('./user-marker.png'),
+    iconSize: [35, 45],
+    iconAnchor: [17, 42],
+    popupAnchor: [0, -40],
+  });
+
+  // Custom icon for restaurants
+  const restaurantIcon = new L.Icon({
+    iconUrl: darkMode? require('./restaurant-markerDark.png') : require('./restaurant-marker.png'),
+    iconSize: [35, 45],
+    iconAnchor: [17, 42],
+    popupAnchor: [0, -40],
+  });
 
   // Fetch restaurant locations
   const GetRestLocations = useCallback(async () => {
@@ -161,7 +162,7 @@ const MapComponent: React.FC<{ restaurants: Restaurant[] }> = ({ restaurants }) 
           style={{ flex: 1, width: '100%' }}
         >
           <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            url={darkMode ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
             attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
           />
           <MapUpdater location={userLocation} />
@@ -213,7 +214,7 @@ const MapComponent: React.FC<{ restaurants: Restaurant[] }> = ({ restaurants }) 
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9V7a2 2 0 114 0v2m-4 4v6m0 0h4m-4 0H6a2 2 0 01-2-2V4a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
           </svg>
           <span className="text-lg font-medium">Unable to retrieve location for map</span>
-      </div>
+        </div>
       )}
     </View>
   );
